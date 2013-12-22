@@ -67,8 +67,11 @@ namespace rj
 		{m_window.draw(object);}
 
 		// getters
-		game_updater& updater() noexcept
+		game_updater& get_updater() noexcept
 		{return m_game_updater;}
+
+		input& get_input() noexcept
+		{return m_input;}
 
 	private:
 		void prepare_start() noexcept
