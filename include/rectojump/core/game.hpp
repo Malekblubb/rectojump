@@ -21,8 +21,8 @@ namespace rj
 		game(game_window& window) :
 			m_window{window}
 		{
-			m_window.updater().on_update.add_func([this](dur duration){this->update(duration);});
-			m_window.updater().on_render.add_func([this]{this->render();});
+			m_window.updater().on_update += [this](dur duration){this->update(duration);};
+			m_window.updater().on_render += [this]{this->render();};
 		}
 
 		void update(dur duration)
