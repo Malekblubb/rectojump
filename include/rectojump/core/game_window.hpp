@@ -82,11 +82,6 @@ namespace rj
 			sf::Event ev;
 			while(m_window.pollEvent(ev))
 			{
-				if(ev.type == sf::Event::EventType::Closed)
-					this->stop();
-				if(ev.type == sf::Event::EventType::KeyPressed)
-					m_input.key_pressed(ev.key.code);
-
 				switch(ev.type)
 				{
 				case sf::Event::EventType::Closed:
