@@ -7,19 +7,16 @@
 #define RJ_SHARED_INPUT_HPP
 
 
+#include <rectojump/global/common.hpp>
+
 #include <mlk/containers/container_utl.h>
 #include <mlk/signals_slots/slot.h>
-
-#include <SFML/Window.hpp>
 
 #include <map>
 
 
 namespace rj
 {
-	using key = sf::Keyboard::Key;
-	using btn = sf::Mouse::Button;
-
 	struct input
 	{
 		std::map<key, mlk::slot<>> on_key_pressed;
