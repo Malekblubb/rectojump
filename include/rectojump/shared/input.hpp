@@ -18,10 +18,12 @@
 namespace rj
 {
 	using key = sf::Keyboard::Key;
+	using btn = sf::Mouse::Button;
 
 	struct input
 	{
 		std::map<key, mlk::slot<>> on_key_pressed;
+		std::map<btn, mlk::slot<>> on_btn_pressed;
 
 		input() = default;
 
@@ -29,6 +31,12 @@ namespace rj
 		{
 			if(mlk::cnt::exists_if([=](std::pair<key, mlk::slot<>> p){return p.first == k;}, on_key_pressed))
 				on_key_pressed[k]();
+		}
+
+		void btn_pressed(btn b)
+		{
+			if(mlk::cnt::exists_if([=](std::pair<btn, mlk::slot<>> p){return p.first == b;}, on_btn_pressed))
+				on_btn_pressed[b]();
 		}
 	};
 }

@@ -86,6 +86,20 @@ namespace rj
 					this->stop();
 				if(ev.type == sf::Event::EventType::KeyPressed)
 					m_input.key_pressed(ev.key.code);
+
+				switch(ev.type)
+				{
+				case sf::Event::EventType::Closed:
+					this->stop();
+					break;
+				case sf::Event::EventType::KeyPressed:
+					m_input.key_pressed(ev.key.code);
+					break;
+				case sf::Event::EventType::MouseButtonPressed:
+					m_input.btn_pressed(ev.mouseButton.button);
+					break;
+				default: break;
+				}
 			}
 		}
 	};
