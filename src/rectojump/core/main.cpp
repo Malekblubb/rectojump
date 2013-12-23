@@ -3,9 +3,9 @@
 // See LICENSE for more information.
 //
 
-
 #include <rectojump/core/game.hpp>
 #include <rectojump/core/game_window.hpp>
+#include <rectojump/game/basic_entity.inl>
 
 
 int main()
