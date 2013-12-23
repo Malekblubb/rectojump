@@ -21,14 +21,18 @@ namespace rj
 	using entity_ptr = std::shared_ptr<T>;
 	using entity_base_ptr = entity_ptr<entity_base>;
 
+	class game;
 	class entity_handler
 	{
+		game& m_game;
+
 		std::vector<std::shared_ptr<entity_base>> m_entities;
 		std::size_t m_max_entities;
 		std::size_t m_current_id{0};
 
 	public:
-		entity_handler(std::size_t max_entities = 100) :
+		entity_handler(game& g, std::size_t max_entities = 100) :
+			m_game{g},
 			m_max_entities{max_entities}
 		{ }
 
@@ -66,6 +70,8 @@ namespace rj
 
 		void create_entity_impl(const entity_base_ptr& e) noexcept
 		{
+			// important: set game
+			e->set_game(&m_game);
 			e->m_id = m_current_id;
 			e->m_is_registered = true;
 			m_entities.emplace_back(e);

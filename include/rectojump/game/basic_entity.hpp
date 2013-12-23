@@ -12,8 +12,6 @@
 
 namespace rj
 {
-	class game;
-
 	template<typename T>
 	class basic_entity : public entity_base
 	{
@@ -24,8 +22,7 @@ namespace rj
 		virtual void render() override;
 
 	public:
-		basic_entity(game& g, const sf::Vector2f& pos) :
-			entity_base{g}
+		basic_entity(const sf::Vector2f& pos)
 		{m_render_object.setPosition(pos);}
 
 		T& render_object() noexcept

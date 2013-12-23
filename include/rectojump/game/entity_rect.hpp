@@ -20,8 +20,8 @@ namespace rj
 		void update(dur duration) override = 0;
 
 	public:
-		entity_rect(game& g, const sf::Vector2f& pos, const sf::Vector2f& size) :
-			basic_entity{g, pos}
+		entity_rect(const sf::Vector2f& pos, const sf::Vector2f& size) :
+			basic_entity{pos}
 		{m_render_object.setSize(size);}
 	};
 }

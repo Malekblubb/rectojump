@@ -26,15 +26,16 @@ namespace rj
 		etypes m_types;
 
 	protected:
-		game& m_game;
+		game* m_game;
+
+		void set_game(game* g)
+		{m_game = g;}
 
 		virtual void update(dur duration) = 0;
 		virtual void render() = 0;
 
 	public:
-		entity_base(game& g) :
-			m_game{g}
-		{ }
+		entity_base() = default;
 
 		void set_propertie(eprops::type prop) noexcept
 		{m_props |= prop;}

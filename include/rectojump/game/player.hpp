@@ -19,8 +19,8 @@ namespace rj
 		{ }
 
 	public:
-		player(game& g, const sf::Vector2f& pos, const sf::Vector2f& size) :
-			entity_rect{g, pos, size}
+		player(const sf::Vector2f& pos, const sf::Vector2f& size) :
+			entity_rect{pos, size}
 		{ }
 	};
 }

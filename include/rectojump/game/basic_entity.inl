@@ -15,7 +15,7 @@ namespace rj
 {
 	template<typename T>
 	void basic_entity<T>::render()
-	{m_game.render_object(m_render_object);}
+	{m_game->render_object(m_render_object);}
 }
 
 
