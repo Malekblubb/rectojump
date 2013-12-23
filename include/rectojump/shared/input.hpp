@@ -26,13 +26,13 @@ namespace rj
 
 		void key_pressed(key k)
 		{
-			if(mlk::cnt::exists_if([=](std::pair<key, mlk::slot<>> p){return p.first == k;}, on_key_pressed))
+			if(mlk::cnt::exists_if([=](const std::pair<key, mlk::slot<>>& p){return p.first == k;}, on_key_pressed))
 				on_key_pressed[k]();
 		}
 
 		void btn_pressed(btn b)
 		{
-			if(mlk::cnt::exists_if([=](std::pair<btn, mlk::slot<>> p){return p.first == b;}, on_btn_pressed))
+			if(mlk::cnt::exists_if([=](const std::pair<btn, mlk::slot<>>& p){return p.first == b;}, on_btn_pressed))
 				on_btn_pressed[b]();
 		}
 	};
