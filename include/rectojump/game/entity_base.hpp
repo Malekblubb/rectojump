@@ -22,7 +22,8 @@ namespace rj
 
 		int m_id{-1};
 		bool m_is_registered{false};
-
+		eprops m_props;
+		etypes m_types;
 
 	protected:
 		game& m_game;
@@ -34,6 +35,18 @@ namespace rj
 		entity_base(game& g) :
 			m_game{g}
 		{ }
+
+		void set_propertie(eprops::type prop) noexcept
+		{m_props |= prop;}
+
+		void set_type(etypes::type type) noexcept
+		{m_types |= type;}
+
+		bool has_propertie(eprops::type prop) const noexcept
+		{return m_props & prop;}
+
+		bool has_type(etypes::type type) const noexcept
+		{return m_types & type;}
 	};
 }
 
