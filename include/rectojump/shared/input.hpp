@@ -17,13 +17,21 @@
 
 namespace rj
 {
-	struct input
+	class game_window;
+	class input
 	{
+		friend class game_window;
+
+	public:
 		std::map<key, mlk::slot<>> on_key_pressed;
 		std::map<btn, mlk::slot<>> on_btn_pressed;
 
 		input() = default;
 
+		static input& get() noexcept
+		{static input i; return i;}
+
+	private:
 		void key_pressed(key k)
 		{
 			if(mlk::cnt::exists_if([=](const std::pair<key, mlk::slot<>>& p){return p.first == k;}, on_key_pressed))
@@ -34,8 +42,16 @@ namespace rj
 		{
 			if(mlk::cnt::exists_if([=](const std::pair<btn, mlk::slot<>>& p){return p.first == b;}, on_btn_pressed))
 				on_btn_pressed[b]();
-		}
+		}		
 	};
+
+	inline auto on_key_pressed(key k)
+	-> decltype(input::get().on_key_pressed[k])&
+	{return input::get().on_key_pressed[k];}
+
+	inline auto on_btn_pressed(btn b)
+	-> decltype(input::get().on_btn_pressed[b])&
+	{return input::get().on_btn_pressed[b];}
 }
 
 
