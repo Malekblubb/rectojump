@@ -26,7 +26,7 @@ namespace rj
 	{
 		game& m_game;
 
-		std::vector<std::shared_ptr<entity_base>> m_entities;
+		std::vector<entity_base_ptr> m_entities;
 		std::size_t m_max_entities;
 		std::size_t m_current_id{0};
 
@@ -39,12 +39,17 @@ namespace rj
 		bool create_entity(const entity_base_ptr& e) noexcept
 		{
 			if(this->is_full())
-				return false;
-			if(e->m_is_registered || e->m_id != -1)
 			{
-				mlk::lout("rj::world") << "entity with id '" << e->m_id << "' exists already in entity handler, ignoring";
+				mlk::lout("rj::entity_handler") << "max_entites limit is reached, can't add more entities";
 				return false;
 			}
+			if(e->is_registered())
+			{
+				mlk::lout("rj::entity_handler") << "entity with id '" << e->m_id << "' exists already in entity handler, ignoring";
+				return false;
+			}
+
+			// add/create entity in handler
 			this->create_entity_impl(e);
 			return true;
 		}
@@ -70,11 +75,10 @@ namespace rj
 
 		void create_entity_impl(const entity_base_ptr& e) noexcept
 		{
-			// important: set game
-			e->set_game(&m_game);
-			e->m_id = m_current_id;
-			e->m_is_registered = true;
-			m_entities.emplace_back(e);
+			// important: set game and init
+			e->handler_register(&m_game, m_current_id);
+			e->init();
+			m_entities.push_back(e);
 			++m_current_id;
 		}
 	};

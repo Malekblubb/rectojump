@@ -17,7 +17,8 @@ namespace rj
 	class entity_rect : public basic_entity<sf::RectangleShape>
 	{
 	protected:
-		void update(dur duration) override = 0;
+		virtual void update(dur duration) override = 0;
+		virtual void init() override = 0;
 
 	public:
 		entity_rect(const sf::Vector2f& pos, const sf::Vector2f& size) :

@@ -26,7 +26,7 @@ namespace rj
 		sf::RenderWindow m_window;
 		bool m_running{false};
 
-		input m_input;
+		input& m_input{input::get()};
 
 		game_updater m_game_updater;
 
@@ -35,7 +35,7 @@ namespace rj
 
 		game_window() :
 			m_window{{m_width, m_height}, "RectoJump"}
-		{m_input.on_key_pressed[key::Escape] += [this]{this->stop();};}
+		{on_key_pressed(key::Escape) += [this]{this->stop();};}
 
 		// interface
 		void start()
@@ -69,9 +69,6 @@ namespace rj
 		// getters
 		game_updater& get_updater() noexcept
 		{return m_game_updater;}
-
-		input& get_input() noexcept
-		{return m_input;}
 
 	private:
 		void prepare_start() noexcept

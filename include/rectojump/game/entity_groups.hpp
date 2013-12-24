@@ -16,7 +16,7 @@ namespace rj
 	{player, enemy};
 
 	enum class entity_properties : char
-	{moveable, solid, death};
+	{moveable_left, jumpable, solid, death};
 
 	using etypes = mlk::bitset<entity_types, 10>;
 	using eprops = mlk::bitset<entity_properties, 10>;

@@ -9,6 +9,7 @@
 
 #include "entity_groups.hpp"
 #include <rectojump/global/common.hpp>
+#include <rectojump/shared/input.hpp>
 
 
 namespace rj
@@ -25,17 +26,26 @@ namespace rj
 		eprops m_props;
 		etypes m_types;
 
-	protected:
-		game* m_game;
+		void handler_register(game* g, int id) noexcept
+		{
+			m_game = g;
+			m_id = id;
+			m_is_registered = true;
+		}
 
-		void set_game(game* g)
-		{m_game = g;}
+	protected:
+		game* m_game{nullptr};
+		input& m_input{input::get()};
 
 		virtual void update(dur duration) = 0;
 		virtual void render() = 0;
+		virtual void init() = 0; // called by 'entity_handler'
 
 	public:
 		entity_base() = default;
+
+		bool is_registered() const noexcept
+		{return m_is_registered || m_id != -1;}
 
 		void set_propertie(eprops::type prop) noexcept
 		{m_props |= prop;}

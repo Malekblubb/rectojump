@@ -20,6 +20,7 @@ namespace rj
 
 		virtual void update(dur duration) override = 0;
 		virtual void render() override;
+		virtual void init() override = 0;
 
 	public:
 		basic_entity(const sf::Vector2f& pos)
