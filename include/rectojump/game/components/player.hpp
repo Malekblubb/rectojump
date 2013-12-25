@@ -18,6 +18,7 @@ namespace rj
 		// props
 		static constexpr float m_gravity{0.01f};
 		static constexpr float m_jump_velo{-1.7f};
+		static constexpr float m_width{40.f}, m_height{40.f};
 		sf::Vector2f m_start_pos{100.f, 500.f};
 
 		// jumping
@@ -38,9 +39,9 @@ namespace rj
 
 	public:
 		player(const sf::Vector2f& start_pos) :
-			entity_rect{start_pos, {40.f, 40.f}, {0.f, 0.f}},
+			entity_rect{start_pos, {m_width, m_height}, {0.f, 0.f}},
 			m_start_pos{start_pos}
-		{m_render_object.setOrigin(20.f, 20.f);}
+		{m_render_object.setOrigin(m_width / 2.f, m_height / 2.f);}
 
 
 	private:
