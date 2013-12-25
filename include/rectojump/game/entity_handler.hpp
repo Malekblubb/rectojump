@@ -7,6 +7,7 @@
 #define RJ_GAME_ENTITY_HANDLER_HPP
 
 
+#include "collision.hpp"
 #include "entity.hpp"
 
 #include <mlk/log/log.h>
@@ -29,6 +30,8 @@ namespace rj
 		std::vector<entity_base_ptr> m_entities;
 		std::size_t m_max_entities;
 		std::size_t m_current_id{0};
+
+		static constexpr float m_despawn_zone{0.f};
 
 	public:
 		entity_handler(game& g, std::size_t max_entities = 100) :
@@ -56,8 +59,22 @@ namespace rj
 
 		void update(dur duration)
 		{
+			std::cout << "ents: " << m_entities.size() << std::endl;
+			if(m_entities.size() <= 0) return;
+
+
 			for(auto& a : m_entities)
+			{
 				a->update(duration);
+
+
+
+				if(a->right_out() <= m_despawn_zone)
+					a->destroy();
+			}
+
+			// erase flagged entities
+			this->erase_destroyed();
 		}
 
 		void render()
@@ -80,6 +97,13 @@ namespace rj
 			e->init();
 			m_entities.push_back(e);
 			++m_current_id;
+		}
+
+		void erase_destroyed() noexcept
+		{
+			m_entities.erase(std::remove_if(std::begin(m_entities), std::end(m_entities),
+			[](const entity_base_ptr& entity)
+			{return entity->m_destroyed;}), end(m_entities));
 		}
 	};
 }
