@@ -23,15 +23,20 @@ namespace rj
 
 		int m_id{-1};
 		bool m_is_registered{false};
+		bool m_destroyed{false};
 		eprops m_props;
 		etypes m_types;
 
+		// handler functions
 		void handler_register(game* g, int id) noexcept
 		{
 			m_game = g;
 			m_id = id;
 			m_is_registered = true;
 		}
+
+		void destroy() noexcept
+		{m_destroyed = true;}
 
 	protected:
 		game* m_game{nullptr};
@@ -43,6 +48,7 @@ namespace rj
 
 	public:
 		entity_base() = default;
+		virtual ~entity_base() = default;
 
 		bool is_registered() const noexcept
 		{return m_is_registered || m_id != -1;}
@@ -58,6 +64,14 @@ namespace rj
 
 		bool has_type(etypes::type type) const noexcept
 		{return m_types & type;}
+
+		// position, collision
+		virtual float pos_x() const noexcept = 0;
+		virtual float pos_y() const noexcept = 0;
+		virtual float top_out() const noexcept = 0;
+		virtual float bottom_out() const noexcept = 0;
+		virtual float left_out() const noexcept = 0;
+		virtual float right_out() const noexcept = 0;
 	};
 }
 
