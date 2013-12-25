@@ -27,7 +27,6 @@ namespace rj
 		{
 			m_window.get_updater().on_update += [this](dur duration){this->update(duration);};
 			m_window.get_updater().on_render += [this]{this->render();};
-			on_key_pressed(key::A) += [this]{m_world.do_stuff();};
 		}
 
 		void update(dur duration)
