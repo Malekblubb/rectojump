@@ -43,6 +43,7 @@ namespace rj
 			m_start_pos{start_pos}
 		{m_render_object.setOrigin(m_width / 2.f, m_height / 2.f);}
 
+		~player() = default;
 
 	private:
 		// jumping

@@ -16,12 +16,17 @@ namespace rj
 	{
 	protected:
 		void update(dur duration) override
-		{m_render_object.move(-0.4f * duration, 0.f);}
+		{m_render_object.move(m_velocity * duration);}
+
+		void init() override
+		{ }
 
 	public:
 		platform(const sf::Vector2f& pos, const sf::Vector2f& size = {20.f, 20.f}) :
-			entity_rect{pos, size}
-		{ }
+			entity_rect{pos, size, {-0.3f, 0.f}}
+		{m_render_object.setOrigin(size.x / 2, size.y / 2);}
+
+		~platform() = default;
 	};
 }
 
