@@ -18,13 +18,14 @@
 namespace rj
 {
 	class game_window;
+
 	class input
 	{
 		friend class game_window;
 
 	public:
 		std::map<key, mlk::slot<>> on_key_pressed;
-		std::map<btn, mlk::slot<>> on_btn_pressed;
+		std::map<btn, mlk::slot<const sf::Vector2i&>> on_btn_pressed;
 
 		input() = default;
 
@@ -34,14 +35,18 @@ namespace rj
 	private:
 		void key_pressed(key k)
 		{
-			if(mlk::cnt::exists_if([=](const std::pair<key, mlk::slot<>>& p){return p.first == k;}, on_key_pressed))
+			if(mlk::cnt::exists_if(
+			[=](const std::pair<key, mlk::slot<>>& p)
+			{return p.first == k;}, on_key_pressed))
 				on_key_pressed[k]();
 		}
 
 		void btn_pressed(btn b)
 		{
-			if(mlk::cnt::exists_if([=](const std::pair<btn, mlk::slot<>>& p){return p.first == b;}, on_btn_pressed))
-				on_btn_pressed[b]();
+			if(mlk::cnt::exists_if(
+			[=](const std::pair<btn, mlk::slot<const sf::Vector2i&>>& p)
+			{return p.first == b;}, on_btn_pressed))
+				on_btn_pressed[b](sf::Mouse::getPosition());
 		}		
 	};
 
