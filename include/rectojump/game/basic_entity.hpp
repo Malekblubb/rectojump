@@ -39,10 +39,10 @@ namespace rj
 		{return m_render_object.getPosition();}
 
 		float pos_x() const noexcept override
-		{return m_render_object.getPosition().x;}
+		{return this->pos().x;}
 
 		float pos_y() const noexcept override
-		{return m_render_object.getPosition().y;}
+		{return this->pos().y;}
 
 		float top_out() const noexcept override = 0;
 		float bottom_out() const noexcept override = 0;
