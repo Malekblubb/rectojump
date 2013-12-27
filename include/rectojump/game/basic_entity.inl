@@ -9,13 +9,18 @@
 
 #include "basic_entity.hpp"
 #include <rectojump/core/game.hpp>
+#include <rectojump/global/errors.hpp>
 
 
 namespace rj
 {
 	template<typename T>
 	void basic_entity<T>::render()
-	{m_game->render_object(m_render_object);}
+	{
+		if(m_game == nullptr)
+			mlk::lerr(errors::cl_nullptr_access)["rj::basic_entity<T>"];
+		m_game->render_object(m_render_object);
+	}
 }
 
 
