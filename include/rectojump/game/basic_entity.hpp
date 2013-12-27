@@ -12,6 +12,7 @@
 
 namespace rj
 {
+
 	template<typename T>
 	class basic_entity : public entity_base
 	{
@@ -21,7 +22,7 @@ namespace rj
 
 		virtual void update(dur duration) override = 0;
 		virtual void render() override;
-		virtual void init() override = 0;
+		virtual void init() override { }
 
 	public:
 		basic_entity(const sf::Vector2f& pos, const sf::Vector2f& velocity) :
@@ -34,23 +35,19 @@ namespace rj
 		{return m_render_object;}
 
 		// position, collision
+		const sf::Vector2f& pos() const noexcept override
+		{return m_render_object.getPosition();}
+
 		float pos_x() const noexcept override
 		{return m_render_object.getPosition().x;}
 
 		float pos_y() const noexcept override
 		{return m_render_object.getPosition().y;}
 
-		float top_out() const noexcept override
-		{return this->pos_y() - (m_render_object.getSize().y / 2.f);}
-
-		float bottom_out() const noexcept override
-		{return this->pos_y() + (m_render_object.getSize().y / 2.f);}
-
-		float left_out() const noexcept override
-		{return this->pos_x() - (m_render_object.getSize().x / 2.f);}
-
-		float right_out() const noexcept override
-		{return this->pos_x() + (m_render_object.getSize().x / 2.f);}
+		float top_out() const noexcept override = 0;
+		float bottom_out() const noexcept override = 0;
+		float left_out() const noexcept override = 0;
+		float right_out() const noexcept override = 0;
 	};
 }
 

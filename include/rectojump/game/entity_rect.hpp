@@ -18,14 +18,29 @@ namespace rj
 	{
 	protected:
 		virtual void update(dur duration) override = 0;
-		virtual void init() override = 0;
+		virtual void init() override { }
 
 	public:
 		entity_rect(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Vector2f& velocity) :
 			basic_entity{pos, velocity}
-		{m_render_object.setSize(size);}
+		{
+			m_render_object.setSize(size);
+			m_render_object.setOrigin(size.x / 2.f, size.y / 2.f);
+		}
 
 		virtual ~entity_rect() = default;
+
+		float top_out() const noexcept override
+		{return this->pos_y() - (m_render_object.getSize().y / 2.f);}
+
+		float bottom_out() const noexcept override
+		{return this->pos_y() + (m_render_object.getSize().y / 2.f);}
+
+		float left_out() const noexcept override
+		{return this->pos_x() - (m_render_object.getSize().x / 2.f);}
+
+		float right_out() const noexcept override
+		{return this->pos_x() + (m_render_object.getSize().x / 2.f);}
 	};
 }
 
