@@ -7,6 +7,7 @@
 #define RJ_GAME_ENTITY_HANDLER_HPP
 
 
+#include "components/player.hpp"
 #include "collision.hpp"
 #include "entity.hpp"
 
@@ -21,57 +22,60 @@ namespace rj
 	template<typename T>
 	using entity_ptr = std::shared_ptr<T>;
 	using entity_base_ptr = entity_ptr<entity_base>;
+	using player_ptr = entity_ptr<player>;
 
 	class game;
 	class entity_handler
 	{
 		game& m_game;
 
+		player_ptr m_player{nullptr};
 		std::vector<entity_base_ptr> m_entities;
 		std::size_t m_max_entities;
 		std::size_t m_current_id{0};
+		bool m_need_check_collision{true};
 
 		static constexpr float m_despawn_zone{0.f};
 
 	public:
-		entity_handler(game& g, std::size_t max_entities = 100) :
+		entity_handler(game& g, std::size_t max_entities = 1000) :
 			m_game{g},
 			m_max_entities{max_entities}
 		{ }
 
 		bool create_entity(const entity_base_ptr& e) noexcept
 		{
-			if(this->is_full())
-			{
-				mlk::lout("rj::entity_handler") << "max_entites limit is reached, can't add more entities";
+			if(!this->is_entity_valid(e))
 				return false;
-			}
-			if(e->is_registered())
-			{
-				mlk::lout("rj::entity_handler") << "entity with id '" << e->m_id << "' exists already in entity handler, ignoring";
-				return false;
-			}
 
-			// add/create entity in handler
-			this->create_entity_impl(e);
+			this->create_entity_impl(e); // add/create entity in handler
+			return true;
+		}
+
+		bool create_entity(const player_ptr& p) noexcept
+		{
+			if(!this->is_entity_valid(p) || this->is_player_registered())
+				return false;
+
+			this->create_entity_impl(p);
 			return true;
 		}
 
 		void update(dur duration)
 		{
-			std::cout << "ents: " << m_entities.size() << std::endl;
-			if(m_entities.size() <= 0) return;
+			// update player
+			if(this->is_player_registered())
+				m_player->update(duration);
 
-
+			// update other
 			for(auto& a : m_entities)
 			{
 				a->update(duration);
-
-
-
 				if(a->right_out() <= m_despawn_zone)
 					a->destroy();
 			}
+
+			this->check_collision();
 
 			// erase flagged entities
 			this->erase_destroyed();
@@ -79,6 +83,11 @@ namespace rj
 
 		void render()
 		{
+			// render player
+			if(this->is_player_registered())
+				m_player->render();
+
+			// render other
 			for(auto& a : m_entities)
 				a->render();
 		}
@@ -87,22 +96,78 @@ namespace rj
 		{return m_entities.size();}
 
 	private:
-		bool is_full() const noexcept
-		{return this->num_entities() >= m_max_entities;}
+		void check_collision() noexcept
+		{
+			if(!this->is_player_registered())
+				return;
 
+			bool collided{false};
+
+			for(auto& a : m_entities)
+			{
+				if(is_colliding(*m_player, *a))
+				{
+					if(!collided)
+					{
+						m_player->on_collision(a->top_out() - 20);
+						collided = true;
+					}
+					if(a->has_propertie(entity_properties::death))
+					{
+						// player touched death entity
+					}
+				}
+			}
+			if(!collided)
+				m_player->on_collision_end();
+		}
+
+
+
+		// checking the entities
+		bool is_entity_valid(const entity_base_ptr& e) const noexcept
+		{
+			if(m_entities.size() >= m_max_entities)
+			{
+				mlk::lout("rj::entity_handler") << "max_entities limit is reached, can't add more entities";
+				return false;
+			}
+			if(e->is_registered())
+			{
+				mlk::lout("rj::entity_handler") << "entity with id '" << e->m_id << "' exists already in entity handler, ignoring";
+				return false;
+			}
+			return true;
+		}
+
+		bool is_player_registered() const noexcept
+		{return m_player != nullptr;}
+
+		// create the entities
 		void create_entity_impl(const entity_base_ptr& e) noexcept
+		{
+			this->register_impl(e);
+			m_entities.push_back(e);
+		}
+
+		void create_entity_impl(const player_ptr& p) noexcept
+		{
+			this->register_impl(p);
+			m_player = p;
+		}
+
+		void register_impl(const entity_base_ptr& e) noexcept
 		{
 			// important: set game and init
 			e->handler_register(&m_game, m_current_id);
 			e->init();
-			m_entities.push_back(e);
 			++m_current_id;
 		}
 
 		void erase_destroyed() noexcept
 		{
 			m_entities.erase(std::remove_if(std::begin(m_entities), std::end(m_entities),
-			[](const entity_base_ptr& entity)
+											[](const entity_base_ptr& entity)
 			{return entity->m_destroyed;}), end(m_entities));
 		}
 	};
