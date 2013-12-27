@@ -44,7 +44,7 @@ namespace rj
 
 		virtual void update(dur duration) = 0;
 		virtual void render() = 0;
-		virtual void init() = 0; // called by 'entity_handler'
+		virtual void init() { } // called by 'entity_handler'
 
 	public:
 		entity_base() = default;
@@ -66,6 +66,7 @@ namespace rj
 		{return m_types & type;}
 
 		// position, collision
+		virtual const sf::Vector2f& pos() const noexcept = 0;
 		virtual float pos_x() const noexcept = 0;
 		virtual float pos_y() const noexcept = 0;
 		virtual float top_out() const noexcept = 0;
