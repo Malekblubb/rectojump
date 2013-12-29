@@ -91,7 +91,7 @@ namespace rj
 					m_input.key_pressed(ev.key.code);
 					break;
 				case sf::Event::EventType::MouseButtonPressed:
-					m_input.btn_pressed(ev.mouseButton.button);
+					m_input.btn_pressed(ev.mouseButton.button, m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window)));
 					break;
 				default: break;
 				}
