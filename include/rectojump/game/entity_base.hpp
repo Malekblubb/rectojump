@@ -40,7 +40,6 @@ namespace rj
 
 	protected:
 		game* m_game{nullptr};
-		input& m_input{input::get()};
 
 		virtual void update(dur duration) = 0;
 		virtual void render() = 0;
@@ -66,7 +65,7 @@ namespace rj
 		{return m_types & type;}
 
 		// position, collision
-		virtual const sf::Vector2f& pos() const noexcept = 0;
+		virtual const vec2f& pos() const noexcept = 0;
 		virtual float pos_x() const noexcept = 0;
 		virtual float pos_y() const noexcept = 0;
 		virtual float top_out() const noexcept = 0;

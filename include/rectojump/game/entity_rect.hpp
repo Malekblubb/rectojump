@@ -21,7 +21,7 @@ namespace rj
 		virtual void init() override { }
 
 	public:
-		entity_rect(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Vector2f& velocity) :
+		entity_rect(const vec2f& pos, const vec2f& size, const vec2f& velocity) :
 			basic_entity{pos, velocity}
 		{
 			m_render_object.setSize(size);

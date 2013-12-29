@@ -18,7 +18,7 @@ namespace rj
 	{
 
 	public:
-		triangle(const sf::Vector2f& pos) :
+		triangle(const vec2f& pos) :
 			basic_entity{pos, {-0.3f, 0.f}}
 		{
 			m_render_object.setPointCount(3);

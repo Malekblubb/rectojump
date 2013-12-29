@@ -21,7 +21,7 @@ namespace rj
 		static constexpr float m_gravity{0.01f};
 		static constexpr float m_jump_velo{-1.7f};
 		static constexpr float m_width{40.f}, m_height{40.f};
-		const sf::Vector2f m_start_pos{100.f, 500.f};
+		const vec2f m_start_pos{100.f, 500.f};
 		float m_ground{500.f};
 
 		// jumping
@@ -33,7 +33,7 @@ namespace rj
 		static constexpr float m_step_deg{-m_jump_velo / m_gravity};
 
 	public:
-		player(const sf::Vector2f& start_pos) :
+		player(const vec2f& start_pos) :
 			entity_rect{start_pos, {m_width, m_height}, {0.f, 0.f}},
 			m_start_pos{start_pos}
 		{ }
@@ -51,9 +51,9 @@ namespace rj
 			this->try_jump();
 			m_render_object.move(m_velocity);
 
-			if(m_render_object.getPosition().y > m_ground)
+			if(this->bottom_out() > m_ground)
 			{
-				m_render_object.setPosition(m_start_pos.x, m_ground);
+				m_render_object.setPosition(m_start_pos.x, m_ground - m_height / 2);
 				m_jumping = false;
 				m_velocity = {0.f, 0.f};
 			}

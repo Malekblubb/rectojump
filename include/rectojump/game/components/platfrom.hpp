@@ -15,7 +15,7 @@ namespace rj
 	class platform : public entity_rect
 	{
 	public:
-		platform(const sf::Vector2f& pos, const sf::Vector2f& size = {20.f, 20.f}) :
+		platform(const vec2f& pos, const vec2f& size = {20.f, 20.f}) :
 			entity_rect{pos, size, {-0.3f, 0.f}}
 		{m_render_object.setOrigin(size.x / 2, size.y / 2);}
 

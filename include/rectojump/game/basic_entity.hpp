@@ -18,14 +18,14 @@ namespace rj
 	{
 	protected:
 		T m_render_object;
-		sf::Vector2f m_velocity{0.f, 0.f};
+		vec2f m_velocity{0.f, 0.f};
 
 		virtual void update(dur duration) override = 0;
 		virtual void render() override;
 		virtual void init() override { }
 
 	public:
-		basic_entity(const sf::Vector2f& pos, const sf::Vector2f& velocity) :
+		basic_entity(const vec2f& pos, const vec2f& velocity) :
 			m_velocity{velocity}
 		{m_render_object.setPosition(pos);}
 
@@ -35,7 +35,7 @@ namespace rj
 		{return m_render_object;}
 
 		// position, collision
-		const sf::Vector2f& pos() const noexcept override
+		const vec2f& pos() const noexcept override
 		{return m_render_object.getPosition();}
 
 		float pos_x() const noexcept override

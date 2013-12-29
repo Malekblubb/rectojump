@@ -109,12 +109,21 @@ namespace rj
 				{
 					if(!collided)
 					{
-						m_player->on_collision(a->top_out() - 20);
+						if(m_player->bottom_out() - 2 <= a->top_out())
+						{
+							m_player->on_collision(a->top_out());
+							m_player->render_object().setFillColor({0, 255, 0});
+						}
+						else
+							m_player->render_object().setFillColor({255, 0, 0});
+
 						collided = true;
 					}
+
 					if(a->has_propertie(entity_properties::death))
 					{
 						// player touched death entity
+						m_player->render_object().setFillColor({255, 0, 0});
 					}
 				}
 			}

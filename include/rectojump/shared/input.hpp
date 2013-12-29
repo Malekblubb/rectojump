@@ -25,7 +25,7 @@ namespace rj
 
 	public:
 		std::map<key, mlk::slot<>> on_key_pressed;
-		std::map<btn, mlk::slot<const sf::Vector2i&>> on_btn_pressed;
+		std::map<btn, mlk::slot<const vec2i&>> on_btn_pressed;
 
 		input() = default;
 
@@ -44,7 +44,7 @@ namespace rj
 		void btn_pressed(btn b)
 		{
 			if(mlk::cnt::exists_if(
-			[=](const std::pair<btn, mlk::slot<const sf::Vector2i&>>& p)
+			[=](const std::pair<btn, mlk::slot<const vec2i&>>& p)
 			{return p.first == b;}, on_btn_pressed))
 				on_btn_pressed[b](sf::Mouse::getPosition());
 		}		
