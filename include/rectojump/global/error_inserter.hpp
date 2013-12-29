@@ -31,12 +31,12 @@ namespace rj
 	private:
 		void create_list() noexcept
 		{
-			m_list.emplace_back(et{errors::io_open_file, "failed to open file"});
-			m_list.emplace_back(et{errors::io_load_sound, "failed to load sound"});
-			m_list.emplace_back(et{errors::ntw_connect, "failed to connect"});
-			m_list.emplace_back(et{errors::ntw_send, "failed to send"});
-			m_list.emplace_back(et{errors::ntw_recv, "failed to recv"});
-			m_list.emplace_back(et{errors::cl_nullptr_access, "FATAL: access to odd memory", {[]{/* TODO: do smth. here */}}});
+			m_list.emplace_back(et{errors::io_open_file, "failed to open file."});
+			m_list.emplace_back(et{errors::io_load_sound, "failed to load sound."});
+			m_list.emplace_back(et{errors::ntw_connect, "failed to connect."});
+			m_list.emplace_back(et{errors::ntw_send, "failed to send."});
+			m_list.emplace_back(et{errors::ntw_recv, "failed to recv."});
+			m_list.emplace_back(et{errors::cl_nullptr_access, "FATAL: access to odd memory.", {[]{/* TODO: do smth. here */}}});
 		}
 	};
 }
