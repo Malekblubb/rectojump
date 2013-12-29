@@ -16,6 +16,10 @@ namespace rj
 
 	using key = sf::Keyboard::Key;
 	using btn = sf::Mouse::Button;
+
+	using vec2f = sf::Vector2f;
+	using vec2i = sf::Vector2i;
+	using vec2u = sf::Vector2u;
 }
 
 
