@@ -31,6 +31,9 @@ namespace rj
 		-> const decltype(m_entrys)&
 		{return m_entrys;}
 
+		bool empty() const noexcept
+		{return m_entrys.empty();}
+
 	private:
 		void parse() noexcept
 		{
