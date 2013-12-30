@@ -27,16 +27,16 @@ namespace rj
 		}
 
 		float top_out() const noexcept override
-		{return this->pos_y() - (m_render_object.getRadius() / 2.f);}
+		{return this->pos_y() - m_render_object.getRadius();}
 
 		float bottom_out() const noexcept override
-		{return this->pos_y() + (m_render_object.getRadius() / 2.f);}
+		{return this->pos_y() + m_render_object.getRadius();}
 
 		float left_out() const noexcept override
-		{return this->pos_x() - (m_render_object.getRadius() / 2.f);}
+		{return this->pos_x() - m_render_object.getRadius();}
 
 		float right_out() const noexcept override
-		{return this->pos_x() + (m_render_object.getRadius() / 2.f);}
+		{return this->pos_x() + m_render_object.getRadius();}
 
 	private:
 		void update(dur duration) override
