@@ -76,31 +76,45 @@ namespace rj
 
 		void write_config() noexcept
 		{
-			m_file.reopen(std::ios::out);
+			m_file.reopen(std::ios::out | std::ios::trunc);
 			for(auto& a : m_entrys)
 				m_file.write_line(a.first + "=" + a.second);
+			m_file.close();
 		}
 
 		void read_config() noexcept
 		{
+			m_file.reopen(std::ios::in);
 			std::vector<std::string> lines;
 			std::string buf;
 			while(m_file.read_line(buf))
-				lines.push_back(buf);
+				if(!buf.empty())
+					lines.push_back(buf);
 
+			// file is empty
+			if(lines.size() < 1)
+			{
+				this->write_config();
+				return;
+			}
+
+			// parse content
 			config_parser parser{lines};
-			m_entrys = parser.get_entrys();
+			if(!parser.empty())
+				this->validate_entrys(parser.get_entrys());
+		}
+
+		void validate_entrys(const config_entry_vec& entrys) noexcept
+		{
+			for(auto& a : entrys)
+			{
+				auto iter(mlk::cnt::find_in_if(
+				[&](const std::pair<std::string, std::string>& p){return p.first == a.first;}, m_entrys));
+				if(iter != std::end(m_entrys))
+					*iter = a;
+			}
 		}
 	};
-
-	namespace glob
-	{
-		int sound_volume()
-		{return config::get().get_entry<int>("sound_volume");}
-
-		void set_sound_volume(int vol)
-		{config::get().set_entry("sound_volume", vol);}
-	}
 }
 
 
