@@ -34,6 +34,12 @@ namespace rj
 				on_update(m_step);
 		}
 
+		float get_fps() const noexcept
+		{return 1.f / (m_frame_duration / 1000.f);}
+
+		dur get_frameduration() const noexcept
+		{return m_frame_duration;}
+
 		void render()
 		{on_render();}
 
