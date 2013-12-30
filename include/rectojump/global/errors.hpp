@@ -13,6 +13,7 @@ namespace rj
 	{
 		// io
 		io_open_file,
+		io_create_file,
 		io_load_sound,
 
 		// network
