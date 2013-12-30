@@ -44,10 +44,10 @@ namespace rj
 		float pos_y() const noexcept override
 		{return this->pos().y;}
 
-		float top_out() const noexcept override = 0;
-		float bottom_out() const noexcept override = 0;
-		float left_out() const noexcept override = 0;
-		float right_out() const noexcept override = 0;
+		virtual float top_out() const noexcept override = 0;
+		virtual float bottom_out() const noexcept override = 0;
+		virtual float left_out() const noexcept override = 0;
+		virtual float right_out() const noexcept override = 0;
 	};
 }
 
