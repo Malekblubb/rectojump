@@ -29,7 +29,7 @@ namespace rj
 		}
 
 	private:
-		void create_list() noexcept
+		void create_list()
 		{
 			m_list.emplace_back(et{errors::io_open_file, "failed to open file."});
 			m_list.emplace_back(et{errors::io_load_sound, "failed to load sound."});
