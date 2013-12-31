@@ -7,6 +7,7 @@
 #define RJ_SHARED_DEBUG_TEXT_HPP
 
 
+#include <rectojump/global/common.hpp>
 #include <rectojump/global/errors.hpp>
 
 #include <mlk/log/log.h>
@@ -22,6 +23,7 @@ namespace rj
 		sf::Color m_color;
 		sf::Texture m_texture;
 		sf::VertexArray m_verts{sf::Quads};
+		vec2f m_size{0.f, 0.f};
 		bool m_valid{false};
 
 	public:
@@ -39,6 +41,9 @@ namespace rj
 		void set_color(const sf::Color& color) noexcept
 		{m_color = color;}
 
+		const vec2f& get_size() const noexcept
+		{return m_size;}
+
 	private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates) const override
 		{target.draw(m_verts, &m_texture);}
@@ -54,12 +59,15 @@ namespace rj
 			this->reset();
 
 			auto posx(0.f), posy(0.f);
+			auto lines(0);
+			m_size.x = posx; m_size.y = posy;
 			for(const auto& a : m_current_str)
 			{
 				if(a == '\n')
 				{
 					posy += 16.f;
 					posx = 0.f;
+					++lines;
 					continue;
 				}
 
@@ -73,7 +81,9 @@ namespace rj
 				m_verts.append({{posx + 16.f, posy + 16.f}, m_color, {tilex + 16.f, tiley + 16.f}});
 
 				posx += 16.f;
+				if(posx > m_size.x) m_size.x = posx;
 			}
+			m_size.y = (lines + 1) * 16.f;
 		}
 	};
 }
