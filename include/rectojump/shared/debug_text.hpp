@@ -24,12 +24,14 @@ namespace rj
 		sf::Texture m_texture;
 		sf::VertexArray m_verts{sf::Quads};
 		vec2f m_size{0.f, 0.f};
+		float m_fontsize;
 		bool m_valid{false};
 
 	public:
-		debug_text(const std::string& tile_map_path, const sf::Color& color = {255, 255, 255}) :
+		debug_text(const std::string& tile_map_path, const sf::Color& color = {255, 255, 255}, float fontsize = 16.f) :
 			m_valid{m_texture.loadFromFile(tile_map_path)},
-			m_color{color}
+			m_color{color},
+			m_fontsize{fontsize}
 		{
 			if(!m_valid)
 				mlk::lerr(errors::io_open_file) << "filename=" << tile_map_path;
@@ -40,6 +42,12 @@ namespace rj
 
 		void set_color(const sf::Color& color) noexcept
 		{m_color = color;}
+
+		void set_fontsize(float fontsize) noexcept
+		{m_fontsize = fontsize;}
+
+		float get_fontsize() const noexcept
+		{return m_fontsize;}
 
 		const vec2f& get_size() const noexcept
 		{return m_size;}
@@ -65,7 +73,7 @@ namespace rj
 			{
 				if(a == '\n')
 				{
-					posy += 16.f;
+					posy += m_fontsize;
 					posx = 0.f;
 					++lines;
 					continue;
@@ -75,15 +83,15 @@ namespace rj
 				auto tiley(static_cast<float>((a / 16) * 16)), tilex(static_cast<float>((a % 16) * 16));
 
 				// create quad
-				m_verts.append({{posx, posy + 16.f}, m_color, {tilex, tiley + 16.f}});
+				m_verts.append({{posx, posy + m_fontsize}, m_color, {tilex, tiley + 16.f}});
 				m_verts.append({{posx, posy}, m_color, {tilex, tiley}});
-				m_verts.append({{posx + 16.f, posy}, m_color, {tilex + 16.f, tiley}});
-				m_verts.append({{posx + 16.f, posy + 16.f}, m_color, {tilex + 16.f, tiley + 16.f}});
+				m_verts.append({{posx + m_fontsize, posy}, m_color, {tilex + 16.f, tiley}});
+				m_verts.append({{posx + m_fontsize, posy + m_fontsize}, m_color, {tilex + 16.f, tiley + 16.f}});
 
-				posx += 16.f;
+				posx += m_fontsize;
 				if(posx > m_size.x) m_size.x = posx;
 			}
-			m_size.y = (lines + 1) * 16.f;
+			m_size.y = (lines + 1) * m_fontsize;
 		}
 	};
 }
