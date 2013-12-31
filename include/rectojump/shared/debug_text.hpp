@@ -19,20 +19,25 @@ namespace rj
 	class debug_text : public sf::Drawable
 	{
 		std::string m_current_str;
+		sf::Color m_color;
 		sf::Texture m_texture;
 		sf::VertexArray m_verts{sf::Quads};
 		bool m_valid{false};
 
 	public:
-		debug_text(const std::string& tile_map_path) :
-			m_valid{m_texture.loadFromFile(tile_map_path)}
+		debug_text(const std::string& tile_map_path, const sf::Color& color = {255, 255, 255}) :
+			m_valid{m_texture.loadFromFile(tile_map_path)},
+			m_color{color}
 		{
 			if(!m_valid)
 				mlk::lerr(errors::io_open_file) << "filename=" << tile_map_path;
 		}
 
-		void set_text(const std::string& text)
+		void set_text(const std::string& text) noexcept
 		{m_current_str = text; this->refresh();}
+
+		void set_color(const sf::Color& color) noexcept
+		{m_color = color;}
 
 	private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates) const override
@@ -62,10 +67,10 @@ namespace rj
 				auto tiley(static_cast<float>((a / 16) * 16)), tilex(static_cast<float>((a % 16) * 16));
 
 				// create quad
-				m_verts.append({{posx, posy + 16.f}, {tilex, tiley + 16.f}});
-				m_verts.append({{posx, posy}, {tilex, tiley}});
-				m_verts.append({{posx + 16.f, posy}, {tilex + 16.f, tiley}});
-				m_verts.append({{posx + 16.f, posy + 16.f}, {tilex + 16.f, tiley + 16.f}});
+				m_verts.append({{posx, posy + 16.f}, m_color, {tilex, tiley + 16.f}});
+				m_verts.append({{posx, posy}, m_color, {tilex, tiley}});
+				m_verts.append({{posx + 16.f, posy}, m_color, {tilex + 16.f, tiley}});
+				m_verts.append({{posx + 16.f, posy + 16.f}, m_color, {tilex + 16.f, tiley + 16.f}});
 
 				posx += 16.f;
 			}
