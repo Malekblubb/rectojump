@@ -93,7 +93,7 @@ namespace rj
 		}
 
 		std::size_t num_entities() const noexcept
-		{return m_entities.size();}
+		{return m_entities.size() + this->is_player_registered();}
 
 	private:
 		void check_collision() noexcept
@@ -107,18 +107,16 @@ namespace rj
 			{
 				if(is_colliding(*m_player, *a))
 				{
-					if(!collided)
-					{
-						if(m_player->bottom_out() - 2 <= a->top_out())
-						{
-							m_player->on_collision(a->top_out());
-							m_player->render_object().setFillColor({0, 255, 0});
-						}
-						else
-							m_player->render_object().setFillColor({255, 0, 0});
+					collided = true;
 
-						collided = true;
+					if(m_player->bottom_out() - 2 <= a->top_out())
+					{
+						m_player->on_collision(a->top_out());
+						m_player->render_object().setFillColor({0, 255, 0});
 					}
+					else
+						m_player->render_object().setFillColor({255, 0, 0});
+
 
 					if(a->has_propertie(entity_properties::death))
 					{
@@ -130,8 +128,6 @@ namespace rj
 			if(!collided)
 				m_player->on_collision_end();
 		}
-
-
 
 		// checking the entities
 		bool is_entity_valid(const entity_base_ptr& e) const noexcept
@@ -176,7 +172,7 @@ namespace rj
 		void erase_destroyed() noexcept
 		{
 			m_entities.erase(std::remove_if(std::begin(m_entities), std::end(m_entities),
-											[](const entity_base_ptr& entity)
+			[](const entity_base_ptr& entity)
 			{return entity->m_destroyed;}), end(m_entities));
 		}
 	};
