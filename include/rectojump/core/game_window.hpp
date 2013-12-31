@@ -49,6 +49,7 @@ namespace rj
 
 				// update
 				this->update_events();
+				m_input.update(m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window)));
 				m_game_updater.update();
 
 				// render
@@ -91,8 +92,10 @@ namespace rj
 					m_input.key_pressed(ev.key.code);
 					break;
 				case sf::Event::EventType::MouseButtonPressed:
-					m_input.btn_pressed(ev.mouseButton.button, m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window)));
+					m_input.btn_pressed(ev.mouseButton.button);
 					break;
+				case sf::Event::EventType::MouseButtonReleased:
+					m_input.btn_released(ev.mouseButton.button);
 				default: break;
 				}
 			}

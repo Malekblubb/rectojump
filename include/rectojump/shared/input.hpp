@@ -11,6 +11,7 @@
 
 #include <mlk/containers/container_utl.h>
 #include <mlk/signals_slots/slot.h>
+#include <mlk/tools/bitset.h>
 
 #include <map>
 
@@ -26,6 +27,7 @@ namespace rj
 	public:
 		std::map<key, mlk::slot<>> on_key_pressed;
 		std::map<btn, mlk::slot<const vec2f&>> on_btn_pressed;
+		mlk::bitset<btn, btn::ButtonCount> m_mousebtn_bits;
 
 		input() = default;
 
@@ -33,6 +35,13 @@ namespace rj
 		{static input i; return i;}
 
 	private:
+		void update(const vec2f& mousepos)
+		{
+			for(auto& a : on_btn_pressed)
+				if(m_mousebtn_bits & a.first)
+					on_btn_pressed[a.first](mousepos);
+		}
+
 		void key_pressed(key k)
 		{
 			if(mlk::cnt::exists_if(
@@ -41,13 +50,11 @@ namespace rj
 				on_key_pressed[k]();
 		}
 
-		void btn_pressed(btn b, const vec2f& pos)
-		{
-			if(mlk::cnt::exists_if(
-			[=](const std::pair<btn, mlk::slot<const vec2f&>>& p)
-			{return p.first == b;}, on_btn_pressed))
-				on_btn_pressed[b](pos);
-		}		
+		void btn_pressed(btn b) noexcept
+		{m_mousebtn_bits |= b;}
+
+		void btn_released(btn b) noexcept
+		{m_mousebtn_bits.remove(b);}
 	};
 
 	inline auto on_key_pressed(key k)
