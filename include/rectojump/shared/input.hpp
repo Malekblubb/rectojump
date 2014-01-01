@@ -39,7 +39,7 @@ namespace rj
 		{
 			for(auto& a : on_btn_pressed)
 				if(m_mousebtn_bits & a.first)
-					on_btn_pressed[a.first](mousepos);
+					a.second(mousepos);
 		}
 
 		void key_pressed(key k)
