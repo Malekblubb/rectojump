@@ -12,7 +12,7 @@
 
 namespace rj
 {
-	class platform : public entity_rect
+	class platform final : public entity_rect
 	{
 	public:
 		platform(const vec2f& pos, const vec2f& size = {20.f, 20.f}) :

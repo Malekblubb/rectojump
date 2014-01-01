@@ -14,7 +14,7 @@
 
 namespace rj
 {
-	class triangle : public basic_entity<sf::CircleShape>
+	class triangle final : public basic_entity<sf::CircleShape>
 	{
 
 	public:
@@ -24,7 +24,7 @@ namespace rj
 			m_render_object.setPointCount(3);
 			m_render_object.setRadius(15.f);
 			m_render_object.setOrigin(7.5f, 7.5f);
-			this->set_propertie(entity_properties::death);
+			this->set_propertie(entity_propertie::death);
 		}
 
 		float top_out() const noexcept override

@@ -13,7 +13,7 @@
 
 namespace rj
 {
-	class player : public entity_rect
+	class player final : public entity_rect
 	{
 		friend class entity_handler;
 
