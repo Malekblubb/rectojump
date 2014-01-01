@@ -12,14 +12,14 @@
 
 namespace rj
 {
-	enum class entity_types : char
+	enum class entity_type : char
 	{player, enemy};
 
-	enum class entity_properties : char
+	enum class entity_propertie : char
 	{moveable_left, jumpable, solid, death};
 
-	using etypes = mlk::bitset<entity_types, 10>;
-	using eprops = mlk::bitset<entity_properties, 10>;
+	using etypes = mlk::bitset<entity_type, 10>;
+	using eprops = mlk::bitset<entity_propertie, 10>;
 }
 
 
