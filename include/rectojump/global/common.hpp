@@ -20,7 +20,16 @@ namespace rj
 	using vec2f = sf::Vector2f;
 	using vec2i = sf::Vector2i;
 	using vec2u = sf::Vector2u;
+
+	static const std::string data_path{"data/"};
+	static const std::string level_path{"levels/"};
 }
+
+std::string operator""_data(const char* str, std::size_t)
+{return rj::data_path + str;}
+
+std::string operator""_lvl(const char* str, std::size_t)
+{return rj::level_path + str;}
 
 
 #endif // RJ_GLOBAL_COMMON_HPP
