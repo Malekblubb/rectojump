@@ -60,7 +60,7 @@ namespace rj
 			{
 				if(!m_file.create())
 				{
-					mlk::lerr(errors::io_create_file) << "filename: " << m_file.path();
+					mlk::lerr(errors::io_create_file) << "filename=" << m_file.path();
 					return;
 				}
 				this->write_config();
@@ -116,7 +116,6 @@ namespace rj
 		}
 	};
 }
-
 
 
 #endif // RJ_GLOBAL_CONFIG_HPP

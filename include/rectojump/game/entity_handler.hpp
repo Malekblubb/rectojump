@@ -118,7 +118,7 @@ namespace rj
 						m_player->render_object().setFillColor({255, 0, 0});
 
 
-					if(a->has_propertie(entity_properties::death))
+					if(a->has_propertie(entity_propertie::death))
 					{
 						// player touched death entity
 						m_player->render_object().setFillColor({255, 0, 0});
