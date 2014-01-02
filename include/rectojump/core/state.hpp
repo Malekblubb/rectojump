@@ -25,6 +25,7 @@ namespace rj
 		game_window& m_game_window;
 		game& m_game;
 		main_menu& m_menu;
+		debug_info m_debug_info;
 
 		static constexpr std::size_t m_num_states{3};
 		mlk::bitset<state, m_num_states> m_current_state;
@@ -35,7 +36,8 @@ namespace rj
 		state_handler(game_window& window, game& g, main_menu& menu) :
 			m_game_window{window},
 			m_game{g},
-			m_menu{menu}
+			m_menu{menu},
+			m_debug_info{m_game}
 		{
 //			m_current_state |= state::main_menu;
 			m_current_state |= state::game;
@@ -68,11 +70,14 @@ namespace rj
 			for(auto& a : m_states)
 				if(m_current_state & a.first)
 					a.second(duration);
+
+			m_debug_info.update(duration);
 		}
 
 		void render()
 		{
 			m_game.render();
+			m_debug_info.render();
 		}
 	};
 }
