@@ -6,7 +6,7 @@ file(GLOB_RECURSE SRC_LIST "./include/*" "./src/*")
 include_directories("./include" "./external/mlk/include")
 
 # set compiler flags
-set(CMAKE_CXX_FLAGS "-std=c++11")
+set(CMAKE_CXX_FLAGS "-std=c++11 -O3")
 set(CMAKE_CXX_COMPILER "clang++")
 
 add_executable(${PROJECT_NAME} ${SRC_LIST})
