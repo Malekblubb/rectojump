@@ -67,9 +67,26 @@ namespace rj
 		void draw(const sf::Drawable& object)
 		{m_window.draw(object);}
 
+
+		// setters
+		void set_framereate_limit(mlk::uint limit) noexcept
+		{m_window.setFramerateLimit(limit);}
+
+		void set_size(const vec2u& size) noexcept
+		{m_window.setSize(size);}
+
+		void set_position(const vec2i& position) noexcept
+		{m_window.setPosition(position);}
+
 		// getters
 		game_updater& get_updater() noexcept
 		{return m_game_updater;}
+
+		vec2u get_size() const noexcept
+		{return m_window.getSize();}
+
+		vec2i get_position() const noexcept
+		{return m_window.getPosition();}
 
 	private:
 		void prepare_start() noexcept
@@ -90,6 +107,9 @@ namespace rj
 					break;
 				case sf::Event::EventType::KeyPressed:
 					m_input.key_pressed(ev.key.code);
+					break;
+				case sf::Event::EventType::KeyReleased:
+					m_input.key_released(ev.key.code);
 					break;
 				case sf::Event::EventType::MouseButtonPressed:
 					m_input.btn_pressed(ev.mouseButton.button);
