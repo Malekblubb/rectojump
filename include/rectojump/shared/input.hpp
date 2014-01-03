@@ -39,6 +39,9 @@ namespace rj
 		static input& get() noexcept
 		{static input i; return i;}
 
+		bool is_key_valid(key k) const noexcept
+		{return k != key::Unknown;}
+
 	private:
 		void update(const vec2f& mousepos)
 		{
@@ -51,6 +54,9 @@ namespace rj
 				auto all_pressed(false);
 				for(auto& key : keys.first)
 				{
+					if(!this->is_key_valid(key))
+						break;
+
 					// check if key 'key' is currently pressed
 					if(!(m_key_bits & key))
 					{
@@ -71,6 +77,9 @@ namespace rj
 
 		void key_pressed(key k)
 		{
+			if(!this->is_key_valid(k))
+				return;
+
 			if(mlk::cnt::exists_if(
 			[=](const std::pair<key, mlk::slot<>>& p)
 			{return p.first == k;}, on_key_pressed))
@@ -80,7 +89,11 @@ namespace rj
 		}
 
 		void key_released(key k)
-		{m_key_bits.remove(k);}
+		{
+			if(!this->is_key_valid(k))
+				return;
+			m_key_bits.remove(k);
+		}
 
 		void btn_pressed(btn b)
 		{m_mousebtn_bits |= b;}
@@ -91,7 +104,11 @@ namespace rj
 
 	inline auto on_key_pressed(key k)
 	-> decltype(input::get().on_key_pressed[k])&
-	{return input::get().on_key_pressed[k];}
+	{
+		if(!input::get().is_key_valid(k))
+			throw std::runtime_error{"invalid key passed"};
+		return input::get().on_key_pressed[k];
+	}
 
 	template<typename... Keys>
 	auto on_keys_pressed(Keys&&... keys)
