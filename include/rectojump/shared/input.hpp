@@ -48,7 +48,19 @@ namespace rj
 			for(auto& a : on_btn_pressed)
 				if(m_mousebtn_bits & a.first)
 					a.second(mousepos);
+		}
 
+		void key_pressed(key k)
+		{
+			if(!this->is_key_valid(k))
+				return;
+
+			if(mlk::cnt::exists_if(
+			[=](const std::pair<key, mlk::slot<>>& p)
+			{return p.first == k;}, on_key_pressed))
+				on_key_pressed[k]();
+
+			m_key_bits |= k;
 			for(auto& keys : on_keys_pressed)
 			{
 				auto all_pressed(false);
@@ -73,19 +85,6 @@ namespace rj
 				// call slot
 				keys.second();
 			}
-		}
-
-		void key_pressed(key k)
-		{
-			if(!this->is_key_valid(k))
-				return;
-
-			if(mlk::cnt::exists_if(
-			[=](const std::pair<key, mlk::slot<>>& p)
-			{return p.first == k;}, on_key_pressed))
-				on_key_pressed[k]();
-
-			m_key_bits |= k;
 		}
 
 		void key_released(key k)
