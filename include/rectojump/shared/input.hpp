@@ -20,7 +20,7 @@ namespace rj
 {
 	class game_window;
 
-	using key_array = std::vector<key>;
+	using key_vec = std::vector<key>;
 
 	class input
 	{
@@ -31,7 +31,7 @@ namespace rj
 
 	public:
 		std::map<key, mlk::slot<>> on_key_pressed;
-		std::map<std::vector<key>, mlk::slot<>> on_keys_pressed;
+		std::map<key_vec, mlk::slot<>> on_keys_pressed;
 		std::map<btn, mlk::slot<const vec2f&>> on_btn_pressed;
 
 		input() = default;
@@ -95,11 +95,11 @@ namespace rj
 
 	template<typename... Keys>
 	auto on_keys_pressed(Keys&&... keys)
-	-> decltype(input::get().on_keys_pressed[std::vector<key>{}])
+	-> decltype(input::get().on_keys_pressed[key_vec{}])
 	{
-		std::vector<key> key_vec;
-		mlk::cnt::make_vector(key_vec, std::forward<Keys>(keys)...);
-		return input::get().on_keys_pressed[key_vec];
+		key_vec keys_vec;
+		mlk::cnt::make_vector(keys_vec, std::forward<Keys>(keys)...);
+		return input::get().on_keys_pressed[keys_vec];
 	}
 
 	inline auto on_btn_pressed(btn b)
