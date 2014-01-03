@@ -21,12 +21,6 @@ namespace rj
 				  m_game.get_world().num_entities()));
 		m_text.set_text(text);
 	}
-
-	void debug_info::render()
-	{
-		m_game.render_object(m_background);
-		m_game.render_object(m_text);
-	}
 }
 
 

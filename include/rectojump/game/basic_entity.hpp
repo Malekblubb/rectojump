@@ -8,6 +8,7 @@
 
 
 #include "entity_base.hpp"
+#include <rectojump/core/render.hpp>
 
 
 namespace rj
@@ -21,7 +22,8 @@ namespace rj
 		vec2f m_velocity{0.f, 0.f};
 
 		virtual void update(dur duration) override = 0;
-		virtual void render() override;
+		virtual void render() override
+		{render::render_object(*m_game, m_render_object);}
 		virtual void init() override { }
 
 	public:

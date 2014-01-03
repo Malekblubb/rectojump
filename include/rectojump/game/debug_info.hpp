@@ -7,6 +7,7 @@
 #define RJ_GAME_DEBUG_INFO_HPP
 
 
+#include <rectojump/core/render.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/debug_text.hpp>
 
@@ -34,7 +35,11 @@ namespace rj
 		}
 
 		void update(dur);
-		void render();
+		void render()
+		{
+			render::render_object(m_game, m_background);
+			render::render_object(m_game, m_text);
+		}
 	};
 }
 
