@@ -25,10 +25,10 @@ namespace rj
 	static const std::string level_path{"levels/"};
 }
 
-std::string operator""_data(const char* str, std::size_t)
+inline std::string operator""_data(const char* str, std::size_t)
 {return rj::data_path + str;}
 
-std::string operator""_lvl(const char* str, std::size_t)
+inline std::string operator""_lvl(const char* str, std::size_t)
 {return rj::level_path + str;}
 
 
