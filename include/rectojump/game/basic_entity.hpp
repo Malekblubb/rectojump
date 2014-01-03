@@ -9,6 +9,9 @@
 
 #include "entity_base.hpp"
 #include <rectojump/core/render.hpp>
+#include <rectojump/global/errors.hpp>
+
+#include <mlk/log/log.h>
 
 
 namespace rj
@@ -23,7 +26,11 @@ namespace rj
 
 		virtual void update(dur duration) override = 0;
 		virtual void render() override
-		{render::render_object(*m_game, m_render_object);}
+		{
+			if(m_game == nullptr)
+				mlk::lerr(errors::cl_nullptr_access)["rj::basic_entity<T>"];
+			render::render_object(*m_game, m_render_object);
+		}
 		virtual void init() override { }
 
 	public:
