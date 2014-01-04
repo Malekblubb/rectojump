@@ -30,7 +30,8 @@ namespace rj
 
 		// rotate
 		static constexpr float m_max_deg{360.f};
-		static constexpr float m_step_deg{-m_jump_velo / m_gravity};
+		static constexpr float m_step_deg{(-m_jump_velo / m_gravity) / 2.f};
+		float m_rotated{0.f};
 
 	public:
 		player(const vec2f& start_pos) :
@@ -49,13 +50,13 @@ namespace rj
 		{
 			m_velocity.y += m_gravity;
 			this->try_jump();
+			this->try_rotate();
 			m_render_object.move(m_velocity);
 
 			if(this->bottom_out() > m_ground)
 			{
-				m_render_object.setPosition(m_start_pos.x, m_ground - m_height / 2);
-				m_jumping = false;
-				m_velocity = {0.f, 0.f};
+				this->rotate_end();
+				this->jump_end();
 			}
 		}
 
@@ -68,6 +69,30 @@ namespace rj
 				m_jumping = true;
 				m_need_jump = false;
 			}
+		}
+
+		void jump_end() noexcept
+		{
+			m_render_object.setPosition(m_start_pos.x, m_ground - m_height / 2);
+			m_jumping = false;
+			m_velocity = {0.f, 0.f};
+		}
+
+		void try_rotate() noexcept
+		{
+			if(!m_jumping)
+				return;
+			m_render_object.rotate(m_step_deg);
+			m_rotated += m_step_deg;
+		}
+
+		void rotate_end() noexcept
+		{
+			if(!m_jumping)
+				return;
+			// rotate back the rotated way in one step
+			m_render_object.rotate(-m_rotated);
+			m_rotated = 0.f;
 		}
 
 		void on_collision(float at) noexcept
