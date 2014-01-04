@@ -15,8 +15,6 @@ namespace rj
 {
 	class player final : public entity_rect
 	{
-		friend class entity_handler;
-
 		// props
 		static constexpr float m_gravity{0.01f};
 		static constexpr float m_jump_velo{-1.7f};
@@ -41,7 +39,6 @@ namespace rj
 
 		~player() = default;
 
-	private:
 		// 'bind' space key (can't do this in ctor)
 		void init() override
 		{on_key_pressed(key::Space) += [this]{m_need_jump = true;};}
@@ -60,6 +57,13 @@ namespace rj
 			}
 		}
 
+		void on_collision(float at) noexcept
+		{m_ground = at;}
+
+		void on_collision_end() noexcept
+		{m_ground = m_start_pos.y;}
+
+	private:
 		// jumping
 		void try_jump() noexcept
 		{
@@ -94,12 +98,6 @@ namespace rj
 			m_render_object.rotate(-m_rotated);
 			m_rotated = 0.f;
 		}
-
-		void on_collision(float at) noexcept
-		{m_ground = at;}
-
-		void on_collision_end() noexcept
-		{m_ground = m_start_pos.y;}
 	};
 }
 

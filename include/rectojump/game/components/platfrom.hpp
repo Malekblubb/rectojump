@@ -21,7 +21,6 @@ namespace rj
 
 		~platform() = default;
 
-	private:
 		void update(dur duration) override
 		{m_render_object.move(m_velocity * duration);}
 	};

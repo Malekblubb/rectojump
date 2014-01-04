@@ -16,7 +16,6 @@ namespace rj
 {
 	class triangle final : public basic_entity<sf::CircleShape>
 	{
-
 	public:
 		triangle(const vec2f& pos) :
 			basic_entity{pos, {-0.3f, 0.f}}
@@ -39,7 +38,6 @@ namespace rj
 		float right_out() const noexcept override
 		{return this->pos_x() + m_render_object.getRadius();}
 
-	private:
 		void update(dur duration) override
 		{m_render_object.move(m_velocity * duration);}
 	};

@@ -25,12 +25,6 @@ namespace rj
 		vec2f m_velocity{0.f, 0.f};
 
 		virtual void update(dur duration) override = 0;
-		virtual void render() override
-		{
-			if(m_game == nullptr)
-				mlk::lerr(errors::cl_nullptr_access)["rj::basic_entity<T>"];
-			render::render_object(*m_game, m_render_object);
-		}
 		virtual void init() override { }
 
 	public:
@@ -39,6 +33,13 @@ namespace rj
 		{m_render_object.setPosition(pos);}
 
 		virtual ~basic_entity() = default;
+
+		virtual void render() override
+		{
+			if(m_game == nullptr)
+				mlk::lerr(errors::cl_nullptr_access)["rj::basic_entity<T>"];
+			render::render_object(*m_game, m_render_object);
+		}
 
 		T& render_object() noexcept
 		{return m_render_object;}
