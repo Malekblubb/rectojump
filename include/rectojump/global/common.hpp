@@ -24,6 +24,8 @@ namespace rj
 	using vec2u = sf::Vector2u;
 
 	using music_data = mlk::data_packet;
+	using entity_prototype = std::vector<float>;
+	using entity_proto_vec = std::vector<entity_prototype>;
 
 	static const std::string data_path{"data/"};
 	static const std::string level_path{"levels/"};
