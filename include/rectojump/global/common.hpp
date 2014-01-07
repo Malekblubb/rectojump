@@ -7,6 +7,8 @@
 #define RJ_GLOBAL_COMMON_HPP
 
 
+#include <mlk/types/types.h>
+
 #include <SFML/Window.hpp>
 
 
@@ -20,6 +22,8 @@ namespace rj
 	using vec2f = sf::Vector2f;
 	using vec2i = sf::Vector2i;
 	using vec2u = sf::Vector2u;
+
+	using music_data = mlk::data_packet;
 
 	static const std::string data_path{"data/"};
 	static const std::string level_path{"levels/"};
