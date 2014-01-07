@@ -20,8 +20,8 @@ namespace rj
 
 	class data_manager
 	{
-		mlk::fs::fs_handle<mlk::fs::fs_type::dir> m_dirh;
-		mlk::fs::fs_handle<mlk::fs::fs_type::file> m_fileh;
+		mlk::fs::dir_handle m_dirh;
+		mlk::fs::file_handle m_fileh;
 		const std::string& m_abs_path;
 
 		std::map<std::string, mlk::data_packet> m_data;
