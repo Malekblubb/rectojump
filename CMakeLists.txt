@@ -12,9 +12,16 @@ set(CMAKE_CXX_COMPILER "clang++")
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 
 # link
+#zlib
+find_package(ZLIB REQUIRED)
+if(ZLIB_FOUND)
+    include_directories(${ZLIB_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${ZLIB_LIBRARIES})
+endif()
+
 # sfml
 find_package(SFML 2 REQUIRED system window graphics network audio)
 if(SFML_FOUND)
-  include_directories(${SFML_INCLUDE_DIR})
-  target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
+    include_directories(${SFML_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
 endif()
