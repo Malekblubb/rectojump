@@ -3,8 +3,8 @@
 // See LICENSE for more information.
 //
 
-#ifndef RJ_CORE_STATE_HPP
-#define RJ_CORE_STATE_HPP
+#ifndef RJ_CORE_GAME_HANDLER_HPP
+#define RJ_CORE_GAME_HANDLER_HPP
 
 
 #include "game.hpp"
@@ -21,7 +21,7 @@ namespace rj
 	enum class state : char
 	{main_menu, game_menu, game, debug_info, num};
 
-	class state_handler
+	class game_handler
 	{
 		game_window& m_game_window;
 		game& m_game;
@@ -33,7 +33,7 @@ namespace rj
 		mlk::bitset<state, mlk::enum_utl::to_int<std::size_t>(state::num)> m_current_states;
 
 	public:
-		state_handler(game_window& window, game& g, main_menu& menu, data_manager& datamgr) :
+		game_handler(game_window& window, game& g, main_menu& menu, data_manager& datamgr) :
 			m_game_window{window},
 			m_game{g},
 			m_main_menu{menu},
@@ -110,4 +110,4 @@ namespace rj
 
 
 
-#endif // RJ_CORE_STATE_HPP
+#endif // RJ_CORE_GAME_HANDLER_HPP
