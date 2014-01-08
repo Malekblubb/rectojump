@@ -68,6 +68,7 @@ namespace rj
 
 			level_parser lv_parser{level_data};
 			info_parser inf_parser{infos_data};
+			m_result = {std::move(music_data), lv_parser.get_result(), inf_parser.get_result()};
 		}
 
 		int music_size() const noexcept
