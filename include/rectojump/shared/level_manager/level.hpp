@@ -26,6 +26,9 @@ namespace rj
 		music_data music;
 		entity_proto_vec entites;
 		level_info info;
+
+		bool is_valid() const noexcept
+		{return !music.empty() && !entites.empty();}
 	};
 }
 
