@@ -14,6 +14,7 @@
 
 namespace rj
 {
+	// general
 	using dur = float;
 
 	using key = sf::Keyboard::Key;
@@ -23,10 +24,14 @@ namespace rj
 	using vec2i = sf::Vector2i;
 	using vec2u = sf::Vector2u;
 
+	// level
 	using music_data = mlk::data_packet;
 	using entity_prototype = std::vector<float>;
 	using entity_proto_vec = std::vector<entity_prototype>;
+	enum entity_prototype_value : std::size_t
+	{type, prop, x, y};
 
+	// fixed paths
 	static const std::string data_path{"data/"};
 	static const std::string level_path{"levels/"};
 }
