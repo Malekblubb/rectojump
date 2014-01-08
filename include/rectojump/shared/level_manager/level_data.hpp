@@ -11,6 +11,7 @@
 #include <rectojump/global/common.hpp>
 
 #include <mlk/containers/container_utl.h>
+#include <mlk/tools/stl_string_utl.h>
 
 
 namespace rj
