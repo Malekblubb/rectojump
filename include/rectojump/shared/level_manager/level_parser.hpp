@@ -58,7 +58,6 @@ namespace rj
 					tmp_entity.emplace_back(std::strtof(line.substr(0, space_pos).c_str(), nullptr));
 					line.erase(0, space_pos + 1);
 					space_pos = line.find(' ');
-					std::cout << tmp_entity.back() << std::endl;
 				}
 
 				m_result.push_back(tmp_entity);
