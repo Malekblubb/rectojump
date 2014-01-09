@@ -14,10 +14,13 @@ namespace rj
 {
 	namespace settings
 	{
-		int sound_volume()
+		inline void init()
+		{config::get();}
+
+		inline int sound_volume()
 		{return config::get().get_entry<int>("sound_volume");}
 
-		void set_sound_volume(int vol)
+		inline void set_sound_volume(int vol)
 		{config::get().set_entry("sound_volume", vol);}
 	}
 }
