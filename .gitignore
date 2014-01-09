@@ -1,3 +1,9 @@
+#Project
+rectojump
+
+#logs
+*log*.*
+
 #Linux
 *.directory
 
