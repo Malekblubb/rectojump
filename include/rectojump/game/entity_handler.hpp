@@ -33,7 +33,6 @@ namespace rj
 		std::vector<entity_base_ptr> m_entities;
 		std::size_t m_max_entities;
 		std::size_t m_current_id{0};
-		bool m_need_check_collision{true};
 
 		static constexpr float m_despawn_zone{0.f};
 
@@ -91,6 +90,9 @@ namespace rj
 			for(auto& a : m_entities)
 				a->render();
 		}
+
+		void clear() noexcept
+		{m_entities.clear();}
 
 		std::size_t num_entities() const noexcept
 		{return m_entities.size() + this->is_player_registered();}
