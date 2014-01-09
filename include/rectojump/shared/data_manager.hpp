@@ -84,6 +84,9 @@ namespace rj
 			return result;
 		}
 
+		bool exists_id(const data_id& id) const noexcept
+		{return m_data.find(id) != std::end(m_data);}
+
 	private:
 		void init()
 		{}
@@ -91,9 +94,6 @@ namespace rj
 		// utils
 		std::string make_path(const data_id& id)
 		{return m_abs_path + id;}
-
-		bool exists_id(const data_id& id)
-		{return m_data.find(id) != std::end(m_data);}
 
 		// loads all data recursive
 		// from absolute directory
