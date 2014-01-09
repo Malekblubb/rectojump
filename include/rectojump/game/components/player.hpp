@@ -65,10 +65,13 @@ namespace rj
 		{m_ground = m_start_pos.y;}
 
 	private:
+		bool is_on_ground() const noexcept
+		{return this->bottom_out() == m_ground;}
+
 		// jumping
 		void try_jump() noexcept
 		{
-			if(m_need_jump && !m_jumping)
+			if(m_need_jump && !m_jumping && this->is_on_ground())
 			{
 				m_velocity.y = m_jump_velo;
 				m_jumping = true;
