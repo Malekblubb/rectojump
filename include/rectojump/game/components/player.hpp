@@ -19,8 +19,8 @@ namespace rj
 		static constexpr float m_gravity{0.01f};
 		static constexpr float m_jump_velo{-1.7f};
 		static constexpr float m_width{40.f}, m_height{40.f};
-		const vec2f m_start_pos{100.f, 500.f};
-		float m_ground{500.f};
+		const vec2f m_start_pos;
+		float m_ground;
 
 		// jumping
 		bool m_need_jump{false};
@@ -34,7 +34,8 @@ namespace rj
 	public:
 		player(const vec2f& start_pos) :
 			entity_rect{start_pos, {m_width, m_height}, {0.f, 0.f}},
-			m_start_pos{start_pos}
+			m_start_pos{start_pos},
+			m_ground{start_pos.y}
 		{ }
 
 		~player() = default;
