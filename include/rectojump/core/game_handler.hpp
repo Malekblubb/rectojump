@@ -10,7 +10,9 @@
 #include "game.hpp"
 #include "game_window.hpp"
 #include "main_menu.hpp"
+#include <rectojump/global/common.hpp>
 #include <rectojump/shared/data_manager.hpp>
+#include <rectojump/shared/level_manager/level_manager.hpp>
 
 #include <mlk/containers/container_utl.h>
 #include <mlk/tools/bitset.h>
@@ -29,6 +31,7 @@ namespace rj
 		data_manager& m_datamgr;
 
 		debug_info m_debug_info;
+		level_manager m_lvmgr{level_path};
 
 		mlk::bitset<state, mlk::enum_utl::to_int<std::size_t>(state::num)> m_current_states;
 
@@ -38,12 +41,14 @@ namespace rj
 			m_game{g},
 			m_main_menu{menu},
 			m_datamgr{datamgr},
-			m_debug_info{m_game}
+			m_debug_info{m_game, m_datamgr}
 		{
 			m_current_states |= state::game;
 
 			m_game_window.get_updater().on_update += [this](dur duration){this->update(duration);};
 			m_game_window.get_updater().on_render += [this]{this->render();};
+
+			on_key_pressed(key::X) += [this]{this->test_load_level();};
 
 
 			on_keys_pressed(key::LShift, key::D) +=
@@ -68,7 +73,18 @@ namespace rj
 			};
 		}
 
+		data_manager& get_datamanager() noexcept
+		{return m_datamgr;}
+
 	private:
+		void test_load_level()
+		{
+//			m_lvmgr.open_level("test1");
+			m_game.load_level(m_lvmgr.open_level("testlevel_1").entites);
+
+		}
+
+
 		void toggle_state(state s)
 		{m_current_states.toggle(s);}
 

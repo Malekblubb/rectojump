@@ -17,16 +17,18 @@
 namespace rj
 {
 	class game;
+	class game_handler;
 
 	class debug_info
 	{
 		game& m_game;
 		sf::RectangleShape m_background{{100.f, 100.f}};
-		debug_text m_text{"debug_font.png"_data};
+		debug_text m_text;
 
 	public:
-		debug_info(game& g) :
-			m_game{g}
+		debug_info(game& g, data_manager& dm) :
+			m_game{g},
+			m_text{dm}
 		{
 			m_background.setPosition({1.f, 1.f});
 			m_background.setFillColor({255, 150, 123, 100});

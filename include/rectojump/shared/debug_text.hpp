@@ -9,6 +9,7 @@
 
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/errors.hpp>
+#include <rectojump/shared/data_manager.hpp>
 
 #include <mlk/log/log.h>
 
@@ -19,23 +20,25 @@ namespace rj
 {
 	class debug_text : public sf::Drawable
 	{
+		data_manager& m_datamanager;
+
 		std::string m_current_str;
-		sf::Color m_color;
 		sf::Texture m_texture;
+		sf::Color m_color;
 		sf::VertexArray m_verts{sf::Quads};
+
 		vec2f m_size{0.f, 0.f};
 		float m_fontsize;
-		bool m_valid{false};
+		bool m_valid{true};
 
 	public:
-		debug_text(const std::string& tile_map_path, const sf::Color& color = {255, 255, 255}, float fontsize = 16.f) :
-			m_valid{m_texture.loadFromFile(tile_map_path)},
+		debug_text(data_manager& dm, const sf::Color& color = {255, 255, 255}, float fontsize = 16.f) :
+			m_datamanager{dm},
+			m_texture{m_datamanager.get_as<sf::Texture>("debug_font.png")},
+			m_valid{m_datamanager.exists_id("debug_font.png")},
 			m_color{color},
 			m_fontsize{fontsize}
-		{
-			if(!m_valid)
-				mlk::lerr(errors::io_open_file) << "filename=" << tile_map_path;
-		}
+		{ }
 
 		void set_text(const std::string& text) noexcept
 		{m_current_str = text; this->refresh();}
