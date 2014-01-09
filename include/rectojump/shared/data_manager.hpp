@@ -8,6 +8,7 @@
 
 
 #include <mlk/filesystem/filesystem.h>
+#include <mlk/log/log.h>
 #include <mlk/tools/compiletime.h>
 #include <mlk/types/types.h>
 
@@ -98,6 +99,7 @@ namespace rj
 		// from absolute directory
 		void load_all()
 		{
+			mlk::lout("data_manager") << "loading files recursive from directory '" << m_abs_path << "'...";
 			auto content(m_dirh.get_content<true>());
 			for(auto& a : content)
 				if(a.type == mlk::fs::item_type::file)
@@ -133,7 +135,10 @@ namespace rj
 		void load_raw_impl(const data_id& id, const std::string& path)
 		{
 			if(this->exists_id(id))
+			{
+				mlk::lerr()["data_manager"] << "object with id '" << id << "' already loaded";
 				return;
+			}
 			m_fileh.reopen(path, std::ios::in);
 			m_data[id] = m_fileh.read_all();
 		}
@@ -149,7 +154,10 @@ namespace rj
 		T get_as_impl(const data_id& id)
 		{
 			if(!this->exists_id(id))
+			{
+				mlk::lerr()["data_manager"] << "object with id '" << id << "' not found";
 				return T{};
+			}
 			T result;
 			result.loadFromMemory(m_data[id].data(), m_data[id].size());
 			return result;
