@@ -30,9 +30,9 @@ namespace rj
 		mlk::bitset<key, key::KeyCount> m_key_bits;
 
 	public:
-		std::map<key, mlk::slot<>> on_key_pressed;
-		std::map<key_vec, mlk::slot<>> on_keys_pressed;
-		std::map<btn, mlk::slot<const vec2f&>> on_btn_pressed;
+		mlk::event_delegates<key> on_key_pressed;
+		mlk::event_delegates<key_vec> on_keys_pressed;
+		mlk::event_delegates<btn, const vec2f&> on_btn_pressed;
 
 		input() = default;
 
