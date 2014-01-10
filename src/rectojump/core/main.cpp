@@ -29,7 +29,7 @@ int main()
 	// game
 	rj::game_window gw;
 	rj::game g{gw};
-	rj::main_menu m{g};
+	rj::main_menu m{g, gw, dm};
 	rj::game_handler sh{gw, g, m, dm};
 
 	gw.start();
