@@ -9,7 +9,7 @@
 
 #include "game.hpp"
 #include "game_window.hpp"
-#include "main_menu.hpp"
+#include <rectojump/game/main_menu.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/data_manager.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
@@ -43,7 +43,8 @@ namespace rj
 			m_datamgr{datamgr},
 			m_debug_info{m_game, m_datamgr}
 		{
-			m_current_states |= state::game;
+//			m_current_states |= state::game;
+			m_current_states |= state::main_menu;
 
 			m_game_window.get_updater().on_update += [this](dur duration){this->update(duration);};
 			m_game_window.get_updater().on_render += [this]{this->render();};
@@ -80,7 +81,7 @@ namespace rj
 		void test_load_level()
 		{
 //			m_lvmgr.open_level("test1");
-			m_game.load_level(m_lvmgr.open_level("testlevel_1").entites);
+			m_game.load_level(m_lvmgr.open_level("testlevel_1").entities);
 
 		}
 

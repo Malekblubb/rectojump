@@ -6,8 +6,8 @@
 #include <rectojump/core/game.hpp>
 #include <rectojump/core/game_handler.hpp>
 #include <rectojump/core/game_window.hpp>
-#include <rectojump/core/main_menu.hpp>
 #include <rectojump/game/debug_info.inl>
+#include <rectojump/game/main_menu.hpp>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/global/error_inserter.hpp>
 #include <rectojump/shared/data_manager.hpp>

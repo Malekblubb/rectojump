@@ -7,8 +7,8 @@
 #define RJ_CORE_MAIN_MENU_HPP
 
 
-#include "game_window.hpp"
-#include "render.hpp"
+#include <rectojump/core/game_window.hpp>
+#include <rectojump/core/render.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/data_manager.hpp>
 #include <rectojump/shared/utils.hpp>
