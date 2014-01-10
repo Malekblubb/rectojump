@@ -34,6 +34,10 @@ namespace rj
 	// fixed paths
 	static const std::string data_path{"data/"};
 	static const std::string level_path{"levels/"};
+
+	// other
+	inline std::string get_version()
+	{return "0.0.0";}
 }
 
 inline std::string operator""_data(const char* str, std::size_t)
