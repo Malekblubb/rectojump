@@ -70,9 +70,9 @@ namespace rj
 			on_keys_pressed(key::Down) += [this]{this->on_key_down();};
 
 			// add items
-			m_menuitems.emplace_back(sf::Text{"Play", m_font});
-			m_menuitems.emplace_back(sf::Text{"Options", m_font});
-			m_menuitems.emplace_back(sf::Text{"Credits", m_font});
+			m_menuitems.emplace_back("Play", m_font);
+			m_menuitems.emplace_back("Options", m_font);
+			m_menuitems.emplace_back("Credits", m_font);
 
 			// calc positions
 			sf::FloatRect rect{0.f, 0.f, 0.f, 0.f};

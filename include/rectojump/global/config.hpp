@@ -71,7 +71,7 @@ namespace rj
 
 		void make_default()
 		{
-			m_entrys.emplace_back(config_entry{"sound_volume", "10"});
+			m_entrys.emplace_back("sound_volume", "10");
 		}
 
 		void write_config() noexcept
