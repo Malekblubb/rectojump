@@ -56,7 +56,7 @@ namespace rj
 		{return m_size;}
 
 	private:
-		virtual void draw(sf::RenderTarget& target, sf::RenderStates) const override
+		void draw(sf::RenderTarget& target, sf::RenderStates) const override
 		{target.draw(m_verts, &m_texture);}
 
 		void reset() noexcept
