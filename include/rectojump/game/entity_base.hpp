@@ -49,6 +49,9 @@ namespace rj
 		entity_base() = default;
 		virtual ~entity_base() = default;
 
+		void set_game(game* g) noexcept
+		{m_game = g;}
+
 		bool is_registered() const noexcept
 		{return m_is_registered || m_id != -1;}
 
