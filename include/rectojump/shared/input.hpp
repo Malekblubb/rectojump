@@ -110,10 +110,14 @@ namespace rj
 
 		friend bool is_key_pressed(key);
 
+		friend void simulate_keypress(key);
+
 		friend inline auto on_btn_pressed(btn b)
 		-> decltype(m_on_btn_pressed[b])&;
 
 		friend bool is_btn_pressed(btn);
+
+		friend void simulate_btnpress(btn);
 	};
 
 	inline auto on_key_pressed(key k)
@@ -136,12 +140,24 @@ namespace rj
 	inline bool is_key_pressed(key k)
 	{return input::get().m_key_bits & k;}
 
+	inline void simulate_keypress(key k)
+	{
+		input::get().key_pressed(k);
+		input::get().key_released(k);
+	}
+
 	inline auto on_btn_pressed(btn b)
 	-> decltype(input::get().m_on_btn_pressed[b])&
 	{return input::get().m_on_btn_pressed[b];}
 
 	inline bool is_btn_pressed(btn b)
 	{return input::get().m_mousebtn_bits & b;}
+
+	inline void simulate_btnpress(btn b)
+	{
+		input::get().btn_pressed(b);
+		input::get().btn_released(b);
+	}
 }
 
 
