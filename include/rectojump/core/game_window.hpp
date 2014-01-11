@@ -22,9 +22,12 @@ namespace rj
 {
 	class game_window
 	{
-		mlk::uint m_width{800}, m_height{600};
+		mlk::uint m_width{1280}, m_height{720};
+		std::string m_title{"Recto Jump"};
 		sf::RenderWindow m_window;
 		bool m_running{false};
+		bool m_fullscreen{false};
+		bool m_need_recreate{false};
 
 		input& m_input{input::get()};
 
@@ -34,7 +37,7 @@ namespace rj
 		mlk::slot<> on_stop;
 
 		game_window() :
-			m_window{{m_width, m_height}, "RectoJump"}
+			m_window{{m_width, m_height}, m_title}
 		{on_key_pressed(key::Escape) += [this]{this->stop();};}
 
 		// interface
@@ -45,6 +48,9 @@ namespace rj
 			this->prepare_start();
 			while(m_running)
 			{
+				if(m_need_recreate)
+					this->recreate();
+
 				m_game_updater.start_pt();
 
 				// update
@@ -67,6 +73,11 @@ namespace rj
 		void draw(const sf::Drawable& object)
 		{m_window.draw(object);}
 
+		void toggle_fullscreen() noexcept
+		{
+			m_fullscreen = !m_fullscreen;
+			m_need_recreate = true;
+		}
 
 		// setters
 		void set_framereate_limit(mlk::uint limit) noexcept
@@ -78,6 +89,14 @@ namespace rj
 		void set_position(const vec2i& position) noexcept
 		{m_window.setPosition(position);}
 
+		void set_fullscreen(bool b) noexcept
+		{
+			if(b == m_fullscreen)
+				return;
+			m_fullscreen = b;
+			m_need_recreate = true;
+		}
+
 		// getters
 		game_updater& get_updater() noexcept
 		{return m_game_updater;}
@@ -87,6 +106,9 @@ namespace rj
 
 		vec2i get_position() const noexcept
 		{return m_window.getPosition();}
+
+		bool get_fullscreen() const noexcept
+		{return m_fullscreen;}
 
 	private:
 		void prepare_start() noexcept
@@ -119,6 +141,13 @@ namespace rj
 				default: break;
 				}
 			}
+		}
+
+		void recreate()
+		{
+			m_window.close();
+			m_window.create({m_width, m_height}, m_title, m_fullscreen ? sf::Style::Fullscreen : sf::Style::Default);
+			m_need_recreate = false;
 		}
 	};
 }
