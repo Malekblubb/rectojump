@@ -34,14 +34,14 @@ namespace rj
 
 		void update(dur) override
 		{
-			m_title.setColor(m_title_colors[m_current_colorindex]);
+			m_direction == direction::forward ? ++m_current_colorindex : --m_current_colorindex;
 
-			if(m_current_colorindex == m_title_colors.size())
+			if(m_current_colorindex == m_title_colors.size() - 1)
 				m_direction = direction::back;
 			else if(m_current_colorindex == 0)
 				m_direction = direction::forward;
 
-			m_direction == direction::forward ? ++m_current_colorindex : --m_current_colorindex;
+			m_title.setColor(m_title_colors[m_current_colorindex]);
 		}
 
 		void render() override
