@@ -29,11 +29,11 @@ namespace rj
 		mlk::bitset<btn, btn::ButtonCount> m_mousebtn_bits;
 		mlk::bitset<key, key::KeyCount> m_key_bits;
 
-	public:
-		mlk::event_delegates<key> on_key_pressed;
-		mlk::event_delegates<key_vec> on_keys_pressed;
-		mlk::event_delegates<btn, const vec2f&> on_btn_pressed;
+		mlk::event_delegates<key> m_on_key_pressed;
+		mlk::event_delegates<key_vec> m_on_keys_pressed;
+		mlk::event_delegates<btn, const vec2f&> m_on_btn_pressed;
 
+	public:
 		input() = default;
 
 		static input& get() noexcept
@@ -45,7 +45,7 @@ namespace rj
 	private:
 		void update(const vec2f& mousepos)
 		{
-			for(auto& a : on_btn_pressed)
+			for(auto& a : m_on_btn_pressed)
 				if(m_mousebtn_bits & a.first)
 					a.second(mousepos);
 		}
@@ -57,11 +57,11 @@ namespace rj
 
 			if(mlk::cnt::exists_if(
 			[=](const std::pair<key, mlk::slot<>>& p)
-			{return p.first == k;}, on_key_pressed))
-				on_key_pressed[k]();
+			{return p.first == k;}, m_on_key_pressed))
+				m_on_key_pressed[k]();
 
 			m_key_bits |= k;
-			for(auto& keys : on_keys_pressed)
+			for(auto& keys : m_on_keys_pressed)
 			{
 				auto all_pressed(false);
 				for(auto& key : keys.first)
@@ -99,28 +99,49 @@ namespace rj
 
 		void btn_released(btn b)
 		{m_mousebtn_bits.remove(b);}
+
+
+		friend auto on_key_pressed(key k)
+		-> decltype(m_on_key_pressed[k])&;
+
+		template<typename... Keys>
+		friend auto on_keys_pressed(Keys&&...)
+		-> decltype(m_on_keys_pressed[key_vec{}]);
+
+		friend bool is_key_pressed(key);
+
+		friend inline auto on_btn_pressed(btn b)
+		-> decltype(m_on_btn_pressed[b])&;
+
+		friend bool is_btn_pressed(btn);
 	};
 
 	inline auto on_key_pressed(key k)
-	-> decltype(input::get().on_key_pressed[k])&
+	-> decltype(input::get().m_on_key_pressed[k])&
 	{
 		if(!input::get().is_key_valid(k))
 			throw std::runtime_error{"invalid key passed"};
-		return input::get().on_key_pressed[k];
+		return input::get().m_on_key_pressed[k];
 	}
 
 	template<typename... Keys>
 	auto on_keys_pressed(Keys&&... keys)
-	-> decltype(input::get().on_keys_pressed[key_vec{}])
+	-> decltype(input::get().m_on_keys_pressed[key_vec{}])
 	{
 		key_vec keys_vec;
 		mlk::cnt::make_vector(keys_vec, std::forward<Keys>(keys)...);
-		return input::get().on_keys_pressed[keys_vec];
+		return input::get().m_on_keys_pressed[keys_vec];
 	}
 
+	inline bool is_key_pressed(key k)
+	{return input::get().m_key_bits & k;}
+
 	inline auto on_btn_pressed(btn b)
-	-> decltype(input::get().on_btn_pressed[b])&
-	{return input::get().on_btn_pressed[b];}
+	-> decltype(input::get().m_on_btn_pressed[b])&
+	{return input::get().m_on_btn_pressed[b];}
+
+	inline bool is_btn_pressed(btn b)
+	{return input::get().m_mousebtn_bits & b;}
 }
 
 
