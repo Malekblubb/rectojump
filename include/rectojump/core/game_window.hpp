@@ -38,7 +38,7 @@ namespace rj
 
 		game_window() :
 			m_window{{m_width, m_height}, m_title}
-		{on_key_pressed(key::Escape) += [this]{this->stop();};}
+		{ }
 
 		// interface
 		void start()
