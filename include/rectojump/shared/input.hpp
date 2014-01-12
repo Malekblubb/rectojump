@@ -21,6 +21,8 @@ namespace rj
 	class game_window;
 
 	using key_vec = std::vector<key>;
+	enum class wheel : char
+	{up, down};
 
 	class input
 	{
@@ -32,6 +34,7 @@ namespace rj
 		mlk::event_delegates<key> m_on_key_pressed;
 		mlk::event_delegates<key_vec> m_on_keys_pressed;
 		mlk::event_delegates<btn, const vec2f&> m_on_btn_pressed;
+		mlk::event_delegates<wheel, const vec2f&> m_on_mousewheel;
 
 	public:
 		input() = default;
@@ -100,6 +103,9 @@ namespace rj
 		void btn_released(btn b)
 		{m_mousebtn_bits.remove(b);}
 
+		void mousewheel_moved(int delta, const vec2f& pos)
+		{delta < 0 ? m_on_mousewheel[wheel::down](pos) : m_on_mousewheel[wheel::up](pos);}
+
 
 		friend auto on_key_pressed(key k)
 		-> decltype(m_on_key_pressed[k])&;
@@ -112,12 +118,15 @@ namespace rj
 
 		friend void simulate_keypress(key);
 
-		friend inline auto on_btn_pressed(btn b)
+		friend auto on_btn_pressed(btn b)
 		-> decltype(m_on_btn_pressed[b])&;
 
 		friend bool is_btn_pressed(btn);
 
 		friend void simulate_btnpress(btn);
+
+		friend auto on_mousewheel(wheel w)
+		-> decltype(m_on_mousewheel[w])&;
 	};
 
 	inline auto on_key_pressed(key k)
@@ -158,6 +167,10 @@ namespace rj
 		input::get().btn_pressed(b);
 		input::get().btn_released(b);
 	}
+
+	inline auto on_mousewheel(wheel w)
+	-> decltype(input::get().m_on_mousewheel[w])
+	{return input::get().m_on_mousewheel[w];}
 }
 
 
