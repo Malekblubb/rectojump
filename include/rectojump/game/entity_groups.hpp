@@ -13,16 +13,16 @@
 namespace rj
 {
 	enum class entity_type : char
-	{player, enemy};
+	{player, enemy, num};
 
 	enum entity_propertie : char
-	{moveable_left, jumpable, solid, death};
+	{moveable_left, jumpable, solid, death, num};
 
 	enum entity_figure : char
 	{f_rectagle, f_triangle};
 
-	using etypes = mlk::bitset<entity_type, 10>;
-	using eprops = mlk::bitset<entity_propertie, 10>;
+	using etypes = mlk::ebitset<entity_type, entity_type::num>;
+	using eprops = mlk::ebitset<entity_propertie, entity_propertie::num>;
 }
 
 
