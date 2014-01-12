@@ -19,6 +19,8 @@ namespace rj
 
 	using key = sf::Keyboard::Key;
 	using btn = sf::Mouse::Button;
+	enum class wheel : char
+	{up, down};
 
 	using vec2f = sf::Vector2f;
 	using vec2i = sf::Vector2i;

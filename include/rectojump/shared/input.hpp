@@ -21,8 +21,6 @@ namespace rj
 	class game_window;
 
 	using key_vec = std::vector<key>;
-	enum class wheel : char
-	{up, down};
 
 	class input
 	{
