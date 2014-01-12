@@ -35,7 +35,6 @@ namespace rj
 			m_abs_path{m_dirh.get_path()},
 			m_valid{m_dirh.exists()}
 		{
-			this->init();
 			if(auto_load) this->load_all();
 		}
 
@@ -88,12 +87,16 @@ namespace rj
 		{return m_data.find(id) != std::end(m_data);}
 
 	private:
-		void init()
-		{}
-
 		// utils
 		std::string make_path(const data_id& id)
 		{return m_abs_path + id;}
+
+		std::size_t get_datasize() const noexcept
+		{
+			std::size_t result{0};
+			for(auto& a : m_data) result += a.second.size();
+			return result;
+		}
 
 		// loads all data recursive
 		// from absolute directory
@@ -101,9 +104,14 @@ namespace rj
 		{
 			mlk::lout("rj::data_manager") << "loading files recursive from directory '" << m_abs_path << "'...";
 			auto content(m_dirh.get_content<true>());
+			auto count(0);
 			for(auto& a : content)
 				if(a.type == mlk::fs::item_type::file)
+				{
 					this->load_raw_impl(a.name, a.path);
+					++count;
+				}
+			mlk::lout("rj::data_manager") << "loaded " << count << " files (" << this->get_datasize() << " bytes)";
 		}
 
 
