@@ -141,6 +141,7 @@ namespace rj
 					break;
 				case sf::Event::EventType::MouseButtonReleased:
 					m_input.btn_released(ev.mouseButton.button);
+					break;
 				default: break;
 				}
 			}
