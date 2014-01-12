@@ -51,6 +51,10 @@ namespace rj
 			return true;
 		}
 
+		auto levels() const noexcept
+		-> const decltype(m_loaded_levels)&
+		{return m_loaded_levels;}
+
 		std::size_t num_levels() const noexcept
 		{return m_loaded_levels.size();}
 
