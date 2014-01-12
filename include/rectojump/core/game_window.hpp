@@ -97,6 +97,9 @@ namespace rj
 			m_need_recreate = true;
 		}
 
+		void set_view(const sf::View& v) noexcept
+		{m_window.setView(v);}
+
 		// getters
 		game_updater& get_updater() noexcept
 		{return m_game_updater;}
