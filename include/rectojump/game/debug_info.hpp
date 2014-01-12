@@ -31,7 +31,7 @@ namespace rj
 			m_text{dm}
 		{
 			m_background.setPosition({1.f, 1.f});
-			m_background.setFillColor({255, 150, 123, 100});
+			m_background.setFillColor({255, 150, 123, 220});
 			m_background.setOutlineThickness(1);
 			m_background.setOutlineColor({255, 0, 0});
 		}
