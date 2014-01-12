@@ -99,7 +99,7 @@ namespace rj
 		// from absolute directory
 		void load_all()
 		{
-			mlk::lout("data_manager") << "loading files recursive from directory '" << m_abs_path << "'...";
+			mlk::lout("rj::data_manager") << "loading files recursive from directory '" << m_abs_path << "'...";
 			auto content(m_dirh.get_content<true>());
 			for(auto& a : content)
 				if(a.type == mlk::fs::item_type::file)
@@ -136,7 +136,7 @@ namespace rj
 		{
 			if(this->exists_id(id))
 			{
-				mlk::lerr()["data_manager"] << "object with id '" << id << "' already loaded";
+				mlk::lerr()["rj::data_manager"] << "object with id '" << id << "' already loaded";
 				return;
 			}
 			m_fileh.reopen(path, std::ios::in);
@@ -155,7 +155,7 @@ namespace rj
 		{
 			if(!this->exists_id(id))
 			{
-				mlk::lerr()["data_manager"] << "object with id '" << id << "' not found";
+				mlk::lerr()["rj::data_manager"] << "object with id '" << id << "' not found";
 				return T{};
 			}
 			T result;
