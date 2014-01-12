@@ -110,7 +110,7 @@ namespace rj
 
 		template<typename... Keys>
 		friend auto on_keys_pressed(Keys&&...)
-		-> decltype(m_on_keys_pressed[key_vec{}]);
+		-> decltype(m_on_keys_pressed[key_vec{}])&;
 
 		friend bool is_key_pressed(key);
 
@@ -137,7 +137,7 @@ namespace rj
 
 	template<typename... Keys>
 	auto on_keys_pressed(Keys&&... keys)
-	-> decltype(input::get().m_on_keys_pressed[key_vec{}])
+	-> decltype(input::get().m_on_keys_pressed[key_vec{}])&
 	{
 		key_vec keys_vec;
 		mlk::cnt::make_vector(keys_vec, std::forward<Keys>(keys)...);
@@ -167,7 +167,7 @@ namespace rj
 	}
 
 	inline auto on_mousewheel(wheel w)
-	-> decltype(input::get().m_on_mousewheel[w])
+	-> decltype(input::get().m_on_mousewheel[w])&
 	{return input::get().m_on_mousewheel[w];}
 }
 
