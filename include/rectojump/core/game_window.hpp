@@ -68,7 +68,7 @@ namespace rj
 		}
 
 		void stop() noexcept
-		{m_running = false; on_stop();}
+		{on_stop(); m_running = false;}
 
 		void draw(const sf::Drawable& object)
 		{m_window.draw(object);}
