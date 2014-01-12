@@ -13,42 +13,74 @@
 
 #include <mlk/filesystem/filesystem.h>
 
+#include <map>
 #include <string>
 
 
 namespace rj
 {
+	using level_id = std::string;
+
 	class level_manager
 	{
+		mlk::fs::dir_handle m_dirh;
 		mlk::fs::file_handle m_filemgr;
-		std::string m_abs_path;
+		const std::string& m_abs_path;
+
+		std::map<std::string, level> m_loaded_levels;
 
 	public:
 		level_manager(const std::string& abs_level_path) :
-			m_abs_path{mlk::fs::dir_handle{abs_level_path}.get_path()}
-		{ }
+			m_dirh{abs_level_path},
+			m_abs_path{m_dirh.get_path()}
+		{this->init();}
 
-		level open_level(const std::string& level_name)
+		const level& open_level(const level_id& id)
 		{
-			if(!m_filemgr.reopen(this->make_path(level_name), std::ios::in))
-				return level{};
-
-			auto data(m_filemgr.read_all());
-			level_packer<packer_mode::unpack> unpacker{data};
-			return unpacker.get_level();
+			this->load_to_mgr(id, this->make_path(id));
+			if(m_loaded_levels.find(id) == std::end(m_loaded_levels))
+				throw std::runtime_error{"error while open level"};
+			return m_loaded_levels[id];
 		}
 
-		bool save_level(const level_packer<packer_mode::pack>& lv, const std::string& level_name)
+		bool save_level(const level_packer<packer_mode::pack>& lv, const std::string& id)
 		{
-			if(!m_filemgr.reopen(this->make_path(level_name), std::ios::out | std::ios::trunc))
+			if(!m_filemgr.reopen(this->make_path(id), std::ios::out | std::ios::trunc))
 				return false;
 			m_filemgr.write(lv.packed_data());
 			return true;
 		}
 
+		std::size_t num_levels() const noexcept
+		{return m_loaded_levels.size();}
+
 	private:
-		std::string make_path(const std::string& level_name)
-		{return m_abs_path + level_name + ".rjl";}
+		void init()
+		{
+			mlk::lout("rj::level_manager") << "loading levels recursive from directory '" << m_abs_path << "'...";
+			auto content(m_dirh.get_content<true>());
+			auto count(0);
+			for(auto& a : content)
+				if(a.type == mlk::fs::item_type::file)
+				{
+					this->load_to_mgr(a.name, a.path);
+					++count;
+				}
+			mlk::lout("rj::level_manager") << "loaded " << count << " levels";
+		}
+
+		void load_to_mgr(const level_id& id, const std::string& path)
+		{
+			if(!m_filemgr.reopen(path, std::ios::in))
+				return;
+
+			auto data(m_filemgr.read_all());
+			level_packer<packer_mode::unpack> unpacker{data};
+			m_loaded_levels[id] = unpacker.get_level();
+		}
+
+		std::string make_path(const level_id& id) const noexcept
+		{return m_abs_path + id + ".rjl";}
 	};
 }
 
