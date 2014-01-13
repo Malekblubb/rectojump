@@ -7,71 +7,49 @@
 #define RJ_CORE_MAIN_MENU_ITEMS_HPP
 
 
-#include "menu_component.hpp"
+#include "basic_component.hpp"
+#include "item.hpp"
+#include <rectojump/core/render.hpp>
 
 
 namespace rj
 {
 	class game;
 
-	class items : public menu_component
+	class items : protected basic_component
 	{
 		const sf::Color& m_def_fontcolor;
 		const sf::Color& m_act_fontcolor;
 
 		static constexpr float m_spacing{50.f};
-		std::vector<sf::Text> m_menuitems;
+		std::map<item, sf::Text> m_menuitems;
 		std::size_t m_current_index{0};
 
 	public:
 		items(game& g, const sf::Font& font, const vec2f& center, const sf::Color& def, const sf::Color& act) :
-			menu_component{g, font, center},
+			basic_component{g, font, center},
 			m_def_fontcolor{def},
 			m_act_fontcolor{act}
-		{this->init();}
+		{ }
 
 		void update(dur)
 		{
 			for(auto& a : m_menuitems)
-				a.setColor(m_def_fontcolor);
-			m_menuitems.at(m_current_index).setColor(m_act_fontcolor);
+			{
+				if(a.first.index == m_current_index)
+					a.second.setColor(m_act_fontcolor);
+				else
+					a.second.setColor(m_def_fontcolor);
+			}
 		}
 
 		void render()
+		{for(auto& a : m_menuitems) render::render_object(m_game, a.second);}
+
+		void add_item(const item_id& id, const std::string& text)
 		{
-			for(auto& a : m_menuitems) render::render_object(m_game, a);
-		}
-
-	private:
-		void init() override
-		{
-			on_key_pressed(key::Up) += [this]{this->on_key_up();};
-			on_keys_pressed(key::Down) += [this]{this->on_key_down();};
-
-			// add items
-			m_menuitems.emplace_back("Play", m_font);
-			m_menuitems.emplace_back("Options", m_font);
-			m_menuitems.emplace_back("Credits", m_font);
-			m_menuitems.emplace_back("Quit", m_font);
-
-			// calc positions
-			sf::FloatRect rect{0.f, 0.f, 0.f, 0.f};
-			for(auto& a : m_menuitems)
-			{
-				auto tmp(a.getLocalBounds());
-				rect.height += tmp.height;
-				rect.width += tmp.width;
-			}
-
-			auto num(0);
-			for(auto& a : m_menuitems)
-			{
-				auto tmp_rect(a.getLocalBounds());
-				a.setOrigin(tmp_rect.width / 2.f, tmp_rect.height / 2.f);
-				a.setPosition(m_center.x, (m_center.y - rect.height / 2) + (num * m_spacing));
-				a.setColor(m_def_fontcolor);
-				++num;
-			}
+			m_menuitems.emplace(item{id, this->num_items()}, sf::Text{text, m_font});
+			this->recalc_positions();
 		}
 
 		void on_key_up()
@@ -88,6 +66,37 @@ namespace rj
 				m_current_index = 0;
 			else
 				++m_current_index;
+		}
+
+		item get_current_selected() const
+		{
+			for(auto& a : m_menuitems)
+				if(a.first.index == m_current_index)
+					return a.first;
+			return {"", 0};
+		}
+
+	private:
+		void recalc_positions()
+		{
+			// calc positions
+			sf::FloatRect rect{0.f, 0.f, 0.f, 0.f};
+			for(auto& a : m_menuitems)
+			{
+				auto tmp(a.second.getLocalBounds());
+				rect.height += tmp.height;
+				rect.width += tmp.width;
+			}
+
+			auto num(0);
+			for(auto& a : m_menuitems)
+			{
+				auto tmp_rect(a.second.getLocalBounds());
+				a.second.setOrigin(tmp_rect.width / 2.f, tmp_rect.height / 2.f);
+				a.second.setPosition(m_center.x, (m_center.y - rect.height / 2) + (num * m_spacing));
+				a.second.setColor(m_def_fontcolor);
+				++num;
+			}
 		}
 
 		std::size_t num_items() const noexcept
