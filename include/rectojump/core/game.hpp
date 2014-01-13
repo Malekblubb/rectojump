@@ -11,6 +11,7 @@
 #include "game_window.hpp"
 #include <rectojump/game/debug_info.hpp>
 #include <rectojump/game/world.hpp>
+#include <rectojump/global/common.hpp>
 
 
 namespace rj
@@ -27,10 +28,7 @@ namespace rj
 		game(game_window& window) :
 			m_window{window},
 			m_updater{m_window.get_updater()}
-		{
-//			m_updater.on_update += [this](dur duration){this->update(duration);};
-//			m_updater.on_render += [this]{this->render();};
-		}
+		{ }
 
 		void update(dur duration)
 		{
@@ -40,6 +38,11 @@ namespace rj
 		void render()
 		{
 			m_world.render();
+		}
+
+		void load_level(const entity_proto_vec& entities)
+		{
+			m_world.load_level(entities);
 		}
 
 		void render_object(const sf::Drawable& object)
