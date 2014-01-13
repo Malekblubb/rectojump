@@ -7,7 +7,10 @@
 #define RJ_CORE_MAIN_MENU_MAIN_MENU_HPP
 
 
+#include "component_manager.hpp"
 #include "items.hpp"
+#include "menu_levels.hpp"
+#include "menu_start.hpp"
 #include "title.hpp"
 
 #include <rectojump/core/game_window.hpp>
@@ -15,12 +18,13 @@
 #include <rectojump/game/components/player.hpp>
 #include <rectojump/game/factory.hpp>
 #include <rectojump/global/common.hpp>
+#include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/shared/data_manager.hpp>
 #include <rectojump/shared/utils.hpp>
 
 #include <mlk/signals_slots/slot.h>
-#include <mlk/time/simple_timer.h>
-#include <mlk/tools/random_utl.h>
+#include <mlk/tools/bitset.h>
+#include <mlk/tools/enum_utl.h>
 
 #include <SFML/Graphics.hpp>
 
@@ -28,76 +32,114 @@
 namespace rj
 {
 	class game;
-
-	enum item : std::size_t
-	{play, options, credits, quit};
+	class game_handler;
 
 	class main_menu
 	{
+		friend class component_manager<main_menu>;
+
 		game& m_game;
 		game_window& m_gamewindow;
-		data_manager& m_datamanager;
+		data_manager& m_datamgr;
+		level_manager& m_lvmgr;
 
-		sf::Font m_font{m_datamanager.get_as<sf::Font>("Fipps-Regular.otf")};
+		sf::Font m_font{m_datamgr.get_as<sf::Font>("Fipps-Regular.otf")};
 		const vec2f m_center{static_cast<vec2f>(m_gamewindow.get_size()) / 2.f};
-		const sf::Color m_def_fontcolor{"#797979"_rgb};
-		const sf::Color m_act_fontcolor{"#f15ede"_rgb};
+		const sf::Color m_def_fontcolor{to_rgb("#797979") /*"#797979"_rgb*/}; // TODO: QTC dont supports that custom literals yet
+		const sf::Color m_act_fontcolor{to_rgb("#f15ede") /*"#f15ede"_rgb*/};
 
 		// background
 		sf::RectangleShape m_background;
-		sf::Texture m_background_texture{m_datamanager.get_as<sf::Texture>("menu_side.png")};
+		sf::Texture m_background_texture{m_datamgr.get_as<sf::Texture>("menu_side.png")};
 
-		// player preview
-		factory::eptr<player> m_player_prev{factory::create<player>(vec2f{m_center.x, m_center.y / 0.55f})};
-		mlk::tm::simple_timer m_player_timer{500};
-
-		mlk::event_delegates<std::size_t> m_events;
+		mlk::event_delegates<item_id> m_events;
 
 		// menu components
-		items m_items{m_game, m_font, m_center, m_def_fontcolor, m_act_fontcolor};
-		title m_title{m_game, m_font, m_center};
+		component_manager<main_menu> m_componentmgr{*this};
+		comp_ptr<menu_start<main_menu>> m_start{m_componentmgr.create_comp<menu_start<main_menu>, menu_state::menu_start>()};
+		comp_ptr<menu_levels<main_menu>> m_levels{m_componentmgr.create_comp<menu_levels<main_menu>, menu_state::menu_levels>()};
+		comp_ptr<title<main_menu>> m_title{m_componentmgr.create_comp<title<main_menu>, menu_state::title>()};
+
+		// menu states
+		mlk::ebitset<menu_state, menu_state::num> m_current_menu;
 
 	public:
-		main_menu(game& g, game_window& gw, data_manager& dm) :
+		main_menu(game& g, game_window& gw, data_manager& dm, level_manager& lvmgr) :
 			m_game{g},
 			m_gamewindow{gw},
-			m_datamanager{dm}
+			m_datamgr{dm},
+			m_lvmgr{lvmgr}
 		{this->init();}
 
+		bool is_active(menu_state s)
+		{return m_current_menu & s;}
+
+		auto on_item_event(const item_id& id)
+		-> decltype(m_events[id])&
+		{return m_events[id];}
+
+		void exec_current_itemevent()
+		{m_events[m_start->get_current_selected().id]();}
+
+		template<menu_state new_state>
+		void do_menu_switch()
+		{
+			m_current_menu.remove_all();
+			m_current_menu |= new_state;
+			m_current_menu |= menu_state::title;
+		}
 
 		void update(dur duration)
 		{
-			m_title.update(duration);
-			m_items.update(duration);
-			this->update_player(duration);
+			m_componentmgr.update(duration);
 		}
 
 		void render()
 		{
 			render::render_object(m_game, m_background);
-			m_title.render();
-			m_items.render();
-			m_player_prev->render();
+			m_componentmgr.render();
 		}
+
+		// getters
+		items& get_items() noexcept
+		{return m_start->get_items();}
+
+		level_squares& get_squares() noexcept
+		{return m_levels->get_squares();}
+
+		game_window& get_gamewindow() noexcept
+		{return m_gamewindow;}
+
+		data_manager& get_datamgr() const noexcept
+		{return m_datamgr;}
+
+		level_manager& get_lvmgr() const noexcept
+		{return m_lvmgr;}
+
+		const sf::Color& get_act_fontcolor() const noexcept
+		{return m_act_fontcolor;}
+
+		const sf::Color& get_def_fontcolor() const noexcept
+		{return m_def_fontcolor;}
 
 	private:
 		void init()
 		{
-			this->setup_input();
+			m_current_menu |= menu_state::menu_start;
+			m_current_menu |= menu_state::title;
+
 			this->setup_events();
 			this->setup_interface();
-			m_player_timer.run();
-		}
-
-		void setup_input()
-		{
-			//on_keys_pressed(key::Return);
 		}
 
 		void setup_events()
 		{
-			mlk::slot<> test{[]{std::cout<< "test " << std::endl;}};
-			m_events.emplace(item::play, test);
+			this->on_item_event("play") +=
+			[this]
+			{
+				this->do_menu_switch<menu_state::menu_levels>();
+				m_title->set_text("Levels");
+			};
 		}
 
 		void setup_interface()
@@ -106,21 +148,6 @@ namespace rj
 			m_background.setSize(vec2f{m_gamewindow.get_size()});
 			m_background.setPosition({0.f, 0.f});
 			m_background.setTexture(&m_background_texture);
-
-			// player
-			m_player_prev->init();
-			m_player_prev->set_game(&m_game);
-			m_player_prev->render_object().setFillColor(m_act_fontcolor);
-		}
-
-		void update_player(dur duration)
-		{
-			if(m_player_timer.timed_out())
-			{
-				simulate_keypress(key::Space);
-				m_player_timer.restart(mlk::rnd<mlk::ullong>(500, 5000));
-			}
-			m_player_prev->update(duration);
 		}
 	};
 }
