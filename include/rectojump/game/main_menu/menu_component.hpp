@@ -7,32 +7,36 @@
 #define RJ_CORE_MAIN_MENU_MENU_COMPONENT_HPP
 
 
-#include <rectojump/global/common.hpp>
-
-#include <SFML/Graphics.hpp>
+#include "basic_component.hpp"
+#include "main_menu.hpp"
 
 
 namespace rj
 {
 	class game;
 
-	class menu_component
+	enum class menu_state : char
+	{none, menu_start, menu_levels, title, num};
+
+	template<typename Main_Menu>
+	class menu_component : protected basic_component
 	{
 	protected:
-		game& m_game;
-		const sf::Font& m_font;
-		const vec2f& m_center;
+		Main_Menu& m_mainmenu;
+		const menu_state m_type;
 
 	public:
-		menu_component(game& g, const sf::Font& font, const vec2f& center) :
-			m_game{g},
-			m_font{font},
-			m_center{center}
+		menu_component(Main_Menu& mm, menu_state state, game& g, const sf::Font& font, const vec2f& center) :
+			basic_component{g, font, center},
+			m_mainmenu{mm},
+			m_type{state}
 		{ }
 
-		virtual void init() { }
 		virtual void update(dur) = 0;
 		virtual void render() = 0;
+
+		menu_state get_type() const noexcept
+		{return m_type;}
 	};
 }
 
