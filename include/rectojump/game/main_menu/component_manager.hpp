@@ -25,12 +25,14 @@ namespace rj
 	template<typename Main_Menu>
 	class component_manager
 	{
+		using mc_mm_ptr = comp_ptr<menu_component<Main_Menu>>;
+
 		Main_Menu& m_mainmenu;
 		game& m_game{m_mainmenu.m_game};
 		const sf::Font& m_font{m_mainmenu.m_font};
 		const vec2f& m_center{m_mainmenu.m_center};
 
-		std::vector<comp_ptr<menu_component<Main_Menu>>> m_components;
+		std::vector<mc_mm_ptr> m_components;
 
 	public:
 		component_manager(Main_Menu& mm) :
