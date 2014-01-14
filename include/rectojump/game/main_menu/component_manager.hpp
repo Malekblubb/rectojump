@@ -60,6 +60,14 @@ namespace rj
 			m_components.emplace_back(ptr);
 			return ptr;
 		}
+
+		mc_mm_ptr get_comp_from_type(menu_state type)
+		{
+			for(auto& a : m_components)
+				if(a->get_type() == type)
+					return a;
+			return nullptr;
+		}
 	};
 }
 
