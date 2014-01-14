@@ -8,6 +8,7 @@
 
 
 #include "basic_component.hpp"
+#include "items.hpp"
 #include "main_menu.hpp"
 
 
@@ -16,7 +17,7 @@ namespace rj
 	class game;
 
 	enum class menu_state : char
-	{none, menu_start, menu_levels, title, num};
+	{none, menu_start, menu_levels, num};
 
 	template<typename Main_Menu>
 	class menu_component : protected basic_component
@@ -34,6 +35,10 @@ namespace rj
 
 		virtual void update(dur) = 0;
 		virtual void render() = 0;
+
+		virtual void on_key_up() = 0;
+		virtual void on_key_down() = 0;
+		virtual items& get_items() = 0;
 
 		menu_state get_type() const noexcept
 		{return m_type;}
