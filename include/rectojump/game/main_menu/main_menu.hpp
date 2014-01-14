@@ -52,8 +52,6 @@ namespace rj
 		sf::RectangleShape m_background;
 		sf::Texture m_background_texture{m_datamgr.get_as<sf::Texture>("menu_side.png")};
 
-		mlk::event_delegates<item_id> m_events;
-
 		// menu components
 		component_manager<main_menu> m_componentmgr{*this};
 		comp_ptr<menu_start<main_menu>> m_start{m_componentmgr.create_comp<menu_start<main_menu>, menu_state::menu_start>()};
@@ -74,12 +72,8 @@ namespace rj
 		bool is_active(menu_state s)
 		{return m_current_menu & s;}
 
-		auto on_item_event(const item_id& id)
-		-> decltype(m_events[id])&
-		{return m_events[id];}
-
 		void exec_current_itemevent()
-		{m_events[m_start->get_current_selected().id]();}
+		{m_start->get_items().call_current_event();}
 
 		template<menu_state new_state>
 		void do_menu_switch()
@@ -134,12 +128,12 @@ namespace rj
 
 		void setup_events()
 		{
-			this->on_item_event("play") +=
+			m_start->get_items().on_event("play",
 			[this]
 			{
 				this->do_menu_switch<menu_state::menu_levels>();
 				m_title->set_text("Levels");
-			};
+			});
 		}
 
 		void setup_interface()

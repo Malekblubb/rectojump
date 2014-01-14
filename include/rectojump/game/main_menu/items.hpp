@@ -11,6 +11,7 @@
 #include "item.hpp"
 #include <rectojump/core/render.hpp>
 
+#include <mlk/containers/container_utl.h>
 #include <mlk/signals_slots/slot.h>
 
 
@@ -26,6 +27,8 @@ namespace rj
 		static constexpr float m_spacing{50.f};
 		std::map<item, sf::Text> m_menuitems;
 		std::size_t m_current_index{0};
+
+		mlk::event_delegates<item_id> m_events;
 
 	public:
 		items(game& g, const sf::Font& font, const vec2f& center, const sf::Color& def, const sf::Color& act) :
@@ -52,6 +55,22 @@ namespace rj
 		{
 			m_menuitems.emplace(item{id, this->num_items()}, sf::Text{text, m_font});
 			this->recalc_positions();
+		}
+
+		void call_current_event()
+		{
+			mlk::cnt::map_first_foreach(m_menuitems,
+			[this](const item& i)
+			{
+				if(i.index == m_current_index)
+					m_events[i.id]();
+			});
+		}
+
+		template<typename Func>
+		void on_event(const item_id& id, Func&& f)
+		{
+			m_events[id] += f;
 		}
 
 		void on_key_up()

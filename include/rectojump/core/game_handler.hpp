@@ -121,8 +121,8 @@ namespace rj
 //			m_main_menu.on_item_event(item::play) +=
 //			[this]{m_current_states.remove(state::main_menu); m_current_states |= state::game;};
 
-			m_main_menu.on_item_event("quit") +=
-			[this]{m_game_window.stop();};
+//			m_main_menu.on_item_event("quit") +=
+//			[this]{m_game_window.stop();};
 
 			// game input
 			on_key_pressed(key::P) +=
