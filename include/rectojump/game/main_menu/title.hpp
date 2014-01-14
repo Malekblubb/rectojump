@@ -63,7 +63,7 @@ namespace rj
 
 		void set_pos() noexcept
 		{
-			m_title.setOrigin(m_title.getLocalBounds().width / 2.f, m_title.getGlobalBounds().height / 2.f);
+			m_title.setOrigin(m_title.getGlobalBounds().width / 2.f, m_title.getGlobalBounds().height / 2.f);
 			m_title.setPosition(this->m_center.x, 150);
 		}
 	};
