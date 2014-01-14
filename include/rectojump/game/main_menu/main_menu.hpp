@@ -52,14 +52,16 @@ namespace rj
 		sf::RectangleShape m_background;
 		sf::Texture m_background_texture{m_datamgr.get_as<sf::Texture>("menu_side.png")};
 
-		// menu components
+		// components (menus)
 		component_manager<main_menu> m_componentmgr{*this};
 		comp_ptr<menu_start<main_menu>> m_start{m_componentmgr.create_comp<menu_start<main_menu>, menu_state::menu_start>()};
 		comp_ptr<menu_levels<main_menu>> m_levels{m_componentmgr.create_comp<menu_levels<main_menu>, menu_state::menu_levels>()};
-		comp_ptr<title<main_menu>> m_title{m_componentmgr.create_comp<title<main_menu>, menu_state::title>()};
 
-		// menu states
-		mlk::ebitset<menu_state, menu_state::num> m_current_menu;
+		// other components (not menus)
+		title m_title{m_game, m_font, m_center};
+
+		// menu state
+		menu_state m_current_state{menu_state::menu_start};
 
 	public:
 		main_menu(game& g, game_window& gw, data_manager& dm, level_manager& lvmgr) :
@@ -70,28 +72,46 @@ namespace rj
 		{this->init();}
 
 		bool is_active(menu_state s)
-		{return m_current_menu & s;}
+		{return m_current_state == s;}
 
-		void exec_current_itemevent()
-		{m_start->get_items().call_current_event();}
+		void call_current_itemevent()
+		{
+			auto ptr(m_componentmgr.get_comp_from_type(m_current_state));
+			if(ptr != nullptr)
+				ptr->get_items().call_current_event();
+		}
 
 		template<menu_state new_state>
 		void do_menu_switch()
 		{
-			m_current_menu.remove_all();
-			m_current_menu |= new_state;
-			m_current_menu |= menu_state::title;
+			m_current_state = new_state;
 		}
 
 		void update(dur duration)
 		{
 			m_componentmgr.update(duration);
+			m_title.update(duration);
 		}
 
 		void render()
 		{
-			render::render_object(m_game, m_background);
+			render::render_object(m_game, m_background); // render bg first !!
 			m_componentmgr.render();
+			m_title.render();
+		}
+
+		void on_key_up()
+		{
+			auto ptr(m_componentmgr.get_comp_from_type(m_current_state));
+			if(ptr != nullptr)
+				ptr->on_key_up();
+		}
+
+		void on_key_down()
+		{
+			auto ptr(m_componentmgr.get_comp_from_type(m_current_state));
+			if(ptr != nullptr)
+				ptr->on_key_down();
 		}
 
 		// getters
@@ -119,9 +139,6 @@ namespace rj
 	private:
 		void init()
 		{
-			m_current_menu |= menu_state::menu_start;
-			m_current_menu |= menu_state::title;
-
 			this->setup_events();
 			this->setup_interface();
 		}
@@ -132,8 +149,13 @@ namespace rj
 			[this]
 			{
 				this->do_menu_switch<menu_state::menu_levels>();
-				m_title->set_text("Levels");
+				m_title.set_text("Levels");
 			});
+
+			m_start->get_items().on_event("quit",
+			[this]{m_gamewindow.stop();});
+
+			m_levels->get_items().on_event("lv_local", []{std::cout << "local pressed" << std::endl;});
 		}
 
 		void setup_interface()
