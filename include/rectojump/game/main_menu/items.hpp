@@ -11,6 +11,8 @@
 #include "item.hpp"
 #include <rectojump/core/render.hpp>
 
+#include <mlk/signals_slots/slot.h>
+
 
 namespace rj
 {
@@ -83,7 +85,7 @@ namespace rj
 			sf::FloatRect rect{0.f, 0.f, 0.f, 0.f};
 			for(auto& a : m_menuitems)
 			{
-				auto tmp(a.second.getLocalBounds());
+				auto tmp(a.second.getGlobalBounds());
 				rect.height += tmp.height;
 				rect.width += tmp.width;
 			}
@@ -91,7 +93,7 @@ namespace rj
 			auto num(0);
 			for(auto& a : m_menuitems)
 			{
-				auto tmp_rect(a.second.getLocalBounds());
+				auto tmp_rect(a.second.getGlobalBounds());
 				a.second.setOrigin(tmp_rect.width / 2.f, tmp_rect.height / 2.f);
 				a.second.setPosition(m_center.x, (m_center.y - rect.height / 2) + (num * m_spacing));
 				a.second.setColor(m_def_fontcolor);
