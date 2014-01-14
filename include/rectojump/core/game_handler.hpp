@@ -27,7 +27,7 @@ namespace rj
 	{
 		game_window& m_game_window;
 		game& m_game;
-		main_menu& m_main_menu;
+		main_menu& m_mainmenu;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
@@ -38,7 +38,7 @@ namespace rj
 		game_handler(game_window& window, game& g, main_menu& menu, data_manager& datamgr, level_manager& lvmgr) :
 			m_game_window{window},
 			m_game{g},
-			m_main_menu{menu},
+			m_mainmenu{menu},
 			m_datamgr{datamgr},
 			m_lvmgr{lvmgr},
 			m_debug_info{m_game, m_datamgr}
@@ -60,68 +60,68 @@ namespace rj
 			on_key_pressed(key::Return) +=
 			[this]
 			{
-				if(!this->is_active(state::main_menu) || !m_main_menu.is_active(menu_state::menu_start))
+				if(!this->is_active(state::main_menu))
 					return;
-				m_main_menu.exec_current_itemevent();
+				m_mainmenu.call_current_itemevent();
 			};
 
 			on_key_pressed(key::Up) +=
 			[this]
 			{
-				if(!this->is_active(state::main_menu) || !m_main_menu.is_active(menu_state::menu_start))
+				if(!this->is_active(state::main_menu))
 					return;
-				m_main_menu.get_items().on_key_up();
+				m_mainmenu.on_key_up();
 			};
 
 			on_keys_pressed(key::Down) +=
 			[this]
 			{
-				if(!this->is_active(state::main_menu) || !m_main_menu.is_active(menu_state::menu_start))
+				if(!this->is_active(state::main_menu))
 					return;
-				m_main_menu.get_items().on_key_down();
+				m_mainmenu.on_key_down();
 			};
 
 
 
-			on_keys_pressed(key::Up) +=
-			[this]
-			{
-				if(!this->is_active(state::main_menu) || !m_main_menu.is_active(menu_state::menu_levels))
-					return;
-				m_main_menu.get_squares().on_key_up();
-			};
+//			on_keys_pressed(key::Up) +=
+//			[this]
+//			{
+//				if(!this->is_active(state::main_menu) || !m_mainmenu.is_active(menu_state::menu_levels))
+//					return;
+//				m_mainmenu.get_squares().on_key_up();
+//			};
 
 
-			on_key_pressed(key::Down) +=
-			[this]
-			{
-				if(!this->is_active(state::main_menu) || !m_main_menu.is_active(menu_state::menu_levels))
-					return;
-				m_main_menu.get_squares().on_key_down();
-			};
+//			on_key_pressed(key::Down) +=
+//			[this]
+//			{
+//				if(!this->is_active(state::main_menu) || !m_mainmenu.is_active(menu_state::menu_levels))
+//					return;
+//				m_mainmenu.get_squares().on_key_down();
+//			};
 
 
-			on_mousewheel(wheel::up) +=
-			[this](const vec2f&)
-			{
-				if(!this->is_active(state::main_menu) || !m_main_menu.is_active(menu_state::menu_levels))
-					return;
-				m_main_menu.get_squares().on_key_up();
-			};
+//			on_mousewheel(wheel::up) +=
+//			[this](const vec2f&)
+//			{
+//				if(!this->is_active(state::main_menu) || !m_mainmenu.is_active(menu_state::menu_levels))
+//					return;
+//				m_mainmenu.get_squares().on_key_up();
+//			};
 
-			on_mousewheel(wheel::down) +=
-			[this](const vec2f&)
-			{
-				if(!this->is_active(state::main_menu) || !m_main_menu.is_active(menu_state::menu_levels))
-					return;
-				m_main_menu.get_squares().on_key_down();
-			};
+//			on_mousewheel(wheel::down) +=
+//			[this](const vec2f&)
+//			{
+//				if(!this->is_active(state::main_menu) || !m_mainmenu.is_active(menu_state::menu_levels))
+//					return;
+//				m_mainmenu.get_squares().on_key_down();
+//			};
 
 
-//			m_main_menu.on_item_event(item::play) +=
+//			m_mainmenu.on_item_event(item::play) +=
 //			[this]{m_current_states.remove(state::main_menu); m_current_states |= state::game;};
 
-//			m_main_menu.on_item_event("quit") +=
+//			m_mainmenu.on_item_event("quit") +=
 //			[this]{m_game_window.stop();};
 
 			// game input
@@ -200,7 +200,7 @@ namespace rj
 				m_game.update(duration);
 
 			else if(this->is_active(state::main_menu))
-				m_main_menu.update(duration);
+				m_mainmenu.update(duration);
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.update(duration);
@@ -213,7 +213,7 @@ namespace rj
 				m_game.render();
 
 			else if(this->is_active(state::main_menu))
-				m_main_menu.render();
+				m_mainmenu.render();
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.render();
