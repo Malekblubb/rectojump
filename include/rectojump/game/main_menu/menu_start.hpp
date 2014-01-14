@@ -14,7 +14,6 @@
 
 #include <mlk/time/simple_timer.h>
 #include <mlk/tools/random_utl.h>
-#include <mlk/types/types.h>
 
 
 namespace rj
@@ -58,6 +57,16 @@ namespace rj
 		{
 			m_items.render();
 			m_player_prev->render();
+		}
+
+		void on_key_up() override
+		{
+			m_items.on_key_up();
+		}
+
+		void on_key_down() override
+		{
+			m_items.on_key_down();
 		}
 
 	private:

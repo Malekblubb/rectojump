@@ -7,6 +7,7 @@
 #define RJ_CORE_MAIN_MENU_MENU_LEVELS_HPP
 
 
+#include "items.hpp"
 #include "level_squares.hpp"
 #include "menu_component.hpp"
 #include <rectojump/core/game_window.hpp>
@@ -24,25 +25,45 @@ namespace rj
 		sf::RectangleShape m_bg_top{{200, 200}};
 
 		level_squares m_squares;
+		items m_items;
 		std::size_t m_current_index{0};
 
 	public:
+		mlk::slot<> on_level_load;
+
 		menu_levels(Main_Menu& mm, menu_state type, game& g, const sf::Font& font, const vec2f& center) :
 			menu_component<Main_Menu>{mm, type, g, font, center},
 			m_squares{g, font, center, this->m_mainmenu.get_def_fontcolor(),
-					  this->m_mainmenu.get_act_fontcolor()}
+					  this->m_mainmenu.get_act_fontcolor()},
+			m_items{g, font, center, this->m_mainmenu.get_def_fontcolor(),
+					this->m_mainmenu.get_act_fontcolor()}
 		{this->init();}
 
 		void update(dur duration) override
 		{
-			m_squares.update(duration);
+			m_items.update(duration);
+//			m_squares.update(duration);
 		}
 
 		void render() override
 		{
-			m_squares.render();
+//			m_squares.render();
+			m_items.render();
 			render::render_object(this->m_game, m_bg_top);
 		}
+
+		void on_key_up() override
+		{
+			m_items.on_key_up();
+		}
+
+		void on_key_down() override
+		{
+			m_items.on_key_down();
+		}
+
+		items& get_items() override
+		{return m_items;}
 
 		level_squares& get_squares() noexcept
 		{return m_squares;}
@@ -50,6 +71,9 @@ namespace rj
 	private:
 		void init()
 		{
+			m_items.add_item("lv_local", "Local Levels");
+			m_items.add_item("lv_download", "Download Levels");
+
 			m_bg_top.setOrigin(100, 0);
 			m_bg_top.setFillColor(to_rgb("#e3e3e3"));
 			m_bg_top.setPosition(this->m_center.x, 0.f);
