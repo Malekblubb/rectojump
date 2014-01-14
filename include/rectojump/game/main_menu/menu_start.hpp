@@ -25,7 +25,7 @@ namespace rj
 		items m_items;
 
 		// player preview
-		factory::eptr<player> m_player_prev{factory::create<player>(vec2f{basic_component::m_center.x, basic_component::m_center.y / 0.55f})};
+		factory::eptr<player> m_player_prev{factory::create<player>(vec2f{this->m_center.x, this->m_center.y / 0.55f})};
 		mlk::tm::simple_timer m_player_timer{500};
 
 	public:
