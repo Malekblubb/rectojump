@@ -8,7 +8,6 @@
 
 
 #include "basic_component.hpp"
-#include "menu_component.hpp"
 #include <rectojump/core/render.hpp>
 
 
@@ -19,17 +18,16 @@ namespace rj
 	enum class direction : char
 	{forward, back};
 
-	template<typename Main_Menu>
-	class title : public menu_component<Main_Menu>
+	class title : public basic_component
 	{
-		sf::Text m_title{"Recto Jump", this->m_font, 50};
+		sf::Text m_title{"Recto Jump", m_font, 50};
 		std::vector<sf::Color> m_title_colors;
 		std::size_t m_current_colorindex{0};
 		direction m_direction{direction::forward};
 
 	public:
-		title(Main_Menu& mm, menu_state type, game& g, const sf::Font& font, const vec2f& center) :
-			menu_component<Main_Menu>{mm, type, g, font, center}
+		title(game& g, const sf::Font& font, const vec2f& center) :
+			basic_component{g, font, center}
 		{this->init();}
 
 		void update(dur)
@@ -45,7 +43,7 @@ namespace rj
 		}
 
 		void render()
-		{render::render_object(this->m_game, m_title);}
+		{render::render_object(m_game, m_title);}
 
 		void set_text(const std::string& text) noexcept
 		{m_title.setString(text); this->set_pos();}
@@ -64,7 +62,7 @@ namespace rj
 		void set_pos() noexcept
 		{
 			m_title.setOrigin(m_title.getGlobalBounds().width / 2.f, m_title.getGlobalBounds().height / 2.f);
-			m_title.setPosition(this->m_center.x, 150);
+			m_title.setPosition(m_center.x, 150);
 		}
 	};
 }
