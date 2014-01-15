@@ -20,7 +20,7 @@ namespace rj
 	{none, menu_start, menu_levels, num};
 
 	template<typename Main_Menu>
-	class menu_component : protected basic_component
+	class menu_component : public basic_component
 	{
 	protected:
 		Main_Menu& m_mainmenu;
@@ -35,10 +35,9 @@ namespace rj
 
 		virtual void update(dur) = 0;
 		virtual void render() = 0;
-
 		virtual void on_key_up() = 0;
 		virtual void on_key_down() = 0;
-		virtual items& get_items() = 0;
+		virtual void call_current_event() = 0;
 
 		menu_state get_type() const noexcept
 		{return m_type;}

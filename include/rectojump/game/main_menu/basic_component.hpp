@@ -21,6 +21,18 @@ namespace rj
 		game& m_game;
 		const sf::Font& m_font;
 		const vec2f& m_center;
+
+		basic_component(game& g, const sf::Font& font, const vec2f& center) :
+			m_game{g},
+			m_font{font},
+			m_center{center}
+		{ }
+
+		virtual void update(dur) { }
+		virtual void render() { }
+		virtual void on_key_up() { }
+		virtual void on_key_down() { }
+		virtual void call_current_event() { }
 	};
 }
 
