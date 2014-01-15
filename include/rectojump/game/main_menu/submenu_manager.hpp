@@ -15,6 +15,8 @@
 #include <mlk/signals_slots/slot.h>
 #include <mlk/types/types.h>
 
+#include <stack>
+
 
 namespace rj
 {
@@ -23,11 +25,12 @@ namespace rj
 	{
 		using bc_ptr = mlk::sptr<basic_component>;
 
-		State_Enum m_current_state{start_state};
+		std::stack<State_Enum> m_state_stack;
 		std::map<State_Enum, bc_ptr> m_components;
 
 	public:
-		submenu_manager() = default;
+		submenu_manager()
+		{m_state_stack.push(start_state);}
 
 		void update_current_state(dur duration)
 		{this->current()->update(duration);}
@@ -48,12 +51,22 @@ namespace rj
 		void add_menu(State_Enum state, const Basic_Component_Ptr& bc)
 		{m_components[state] = bc;}
 
-		void switch_state(State_Enum new_state)
-		{m_current_state = new_state;}
+		void switch_state(State_Enum new_state) noexcept
+		{m_state_stack.push(new_state);}
+
+		void activate_prev_state() noexcept
+		{
+			if(m_state_stack.size() == 1)
+				return;
+			m_state_stack.pop();
+		}
+
+		State_Enum get_current_state() const noexcept
+		{return m_state_stack.top();}
 
 	private:
 		bc_ptr& current() noexcept
-		{return m_components[m_current_state];}
+		{return m_components[this->get_current_state()];}
 	};
 }
 
