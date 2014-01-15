@@ -8,9 +8,7 @@
 
 
 #include "menu_component.hpp"
-#include <rectojump/core/game_handler.hpp>
 
-#include <mlk/containers/container_utl.h>
 #include <mlk/types/types.h>
 
 

@@ -31,8 +31,6 @@ namespace rj
 		scroll_dir m_sdir{scroll_dir::none};
 		float m_scrollstep{1.5f};
 
-
-
 	public:
 		mlk::slot<const level_id&> on_level_load;
 

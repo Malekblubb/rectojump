@@ -9,8 +9,8 @@
 
 #include "items.hpp"
 #include "level_squares.hpp"
-#include "menu.hpp"
 #include "menu_component.hpp"
+#include "submenu_manager.hpp"
 #include <rectojump/core/game_window.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/shared/utils.hpp>
@@ -30,7 +30,7 @@ namespace rj
 
 		mlk::sptr<level_squares> m_squares_local;
 		mlk::sptr<items> m_items;
-		menu<lv_menu_state, lv_menu_state::select> m_submenu_handler;
+		submenu_manager<lv_menu_state, lv_menu_state::select> m_submenu_manager;
 
 	public:
 		mlk::slot<const level_id&>& on_level_load{m_squares_local->on_level_load};
@@ -38,30 +38,28 @@ namespace rj
 		menu_levels(Main_Menu& mm, menu_state type, game& g, const sf::Font& font, const vec2f& center) :
 			menu_component<Main_Menu>{mm, type, g, font, center},
 			m_squares_local{std::make_shared<level_squares>(g, font, center, this->m_mainmenu.get_def_fontcolor(),
-					  this->m_mainmenu.get_act_fontcolor())},
+															this->m_mainmenu.get_act_fontcolor())},
 			m_items{std::make_shared<items>(g, font, center, this->m_mainmenu.get_def_fontcolor(),
 					this->m_mainmenu.get_act_fontcolor())}
 		{this->init();}
 
 		void update(dur duration) override
-		{
-			m_submenu_handler.update_current_state(duration);
-		}
+		{m_submenu_manager.update_current_state(duration);}
 
 		void render() override
 		{
-			m_submenu_handler.render_current_state();
+			m_submenu_manager.render_current_state();
 			render::render_object(this->m_game, m_bg_top);
 		}
 
 		void on_key_up() override
-		{m_submenu_handler.event_up();}
+		{m_submenu_manager.event_up();}
 
 		void on_key_down() override
-		{m_submenu_handler.event_down();}
+		{m_submenu_manager.event_down();}
 
 		void call_current_event() override
-		{m_submenu_handler.event_current();}
+		{m_submenu_manager.event_current();}
 
 		items& get_items() noexcept
 		{return *m_items;}
@@ -70,15 +68,15 @@ namespace rj
 		void init()
 		{
 			// adding components/submenus
-			m_submenu_handler.add_comp(lv_menu_state::select, m_items);
-			m_submenu_handler.add_comp(lv_menu_state::local, m_squares_local);
+			m_submenu_manager.add_menu(lv_menu_state::select, m_items);
+			m_submenu_manager.add_menu(lv_menu_state::local, m_squares_local);
 
 			// add entrys to menu 'items'
 			m_items->add_item("lv_local", "Local Levels");
 			m_items->add_item("lv_download", "Download Levels");
 
 			// bind events
-			m_items->on_event("lv_local", [this]{m_submenu_handler.switch_state(lv_menu_state::local);});
+			m_items->on_event("lv_local", [this]{m_submenu_manager.switch_state(lv_menu_state::local);});
 
 			m_bg_top.setOrigin(100, 0);
 			m_bg_top.setFillColor(to_rgb("#e3e3e3"));

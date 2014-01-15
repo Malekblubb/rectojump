@@ -19,7 +19,7 @@
 namespace rj
 {
 	template<typename State_Enum, State_Enum start_state>
-	class menu
+	class submenu_manager
 	{
 		using bc_ptr = mlk::sptr<basic_component>;
 
@@ -27,7 +27,7 @@ namespace rj
 		std::map<State_Enum, bc_ptr> m_components;
 
 	public:
-		menu() = default;
+		submenu_manager() = default;
 
 		void update_current_state(dur duration)
 		{this->current()->update(duration);}
@@ -45,7 +45,7 @@ namespace rj
 		{this->current()->call_current_event();}
 
 		template<typename Basic_Component_Ptr>
-		void add_comp(State_Enum state, const Basic_Component_Ptr& bc)
+		void add_menu(State_Enum state, const Basic_Component_Ptr& bc)
 		{m_components[state] = bc;}
 
 		void switch_state(State_Enum new_state)

@@ -12,7 +12,6 @@
 #include "menu_levels.hpp"
 #include "menu_start.hpp"
 #include "title.hpp"
-
 #include <rectojump/core/game_window.hpp>
 #include <rectojump/core/render.hpp>
 #include <rectojump/game/components/player.hpp>
@@ -21,10 +20,6 @@
 #include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/shared/data_manager.hpp>
 #include <rectojump/shared/utils.hpp>
-
-#include <mlk/signals_slots/slot.h>
-#include <mlk/tools/bitset.h>
-#include <mlk/tools/enum_utl.h>
 
 #include <SFML/Graphics.hpp>
 
@@ -78,7 +73,7 @@ namespace rj
 		{
 			auto ptr(m_componentmgr.get_comp_from_type(m_current_state));
 			if(ptr != nullptr)
-				ptr->/*get_items().*/call_current_event();
+				ptr->call_current_event();
 		}
 
 		template<menu_state new_state>
@@ -121,13 +116,16 @@ namespace rj
 //		level_squares& get_squares() noexcept
 //		{return m_levels->get_squares();}
 
+		game& get_game() noexcept
+		{return m_game;}
+
 		game_window& get_gamewindow() noexcept
 		{return m_gamewindow;}
 
-		data_manager& get_datamgr() const noexcept
+		data_manager& get_datamgr() noexcept
 		{return m_datamgr;}
 
-		level_manager& get_lvmgr() const noexcept
+		level_manager& get_lvmgr() noexcept
 		{return m_lvmgr;}
 
 		const sf::Color& get_act_fontcolor() const noexcept

@@ -22,7 +22,7 @@ namespace rj
 		{return !id.empty();}
 	};
 
-	bool operator<(const item& lhs, const item&rhs)
+	bool operator<(const item& lhs, const item& rhs)
 	{return lhs.index < rhs.index;}
 }
 
