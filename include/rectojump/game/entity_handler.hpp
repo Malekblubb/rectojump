@@ -12,15 +12,15 @@
 #include "entity.hpp"
 
 #include <mlk/log/log.h>
+#include <mlk/types/types.h>
 
-#include <memory>
 #include <vector>
 
 
 namespace rj
 {
 	template<typename T>
-	using entity_ptr = std::shared_ptr<T>;
+	using entity_ptr = mlk::sptr<T>;
 	using entity_base_ptr = entity_ptr<entity_base>;
 	using player_ptr = entity_ptr<player>;
 

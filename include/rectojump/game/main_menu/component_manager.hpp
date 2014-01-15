@@ -11,8 +11,7 @@
 #include <rectojump/core/game_handler.hpp>
 
 #include <mlk/containers/container_utl.h>
-
-#include <memory>
+#include <mlk/types/types.h>
 
 
 namespace rj
@@ -20,7 +19,7 @@ namespace rj
 	class game;
 
 	template<typename T>
-	using comp_ptr = std::shared_ptr<T>;
+	using comp_ptr = mlk::sptr<T>;
 
 	template<typename Main_Menu>
 	class component_manager

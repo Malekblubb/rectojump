@@ -13,6 +13,7 @@
 #include <rectojump/global/common.hpp>
 
 #include <mlk/signals_slots/slot.h>
+#include <mlk/types/types.h>
 
 
 namespace rj
@@ -20,7 +21,7 @@ namespace rj
 	template<typename State_Enum, State_Enum start_state>
 	class menu
 	{
-		using bc_ptr = std::shared_ptr<basic_component>;
+		using bc_ptr = mlk::sptr<basic_component>;
 
 		State_Enum m_current_state{start_state};
 		std::map<State_Enum, bc_ptr> m_components;

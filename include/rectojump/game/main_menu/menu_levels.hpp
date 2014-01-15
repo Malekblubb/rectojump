@@ -28,8 +28,8 @@ namespace rj
 		game_window& m_gamewindow{this->m_mainmenu.get_gamewindow()};
 		sf::RectangleShape m_bg_top{{200, 200}};
 
-		std::shared_ptr<level_squares> m_squares_local;
-		std::shared_ptr<items> m_items;
+		mlk::sptr<level_squares> m_squares_local;
+		mlk::sptr<items> m_items;
 		menu<lv_menu_state, lv_menu_state::select> m_submenu_handler;
 
 	public:
