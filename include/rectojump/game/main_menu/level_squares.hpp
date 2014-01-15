@@ -9,6 +9,9 @@
 
 #include "basic_component.hpp"
 #include <rectojump/core/render.hpp>
+#include <rectojump/shared/level_manager/level_manager.hpp>
+
+#include <mlk/signals_slots/slot.h>
 
 
 namespace rj
@@ -16,7 +19,7 @@ namespace rj
 	enum class scroll_dir : char
 	{up, down, none};
 
-	class level_squares : protected basic_component
+	class level_squares : public basic_component
 	{
 		const sf::Color& m_def_fontcolor;
 		const sf::Color& m_act_fontcolor;
@@ -28,14 +31,16 @@ namespace rj
 		scroll_dir m_sdir{scroll_dir::none};
 		float m_scrollstep{1.5f};
 
+
+
 	public:
+		mlk::slot<const level_id&> on_level_load;
+
 		level_squares(game& g, const sf::Font& font, const vec2f& center, const sf::Color& def, const sf::Color& act) :
 			basic_component{g, font, center},
 			m_def_fontcolor{def},
 			m_act_fontcolor{act}
-		{
-			this->init();
-		}
+		{this->init();}
 
 		void update(dur duration)
 		{
@@ -46,11 +51,8 @@ namespace rj
 			else
 				this->scroll_stop();
 
-			if(m_sdir != scroll_dir::none)
-			{
-				if(m_sdir == scroll_dir::down) for(auto& a : m_shapes) a.move(0.f, -m_scrollstep);
-				else if(m_sdir == scroll_dir::up) for(auto& a : m_shapes) a.move(0.f, m_scrollstep);
-			}
+			if(m_sdir == scroll_dir::down) for(auto& a : m_shapes) a.move(0.f, -m_scrollstep);
+			else if(m_sdir == scroll_dir::up) for(auto& a : m_shapes) a.move(0.f, m_scrollstep);
 
 			for(auto& a : m_shapes)
 				a.setOutlineColor(m_def_fontcolor);
@@ -66,7 +68,7 @@ namespace rj
 		void scroll_stop() noexcept
 		{m_sdir = scroll_dir::none;}
 
-		void on_key_up()
+		void on_key_up() noexcept
 		{
 			if(m_current_index <= 0)
 				m_current_index = this->max_index();
@@ -74,13 +76,16 @@ namespace rj
 				--m_current_index;
 		}
 
-		void on_key_down()
+		void on_key_down() noexcept
 		{
 			if(m_current_index >= this->max_index())
 				m_current_index = 0;
 			else
 				++m_current_index;
 		}
+
+		void call_current_event() override
+		{on_level_load("");}
 
 	private:
 		void init()

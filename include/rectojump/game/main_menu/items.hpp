@@ -19,7 +19,7 @@ namespace rj
 {
 	class game;
 
-	class items : protected basic_component
+	class items : public basic_component
 	{
 		const sf::Color& m_def_fontcolor;
 		const sf::Color& m_act_fontcolor;
@@ -57,7 +57,7 @@ namespace rj
 			this->recalc_positions();
 		}
 
-		void call_current_event()
+		void call_current_event() override
 		{
 			mlk::cnt::map_first_foreach(m_menuitems,
 			[this](const item& i)
@@ -73,7 +73,7 @@ namespace rj
 			m_events[id] += f;
 		}
 
-		void on_key_up()
+		void on_key_up() override
 		{
 			if(m_current_index <= 0)
 				m_current_index = this->max_index();
@@ -81,7 +81,7 @@ namespace rj
 				--m_current_index;
 		}
 
-		void on_key_down()
+		void on_key_down() override
 		{
 			if(m_current_index >= this->max_index())
 				m_current_index = 0;
