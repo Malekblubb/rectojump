@@ -17,7 +17,7 @@
 
 
 namespace rj
-{
+{	
 	template<typename Main_Menu>
 	class menu_start : public menu_component<Main_Menu>
 	{
@@ -33,9 +33,6 @@ namespace rj
 			m_items{g, font, center,this->m_mainmenu.get_def_fontcolor(),
 					this->m_mainmenu.get_act_fontcolor()}
 		{this->init();}
-
-		items& get_items() noexcept
-		{return m_items;}
 
 		item get_current_selected() const noexcept
 		{return m_items.get_current_selected();}
@@ -69,9 +66,16 @@ namespace rj
 			m_items.on_key_down();
 		}
 
+		void call_current_event() override
+		{m_items.call_current_event();}
+
+		items& get_items() noexcept
+		{return m_items;}
+
 	private:
 		void init()
 		{
+			// add entrys to menu 'items'
 			m_items.add_item("play", "Play");
 			m_items.add_item("options", "Options");
 			m_items.add_item("credits", "Credits");

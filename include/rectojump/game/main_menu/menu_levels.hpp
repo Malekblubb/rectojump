@@ -9,6 +9,7 @@
 
 #include "items.hpp"
 #include "level_squares.hpp"
+#include "menu.hpp"
 #include "menu_component.hpp"
 #include <rectojump/core/game_window.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
@@ -17,6 +18,9 @@
 
 namespace rj
 {
+	enum class lv_menu_state : char
+	{select, local, download};
+
 	template<typename Main_Menu>
 	class menu_levels : public menu_component<Main_Menu>
 	{
@@ -24,55 +28,57 @@ namespace rj
 		game_window& m_gamewindow{this->m_mainmenu.get_gamewindow()};
 		sf::RectangleShape m_bg_top{{200, 200}};
 
-		level_squares m_squares;
-		items m_items;
-		std::size_t m_current_index{0};
+		std::shared_ptr<level_squares> m_squares_local;
+		std::shared_ptr<items> m_items;
+		menu<lv_menu_state, lv_menu_state::select> m_submenu_handler;
 
 	public:
-		mlk::slot<> on_level_load;
+		mlk::slot<const level_id&>& on_level_load{m_squares_local->on_level_load};
 
 		menu_levels(Main_Menu& mm, menu_state type, game& g, const sf::Font& font, const vec2f& center) :
 			menu_component<Main_Menu>{mm, type, g, font, center},
-			m_squares{g, font, center, this->m_mainmenu.get_def_fontcolor(),
-					  this->m_mainmenu.get_act_fontcolor()},
-			m_items{g, font, center, this->m_mainmenu.get_def_fontcolor(),
-					this->m_mainmenu.get_act_fontcolor()}
+			m_squares_local{std::make_shared<level_squares>(g, font, center, this->m_mainmenu.get_def_fontcolor(),
+					  this->m_mainmenu.get_act_fontcolor())},
+			m_items{std::make_shared<items>(g, font, center, this->m_mainmenu.get_def_fontcolor(),
+					this->m_mainmenu.get_act_fontcolor())}
 		{this->init();}
 
 		void update(dur duration) override
 		{
-			m_items.update(duration);
-//			m_squares.update(duration);
+			m_submenu_handler.update_current_state(duration);
 		}
 
 		void render() override
 		{
-//			m_squares.render();
-			m_items.render();
+			m_submenu_handler.render_current_state();
 			render::render_object(this->m_game, m_bg_top);
 		}
 
 		void on_key_up() override
-		{
-			m_items.on_key_up();
-		}
+		{m_submenu_handler.event_up();}
 
 		void on_key_down() override
-		{
-			m_items.on_key_down();
-		}
+		{m_submenu_handler.event_down();}
 
-		items& get_items() override
-		{return m_items;}
+		void call_current_event() override
+		{m_submenu_handler.event_current();}
 
-		level_squares& get_squares() noexcept
-		{return m_squares;}
+		items& get_items() noexcept
+		{return *m_items;}
 
 	private:
 		void init()
 		{
-			m_items.add_item("lv_local", "Local Levels");
-			m_items.add_item("lv_download", "Download Levels");
+			// adding components/submenus
+			m_submenu_handler.add_comp(lv_menu_state::select, m_items);
+			m_submenu_handler.add_comp(lv_menu_state::local, m_squares_local);
+
+			// add entrys to menu 'items'
+			m_items->add_item("lv_local", "Local Levels");
+			m_items->add_item("lv_download", "Download Levels");
+
+			// bind events
+			m_items->on_event("lv_local", [this]{m_submenu_handler.switch_state(lv_menu_state::local);});
 
 			m_bg_top.setOrigin(100, 0);
 			m_bg_top.setFillColor(to_rgb("#e3e3e3"));

@@ -78,7 +78,7 @@ namespace rj
 		{
 			auto ptr(m_componentmgr.get_comp_from_type(m_current_state));
 			if(ptr != nullptr)
-				ptr->get_items().call_current_event();
+				ptr->/*get_items().*/call_current_event();
 		}
 
 		template<menu_state new_state>
@@ -115,11 +115,11 @@ namespace rj
 		}
 
 		// getters
-		items& get_items() noexcept
-		{return m_start->get_items();}
+//		items& get_items() noexcept
+//		{return m_start->get_items();}
 
-		level_squares& get_squares() noexcept
-		{return m_levels->get_squares();}
+//		level_squares& get_squares() noexcept
+//		{return m_levels->get_squares();}
 
 		game_window& get_gamewindow() noexcept
 		{return m_gamewindow;}
@@ -154,8 +154,6 @@ namespace rj
 
 			m_start->get_items().on_event("quit",
 			[this]{m_gamewindow.stop();});
-
-			m_levels->get_items().on_event("lv_local", []{std::cout << "local pressed" << std::endl;});
 		}
 
 		void setup_interface()
