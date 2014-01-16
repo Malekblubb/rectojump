@@ -34,8 +34,9 @@ namespace rj
 	{
 		friend class component_manager<main_menu>;
 
-		game& m_game;
 		game_window& m_gamewindow;
+		game& m_game;
+
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
@@ -45,7 +46,8 @@ namespace rj
 		const sf::Color m_act_fontcolor{to_rgb("#f15ede") /*"#f15ede"_rgb*/};
 
 		// background
-		sf::RectangleShape m_background;
+		sf::RectangleShape m_background_rect{vec2f{m_gamewindow.get_size()}};
+		sf::RectangleShape m_background_sides;
 		sf::Texture m_background_texture{m_datamgr.get_as<sf::Texture>("menu_side.png")};
 
 		// components (menus)
@@ -61,11 +63,11 @@ namespace rj
 		mlk::event_delegates<menu_state> m_on_menu_switch;
 
 	public:
-		main_menu(game& g, game_window& gw, data_manager& dm, level_manager& lvmgr) :
-			m_game{g},
+		main_menu(game_window& gw, game& g, data_manager& dm, level_manager& lm) :
 			m_gamewindow{gw},
+			m_game{g},
 			m_datamgr{dm},
-			m_lvmgr{lvmgr}
+			m_lvmgr{lm}
 		{this->init();}
 
 		void update(dur duration)
@@ -76,7 +78,7 @@ namespace rj
 
 		void render()
 		{
-			render::render_object(m_game, m_background); // render bg first !!
+			rndr::rmo(m_game, m_background_rect, m_background_sides); // render bg first !!
 			m_submenumgr.render_current_state();
 			m_title.render();
 		}
@@ -166,10 +168,13 @@ namespace rj
 
 		void setup_interface()
 		{
-			// background
-			m_background.setSize(vec2f{m_gamewindow.get_size()});
-			m_background.setPosition({0.f, 0.f});
-			m_background.setTexture(&m_background_texture);
+			// background (rect)
+			m_background_rect.setFillColor(to_rgb("#e3e3e3"));
+
+			// background (sides)
+			m_background_sides.setSize(vec2f{m_gamewindow.get_size()});
+			m_background_sides.setPosition({0.f, 0.f});
+			m_background_sides.setTexture(&m_background_texture);
 		}
 	};
 }
