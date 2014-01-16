@@ -6,7 +6,6 @@
 #include <rectojump/core/game.hpp>
 #include <rectojump/core/game_handler.hpp>
 #include <rectojump/core/game_window.hpp>
-#include <rectojump/game/debug_info.inl>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/global/error_inserter.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>

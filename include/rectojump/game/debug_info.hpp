@@ -16,17 +16,15 @@
 
 namespace rj
 {
-	class game;
-	class game_handler;
-
+	template<typename Game>
 	class debug_info
 	{
-		game& m_game;
+		Game& m_game;
 		sf::RectangleShape m_background{{100.f, 100.f}};
 		debug_text m_text;
 
 	public:
-		debug_info(game& g, data_manager& dm) :
+		debug_info(Game& g, data_manager& dm) :
 			m_game{g},
 			m_text{dm}
 		{
@@ -36,12 +34,18 @@ namespace rj
 			m_background.setOutlineColor({255, 0, 0});
 		}
 
-		void update(dur);
-		void render()
+		void update(dur)
 		{
-			rndr::ro(m_game, m_background);
-			rndr::ro(m_game, m_text);
+			m_background.setSize(m_text.get_size());
+			auto text(mlk::stl_string::str_format("FPS:      %%\nFDur:     %%\nEntities: %%",
+					  m_game.get_updater().get_fps(),
+					  m_game.get_updater().get_frameduration(),
+					  m_game.get_world().num_entities()));
+			m_text.set_text(text);
 		}
+
+		void render()
+		{rndr::rmo(m_game, m_background, m_text);}
 	};
 }
 
