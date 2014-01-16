@@ -11,6 +11,7 @@
 #include "items.hpp"
 #include "menu_levels.hpp"
 #include "menu_start.hpp"
+#include "submenu_manager.hpp"
 #include "title.hpp"
 #include <rectojump/core/game_window.hpp>
 #include <rectojump/core/render.hpp>
@@ -56,7 +57,8 @@ namespace rj
 		title m_title{m_game, m_font, m_center};
 
 		// menu state
-		menu_state m_current_state{menu_state::menu_start};
+		submenu_manager<menu_state, menu_state::menu_start> m_submenumgr;
+		mlk::event_delegates<menu_state> m_on_menu_switch;
 
 	public:
 		main_menu(game& g, game_window& gw, data_manager& dm, level_manager& lvmgr) :
@@ -66,55 +68,57 @@ namespace rj
 			m_lvmgr{lvmgr}
 		{this->init();}
 
-		bool is_active(menu_state s)
-		{return m_current_state == s;}
-
-		void call_current_itemevent()
-		{
-			auto ptr(m_componentmgr.get_comp_from_type(m_current_state));
-			if(ptr != nullptr)
-				ptr->call_current_event();
-		}
-
-		template<menu_state new_state>
-		void do_menu_switch()
-		{
-			m_current_state = new_state;
-		}
-
 		void update(dur duration)
 		{
-			m_componentmgr.update(duration);
+			m_submenumgr.update_current_state(duration);
 			m_title.update(duration);
 		}
 
 		void render()
 		{
 			render::render_object(m_game, m_background); // render bg first !!
-			m_componentmgr.render();
+			m_submenumgr.render_current_state();
 			m_title.render();
 		}
 
 		void on_key_up()
-		{
-			auto ptr(m_componentmgr.get_comp_from_type(m_current_state));
-			if(ptr != nullptr)
-				ptr->on_key_up();
-		}
+		{m_submenumgr.event_up();}
 
 		void on_key_down()
+		{m_submenumgr.event_down();}
+
+		void on_key_backspace()
 		{
-			auto ptr(m_componentmgr.get_comp_from_type(m_current_state));
+			// activate prev state from submenu
+			auto ptr(m_componentmgr.get_comp_from_type(m_submenumgr.get_current_state()));
 			if(ptr != nullptr)
-				ptr->on_key_down();
+				if(ptr->is_accessing_submenu())
+				{
+					ptr->on_key_backspace();
+					return;
+				}
+
+			// activate prev state
+			this->do_menu_switch_back();
 		}
 
-		// getters
-//		items& get_items() noexcept
-//		{return m_start->get_items();}
+		bool is_active(menu_state s) const noexcept
+		{return m_submenumgr.get_current_state() == s;}
 
-//		level_squares& get_squares() noexcept
-//		{return m_levels->get_squares();}
+		void call_current_itemevent()
+		{m_submenumgr.event_current();}
+
+		void do_menu_switch(menu_state s)
+		{
+			m_submenumgr.switch_state(s);
+			m_on_menu_switch[s]();
+		}
+
+		void do_menu_switch_back()
+		{
+			m_submenumgr.activate_prev_state();
+			m_on_menu_switch[m_submenumgr.get_current_state()]();
+		}
 
 		game& get_game() noexcept
 		{return m_game;}
@@ -137,18 +141,24 @@ namespace rj
 	private:
 		void init()
 		{
+			m_submenumgr.add_menu(menu_state::menu_start, m_start);
+			m_submenumgr.add_menu(menu_state::menu_levels, m_levels);
+
 			this->setup_events();
 			this->setup_interface();
 		}
 
 		void setup_events()
 		{
+			m_on_menu_switch[menu_state::menu_levels] +=
+			[this]{m_title.set_text("Levels");};
+
+			m_on_menu_switch[menu_state::menu_start] +=
+			[this]{m_title.set_text("Recto Jump");};
+
+
 			m_start->get_items().on_event("play",
-			[this]
-			{
-				this->do_menu_switch<menu_state::menu_levels>();
-				m_title.set_text("Levels");
-			});
+			[this]{this->do_menu_switch(menu_state::menu_levels);});
 
 			m_start->get_items().on_event("quit",
 			[this]{m_gamewindow.stop();});

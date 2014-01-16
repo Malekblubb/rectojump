@@ -38,6 +38,9 @@ namespace rj
 		void render_current_state()
 		{this->current()->render();}
 
+		void event_backspace()
+		{this->current()->on_key_backspace();}
+
 		void event_up()
 		{this->current()->on_key_up();}
 
@@ -63,6 +66,9 @@ namespace rj
 
 		State_Enum get_current_state() const noexcept
 		{return m_state_stack.top();}
+
+		bool is_submenu_active() const noexcept
+		{return m_state_stack.size() > 1;}
 
 	private:
 		bc_ptr& current() noexcept

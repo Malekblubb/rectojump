@@ -32,6 +32,7 @@ namespace rj
 		virtual void render() { }
 		virtual void on_key_up() { }
 		virtual void on_key_down() { }
+		virtual void on_key_backspace() { }
 		virtual void call_current_event() { }
 	};
 }

@@ -38,6 +38,8 @@ namespace rj
 		virtual void on_key_up() = 0;
 		virtual void on_key_down() = 0;
 		virtual void call_current_event() = 0;
+		virtual void on_key_backspace() { }
+		virtual bool is_accessing_submenu() {return false;}
 
 		menu_state get_type() const noexcept
 		{return m_type;}

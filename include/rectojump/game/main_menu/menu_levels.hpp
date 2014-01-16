@@ -61,6 +61,12 @@ namespace rj
 		void call_current_event() override
 		{m_submenu_manager.event_current();}
 
+		void on_key_backspace() override
+		{m_submenu_manager.activate_prev_state();}
+
+		bool is_accessing_submenu() override
+		{return m_submenu_manager.is_submenu_active();}
+
 		items& get_items() noexcept
 		{return *m_items;}
 
