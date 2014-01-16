@@ -7,22 +7,17 @@
 #define RJ_CORE_RENDER_HPP
 
 
-#include <SFML/Graphics.hpp>
-
-
 namespace rj
 {
-	class game;
-
 	namespace rndr
 	{
-		template<typename Game>
-		void ro(Game& g, const sf::Drawable& drawable)
+		template<typename Game, typename Drawable>
+		void ro(Game& g, const Drawable& drawable)
 		{g.render_object(drawable);}
 
 		template<typename Game>
 		void rmo_impl(Game& g)
-		{}
+		{ }
 
 		template<typename Game, typename Head, typename... Tail>
 		void rmo_impl(Game& g, const Head& head, Tail&&... tail)
