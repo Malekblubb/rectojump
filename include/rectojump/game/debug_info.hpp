@@ -39,8 +39,8 @@ namespace rj
 		void update(dur);
 		void render()
 		{
-			render::render_object(m_game, m_background);
-			render::render_object(m_game, m_text);
+			rndr::ro(m_game, m_background);
+			rndr::ro(m_game, m_text);
 		}
 	};
 }

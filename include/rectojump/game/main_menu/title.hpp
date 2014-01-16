@@ -43,7 +43,7 @@ namespace rj
 		}
 
 		void render()
-		{render::render_object(m_game, m_title);}
+		{rndr::ro(m_game, m_title);}
 
 		void set_text(const std::string& text) noexcept
 		{m_title.setString(text); this->set_pos();}

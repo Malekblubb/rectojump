@@ -38,7 +38,7 @@ namespace rj
 		{
 			if(m_game == nullptr)
 				mlk::lerr(errors::cl_nullptr_access)["rj::basic_entity<T>"];
-			render::render_object(*m_game, m_render_object);
+			rndr::ro(*m_game, m_render_object);
 		}
 
 		T& render_object() noexcept

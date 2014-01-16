@@ -7,12 +7,12 @@
 #define RJ_GAME_WORLD_HPP
 
 
-#include "components/platfrom.hpp"
 #include "entity_handler.hpp"
+#include "factory.hpp"
+#include "components/platfrom.hpp"
 #include "components/player.hpp"
 #include "components/triangle.hpp"
 
-#include "factory.hpp"
 #include <mlk/tools/random_utl.h>
 
 
@@ -27,16 +27,11 @@ namespace rj
 	public:
 		world(game& g) :
 			m_entity_handler{g}
-		{
-			on_key_pressed(key::D) += [this]{this->c_player();};
-			on_btn_pressed(btn::Left) += [this](const vec2f& pos){this->c_ent(pos);};
-			on_btn_pressed(btn::Right) += [this](const vec2f& pos){this->c_ent_death(pos);};
-			on_key_pressed(key::A) += [this]{this->c_world();};
-		}
+		{ }
 
 		void c_player()
 		{
-			auto plr(factory::create<player>(vec2f{100.f, 520.f}));
+			auto plr(factory::create<player>(vec2f{100.f, 600.f}));
 			m_entity_handler.create_entity(plr);
 		}
 
@@ -84,6 +79,17 @@ namespace rj
 		void render()
 		{
 			m_entity_handler.render();
+		}
+
+		void load_level(const entity_proto_vec& entities)
+		{
+			m_entity_handler.clear();
+
+			for(auto& entity : entities)
+			{
+				auto tmp(factory::create<platform>(vec2f{entity[x], entity[y]}, vec2f{40.f, 40.f}));
+				m_entity_handler.create_entity(tmp);
+			}
 		}
 
 

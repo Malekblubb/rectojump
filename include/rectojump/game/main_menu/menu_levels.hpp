@@ -49,7 +49,7 @@ namespace rj
 		void render() override
 		{
 			m_submenu_manager.render_current_state();
-			render::render_object(this->m_game, m_bg_top);
+			rndr::ro(this->m_game, m_bg_top);
 		}
 
 		void on_key_up() override

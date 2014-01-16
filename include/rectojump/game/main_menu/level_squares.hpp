@@ -58,7 +58,7 @@ namespace rj
 		}
 
 		void render()
-		{for(auto& a : m_shapes) render::render_object(m_game, a);}
+		{for(auto& a : m_shapes) rndr::ro(m_game, a);}
 
 		void scroll(scroll_dir dir) noexcept
 		{m_sdir = dir;}

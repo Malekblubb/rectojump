@@ -49,7 +49,7 @@ namespace rj
 		}
 
 		void render()
-		{for(auto& a : m_menuitems) render::render_object(m_game, a.second);}
+		{for(auto& a : m_menuitems) rndr::ro(m_game, a.second);}
 
 		void add_item(const item_id& id, const std::string& text)
 		{
