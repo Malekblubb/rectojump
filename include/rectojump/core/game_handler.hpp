@@ -27,7 +27,7 @@ namespace rj
 	{
 		game_window& m_game_window;
 		game& m_game;
-		main_menu& m_mainmenu;
+		main_menu m_mainmenu;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
@@ -35,14 +35,15 @@ namespace rj
 		mlk::ebitset<state, state::num> m_current_states;
 
 	public:
-		game_handler(game_window& window, game& g, main_menu& menu, data_manager& datamgr, level_manager& lvmgr) :
-			m_game_window{window},
+		game_handler(game_window& gw, game& g, data_manager& dm, level_manager& lm) :
+			m_game_window{gw},
 			m_game{g},
-			m_mainmenu{menu},
-			m_datamgr{datamgr},
-			m_lvmgr{lvmgr},
+			m_mainmenu{gw, g, dm, lm},
+			m_datamgr{dm},
+			m_lvmgr{lm},
 			m_debug_info{m_game, m_datamgr}
 		{
+
 			m_current_states |= state::main_menu;
 
 			m_game_window.get_updater().on_update += [this](dur duration){this->update(duration);};
@@ -63,6 +64,14 @@ namespace rj
 				if(!this->is_active(state::main_menu))
 					return;
 				m_mainmenu.call_current_itemevent();
+			};
+
+			on_key_pressed(key::BackSpace) +=
+			[this]
+			{
+				if(!this->is_active(state::main_menu))
+					return;
+				m_mainmenu.on_key_backspace();
 			};
 
 			on_key_pressed(key::Up) +=

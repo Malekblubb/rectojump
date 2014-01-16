@@ -7,7 +7,6 @@
 #include <rectojump/core/game_handler.hpp>
 #include <rectojump/core/game_window.hpp>
 #include <rectojump/game/debug_info.inl>
-#include <rectojump/game/main_menu/main_menu.hpp>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/global/error_inserter.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
@@ -31,8 +30,7 @@ int main()
 	// game
 	rj::game_window gw;
 	rj::game g{gw};
-	rj::main_menu m{g, gw, dm, lm};
-	rj::game_handler gh{gw, g, m, dm, lm};
+	rj::game_handler gh{gw, g, dm, lm};
 
 	gw.start();
 	return 0;
