@@ -36,20 +36,6 @@ namespace rj
 			m_mainmenu{mm}
 		{ }
 
-		void update(dur duration)
-		{
-			for(auto& a : m_components)
-				if(m_mainmenu.is_active(a->get_type()))
-					a->update(duration);
-		}
-
-		void render()
-		{
-			for(auto& a : m_components)
-				if(m_mainmenu.is_active(a->get_type()))
-					a->render();
-		}
-
 		template<typename Comp_Type, menu_state type, typename... Args>
 		comp_ptr<Comp_Type> create_comp(Args&&... args)
 		{
