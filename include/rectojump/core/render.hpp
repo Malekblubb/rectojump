@@ -14,9 +14,11 @@ namespace rj
 {
 	class game;
 
-	namespace render
+	namespace rndr
 	{
-		void render_object(game& g, const sf::Drawable& drawable);
+		template<typename Game>
+		void ro(Game& g, const sf::Drawable& drawable)
+		{g.render_object(drawable);}
 	}
 }
 
