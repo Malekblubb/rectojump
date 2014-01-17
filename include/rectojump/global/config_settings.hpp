@@ -17,12 +17,16 @@ namespace rj
 		inline void init()
 		{config::get();}
 
+		inline mlk::slot<>& on_changed()
+		{return config::get().on_setting_changed;}
+
 
 		// setters
 		inline void set_window_size(const vec2u& size)
 		{
 			config::get().set_entry("window_width", size.x);
 			config::get().set_entry("window_height", size.y);
+			config::get().on_setting_changed();
 		}
 
 		inline void set_sound_volume(int vol)

@@ -22,7 +22,7 @@ namespace rj
 {
 	class game_window
 	{
-		mlk::uint m_width{1280}, m_height{720};
+		mlk::uint m_width, m_height;
 		std::string m_title{"Recto Jump"};
 		sf::RenderWindow m_window;
 		bool m_running{false};
@@ -36,7 +36,9 @@ namespace rj
 	public:
 		mlk::slot<> on_stop;
 
-		game_window() :
+		game_window(const vec2u& size) :
+			m_width{size.x},
+			m_height{size.y},
 			m_window{{m_width, m_height}, m_title}
 		{ }
 

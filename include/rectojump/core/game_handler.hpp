@@ -11,6 +11,7 @@
 #include "game_window.hpp"
 #include <rectojump/game/main_menu/main_menu.hpp>
 #include <rectojump/global/common.hpp>
+#include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/data_manager.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
 
@@ -31,7 +32,7 @@ namespace rj
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
-		debug_info m_debug_info;
+		debug_info<game> m_debug_info;
 		mlk::ebitset<state, state::num> m_current_states;
 
 	public:
@@ -43,6 +44,8 @@ namespace rj
 			m_lvmgr{lm},
 			m_debug_info{m_game, m_datamgr}
 		{
+			settings::on_changed() +=
+			[this]{m_game_window.set_size(settings::get_window_size());};
 
 			m_current_states |= state::main_menu;
 

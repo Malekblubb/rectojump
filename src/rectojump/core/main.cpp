@@ -27,7 +27,7 @@ int main()
 	rj::level_manager lm{rj::level_path};
 
 	// game
-	rj::game_window gw;
+	rj::game_window gw{rj::settings::get_window_size()};
 	rj::game g{gw};
 	rj::game_handler gh{gw, g, dm, lm};
 
