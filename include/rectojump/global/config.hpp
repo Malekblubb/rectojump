@@ -76,6 +76,7 @@ namespace rj
 		{
 			m_entrys.emplace_back("window_width", "1280");
 			m_entrys.emplace_back("window_height", "720");
+			m_entrys.emplace_back("fullscreen", "0");
 			m_entrys.emplace_back("sound_volume", "10");
 		}
 

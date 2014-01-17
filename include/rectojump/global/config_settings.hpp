@@ -29,6 +29,12 @@ namespace rj
 			config::get().on_setting_changed();
 		}
 
+		inline void set_fullscreen(bool b)
+		{
+			config::get().set_entry("fullscreen", b);
+			config::get().on_setting_changed();
+		}
+
 		inline void set_sound_volume(int vol)
 		{config::get().set_entry("sound_volume", vol);}
 
@@ -36,6 +42,9 @@ namespace rj
 		// getters
 		inline vec2u get_window_size()
 		{return {config::get().get_entry<mlk::uint>("window_width"), config::get().get_entry<mlk::uint>("window_height")};}
+
+		inline bool get_fullscreen()
+		{return config::get().get_entry<bool>("fullscreen");}
 
 		inline int get_sound_volume()
 		{return config::get().get_entry<int>("sound_volume");}
