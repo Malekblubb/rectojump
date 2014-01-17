@@ -17,11 +17,24 @@ namespace rj
 		inline void init()
 		{config::get();}
 
-		inline int sound_volume()
-		{return config::get().get_entry<int>("sound_volume");}
+
+		// setters
+		inline void set_window_size(const vec2u& size)
+		{
+			config::get().set_entry("window_width", size.x);
+			config::get().set_entry("window_height", size.y);
+		}
 
 		inline void set_sound_volume(int vol)
 		{config::get().set_entry("sound_volume", vol);}
+
+
+		// getters
+		inline vec2u get_window_size()
+		{return {config::get().get_entry<mlk::uint>("window_width"), config::get().get_entry<mlk::uint>("window_height")};}
+
+		inline int get_sound_volume()
+		{return config::get().get_entry<int>("sound_volume");}
 	}
 }
 
