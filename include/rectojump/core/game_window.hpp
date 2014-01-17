@@ -20,13 +20,15 @@
 
 namespace rj
 {
+	using window_style = int;
+
 	class game_window
 	{
 		mlk::uint m_width, m_height;
 		std::string m_title{"Recto Jump"};
 		sf::RenderWindow m_window;
+		window_style m_windowstyles;
 		bool m_running{false};
-		bool m_fullscreen{false};
 		bool m_need_recreate{false};
 
 		input& m_input{input::get()};
@@ -36,11 +38,13 @@ namespace rj
 	public:
 		mlk::slot<> on_stop;
 
-		game_window(const vec2u& size) :
+		game_window(const vec2u& size, bool fullscreen = false) :
 			m_width{size.x},
-			m_height{size.y},
-			m_window{{m_width, m_height}, m_title}
-		{ }
+			m_height{size.y}
+		{
+			this->set_fullscreen(fullscreen);
+			this->init();
+		}
 
 		// interface
 		void start()
@@ -77,7 +81,13 @@ namespace rj
 
 		void toggle_fullscreen() noexcept
 		{
-			m_fullscreen = !m_fullscreen;
+			m_windowstyles ^= sf::Style::Fullscreen;
+			m_need_recreate = true;
+		}
+
+		void toggle_titlebar() noexcept
+		{
+			m_windowstyles ^= sf::Style::Titlebar;
 			m_need_recreate = true;
 		}
 
@@ -93,9 +103,17 @@ namespace rj
 
 		void set_fullscreen(bool b) noexcept
 		{
-			if(b == m_fullscreen)
+			if(b == (m_windowstyles & sf::Style::Fullscreen))
 				return;
-			m_fullscreen = b;
+			b ? m_windowstyles |= sf::Style::Fullscreen : m_windowstyles &= ~sf::Style::Fullscreen;
+			m_need_recreate = true;
+		}
+
+		void set_titlebar(bool b) noexcept
+		{
+			if(b == (m_windowstyles & sf::Style::Titlebar))
+				return;
+			b ? m_windowstyles |= sf::Style::Titlebar : m_windowstyles &= ~sf::Style::Titlebar;
 			m_need_recreate = true;
 		}
 
@@ -113,9 +131,18 @@ namespace rj
 		{return m_window.getPosition();}
 
 		bool get_fullscreen() const noexcept
-		{return m_fullscreen;}
+		{return m_windowstyles & sf::Style::Fullscreen;}
+
+		bool get_titlebar() const noexcept
+		{return m_windowstyles & sf::Style::Titlebar;}
 
 	private:
+		void init()
+		{
+			m_windowstyles |= sf::Style::Default;
+			this->recreate();
+		}
+
 		void prepare_start() noexcept
 		{
 			m_running = true;
@@ -156,7 +183,7 @@ namespace rj
 		void recreate()
 		{
 			m_window.close();
-			m_window.create({m_width, m_height}, m_title, m_fullscreen ? sf::Style::Fullscreen : sf::Style::Default);
+			m_window.create({m_width, m_height}, m_title, m_windowstyles);
 			m_need_recreate = false;
 		}
 	};
