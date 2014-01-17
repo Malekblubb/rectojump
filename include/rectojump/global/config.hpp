@@ -12,6 +12,7 @@
 #include "errors.hpp"
 
 #include <mlk/filesystem/fs_handle.h>
+#include <mlk/signals_slots/slot.h>
 
 
 namespace rj
@@ -22,6 +23,8 @@ namespace rj
 		config_entry_vec m_entrys;
 
 	public:
+		mlk::slot<> on_setting_changed;
+
 		config(const std::string& path) :
 			m_file{path}
 		{this->init();}
@@ -71,6 +74,8 @@ namespace rj
 
 		void make_default()
 		{
+			m_entrys.emplace_back("window_width", "1280");
+			m_entrys.emplace_back("window_height", "720");
 			m_entrys.emplace_back("sound_volume", "10");
 		}
 
