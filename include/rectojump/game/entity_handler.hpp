@@ -175,7 +175,7 @@ namespace rj
 		{
 			m_entities.erase(std::remove_if(std::begin(m_entities), std::end(m_entities),
 			[](const entity_base_ptr& entity)
-			{return entity->m_destroyed;}), end(m_entities));
+			{return entity->m_destroyed;}), std::end(m_entities));
 		}
 	};
 }
