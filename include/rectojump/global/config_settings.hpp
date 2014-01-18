@@ -40,8 +40,9 @@ namespace rj
 
 
 		// getters
-		inline vec2u get_window_size()
-		{return {config::get().get_entry<mlk::uint>("window_width"), config::get().get_entry<mlk::uint>("window_height")};}
+		template<typename Vec_Type = vec2u, typename Val_Type = decltype(Vec_Type::x)>
+		inline Vec_Type get_window_size()
+		{return {config::get().get_entry<Val_Type>("window_width"), config::get().get_entry<Val_Type>("window_height")};}
 
 		inline bool get_fullscreen()
 		{return config::get().get_entry<bool>("fullscreen");}
