@@ -10,6 +10,8 @@
 #include "basic_component.hpp"
 #include <rectojump/core/render.hpp>
 
+#include <mlk/time/simple_timer.h>
+
 
 namespace rj
 {
@@ -20,17 +22,28 @@ namespace rj
 
 	class title : public basic_component
 	{
-		sf::Text m_title{"Recto Jump", m_font, 50};
+		sf::Text m_title{"Recto Jump", m_font};
 		std::vector<sf::Color> m_title_colors;
 		std::size_t m_current_colorindex{0};
 		direction m_direction{direction::forward};
 
+		mlk::tm::simple_timer m_bumptimer{25};
+		static constexpr mlk::uint m_maxfontsize{60}, m_minfontsize{40};
+		mlk::uint m_current_fontsize{m_maxfontsize};
+		mlk::uint m_step_fontsize{1};
+
 	public:
 		title(game& g, const sf::Font& font, const vec2f& center) :
 			basic_component{g, font, center}
-		{this->init();}
+		{this->init();m_bumptimer.run();}
 
 		void update(dur)
+		{
+			this->update_colors();
+			this->update_bump();
+		}
+
+		void update_colors() noexcept
 		{
 			m_direction == direction::forward ? ++m_current_colorindex : --m_current_colorindex;
 
@@ -40,6 +53,21 @@ namespace rj
 				m_direction = direction::forward;
 
 			m_title.setColor(m_title_colors[m_current_colorindex]);
+		}
+
+		void update_bump() noexcept
+		{
+			if(m_bumptimer.timed_out())
+			{
+				if(m_current_fontsize == m_maxfontsize || m_current_fontsize == m_minfontsize)
+					m_step_fontsize = -m_step_fontsize;
+
+				m_current_fontsize += m_step_fontsize;
+				m_title.setCharacterSize(m_current_fontsize);
+				this->set_pos();
+
+				m_bumptimer.restart();
+			}
 		}
 
 		void render()
@@ -62,7 +90,7 @@ namespace rj
 		void set_pos() noexcept
 		{
 			m_title.setOrigin(m_title.getGlobalBounds().width / 2.f, m_title.getGlobalBounds().height / 2.f);
-			m_title.setPosition(m_center.x, 150);
+			m_title.setPosition(m_center.x, 150.f);
 		}
 	};
 }
