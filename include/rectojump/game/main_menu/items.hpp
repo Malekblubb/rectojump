@@ -115,7 +115,6 @@ namespace rj
 				auto tmp_rect(a.second.getGlobalBounds());
 				a.second.setOrigin(tmp_rect.width / 2.f, tmp_rect.height / 2.f);
 				a.second.setPosition(m_center.x, (m_center.y - rect.height / 2) + (num * m_spacing));
-				a.second.setColor(m_def_fontcolor);
 				++num;
 			}
 		}
