@@ -49,11 +49,14 @@ namespace rj
 			else
 				this->scroll_stop();
 
-			if(m_sdir == scroll_dir::down) for(auto& a : m_shapes) a.move(0.f, -m_scrollstep);
-			else if(m_sdir == scroll_dir::up) for(auto& a : m_shapes) a.move(0.f, m_scrollstep);
-
 			for(auto& a : m_shapes)
+			{
 				a.setOutlineColor(m_def_fontcolor);
+
+				if(m_sdir == scroll_dir::down) a.move(0.f, -m_scrollstep);
+				else if(m_sdir == scroll_dir::up) a.move(0.f, m_scrollstep);
+			}
+
 			m_shapes[m_current_index].setOutlineColor(m_act_fontcolor);
 		}
 
