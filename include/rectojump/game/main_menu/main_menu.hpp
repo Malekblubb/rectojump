@@ -29,15 +29,15 @@
 namespace rj
 {
 	class game;
-	class game_handler;
 
+	template<typename Game_Handler>
 	class main_menu
 	{
-		friend class component_manager<main_menu>;
+		friend class component_manager<main_menu<Game_Handler>>;
 
+		Game_Handler& m_gamehandler;
 		game_window& m_gamewindow;
 		game& m_game;
-
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
@@ -54,8 +54,8 @@ namespace rj
 
 		// components (menus)
 		component_manager<main_menu> m_componentmgr{*this};
-		comp_ptr<menu_start<main_menu>> m_start{m_componentmgr.create_comp<menu_start<main_menu>, menu_state::menu_start>()};
-		comp_ptr<menu_levels<main_menu>> m_levels{m_componentmgr.create_comp<menu_levels<main_menu>, menu_state::menu_levels>()};
+		comp_ptr<menu_start<main_menu<Game_Handler>>> m_start{m_componentmgr.template create_comp<menu_start<main_menu<Game_Handler>>, menu_state::menu_start>()};
+		comp_ptr<menu_levels<main_menu<Game_Handler>>> m_levels{m_componentmgr.template create_comp<menu_levels<main_menu<Game_Handler>>, menu_state::menu_levels>()};
 
 		// other components (not menus)
 		title m_title{m_game, m_font, m_center};
@@ -65,7 +65,8 @@ namespace rj
 		mlk::event_delegates<menu_state> m_on_menu_switch;
 
 	public:
-		main_menu(game_window& gw, game& g, data_manager& dm, level_manager& lm) :
+		main_menu(Game_Handler& gh, game_window& gw, game& g, data_manager& dm, level_manager& lm) :
+			m_gamehandler{gh},
 			m_gamewindow{gw},
 			m_game{g},
 			m_datamgr{dm},
@@ -75,9 +76,7 @@ namespace rj
 		void update(dur duration)
 		{
 			m_submenumgr.update_current_state(duration);
-
 			m_background.update(duration);
-
 			m_title.update(duration);
 		}
 
@@ -171,6 +170,13 @@ namespace rj
 
 			m_start->get_items().on_event("quit",
 			[this]{m_gamewindow.stop();});
+
+			m_levels->get_items().on_event("lv_download",
+			[this]
+			{
+				m_gamehandler.create_popup("Not available yet.", vec2f{settings::get_window_size<vec2f>().x / 2.f,
+																  settings::get_window_size<vec2f>().y - 100.f});
+			});
 		}
 
 		void setup_interface()

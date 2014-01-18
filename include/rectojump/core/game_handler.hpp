@@ -10,6 +10,7 @@
 #include "game.hpp"
 #include "game_window.hpp"
 #include <rectojump/game/main_menu/main_menu.hpp>
+#include <rectojump/game/popup_manager.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/data_manager.hpp>
@@ -28,24 +29,36 @@ namespace rj
 	{
 		game_window& m_game_window;
 		game& m_game;
-		main_menu m_mainmenu;
+		main_menu<game_handler> m_mainmenu;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
 		debug_info<game> m_debug_info;
+		popup_manager m_popupmgr;
 		mlk::ebitset<state, state::num> m_current_states;
 
 	public:
 		game_handler(game_window& gw, game& g, data_manager& dm, level_manager& lm) :
 			m_game_window{gw},
 			m_game{g},
-			m_mainmenu{gw, g, dm, lm},
+			m_mainmenu{*this, gw, g, dm, lm},
 			m_datamgr{dm},
 			m_lvmgr{lm},
-			m_debug_info{m_game, m_datamgr}
+			m_debug_info{m_game, m_datamgr},
+			m_popupmgr{g, dm}
 		{
 			settings::on_changed() +=
 			[this]{m_game_window.set_size(settings::get_window_size());};
+
+			on_key_pressed(key::F) +=
+			[this]
+			{
+				m_game_window.toggle_fullscreen();
+				rj::settings::set_fullscreen(m_game_window.get_fullscreen());
+			};
+
+			on_key_pressed(key::T) +=
+			[this]{m_game_window.toggle_titlebar();};
 
 			m_current_states |= state::main_menu;
 
@@ -182,6 +195,10 @@ namespace rj
 			};
 		}
 
+		template<typename... Args>
+		void create_popup(const std::string& text, Args&&... args)
+		{m_popupmgr.create_popup(text, std::forward<Args>(args)...);}
+
 		data_manager& get_datamanager() noexcept
 		{return m_datamgr;}
 
@@ -216,6 +233,8 @@ namespace rj
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.update(duration);
+
+			m_popupmgr.update(duration);
 		}
 
 		void render()
@@ -229,6 +248,8 @@ namespace rj
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.render();
+
+			m_popupmgr.render();
 		}
 	};
 }
