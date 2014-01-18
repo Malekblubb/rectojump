@@ -14,10 +14,10 @@
 
 namespace rj
 {
-	inline sf::Color to_rgb(const std::string& hex_str)
+	inline sf::Color to_rgb(const std::string& hex_str, std::uint8_t custom_alpha = 255)
 	{
 		mlk::gcs::color_rgb tmp{hex_str};
-		return {tmp.red(), tmp.green(), tmp.blue()};
+		return {tmp.red(), tmp.green(), tmp.blue(), custom_alpha};
 	}
 
 	inline sf::Color operator""_rgb(const char* str, std::size_t size)
