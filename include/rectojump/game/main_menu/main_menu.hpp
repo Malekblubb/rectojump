@@ -7,6 +7,7 @@
 #define RJ_CORE_MAIN_MENU_MAIN_MENU_HPP
 
 
+#include "background.hpp"
 #include "component_manager.hpp"
 #include "items.hpp"
 #include "menu_levels.hpp"
@@ -46,6 +47,7 @@ namespace rj
 		const sf::Color m_act_fontcolor{to_rgb("#f15ede") /*"#f15ede"_rgb*/};
 
 		// background
+		background m_background{m_game};
 		sf::RectangleShape m_background_rect{vec2f{m_gamewindow.get_size()}};
 		sf::RectangleShape m_background_sides;
 		sf::Texture m_background_texture{m_datamgr.get_as<sf::Texture>("menu_side.png")};
@@ -73,12 +75,17 @@ namespace rj
 		void update(dur duration)
 		{
 			m_submenumgr.update_current_state(duration);
+
+			m_background.update(duration);
+
 			m_title.update(duration);
 		}
 
 		void render()
 		{
-			rndr::rmo(m_game, m_background_rect, m_background_sides); // render bg first !!
+			rndr::ro(m_game, m_background_rect);
+			m_background.render();
+			rndr::ro(m_game, m_background_sides);
 			m_submenumgr.render_current_state();
 			m_title.render();
 		}
