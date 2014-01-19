@@ -22,36 +22,39 @@ namespace rj
 		sf::Color m_color;
 
 	public:
-		triangles4(const vec2f& size, const sf::Color& color = {255, 255, 255}) :
+		triangles4(const vec2f& size = {0.f, 0.f}, const sf::Color& color = {255, 255, 255}) :
 			m_size{size},
 			m_color{color}
 		{this->init();}
 
-		void set_origin(const vec2f& pos)
+		void setOrigin(const vec2f& pos)
 		{sf::Transformable::setOrigin(pos); m_origin = pos; this->recalculate();}
 
-		void set_position(const vec2f& pos)
+		void setPosition(const vec2f& pos)
 		{sf::Transformable::setPosition(pos);}
 
-		void set_triangle_size(const vec2f& size) noexcept
+		void setSize(const vec2f& size) noexcept
 		{m_size = size; this->recalculate();}
 
-		void set_color(const sf::Color& color) noexcept
+		void setColor(const sf::Color& color) noexcept
 		{m_color = color; this->recolor();}
 
 		void rotate(float angle)
 		{sf::Transformable::rotate(angle);}
 
-		const vec2f& get_origin() const noexcept
+		void move(const vec2f& offset) noexcept
+		{sf::Transformable::move(offset);}
+
+		const vec2f& getOrigin() const noexcept
 		{return sf::Transformable::getOrigin();}
 
-		const vec2f& get_position() const noexcept
+		const vec2f& getPosition() const noexcept
 		{return sf::Transformable::getPosition();}
 
-		const vec2f& get_triangle_size() const noexcept
+		const vec2f& getSize() const noexcept
 		{return m_size;}
 
-		const sf::Color& get_color() const noexcept
+		const sf::Color& getColor() const noexcept
 		{return m_color;}
 
 	private:
