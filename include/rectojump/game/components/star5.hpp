@@ -7,6 +7,8 @@
 #define RJ_GAME_COMPONENTS_STAR5_HPP
 
 
+#include <rectojump/global/common.hpp>
+
 #include <SFML/Graphics.hpp>
 
 #include <cmath>
@@ -23,6 +25,10 @@ namespace rj
 		star5(float length) :
 			m_length{length}
 		{this->init();}
+
+		star5(float length, const vec2f& pos) :
+			star5{length}
+		{this->setPosition(pos);}
 
 		void set_length(float l) noexcept
 		{m_length = l; this->recalculate();}
