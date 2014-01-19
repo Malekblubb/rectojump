@@ -19,9 +19,12 @@ namespace rj
 	class star5 : public sf::ConvexShape
 	{
 		static constexpr float m_pi{3.14159265359f};
-		float m_length;
+		float m_length{0.f};
 
 	public:
+		star5()
+		{this->init();}
+
 		star5(float length) :
 			m_length{length}
 		{this->init();}
