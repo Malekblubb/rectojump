@@ -9,8 +9,10 @@
 
 #include <rectojump/core/render.hpp>
 #include <rectojump/global/common.hpp>
+#include <rectojump/global/errors.hpp>
 #include <rectojump/shared/utils.hpp>
 
+#include <mlk/log/log.h>
 #include <mlk/time/simple_timer.h>
 
 
@@ -72,7 +74,11 @@ namespace rj
 		}
 
 		void render()
-		{rndr::rmo(*m_game, m_shape, m_text);}
+		{
+			if(m_game == nullptr)
+				mlk::lerr(errors::cl_nullptr_access)["rj::popup"];
+			rndr::rmo(*m_game, m_shape, m_text);
+		}
 
 		bool is_destroyed() const noexcept
 		{return m_destroyed;}
