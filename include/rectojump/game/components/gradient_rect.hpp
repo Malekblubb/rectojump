@@ -3,8 +3,8 @@
 // See LICENSE for more information.
 //
 
-#ifndef RJ_SHARED_GRADIENT_RECT_HPP
-#define RJ_SHARED_GRADIENT_RECT_HPP
+#ifndef RJ_GAME_COMPONENTS_GRADIENT_RECT_HPP
+#define RJ_GAME_COMPONENTS_GRADIENT_RECT_HPP
 
 
 #include <rectojump/global/common.hpp>
@@ -99,4 +99,4 @@ namespace rj
 }
 
 
-#endif // RJ_SHARED_GRADIENT_RECT_HPP
+#endif // RJ_GAME_COMPONENTS_GRADIENT_RECT_HPP
