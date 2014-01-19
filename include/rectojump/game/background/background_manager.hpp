@@ -11,6 +11,7 @@
 #include "basic_background_component.hpp"
 #include <rectojump/game/components/gradient_rect.hpp>
 
+#include <mlk/containers/container_utl.h>
 #include <mlk/types/types.h>
 
 
@@ -63,8 +64,8 @@ namespace rj
 	private:
 		void erase_destroyed() noexcept
 		{
-			m_components.erase(std::remove_if(std::begin(m_components), std::end(m_components),
-			[](const bbc_ptr& p){return p->is_destroyed();}), std::end(m_components));
+			mlk::cnt::remove_all_if(
+			[](const bbc_ptr& p){return p->is_destroyed();}, m_components);
 		}
 	};
 }

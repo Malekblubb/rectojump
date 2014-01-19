@@ -10,6 +10,8 @@
 #include "popup.hpp"
 #include <rectojump/shared/data_manager.hpp>
 
+#include <mlk/containers/container_utl.h>
+
 
 namespace rj
 {
@@ -46,8 +48,8 @@ namespace rj
 	private:
 		void erase_destroyed() noexcept
 		{
-			m_popups.erase(std::remove_if(std::begin(m_popups), std::end(m_popups),
-			[](const popup& p){return p.is_destroyed();}), std::end(m_popups));
+			mlk::cnt::remove_all_if(
+			[](const popup& p){return p.is_destroyed();}, m_popups);
 		}
 	};
 }

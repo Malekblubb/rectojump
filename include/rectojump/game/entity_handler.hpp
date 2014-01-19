@@ -11,6 +11,7 @@
 #include "collision.hpp"
 #include "entity.hpp"
 
+#include <mlk/containers/container_utl.h>
 #include <mlk/log/log.h>
 #include <mlk/types/types.h>
 
@@ -173,9 +174,8 @@ namespace rj
 
 		void erase_destroyed() noexcept
 		{
-			m_entities.erase(std::remove_if(std::begin(m_entities), std::end(m_entities),
-			[](const entity_base_ptr& entity)
-			{return entity->m_destroyed;}), std::end(m_entities));
+			mlk::cnt::remove_all_if(
+			[](const entity_base_ptr& entity){return entity->m_destroyed;}, m_entities);
 		}
 	};
 }
