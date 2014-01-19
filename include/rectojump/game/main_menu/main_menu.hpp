@@ -16,6 +16,7 @@
 #include "title.hpp"
 #include <rectojump/core/game_window.hpp>
 #include <rectojump/core/render.hpp>
+#include <rectojump/game/background/background_manager.hpp>
 #include <rectojump/game/components/player.hpp>
 #include <rectojump/game/factory.hpp>
 #include <rectojump/global/common.hpp>
@@ -40,6 +41,7 @@ namespace rj
 		game& m_game;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
+		background_manager& m_backgroundmgr;
 
 		sf::Font m_font{m_datamgr.get_as<sf::Font>("Fipps-Regular.otf")};
 		const vec2f m_center{static_cast<vec2f>(m_gamewindow.get_size()) / 2.f};
@@ -47,10 +49,7 @@ namespace rj
 		const sf::Color m_act_fontcolor{to_rgb("#f15ede") /*"#f15ede"_rgb*/};
 
 		// background
-		background m_background{m_game};
-		sf::RectangleShape m_background_rect{vec2f{m_gamewindow.get_size()}};
-		sf::RectangleShape m_background_sides;
-		sf::Texture m_background_texture{m_datamgr.get_as<sf::Texture>("menu_side.png")};
+		background m_background{m_game, m_datamgr, m_backgroundmgr};
 
 		// components (menus)
 		component_manager<main_menu> m_componentmgr{*this};
@@ -65,12 +64,13 @@ namespace rj
 		mlk::event_delegates<menu_state> m_on_menu_switch;
 
 	public:
-		main_menu(Game_Handler& gh, game_window& gw, game& g, data_manager& dm, level_manager& lm) :
+		main_menu(Game_Handler& gh, game_window& gw, game& g, data_manager& dm, level_manager& lm, background_manager& bgm) :
 			m_gamehandler{gh},
 			m_gamewindow{gw},
 			m_game{g},
 			m_datamgr{dm},
-			m_lvmgr{lm}
+			m_lvmgr{lm},
+			m_backgroundmgr{bgm}
 		{this->init();}
 
 		void update(dur duration)
@@ -82,9 +82,7 @@ namespace rj
 
 		void render()
 		{
-			rndr::ro(m_game, m_background_rect);
 			m_background.render();
-			rndr::ro(m_game, m_background_sides);
 			m_submenumgr.render_current_state();
 			m_title.render();
 		}
@@ -171,6 +169,7 @@ namespace rj
 			m_start->get_items().on_event("quit",
 			[this]{m_gamewindow.stop();});
 
+
 			m_levels->get_items().on_event("lv_download",
 			[this]
 			{
@@ -181,13 +180,7 @@ namespace rj
 
 		void setup_interface()
 		{
-			// background (rect)
-			m_background_rect.setFillColor(to_rgb("#e3e3e3"));
 
-			// background (sides)
-			m_background_sides.setSize(vec2f{m_gamewindow.get_size()});
-			m_background_sides.setPosition({0.f, 0.f});
-			m_background_sides.setTexture(&m_background_texture);
 		}
 	};
 }

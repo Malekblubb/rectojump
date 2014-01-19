@@ -9,6 +9,7 @@
 
 #include "game.hpp"
 #include "game_window.hpp"
+#include <rectojump/game/background/background_manager.hpp>
 #include <rectojump/game/main_menu/main_menu.hpp>
 #include <rectojump/game/popup_manager.hpp>
 #include <rectojump/global/common.hpp>
@@ -29,9 +30,11 @@ namespace rj
 	{
 		game_window& m_game_window;
 		game& m_game;
+		background_manager m_backgroundmgr;
 		main_menu<game_handler> m_mainmenu;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
+
 
 		debug_info<game> m_debug_info;
 		popup_manager m_popupmgr;
@@ -41,9 +44,10 @@ namespace rj
 		game_handler(game_window& gw, game& g, data_manager& dm, level_manager& lm) :
 			m_game_window{gw},
 			m_game{g},
-			m_mainmenu{*this, gw, g, dm, lm},
+			m_mainmenu{*this, gw, g, dm, lm, m_backgroundmgr},
 			m_datamgr{dm},
 			m_lvmgr{lm},
+			m_backgroundmgr{g},
 			m_debug_info{m_game, m_datamgr},
 			m_popupmgr{g, dm}
 		{
@@ -225,11 +229,15 @@ namespace rj
 
 		void update(dur duration)
 		{
+			m_backgroundmgr.update(duration);
+
 			if(this->is_active(state::game))
 				m_game.update(duration);
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.update(duration);
+
+
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.update(duration);
@@ -239,12 +247,16 @@ namespace rj
 
 		void render()
 		{
+			m_backgroundmgr.render();
+
 			// render game when in game menu
 			if(this->is_active(state::game) || this->is_active(state::game_menu))
 				m_game.render();
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
+
+
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.render();
