@@ -35,7 +35,6 @@ namespace rj
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
-
 		debug_info<game> m_debug_info;
 		popup_manager m_popupmgr;
 		mlk::ebitset<state, state::num> m_current_states;
@@ -203,8 +202,37 @@ namespace rj
 		void create_popup(const std::string& text, Args&&... args)
 		{m_popupmgr.create_popup(text, std::forward<Args>(args)...);}
 
-		data_manager& get_datamanager() noexcept
+		auto get_gamewindow() noexcept
+		-> decltype(m_game_window)&
+		{return m_game_window;}
+
+		auto get_game() noexcept
+		-> decltype(m_game)&
+		{return m_game;}
+
+		auto get_backgroundmgr() noexcept
+		-> decltype(m_backgroundmgr)&
+		{return m_backgroundmgr;}
+
+		auto get_mainmenu() noexcept
+		-> decltype(m_mainmenu)&
+		{return m_mainmenu;}
+
+		auto get_datamgr() noexcept
+		-> decltype(m_datamgr)&
 		{return m_datamgr;}
+
+		auto get_levelmgr() noexcept
+		-> decltype(m_lvmgr)&
+		{return m_lvmgr;}
+
+		auto get_debuginfo() noexcept
+		-> decltype(m_debug_info)&
+		{return m_debug_info;}
+
+		auto get_popupmgr() noexcept
+		-> decltype(m_popupmgr)&
+		{return m_popupmgr;}
 
 	private:
 		void test_load_level()
