@@ -20,6 +20,7 @@
 #include <rectojump/game/components/player.hpp>
 #include <rectojump/game/factory.hpp>
 #include <rectojump/global/common.hpp>
+#include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/shared/data_manager.hpp>
 #include <rectojump/shared/utils.hpp>
@@ -42,7 +43,7 @@ namespace rj
 		background_manager& m_backgroundmgr;
 
 		sf::Font m_font{m_datamgr.get_as<sf::Font>("Fipps-Regular.otf")};
-		const vec2f m_center{static_cast<vec2f>(m_gamewindow.get_size()) / 2.f};
+		const vec2f m_center{/*settings::get_window_size<vec2f>() / 2.f*/}; // TODO: clang frontend crash
 		const sf::Color m_def_fontcolor{to_rgb("#797979") /*"#797979"_rgb*/}; // TODO: QTC dont supports that custom literals yet
 		const sf::Color m_act_fontcolor{to_rgb("#f15ede") /*"#f15ede"_rgb*/};
 
@@ -68,7 +69,8 @@ namespace rj
 			m_game{gh.get_game()},
 			m_datamgr{gh.get_datamgr()},
 			m_lvmgr{gh.get_levelmgr()},
-			m_backgroundmgr{gh.get_backgroundmgr()}
+			m_backgroundmgr{gh.get_backgroundmgr()},
+			m_center{settings::get_window_size<vec2f>() / 2.f}
 		{this->init();}
 
 		void update(dur duration)
