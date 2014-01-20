@@ -26,7 +26,6 @@ namespace rj
 	{
 		level_manager& m_lvmgr{this->m_mainmenu.get_gamehandler().get_levelmgr()};
 		game_window& m_gamewindow{this->m_mainmenu.get_gamehandler().get_gamewindow()};
-		sf::RectangleShape m_bg_top{{200, 200}};
 
 		mlk::sptr<level_squares> m_squares_local;
 		mlk::sptr<items> m_items;
@@ -47,10 +46,7 @@ namespace rj
 		{m_submenu_manager.update_current_state(duration);}
 
 		void render() override
-		{
-			m_submenu_manager.render_current_state();
-			rndr::ro(this->m_game, m_bg_top);
-		}
+		{m_submenu_manager.render_current_state();}
 
 		void on_key_up() override
 		{m_submenu_manager.event_up();}
@@ -83,10 +79,6 @@ namespace rj
 
 			// bind events
 			m_items->on_event("lv_local", [this]{m_submenu_manager.switch_state(lv_menu_state::local);});
-
-			m_bg_top.setOrigin(100, 0);
-			m_bg_top.setFillColor(to_rgb("#e3e3e3"));
-			m_bg_top.setPosition(this->m_center.x, 0.f);
 		}
 	};
 }
