@@ -47,12 +47,6 @@ namespace rj
 			rndr::ro(m_game, m_textureshape);
 		}
 
-		void set_bg_shape(const gradient_rect& shape) noexcept
-		{m_bgshape = shape;}
-
-		void set_tx_shape(const sf::RectangleShape& shape) noexcept
-		{m_textureshape = shape;}
-
 		template<typename Obj_Type, typename... Args>
 		mlk::sptr<background_component<Obj_Type>> create_object(Args&&... args)
 		{
@@ -60,6 +54,15 @@ namespace rj
 			m_components.emplace_back(ptr);
 			return ptr;
 		}
+
+		void set_bg_shape(const gradient_rect& shape) noexcept
+		{m_bgshape = shape;}
+
+		void set_tx_shape(const sf::RectangleShape& shape) noexcept
+		{m_textureshape = shape;}
+
+		std::size_t num_components() const noexcept
+		{return m_components.size();}
 
 	private:
 		void erase_destroyed() noexcept
