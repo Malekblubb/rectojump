@@ -24,8 +24,8 @@ namespace rj
 	template<typename Main_Menu>
 	class menu_levels : public menu_component<Main_Menu>
 	{
-		level_manager& m_lvmgr{this->m_mainmenu.get_lvmgr()};
-		game_window& m_gamewindow{this->m_mainmenu.get_gamewindow()};
+		level_manager& m_lvmgr{this->m_mainmenu.get_gamehandler().get_levelmgr()};
+		game_window& m_gamewindow{this->m_mainmenu.get_gamehandler().get_gamewindow()};
 		sf::RectangleShape m_bg_top{{200, 200}};
 
 		mlk::sptr<level_squares> m_squares_local;

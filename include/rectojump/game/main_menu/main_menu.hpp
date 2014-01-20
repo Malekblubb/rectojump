@@ -126,17 +126,9 @@ namespace rj
 			m_on_menu_switch[m_submenumgr.get_current_state()]();
 		}
 
-		game& get_game() noexcept
-		{return m_game;}
-
-		game_window& get_gamewindow() noexcept
-		{return m_gamewindow;}
-
-		data_manager& get_datamgr() noexcept
-		{return m_datamgr;}
-
-		level_manager& get_lvmgr() noexcept
-		{return m_lvmgr;}
+		auto get_gamehandler()
+		-> decltype(m_gamehandler)&
+		{return m_gamehandler;}
 
 		const sf::Color& get_act_fontcolor() const noexcept
 		{return m_act_fontcolor;}
