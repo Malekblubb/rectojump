@@ -15,6 +15,7 @@
 
 namespace rj
 {
+	template<typename Game_Handler>
 	class popup_manager
 	{
 		game& m_game;
@@ -23,9 +24,9 @@ namespace rj
 		std::vector<popup> m_popups;
 
 	public:
-		popup_manager(game& g, data_manager& dm) :
-			m_game{g},
-			m_font{dm.get_as<sf::Font>("Fipps-Regular.otf")}
+		popup_manager(Game_Handler& gh) :
+			m_game{gh.get_game()},
+			m_font{gh.get_datamgr().template get_as<sf::Font>("Fipps-Regular.otf")}
 		{ }
 
 		void update(dur duration)

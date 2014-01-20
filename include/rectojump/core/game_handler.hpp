@@ -35,7 +35,7 @@ namespace rj
 		background_manager m_backgroundmgr;
 		main_menu<game_handler> m_mainmenu;
 
-		popup_manager m_popupmgr;
+		popup_manager<game_handler> m_popupmgr;
 		debug_info<game_handler, game> m_debug_info;
 		mlk::ebitset<state, state::num> m_current_states;
 
@@ -46,7 +46,7 @@ namespace rj
 			m_datamgr{dm},
 			m_lvmgr{lm},
 			m_backgroundmgr{g},
-			m_popupmgr{g, dm},
+			m_popupmgr{*this},
 			m_debug_info{*this},
 			m_mainmenu{*this}
 		{
