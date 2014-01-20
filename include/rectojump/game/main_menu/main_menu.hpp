@@ -34,8 +34,6 @@ namespace rj
 	template<typename Game_Handler>
 	class main_menu
 	{
-		friend class component_manager<main_menu<Game_Handler>>;
-
 		Game_Handler& m_gamehandler;
 		game_window& m_gamewindow;
 		game& m_game;
@@ -52,7 +50,7 @@ namespace rj
 		background<main_menu<Game_Handler>> m_background{*this};
 
 		// components (menus)
-		component_manager<main_menu> m_componentmgr{*this};
+		component_manager<main_menu<Game_Handler>> m_componentmgr{*this};
 		comp_ptr<menu_start<main_menu<Game_Handler>>> m_start{m_componentmgr.template create_comp<menu_start<main_menu<Game_Handler>>, menu_state::menu_start>()};
 		comp_ptr<menu_levels<main_menu<Game_Handler>>> m_levels{m_componentmgr.template create_comp<menu_levels<main_menu<Game_Handler>>, menu_state::menu_levels>()};
 
@@ -129,6 +127,12 @@ namespace rj
 		auto get_gamehandler()
 		-> decltype(m_gamehandler)&
 		{return m_gamehandler;}
+
+		const sf::Font& get_font() const noexcept
+		{return m_font;}
+
+		const vec2f& get_center() const noexcept
+		{return m_center;}
 
 		const sf::Color& get_act_fontcolor() const noexcept
 		{return m_act_fontcolor;}
