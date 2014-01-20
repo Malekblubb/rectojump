@@ -45,6 +45,9 @@ namespace rj
 		void create_popup(const std::string& text, Args&&... args)
 		{m_popups.emplace_back(&m_game, m_font, text, std::forward<Args>(args)...);}
 
+		std::size_t num_popups() const noexcept
+		{return m_popups.size();}
+
 	private:
 		void erase_destroyed() noexcept
 		{
