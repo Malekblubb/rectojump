@@ -24,8 +24,10 @@ namespace rj
 {
 	class game;
 
+	template<typename Main_Menu>
 	class background
 	{
+		Main_Menu& m_mainmenu;
 		game& m_game;
 		background_manager& m_backgroundmgr;
 
@@ -33,10 +35,11 @@ namespace rj
 		mlk::tm::simple_timer m_timer{300};
 
 	public:
-		background(game& g, data_manager& dm, background_manager& bgm) :
-			m_game{g},
-			m_backgroundmgr{bgm},
-			m_sides_tx{dm.get_as<sf::Texture>("menu_side.png")}
+		background(Main_Menu& mm) :
+			m_mainmenu{mm},
+			m_game{mm.get_gamehandler().get_game()},
+			m_backgroundmgr{mm.get_gamehandler().get_backgroundmgr()},
+			m_sides_tx{mm.get_gamehandler().get_datamgr().template get_as<sf::Texture>("menu_side.png")}
 		{this->init();}
 
 
@@ -56,7 +59,7 @@ namespace rj
 				vec2f movestep{mlk::rnd(0.05f, 0.5f), mlk::rnd(0.05f, 0.5f)};
 
 				auto ptr(m_backgroundmgr.create_object<star5>(vec2f{pos_x, 0}, vec2f{0.f, length}, 3000, rotatestep, movestep));
-				ptr->render_object().setFillColor({});
+				ptr->render_object().setFillColor(m_mainmenu.get_act_fontcolor());
 				m_timer.restart(mlk::rnd<mlk::ullong>(100, 500));
 			}
 		}

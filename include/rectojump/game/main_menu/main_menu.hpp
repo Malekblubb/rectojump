@@ -49,7 +49,7 @@ namespace rj
 		const sf::Color m_act_fontcolor{to_rgb("#f15ede") /*"#f15ede"_rgb*/};
 
 		// background
-		background m_background{m_game, m_datamgr, m_backgroundmgr};
+		background<main_menu<Game_Handler>> m_background{*this};
 
 		// components (menus)
 		component_manager<main_menu> m_componentmgr{*this};
@@ -64,7 +64,7 @@ namespace rj
 		mlk::event_delegates<menu_state> m_on_menu_switch;
 
 	public:
-		main_menu(Game_Handler& gh/* game_window& gw, game& g, data_manager& dm, level_manager& lm, background_manager& bgm*/) :
+		main_menu(Game_Handler& gh) :
 			m_gamehandler{gh},
 			m_gamewindow{gh.get_gamewindow()},
 			m_game{gh.get_game()},
