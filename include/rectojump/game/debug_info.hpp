@@ -16,17 +16,20 @@
 
 namespace rj
 {
-	template<typename Game>
+	template<typename Game_Handler, typename Game>
 	class debug_info
 	{
+		Game_Handler& m_gamehandler;
 		Game& m_game;
+
 		sf::RectangleShape m_background{{100.f, 100.f}};
 		debug_text m_text;
 
 	public:
-		debug_info(Game& g, data_manager& dm) :
-			m_game{g},
-			m_text{dm}
+		debug_info(Game_Handler& gh) :
+			m_gamehandler{gh},
+			m_game{gh.get_game()},
+			m_text{gh.get_datamgr()}
 		{
 			m_background.setPosition({1.f, 1.f});
 			m_background.setFillColor({255, 150, 123, 220});
@@ -37,10 +40,13 @@ namespace rj
 		void update(dur)
 		{
 			m_background.setSize(m_text.get_size());
-			auto text(mlk::stl_string::str_format("FPS:      %%\nFDur:     %%\nEntities: %%",
-					  m_game.get_updater().get_fps(),
-					  m_game.get_updater().get_frameduration(),
-					  m_game.get_world().num_entities()));
+			auto text(mlk::stl_string::str_format(
+						  "Performace\n==========\nFPS:        %%\nFDur:       %%\n\nComponents\n==========\nGameworld:  %%\nBackground: %%\nPopups:     %%",
+						  m_game.get_updater().get_fps(),
+						  m_game.get_updater().get_frameduration(),
+						  m_game.get_world().num_entities(),
+						  m_gamehandler.get_backgroundmgr().num_components(),
+						  m_gamehandler.get_popupmgr().num_popups()));
 			m_text.set_text(text);
 		}
 
