@@ -31,9 +31,9 @@ namespace rj
 		game_window& m_game_window;
 		game& m_game;
 		background_manager m_backgroundmgr;
-		main_menu<game_handler> m_mainmenu;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
+		main_menu<game_handler> m_mainmenu;
 
 		debug_info<game> m_debug_info;
 		popup_manager m_popupmgr;
@@ -43,12 +43,12 @@ namespace rj
 		game_handler(game_window& gw, game& g, data_manager& dm, level_manager& lm) :
 			m_game_window{gw},
 			m_game{g},
-			m_mainmenu{*this, gw, g, dm, lm, m_backgroundmgr},
 			m_datamgr{dm},
 			m_lvmgr{lm},
 			m_backgroundmgr{g},
 			m_debug_info{m_game, m_datamgr},
-			m_popupmgr{g, dm}
+			m_popupmgr{g, dm},
+			m_mainmenu{*this}
 		{
 			settings::on_changed() +=
 			[this]{m_game_window.set_size(settings::get_window_size());};

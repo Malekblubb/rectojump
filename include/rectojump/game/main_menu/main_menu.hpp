@@ -64,13 +64,13 @@ namespace rj
 		mlk::event_delegates<menu_state> m_on_menu_switch;
 
 	public:
-		main_menu(Game_Handler& gh, game_window& gw, game& g, data_manager& dm, level_manager& lm, background_manager& bgm) :
+		main_menu(Game_Handler& gh/* game_window& gw, game& g, data_manager& dm, level_manager& lm, background_manager& bgm*/) :
 			m_gamehandler{gh},
-			m_gamewindow{gw},
-			m_game{g},
-			m_datamgr{dm},
-			m_lvmgr{lm},
-			m_backgroundmgr{bgm}
+			m_gamewindow{gh.get_gamewindow()},
+			m_game{gh.get_game()},
+			m_datamgr{gh.get_datamgr()},
+			m_lvmgr{gh.get_levelmgr()},
+			m_backgroundmgr{gh.get_backgroundmgr()}
 		{this->init();}
 
 		void update(dur duration)
