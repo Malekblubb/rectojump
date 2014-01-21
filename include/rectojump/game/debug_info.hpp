@@ -41,12 +41,14 @@ namespace rj
 		{
 			m_background.setSize(m_text.get_size());
 			auto text(mlk::stl_string::str_format(
-						  "Performace\n==========\nFPS:        %%\nFDur:       %%\n\nComponents\n==========\nGameworld:  %%\nBackground: %%\nPopups:     %%",
+						  "Performace\n==========\nFPS:        %%\nFDur:       %%\n\nComponents\n==========\nGameworld:  %%\nBackground: %%\nPopups:     %%\n\nManagers\n========\nData:       %%\nLevels:     %%",
 						  m_game.get_updater().get_fps(),
 						  m_game.get_updater().get_frameduration(),
 						  m_game.get_world().num_entities(),
 						  m_gamehandler.get_backgroundmgr().num_components(),
-						  m_gamehandler.get_popupmgr().num_popups()));
+						  m_gamehandler.get_popupmgr().num_popups(),
+						  m_gamehandler.get_datamgr().num_data(),
+						  m_gamehandler.get_levelmgr().num_levels()));
 			m_text.set_text(text);
 		}
 
