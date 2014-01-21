@@ -51,6 +51,9 @@ namespace rj
 			return true;
 		}
 
+		const level& get_level(const level_id& id) const noexcept
+		{return m_loaded_levels.at(id);}
+
 		auto get_levels() const noexcept
 		-> const decltype(m_loaded_levels)&
 		{return m_loaded_levels;}
