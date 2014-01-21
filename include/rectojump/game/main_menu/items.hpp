@@ -19,10 +19,10 @@ namespace rj
 {
 	class game;
 
+	template<typename Main_Menu>
 	class items : public basic_component
 	{
-		const sf::Color& m_def_fontcolor;
-		const sf::Color& m_act_fontcolor;
+		Main_Menu& m_mainmenu;
 
 		static constexpr float m_spacing{50.f};
 		std::map<item, sf::Text> m_menuitems;
@@ -31,10 +31,9 @@ namespace rj
 		mlk::event_delegates<item_id> m_events;
 
 	public:
-		items(game& g, const sf::Font& font, const vec2f& center, const sf::Color& def, const sf::Color& act) :
-			basic_component{g, font, center},
-			m_def_fontcolor{def},
-			m_act_fontcolor{act}
+		items(Main_Menu& mm) :
+			basic_component{mm.get_gamehandler().get_game(), mm.get_font(), mm.get_center()},
+			m_mainmenu{mm}
 		{ }
 
 		void update(dur)
@@ -42,9 +41,9 @@ namespace rj
 			for(auto& a : m_menuitems)
 			{
 				if(a.first.index == m_current_index)
-					a.second.setColor(m_act_fontcolor);
+					a.second.setColor(m_mainmenu.get_act_fontcolor());
 				else
-					a.second.setColor(m_def_fontcolor);
+					a.second.setColor(m_mainmenu.get_def_fontcolor());
 			}
 		}
 
