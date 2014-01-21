@@ -86,6 +86,9 @@ namespace rj
 		bool exists_id(const data_id& id) const noexcept
 		{return m_data.find(id) != std::end(m_data);}
 
+		std::size_t num_data() const noexcept
+		{return m_data.size();}
+
 	private:
 		// utils
 		std::string make_path(const data_id& id)
