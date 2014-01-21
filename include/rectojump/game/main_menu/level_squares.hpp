@@ -8,6 +8,7 @@
 
 
 #include "basic_component.hpp"
+#include "level_square.hpp"
 #include <rectojump/core/render.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
 
@@ -19,13 +20,13 @@ namespace rj
 	enum class scroll_dir : char
 	{up, down, none};
 
+	template<typename Main_Menu>
 	class level_squares : public basic_component
 	{
-		const sf::Color& m_def_fontcolor;
-		const sf::Color& m_act_fontcolor;
+		Main_Menu& m_mainmenu;
 
-		const vec2f m_size{100, 100};
-		std::vector<sf::RectangleShape> m_shapes;
+		const vec2f m_square_size{100, 100};
+		std::vector<level_square<Main_Menu>> m_squares;
 		std::size_t m_current_index{0};
 
 		scroll_dir m_sdir{scroll_dir::none};
@@ -34,34 +35,37 @@ namespace rj
 	public:
 		mlk::slot<const level_id&> on_level_load;
 
-		level_squares(game& g, const sf::Font& font, const vec2f& center, const sf::Color& def, const sf::Color& act) :
-			basic_component{g, font, center},
-			m_def_fontcolor{def},
-			m_act_fontcolor{act}
+		level_squares(Main_Menu& mm) :
+			basic_component{mm.get_gamehandler().get_game(), mm.get_font(), mm.get_center()},
+			m_mainmenu{mm}
 		{this->init();}
 
 		void update(dur duration)
 		{
-			if(m_shapes[m_current_index].getPosition().y > m_center.y)
+			if(m_squares[m_current_index].get_position().y > m_center.y + 5.f) // 5: add some 'space'
 				this->scroll(scroll_dir::down);
-			else if(m_shapes[m_current_index].getPosition().y < m_center.y)
+			else if(m_squares[m_current_index].get_position().y < m_center.y - 5.f)
 				this->scroll(scroll_dir::up);
 			else
 				this->scroll_stop();
 
-			for(auto& a : m_shapes)
+			for(auto& a : m_squares)
 			{
-				a.setOutlineColor(m_def_fontcolor);
+				a.update(duration);
+				a.deactivate();
 
-				if(m_sdir == scroll_dir::down) a.move(0.f, -m_scrollstep);
-				else if(m_sdir == scroll_dir::up) a.move(0.f, m_scrollstep);
+				if(m_sdir == scroll_dir::down) a.move({0.f, -m_scrollstep});
+				else if(m_sdir == scroll_dir::up) a.move({0.f, m_scrollstep});
 			}
 
-			m_shapes[m_current_index].setOutlineColor(m_act_fontcolor);
+			m_squares[m_current_index].activate();
 		}
 
 		void render()
-		{for(auto& a : m_shapes) rndr::ro(m_game, a);}
+		{
+			for(auto& a : m_squares)
+				a.render();
+		}
 
 		void scroll(scroll_dir dir) noexcept
 		{m_sdir = dir;}
@@ -91,21 +95,21 @@ namespace rj
 	private:
 		void init()
 		{
-			auto pos_y(150.f);
+			auto pos_y(0.f);
 
-			for(/*auto& a : m_lvmgr.levels()*/auto i(0);i < 10; ++i, pos_y += 150)
+			for(auto& a : m_mainmenu.get_gamehandler().get_levelmgr().get_levels())
 			{
-				m_shapes.emplace_back(m_size);
-				auto& back(m_shapes.back());
-				back.setOrigin(m_size / 2.f);
-				back.setOutlineThickness(2.f);
-				back.setOutlineColor({});
-				back.setPosition(m_center.x, pos_y);
+				auto& lv(a.second);
+				auto& inf(lv.info);
+
+				m_squares.emplace_back(m_mainmenu, vec2f{m_center.x, pos_y}, m_square_size,
+									   "Name", mlk::stl_string::str_format("Creator: %%\nDate: %%", inf.creator_name, inf.creation_date));
+				pos_y += m_squares.back().get_height();
 			}
 		}
 
 		std::size_t num_items() const noexcept
-		{return m_shapes.size();}
+		{return m_squares.size();}
 
 		std::size_t max_index() const noexcept
 		{return this->num_items() - 1;}
