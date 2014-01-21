@@ -24,11 +24,8 @@ namespace rj
 	template<typename Main_Menu>
 	class menu_levels : public menu_component<Main_Menu>
 	{
-		level_manager& m_lvmgr{this->m_mainmenu.get_gamehandler().get_levelmgr()};
-		game_window& m_gamewindow{this->m_mainmenu.get_gamehandler().get_gamewindow()};
-
-		mlk::sptr<level_squares> m_squares_local;
-		mlk::sptr<items> m_items;
+		mlk::sptr<level_squares<Main_Menu>> m_squares_local;
+		mlk::sptr<items<Main_Menu>> m_items;
 		submenu_manager<lv_menu_state, lv_menu_state::select> m_submenu_manager;
 
 	public:
@@ -36,10 +33,8 @@ namespace rj
 
 		menu_levels(Main_Menu& mm, menu_state type, game& g, const sf::Font& font, const vec2f& center) :
 			menu_component<Main_Menu>{mm, type, g, font, center},
-			m_squares_local{std::make_shared<level_squares>(g, font, center, this->m_mainmenu.get_def_fontcolor(),
-															this->m_mainmenu.get_act_fontcolor())},
-			m_items{std::make_shared<items>(g, font, center, this->m_mainmenu.get_def_fontcolor(),
-					this->m_mainmenu.get_act_fontcolor())}
+			m_squares_local{std::make_shared<level_squares<Main_Menu>>(mm)},
+			m_items{std::make_shared<items<Main_Menu>>(mm)}
 		{this->init();}
 
 		void update(dur duration) override
@@ -63,7 +58,8 @@ namespace rj
 		bool is_accessing_submenu() override
 		{return m_submenu_manager.is_submenu_active();}
 
-		items& get_items() noexcept
+		auto get_items() noexcept
+		-> decltype(*m_items)&
 		{return *m_items;}
 
 	private:
