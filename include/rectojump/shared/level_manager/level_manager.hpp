@@ -27,7 +27,7 @@ namespace rj
 		mlk::fs::file_handle m_filemgr;
 		const std::string& m_abs_path;
 
-		std::map<std::string, level> m_loaded_levels;
+		std::map<level_id, level> m_loaded_levels;
 
 	public:
 		level_manager(const std::string& abs_level_path) :
@@ -43,7 +43,7 @@ namespace rj
 			return m_loaded_levels[id];
 		}
 
-		bool save_level(const level_packer<packer_mode::pack>& lv, const std::string& id)
+		bool save_level(const level_packer<packer_mode::pack>& lv, const level_id& id)
 		{
 			if(!m_filemgr.reopen(this->make_path(id), std::ios::out | std::ios::trunc))
 				return false;
@@ -51,7 +51,7 @@ namespace rj
 			return true;
 		}
 
-		auto levels() const noexcept
+		auto get_levels() const noexcept
 		-> const decltype(m_loaded_levels)&
 		{return m_loaded_levels;}
 
