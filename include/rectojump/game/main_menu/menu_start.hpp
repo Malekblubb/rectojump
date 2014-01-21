@@ -21,7 +21,7 @@ namespace rj
 	template<typename Main_Menu>
 	class menu_start : public menu_component<Main_Menu>
 	{
-		items m_items;
+		items<Main_Menu> m_items;
 
 		// player preview
 		factory::eptr<player> m_player_prev{factory::create<player>(vec2f{this->m_center.x, this->m_center.y / 0.55f})};
@@ -30,8 +30,7 @@ namespace rj
 	public:
 		menu_start(Main_Menu& mm, menu_state type, game& g, const sf::Font& font, const vec2f& center) :
 			menu_component<Main_Menu>{mm, type, g, font, center},
-			m_items{g, font, center,this->m_mainmenu.get_def_fontcolor(),
-					this->m_mainmenu.get_act_fontcolor()}
+			m_items{mm}
 		{this->init();}
 
 		item get_current_selected() const noexcept
@@ -69,7 +68,8 @@ namespace rj
 		void call_current_event() override
 		{m_items.call_current_event();}
 
-		items& get_items() noexcept
+		auto get_items() noexcept
+		-> decltype(m_items)&
 		{return m_items;}
 
 	private:
