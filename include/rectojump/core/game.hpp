@@ -12,6 +12,7 @@
 #include <rectojump/game/debug_info.hpp>
 #include <rectojump/game/world.hpp>
 #include <rectojump/global/common.hpp>
+#include <rectojump/shared/level_manager/level_manager.hpp>
 
 
 namespace rj
@@ -19,6 +20,7 @@ namespace rj
 	class game
 	{
 		game_window& m_window;
+		level_manager* m_lvmgr{nullptr};
 
 		// gameworld
 		world m_world{*this};
@@ -38,13 +40,20 @@ namespace rj
 			m_world.render();
 		}
 
-		void load_level(const entity_proto_vec& entities)
+		void load_level(const level_id& id)
 		{
-			m_world.load_level(entities);
+			if(m_lvmgr == nullptr)
+				mlk::lerr(errors::cl_nullptr_access)["rj::game"];
+
+			auto& lv(m_lvmgr->get_level(id));
+			m_world.load_level(lv.entities);
 		}
 
 		void render_object(const sf::Drawable& object)
 		{m_window.draw(object);}
+
+		void set_levelmgr(level_manager* lm)
+		{m_lvmgr = lm;}
 
 		world& get_world()
 		{return m_world;}
