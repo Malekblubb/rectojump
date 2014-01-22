@@ -43,8 +43,8 @@ namespace rj
 		}
 
 		template<typename... Args>
-		void create_popup(const std::string& text, Args&&... args)
-		{m_popups.emplace_back(&m_game, m_font, text, std::forward<Args>(args)...);}
+		void create_popup(const std::string& text, const vec2f& pos = {settings::get_window_size<vec2f>().x / 2.f, settings::get_window_size<vec2f>().y - 100.f}, Args&&... args = {})
+		{m_popups.emplace_back(&m_game, m_font, text, pos, std::forward<Args>(args)...);}
 
 		std::size_t num_popups() const noexcept
 		{return m_popups.size();}
