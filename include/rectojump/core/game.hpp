@@ -19,15 +19,13 @@ namespace rj
 	class game
 	{
 		game_window& m_window;
-		game_updater& m_updater;
 
 		// gameworld
 		world m_world{*this};
 
 	public:
 		game(game_window& window) :
-			m_window{window},
-			m_updater{m_window.get_updater()}
+			m_window{window}
 		{ }
 
 		void update(dur duration)
@@ -47,9 +45,6 @@ namespace rj
 
 		void render_object(const sf::Drawable& object)
 		{m_window.draw(object);}
-
-		game_updater& get_updater()
-		{return m_updater;}
 
 		world& get_world()
 		{return m_world;}
