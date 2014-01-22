@@ -49,10 +49,62 @@ namespace rj
 			m_popupmgr{*this},
 			m_debug_info{*this},
 			m_mainmenu{*this}
+		{this->init();}
+
+		template<typename... Args>
+		void create_popup(const std::string& text, Args&&... args)
+		{m_popupmgr.create_popup(text, std::forward<Args>(args)...);}
+
+		auto get_gamewindow() noexcept
+		-> decltype(m_game_window)&
+		{return m_game_window;}
+
+		auto get_game() noexcept
+		-> decltype(m_game)&
+		{return m_game;}
+
+		auto get_backgroundmgr() noexcept
+		-> decltype(m_backgroundmgr)&
+		{return m_backgroundmgr;}
+
+		auto get_mainmenu() noexcept
+		-> decltype(m_mainmenu)&
+		{return m_mainmenu;}
+
+		auto get_datamgr() noexcept
+		-> decltype(m_datamgr)&
+		{return m_datamgr;}
+
+		auto get_levelmgr() noexcept
+		-> decltype(m_lvmgr)&
+		{return m_lvmgr;}
+
+		auto get_debuginfo() noexcept
+		-> decltype(m_debug_info)&
+		{return m_debug_info;}
+
+		auto get_popupmgr() noexcept
+		-> decltype(m_popupmgr)&
+		{return m_popupmgr;}
+
+	private:
+		void init()
 		{
+			m_current_states |= state::main_menu;
+
+			m_game_window.get_updater().on_update += [this](dur duration){this->update(duration);};
+			m_game_window.get_updater().on_render += [this]{this->render();};
+
 			settings::on_changed() +=
 			[this]{m_game_window.set_size(settings::get_window_size());};
 
+			this->init_pointers();
+			this->init_input();
+		}
+
+		void init_input()
+		{
+			// global input
 			on_key_pressed(key::F) +=
 			[this]
 			{
@@ -63,12 +115,6 @@ namespace rj
 			on_key_pressed(key::T) +=
 			[this]{m_game_window.toggle_titlebar();};
 
-			m_current_states |= state::main_menu;
-
-			m_game_window.get_updater().on_update += [this](dur duration){this->update(duration);};
-			m_game_window.get_updater().on_render += [this]{this->render();};
-
-			// global input
 			on_keys_pressed(key::LShift, key::D) +=
 			[this]{this->toggle_state(state::debug_info);};
 
@@ -76,7 +122,7 @@ namespace rj
 			on_key_pressed(key::Escape) +=
 			[this]{if(!this->is_active(state::main_menu)) return; m_game_window.stop();};
 
-			// menu input/events
+			// menu input
 			on_key_pressed(key::Return) +=
 			[this]
 			{
@@ -108,49 +154,6 @@ namespace rj
 					return;
 				m_mainmenu.on_key_down();
 			};
-
-
-
-//			on_keys_pressed(key::Up) +=
-//			[this]
-//			{
-//				if(!this->is_active(state::main_menu) || !m_mainmenu.is_active(menu_state::menu_levels))
-//					return;
-//				m_mainmenu.get_squares().on_key_up();
-//			};
-
-
-//			on_key_pressed(key::Down) +=
-//			[this]
-//			{
-//				if(!this->is_active(state::main_menu) || !m_mainmenu.is_active(menu_state::menu_levels))
-//					return;
-//				m_mainmenu.get_squares().on_key_down();
-//			};
-
-
-//			on_mousewheel(wheel::up) +=
-//			[this](const vec2f&)
-//			{
-//				if(!this->is_active(state::main_menu) || !m_mainmenu.is_active(menu_state::menu_levels))
-//					return;
-//				m_mainmenu.get_squares().on_key_up();
-//			};
-
-//			on_mousewheel(wheel::down) +=
-//			[this](const vec2f&)
-//			{
-//				if(!this->is_active(state::main_menu) || !m_mainmenu.is_active(menu_state::menu_levels))
-//					return;
-//				m_mainmenu.get_squares().on_key_down();
-//			};
-
-
-//			m_mainmenu.on_item_event(item::play) +=
-//			[this]{m_current_states.remove(state::main_menu); m_current_states |= state::game;};
-
-//			m_mainmenu.on_item_event("quit") +=
-//			[this]{m_game_window.stop();};
 
 			// game input
 			on_key_pressed(key::P) +=
@@ -198,50 +201,10 @@ namespace rj
 			};
 		}
 
-		template<typename... Args>
-		void create_popup(const std::string& text, Args&&... args)
-		{m_popupmgr.create_popup(text, std::forward<Args>(args)...);}
-
-		auto get_gamewindow() noexcept
-		-> decltype(m_game_window)&
-		{return m_game_window;}
-
-		auto get_game() noexcept
-		-> decltype(m_game)&
-		{return m_game;}
-
-		auto get_backgroundmgr() noexcept
-		-> decltype(m_backgroundmgr)&
-		{return m_backgroundmgr;}
-
-		auto get_mainmenu() noexcept
-		-> decltype(m_mainmenu)&
-		{return m_mainmenu;}
-
-		auto get_datamgr() noexcept
-		-> decltype(m_datamgr)&
-		{return m_datamgr;}
-
-		auto get_levelmgr() noexcept
-		-> decltype(m_lvmgr)&
-		{return m_lvmgr;}
-
-		auto get_debuginfo() noexcept
-		-> decltype(m_debug_info)&
-		{return m_debug_info;}
-
-		auto get_popupmgr() noexcept
-		-> decltype(m_popupmgr)&
-		{return m_popupmgr;}
-
-	private:
-		void test_load_level()
+		void init_pointers() noexcept
 		{
-//			m_lvmgr.open_level("test1");
-			m_game.load_level(m_lvmgr.open_level("testlevel_1").entities);
-
+			m_game.set_levelmgr(&m_lvmgr);
 		}
-
 
 		void toggle_state(state s)
 		{m_current_states.toggle(s);}
