@@ -61,6 +61,9 @@ namespace rj
 		void set_tx_shape(const sf::RectangleShape& shape) noexcept
 		{m_textureshape = shape;}
 
+		void clear() noexcept
+		{m_components.clear();}
+
 		std::size_t num_components() const noexcept
 		{return m_components.size();}
 
