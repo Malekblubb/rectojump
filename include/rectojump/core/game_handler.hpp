@@ -51,10 +51,6 @@ namespace rj
 			m_mainmenu{*this}
 		{this->init();}
 
-		template<typename... Args>
-		void create_popup(const std::string& text, Args&&... args)
-		{m_popupmgr.create_popup(text, std::forward<Args>(args)...);}
-
 		auto get_gamewindow() noexcept
 		-> decltype(m_game_window)&
 		{return m_game_window;}
