@@ -144,8 +144,7 @@ namespace rj
 	auto on_keys_pressed(Keys&&... keys)
 	-> decltype(input::get().m_on_keys_pressed[key_vec{}])&
 	{
-		key_vec keys_vec;
-		mlk::cnt::make_vector(keys_vec, std::forward<Keys>(keys)...);
+		key_vec keys_vec{std::forward<Keys>(keys)...};
 		return input::get().m_on_keys_pressed[keys_vec];
 	}
 
