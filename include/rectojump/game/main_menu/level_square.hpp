@@ -9,6 +9,7 @@
 
 #include <rectojump/core/render.hpp>
 #include <rectojump/global/common.hpp>
+#include <rectojump/shared/level_manager/level_manager.hpp>
 
 
 namespace rj
@@ -23,14 +24,17 @@ namespace rj
 		sf::Text m_text;
 		static constexpr float m_text_offset{60.f};
 		static constexpr float m_spacing{20.f};
+
+		level_id m_id;
 		bool m_active{false};
 
 	public:
-		level_square(Main_Menu& mm, const vec2f& pos, const vec2f& size, const std::string& name, const std::string& text) :
+		level_square(Main_Menu& mm, const vec2f& pos, const vec2f& size, const std::string& name, const std::string& text, const level_id& id) :
 			m_mainmenu{mm},
 			m_shape{size},
 			m_name{name, mm.get_font(), 30},
-			m_text{text, mm.get_font(), 15}
+			m_text{text, mm.get_font(), 15},
+			m_id{id}
 		{
 			// shape
 			m_shape.setOrigin(size / 2.f);
@@ -84,6 +88,9 @@ namespace rj
 
 		float get_height() const noexcept
 		{return m_shape.getSize().y + m_name.getGlobalBounds().height + m_text.getGlobalBounds().height;}
+
+		const level_id& get_id() const noexcept
+		{return m_id;}
 	};
 }
 
