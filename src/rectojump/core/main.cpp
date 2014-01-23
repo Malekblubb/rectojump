@@ -6,6 +6,7 @@
 #include <rectojump/core/game.hpp>
 #include <rectojump/core/game_handler.hpp>
 #include <rectojump/core/game_window.hpp>
+#include <rectojump/game/editor/editor.hpp>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/global/error_inserter.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
@@ -29,7 +30,8 @@ int main()
 	// game
 	rj::game_window gw{rj::settings::get_window_size(), rj::settings::get_fullscreen()};
 	rj::game g{gw};
-	rj::game_handler gh{gw, g, dm, lm};
+	rj::editor e;
+	rj::game_handler gh{gw, g, e, dm, lm};
 
 	gw.start();
 	return 0;

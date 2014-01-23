@@ -10,6 +10,7 @@
 #include "game.hpp"
 #include "game_window.hpp"
 #include <rectojump/game/background/background_manager.hpp>
+#include <rectojump/game/editor/editor.hpp>
 #include <rectojump/game/main_menu/main_menu.hpp>
 #include <rectojump/game/popup_manager.hpp>
 #include <rectojump/global/common.hpp>
@@ -24,12 +25,13 @@
 namespace rj
 {
 	enum class state : std::size_t
-	{main_menu, game_menu, game, debug_info, num};
+	{main_menu, game_menu, game, editor, debug_info, num};
 
 	class game_handler
 	{
 		game_window& m_game_window;
 		game& m_game;
+		editor& m_editor;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 		background_manager m_backgroundmgr;
@@ -40,9 +42,10 @@ namespace rj
 		mlk::ebitset<state, state::num> m_current_states;
 
 	public:
-		game_handler(game_window& gw, game& g, data_manager& dm, level_manager& lm) :
+		game_handler(game_window& gw, game& g, editor& e, data_manager& dm, level_manager& lm) :
 			m_game_window{gw},
 			m_game{g},
+			m_editor{e},
 			m_datamgr{dm},
 			m_lvmgr{lm},
 			m_backgroundmgr{g},
@@ -51,6 +54,24 @@ namespace rj
 			m_mainmenu{*this}
 		{this->init();}
 
+		void load_level(const level_id& id)
+		{
+			auto& lv(m_lvmgr.get_level(id));
+			if(!lv.is_valid())
+			{
+				m_popupmgr.create_popup<popup_type::error>("Failed to load level: not a valid level");
+				return;
+			}
+
+			m_backgroundmgr.clear();
+
+			this->deactivate_state(state::main_menu);
+			this->activate_state(state::game);
+
+			m_game.load_level(lv);
+		}
+
+		// getters
 		auto get_gamewindow() noexcept
 		-> decltype(m_game_window)&
 		{return m_game_window;}
@@ -113,6 +134,9 @@ namespace rj
 
 			on_keys_pressed(key::LShift, key::D) +=
 			[this]{this->toggle_state(state::debug_info);};
+
+			on_keys_pressed(key::LShift, key::Q) +=
+			[this]{m_game_window.stop();};
 
 			// window input
 			on_key_pressed(key::Escape) +=
@@ -201,6 +225,12 @@ namespace rj
 		{
 			m_game.set_levelmgr(&m_lvmgr);
 		}
+
+		void activate_state(state s)
+		{m_current_states |= s;}
+
+		void deactivate_state(state s)
+		{m_current_states.remove(s);}
 
 		void toggle_state(state s)
 		{m_current_states.toggle(s);}
