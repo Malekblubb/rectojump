@@ -34,6 +34,8 @@ namespace rj
 		mlk::event_delegates<btn, const vec2f&> m_on_btn_pressed;
 		mlk::event_delegates<wheel, const vec2f&> m_on_mousewheel;
 
+		vec2f m_mousepos{0.f, 0.f};
+
 	public:
 		input() = default;
 
@@ -45,11 +47,7 @@ namespace rj
 
 	private:
 		void update(const vec2f& mousepos)
-		{
-			for(auto& a : m_on_btn_pressed)
-				if(m_mousebtn_bits & a.first)
-					a.second(mousepos);
-		}
+		{m_mousepos = mousepos;}
 
 		void key_pressed(key k)
 		{
@@ -96,7 +94,14 @@ namespace rj
 		}
 
 		void btn_pressed(btn b)
-		{m_mousebtn_bits |= b;}
+		{
+			m_mousebtn_bits |= b;
+
+			if(mlk::cnt::exists_if(
+			[=](const std::pair<btn, mlk::slot<const vec2f&>>& p)
+			{return p.first == b;}, m_on_btn_pressed))
+				m_on_btn_pressed[b](m_mousepos);
+		}
 
 		void btn_released(btn b)
 		{m_mousebtn_bits.remove(b);}
