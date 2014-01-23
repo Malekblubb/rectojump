@@ -47,14 +47,6 @@ namespace rj
 			rndr::ro(m_game, m_textureshape);
 		}
 
-		template<typename Obj_Type, typename... Args>
-		mlk::sptr<background_component<Obj_Type>> create_object(Args&&... args)
-		{
-			auto ptr(std::make_shared<background_component<Obj_Type>>(m_game, std::forward<Args>(args)...));
-			m_components.emplace_back(ptr);
-			return ptr;
-		}
-
 		void set_bg_shape(const gradient_rect& shape) noexcept
 		{m_bgshape = shape;}
 
@@ -62,10 +54,27 @@ namespace rj
 		{m_textureshape = shape;}
 
 		void clear() noexcept
-		{m_components.clear();}
+		{
+			// clear components
+			m_components.clear();
+
+			// clear bg
+			m_bgshape.set_gradient_points(1);
+			m_bgshape.set_startcolor({});
+			m_bgshape.set_endcolor({});
+			m_textureshape.setFillColor({});
+		}
 
 		std::size_t num_components() const noexcept
 		{return m_components.size();}
+
+		template<typename Obj_Type, typename... Args>
+		mlk::sptr<background_component<Obj_Type>> create_object(Args&&... args)
+		{
+			auto ptr(std::make_shared<background_component<Obj_Type>>(m_game, std::forward<Args>(args)...));
+			m_components.emplace_back(ptr);
+			return ptr;
+		}
 
 	private:
 		void erase_destroyed() noexcept
