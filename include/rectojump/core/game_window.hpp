@@ -172,8 +172,7 @@ namespace rj
 					m_input.btn_released(ev.mouseButton.button);
 					break;
 				case sf::Event::EventType::MouseWheelMoved:
-					m_input.mousewheel_moved(ev.mouseWheel.delta,
-											 m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window)));
+					m_input.mousewheel_moved(ev.mouseWheel.delta);
 					break;
 				default: break;
 				}

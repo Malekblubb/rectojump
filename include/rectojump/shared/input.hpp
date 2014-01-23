@@ -106,8 +106,8 @@ namespace rj
 		void btn_released(btn b)
 		{m_mousebtn_bits.remove(b);}
 
-		void mousewheel_moved(int delta, const vec2f& pos)
-		{delta < 0 ? m_on_mousewheel[wheel::down](pos) : m_on_mousewheel[wheel::up](pos);}
+		void mousewheel_moved(int delta)
+		{delta < 0 ? m_on_mousewheel[wheel::down](m_mousepos) : m_on_mousewheel[wheel::up](m_mousepos);}
 
 
 		friend auto on_key_pressed(key k)
