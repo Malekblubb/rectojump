@@ -90,7 +90,7 @@ namespace rj
 		}
 
 		void call_current_event() override
-		{on_level_load("");}
+		{on_level_load(m_squares[m_current_index].get_id());}
 
 	private:
 		void init()
@@ -99,11 +99,12 @@ namespace rj
 
 			for(auto& a : m_mainmenu.get_gamehandler().get_levelmgr().get_levels())
 			{
+				auto& id(a.first);
 				auto& lv(a.second);
 				auto& inf(lv.info);
 
 				m_squares.emplace_back(m_mainmenu, vec2f{m_center.x, pos_y}, m_square_size,
-									   "Name", mlk::stl_string::str_format("Creator: %%\nDate: %%", inf.creator_name, inf.creation_date));
+									   "Name", mlk::stl_string::str_format("Creator: %%\nDate: %%", inf.creator_name, inf.creation_date), id);
 				pos_y += m_squares.back().get_height();
 			}
 		}
