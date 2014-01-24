@@ -12,45 +12,58 @@
 
 namespace rj
 {
-	namespace rndr
+	namespace render_utl
 	{
 		// render a single object
-		template<typename Game, typename Drawable>
-		void ro(Game& g, const Drawable& drawable)
-		{g.render_object(drawable);}
+		template<typename Game_Handler, typename Drawable>
+		void ro(Game_Handler& gh, const Drawable& drawable)
+		{gh.render_object(drawable);}
 
 		// render helpers
-		template<typename Game, typename T, bool is_drawable>
+		template<typename Game_Handler, typename T, bool is_drawable>
 		struct ro_helper
 		{
-			ro_helper(Game& g, const T& obj)
-			{for(auto& a : obj) ro(g, a);}
+			ro_helper(Game_Handler& gh, const T& obj)
+			{for(auto& a : obj) ro(gh, a);}
 		};
 
-		template<typename Game, typename T>
-		struct ro_helper<Game, T, true>
+		template<typename Game_Handler, typename T>
+		struct ro_helper<Game_Handler, T, true>
 		{
-			ro_helper(Game& g, const T& obj)
-			{ro(g, obj);}
+			ro_helper(Game_Handler& gh, const T& obj)
+			{ro(gh, obj);}
 		};
+	}
 
-		// render multiple objects impl
-		template<typename Game>
-		void rmo_impl(Game& g)
+	template<typename Game_Handler>
+	class render
+	{
+		Game_Handler& m_gamehandler;
+
+	public:
+		render(Game_Handler& gh) :
+			m_gamehandler{gh}
 		{ }
 
-		template<typename Game, typename Head, typename... Tail>
-		void rmo_impl(Game& g, const Head& head, Tail&&... tail)
-		{
-			ro_helper<Game, Head, std::is_base_of<sf::Drawable, Head>::value>{g, head};
-			rmo_impl(g, std::forward<Tail>(tail)...);
-		}
+		template<typename... Args>
+		void operator()(Args&&... args)
+		{this->rmo(std::forward<Args>(args)...);}
 
-		// render multiple objects interface
-		template<typename Game, typename... Args>
-		void rmo(Game& g, Args&&... args)
-		{rmo_impl(g, std::forward<Args>(args)...);}
-	}
+		template<typename... Args>
+		void rmo(Args&&... args)
+		{this->rmo_impl(std::forward<Args>(args)...);}
+
+		// render multiple objects impl
+		void rmo_impl()
+		{ }
+
+		template<typename Head, typename... Tail>
+		void rmo_impl(const Head& head, Tail&&... tail)
+		{
+			render_utl::ro_helper<Game_Handler, Head, std::is_base_of<sf::Drawable, Head>::value>{m_gamehandler, head};
+			rmo_impl(std::forward<Tail>(tail)...);
+		}
+	};
 }
 
 
