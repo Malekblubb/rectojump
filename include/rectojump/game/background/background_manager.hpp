@@ -60,7 +60,8 @@ namespace rj
 			m_bgshape.set_gradient_points(1);
 			m_bgshape.set_startcolor({});
 			m_bgshape.set_endcolor({});
-			m_textureshape.setFillColor({});
+			m_textureshape.setFillColor({0, 0, 0, 0});
+			m_textureshape.setTexture(nullptr);
 		}
 
 		std::size_t num_components() const noexcept
