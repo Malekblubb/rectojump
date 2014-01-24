@@ -62,12 +62,16 @@ namespace rj
 
 				--m_current_alpha;
 				auto scolor(m_shape.getFillColor());
-				m_shape.setFillColor({scolor.r, scolor.g, scolor.g, m_current_alpha});
+				scolor.a = m_current_alpha;
+				m_shape.setFillColor(scolor);
+
 				auto ocolor(m_shape.getOutlineColor());
-				m_shape.setOutlineColor({ocolor.r, ocolor.g, ocolor.g, m_current_alpha});
+				ocolor.a = m_current_alpha;
+				m_shape.setOutlineColor(ocolor);
 
 				auto tcolor(m_text.getColor());
-				m_text.setColor({tcolor.r, tcolor.g, tcolor.g, m_current_alpha});
+				tcolor.a = m_current_alpha;
+				m_text.setColor(tcolor);
 			}
 		}
 
