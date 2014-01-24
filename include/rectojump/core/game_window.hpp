@@ -31,9 +31,10 @@ namespace rj
 		bool m_running{false};
 		bool m_need_recreate{false};
 
+		game_updater m_game_updater;
 		input& m_input{input::get()};
 
-		game_updater m_game_updater;
+		mlk::event_delegates<sf::Event::EventType, sf::Event> m_on_event;
 
 	public:
 		mlk::slot<> on_stop;
@@ -75,6 +76,10 @@ namespace rj
 
 		void stop() noexcept
 		{on_stop(); m_running = false;}
+
+		auto on_event(sf::Event::EventType type)
+		-> decltype(m_on_event[type])&
+		{return m_on_event[type];}
 
 		template<typename... Args>
 		void draw(Args&&... args)
@@ -177,6 +182,9 @@ namespace rj
 					break;
 				default: break;
 				}
+
+				// call custom on_event
+				m_on_event[ev.type](ev);
 			}
 		}
 
