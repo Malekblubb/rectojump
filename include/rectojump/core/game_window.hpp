@@ -76,8 +76,9 @@ namespace rj
 		void stop() noexcept
 		{on_stop(); m_running = false;}
 
-		void draw(const sf::Drawable& object)
-		{m_window.draw(object);}
+		template<typename... Args>
+		void draw(Args&&... args)
+		{m_window.draw(std::forward<Args>(args)...);}
 
 		void toggle_fullscreen() noexcept
 		{
