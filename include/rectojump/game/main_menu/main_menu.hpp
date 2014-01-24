@@ -123,9 +123,17 @@ namespace rj
 			m_on_menu_switch[m_submenumgr.get_current_state()]();
 		}
 
-		auto get_gamehandler()
+		auto get_gamehandler() noexcept
 		-> decltype(m_gamehandler)&
 		{return m_gamehandler;}
+
+		auto get_menu_start() noexcept
+		-> decltype(m_start)&
+		{return m_start;}
+
+		auto get_menu_levels() noexcept
+		-> decltype(m_levels)&
+		{return m_levels;}
 
 		const sf::Font& get_font() const noexcept
 		{return m_font;}
