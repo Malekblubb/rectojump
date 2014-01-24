@@ -30,31 +30,32 @@ namespace rj
 
 	class game_handler
 	{
-		render<game_handler> m_render;
-
 		game_window& m_game_window;
-		game<game_handler> m_game;
-		editor m_editor;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
+
+		render<game_handler> m_render;
 		background_manager m_backgroundmgr;
+		game<game_handler> m_game;
+		editor<game_handler> m_editor;
 		main_menu<game_handler> m_mainmenu;
 		popup_manager<game_handler> m_popupmgr;
-		debug_info<game_handler, game<game_handler>> m_debug_info;
+		debug_info<game_handler, decltype(m_game)> m_debug_info;
 
 		mlk::ebitset<state, state::num> m_current_states;
 
 	public:
 		game_handler(game_window& gw, data_manager& dm, level_manager& lm) :
-			m_render{*this},
 			m_game_window{gw},
-			m_game{*this},
 			m_datamgr{dm},
 			m_lvmgr{lm},
+			m_render{*this},
 			m_backgroundmgr{m_render},
+			m_game{*this},
+			m_editor{*this},
+			m_mainmenu{*this},
 			m_popupmgr{*this},
-			m_debug_info{*this},
-			m_mainmenu{*this}
+			m_debug_info{*this}
 		{this->init();}
 
 		void load_level(const level_id& id)
@@ -126,8 +127,21 @@ namespace rj
 			settings::on_changed() +=
 			[this]{m_game_window.set_size(settings::get_window_size());};
 
+			m_mainmenu.get_menu_start()->get_items().on_event("editor",
+			[this]
+			{
+				this->deactivate_state(state::main_menu);
+				this->activate_state(state::editor);
+				m_editor.on_activate();
+			});
+
 			this->init_pointers();
 			this->init_input();
+		}
+
+		void init_pointers() noexcept
+		{
+			m_game.set_levelmgr(&m_lvmgr);
 		}
 
 		void init_input()
@@ -232,11 +246,6 @@ namespace rj
 			};
 		}
 
-		void init_pointers() noexcept
-		{
-			m_game.set_levelmgr(&m_lvmgr);
-		}
-
 		void activate_state(state s)
 		{m_current_states |= s;}
 
@@ -262,10 +271,11 @@ namespace rj
 			if(this->is_active(state::game))
 				m_game.update(duration);
 
+			else if(this->is_active(state::editor))
+				m_editor.update(duration);
+
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.update(duration);
-
-
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.update(duration);
@@ -281,10 +291,11 @@ namespace rj
 			if(this->is_active(state::game) || this->is_active(state::game_menu))
 				m_game.render();
 
+			else if(this->is_active(state::editor))
+				m_editor.render();
+
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
-
-
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.render();
