@@ -14,8 +14,6 @@
 
 namespace rj
 {
-	class game;
-
 	template<typename T>
 	using comp_ptr = mlk::sptr<T>;
 
@@ -25,20 +23,18 @@ namespace rj
 		using mc_mm_ptr = comp_ptr<menu_component<Main_Menu>>;
 
 		Main_Menu& m_mainmenu;
-		game& m_game;
 
 		std::vector<mc_mm_ptr> m_components;
 
 	public:
 		component_manager(Main_Menu& mm) :
-			m_mainmenu{mm},
-			m_game{mm.get_gamehandler().get_game()}
+			m_mainmenu{mm}
 		{ }
 
 		template<typename Comp_Type, menu_state type, typename... Args>
 		comp_ptr<Comp_Type> create_comp(Args&&... args)
 		{
-			auto ptr(std::make_shared<Comp_Type>(m_mainmenu, type, m_game, m_mainmenu.get_font(), m_mainmenu.get_center(), std::forward<Args>(args)...));
+			auto ptr(std::make_shared<Comp_Type>(m_mainmenu, type, m_mainmenu.get_gamehandler().get_render(), m_mainmenu.get_font(), m_mainmenu.get_center(), std::forward<Args>(args)...));
 			m_components.emplace_back(ptr);
 			return ptr;
 		}

@@ -18,6 +18,7 @@ namespace rj
 	class level_square
 	{
 		Main_Menu& m_mainmenu;
+		rndr& m_render;
 
 		sf::RectangleShape m_shape;
 		sf::Text m_name;
@@ -31,6 +32,7 @@ namespace rj
 	public:
 		level_square(Main_Menu& mm, const vec2f& pos, const vec2f& size, const std::string& name, const std::string& text, const level_id& id) :
 			m_mainmenu{mm},
+			m_render{mm.get_gamehandler().get_render()},
 			m_shape{size},
 			m_name{name, mm.get_font(), 30},
 			m_text{text, mm.get_font(), 15},
@@ -68,7 +70,7 @@ namespace rj
 		}
 
 		void render()
-		{rndr::rmo(m_mainmenu.get_gamehandler().get_game(), m_shape, m_name, m_text);}
+		{m_render(m_shape, m_name, m_text);}
 
 		void move(const vec2f& offset) noexcept
 		{

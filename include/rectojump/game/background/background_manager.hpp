@@ -17,20 +17,18 @@
 
 namespace rj
 {
-	class game;
-
 	class background_manager
 	{
 		using bbc_ptr = mlk::sptr<basic_background_component>;
-		game& m_game;
+		rndr& m_render;
 
 		gradient_rect m_bgshape;
 		sf::RectangleShape m_textureshape;
 		std::vector<bbc_ptr> m_components;
 
 	public:
-		background_manager(game& g) :
-			m_game{g}
+		background_manager(rndr& r) :
+			m_render{r}
 		{ }
 
 		void update(dur duration)
@@ -42,9 +40,9 @@ namespace rj
 
 		void render()
 		{
-			rndr::ro(m_game, m_bgshape);
+			m_render(m_bgshape);
 			for(auto& a : m_components) a->render();
-			rndr::ro(m_game, m_textureshape);
+			m_render(m_textureshape);
 		}
 
 		void set_bg_shape(const gradient_rect& shape) noexcept
@@ -71,7 +69,7 @@ namespace rj
 		template<typename Obj_Type, typename... Args>
 		mlk::sptr<background_component<Obj_Type>> create_object(Args&&... args)
 		{
-			auto ptr(std::make_shared<background_component<Obj_Type>>(m_game, std::forward<Args>(args)...));
+			auto ptr(std::make_shared<background_component<Obj_Type>>(m_render, std::forward<Args>(args)...));
 			m_components.emplace_back(ptr);
 			return ptr;
 		}

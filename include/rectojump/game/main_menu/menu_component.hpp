@@ -14,8 +14,6 @@
 
 namespace rj
 {
-	class game;
-
 	enum class menu_state : char
 	{none, menu_start, menu_levels, num};
 
@@ -27,8 +25,8 @@ namespace rj
 		const menu_state m_type;
 
 	public:
-		menu_component(Main_Menu& mm, menu_state state, game& g, const sf::Font& font, const vec2f& center) :
-			basic_component{g, font, center},
+		menu_component(Main_Menu& mm, menu_state state, rndr& r, const sf::Font& font, const vec2f& center) :
+			basic_component{r, font, center},
 			m_mainmenu{mm},
 			m_type{state}
 		{ }

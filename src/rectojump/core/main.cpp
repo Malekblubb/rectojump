@@ -29,9 +29,7 @@ int main()
 
 	// game
 	rj::game_window gw{rj::settings::get_window_size(), rj::settings::get_fullscreen()};
-	rj::game g{gw};
-	rj::editor e;
-	rj::game_handler gh{gw, g, e, dm, lm};
+	rj::game_handler gh{gw, dm, lm};
 
 	gw.start();
 	return 0;

@@ -17,17 +17,19 @@
 
 namespace rj
 {
+	template<typename Game_Handler>
 	class game
 	{
-		game_window& m_window;
+		Game_Handler& m_gamehandler;
 		level_manager* m_lvmgr{nullptr};
 
 		// gameworld
-		world m_world{*this};
+		world m_world;
 
 	public:
-		game(game_window& window) :
-			m_window{window}
+		game(Game_Handler& gh) :
+			m_gamehandler{gh},
+			m_world{m_gamehandler.get_render()}
 		{ }
 
 		void update(dur duration)
@@ -40,17 +42,13 @@ namespace rj
 			m_world.render();
 		}
 
-		void load_level(const level_id& id)
+		void load_level(const level& lv)
 		{
 			if(m_lvmgr == nullptr)
 				mlk::lerr(errors::cl_nullptr_access)["rj::game"];
 
-			auto& lv(m_lvmgr->get_level(id));
 			m_world.load_level(lv.entities);
 		}
-
-		void render_object(const sf::Drawable& object)
-		{m_window.draw(object);}
 
 		void set_levelmgr(level_manager* lm)
 		{m_lvmgr = lm;}

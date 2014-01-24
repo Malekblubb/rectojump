@@ -36,7 +36,7 @@ namespace rj
 		mlk::slot<const level_id&> on_level_load;
 
 		level_squares(Main_Menu& mm) :
-			basic_component{mm.get_gamehandler().get_game(), mm.get_font(), mm.get_center()},
+			basic_component{mm.get_gamehandler().get_render(), mm.get_font(), mm.get_center()},
 			m_mainmenu{mm}
 		{this->init();}
 

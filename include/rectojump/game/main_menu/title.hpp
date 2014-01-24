@@ -15,8 +15,6 @@
 
 namespace rj
 {
-	class game;
-
 	enum class direction : char
 	{forward, back};
 
@@ -33,8 +31,8 @@ namespace rj
 		mlk::uint m_step_fontsize{1};
 
 	public:
-		title(game& g, const sf::Font& font, const vec2f& center) :
-			basic_component{g, font, center}
+		title(rndr& r, const sf::Font& font, const vec2f& center) :
+			basic_component{r, font, center}
 		{this->init();m_bumptimer.run();}
 
 		void update(dur)
@@ -71,7 +69,7 @@ namespace rj
 		}
 
 		void render()
-		{rndr::ro(m_game, m_title);}
+		{m_render(m_title);}
 
 		void set_text(const std::string& text) noexcept
 		{m_title.setString(text); this->set_pos();}

@@ -18,11 +18,9 @@
 
 namespace rj
 {
-	class game;
-
 	class popup
 	{
-		game* m_game; // need pointer here
+		rndr* m_render; // need pointer here
 
 		sf::RectangleShape m_shape;
 		sf::Text m_text;
@@ -31,10 +29,10 @@ namespace rj
 		bool m_destroyed{false};
 
 	public:
-		popup(game* g, const sf::Font& font, const std::string& text, const vec2f& pos, mlk::ulong lifetime = 3000,
+		popup(rndr* r, const sf::Font& font, const std::string& text, const vec2f& pos, mlk::ulong lifetime = 3000,
 			  const sf::Color& bg_color = to_rgb("#aaaaaa", 200), const sf::Color& outline_color = to_rgb("#707070"),
 			  const sf::Color& fontcolor = to_rgb("#505050")) :
-			m_game{g},
+			m_render{r},
 			m_text{text, font, 18},
 			m_lifetime_timer{lifetime}
 		{
@@ -75,9 +73,9 @@ namespace rj
 
 		void render()
 		{
-			if(m_game == nullptr)
+			if(m_render == nullptr)
 				mlk::lerr(errors::cl_nullptr_access)["rj::popup"];
-			rndr::rmo(*m_game, m_shape, m_text);
+			(*m_render)(m_shape, m_text);
 		}
 
 		bool is_destroyed() const noexcept

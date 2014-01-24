@@ -25,10 +25,9 @@ namespace rj
 	using entity_base_ptr = entity_ptr<entity_base>;
 	using player_ptr = entity_ptr<player>;
 
-	class game;
 	class entity_handler
 	{
-		game& m_game;
+		rndr& m_render;
 
 		player_ptr m_player{nullptr};
 		std::vector<entity_base_ptr> m_entities;
@@ -38,8 +37,8 @@ namespace rj
 		static constexpr float m_despawn_zone{0.f};
 
 	public:
-		entity_handler(game& g, std::size_t max_entities = 1000) :
-			m_game{g},
+		entity_handler(rndr& r, std::size_t max_entities = 1000) :
+			m_render{r},
 			m_max_entities{max_entities}
 		{ }
 
@@ -167,7 +166,7 @@ namespace rj
 		void register_impl(const entity_base_ptr& e) noexcept
 		{
 			// important: set game and init
-			e->handler_register(&m_game, m_current_id);
+			e->handler_register(&m_render, m_current_id);
 			e->init();
 			++m_current_id;
 		}

@@ -14,12 +14,10 @@
 
 namespace rj
 {
-	class game;
-
 	class basic_background_component
 	{
 	protected:
-		game& m_game;
+		rndr& m_render;
 		vec2f m_position;
 		vec2f m_size;
 		mlk::tm::simple_timer m_lifetime_timer;
@@ -29,8 +27,8 @@ namespace rj
 		bool m_destroyed{false};
 
 	public:
-		basic_background_component(game& g, const vec2f& pos, const vec2f& size, mlk::ullong lifetime, float rotatiostep, const vec2f& movestep) :
-			m_game{g},
+		basic_background_component(rndr& r, const vec2f& pos, const vec2f& size, mlk::ullong lifetime, float rotatiostep, const vec2f& movestep) :
+			m_render{r},
 			m_position{pos},
 			m_size{size},
 			m_lifetime_timer{lifetime},

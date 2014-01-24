@@ -28,8 +28,8 @@ namespace rj
 		mlk::tm::simple_timer m_player_timer{500};
 
 	public:
-		menu_start(Main_Menu& mm, menu_state type, game& g, const sf::Font& font, const vec2f& center) :
-			menu_component<Main_Menu>{mm, type, g, font, center},
+		menu_start(Main_Menu& mm, menu_state type, rndr& r, const sf::Font& font, const vec2f& center) :
+			menu_component<Main_Menu>{mm, type, r, font, center},
 			m_items{mm}
 		{this->init();}
 
@@ -77,12 +77,13 @@ namespace rj
 		{
 			// add entrys to menu 'items'
 			m_items.add_item("play", "Play");
+			m_items.add_item("editor", "Editor");
 			m_items.add_item("options", "Options");
 			m_items.add_item("credits", "Credits");
 			m_items.add_item("quit", "Quit");
 
 			m_player_prev->init();
-			m_player_prev->set_game(&this->m_game);
+			m_player_prev->set_render(&this->m_render);
 			m_player_prev->render_object().setFillColor(this->m_mainmenu.get_act_fontcolor());
 			m_player_timer.run();
 		}

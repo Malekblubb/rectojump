@@ -18,15 +18,14 @@
 
 namespace rj
 {
-	class game;
 	class world
 	{
 		entity_handler m_entity_handler;
 
 
 	public:
-		world(game& g) :
-			m_entity_handler{g}
+		world(rndr& r) :
+			m_entity_handler{r}
 		{ }
 
 		void c_player()

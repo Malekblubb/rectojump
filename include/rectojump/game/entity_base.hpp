@@ -15,7 +15,6 @@
 namespace rj
 {
 	class entity_handler;
-	class game;
 
 	class entity_base
 	{
@@ -28,9 +27,9 @@ namespace rj
 		etypes m_types;
 
 		// handler functions
-		void handler_register(game* g, int id) noexcept
+		void handler_register(rndr* r, int id) noexcept
 		{
-			m_game = g;
+			m_render = r;
 			m_id = id;
 			m_is_registered = true;
 		}
@@ -39,7 +38,7 @@ namespace rj
 		{m_destroyed = true;}
 
 	protected:
-		game* m_game{nullptr};
+		rndr* m_render{nullptr};
 
 		virtual void update(dur duration) = 0;
 		virtual void render() = 0;
@@ -49,8 +48,8 @@ namespace rj
 		entity_base() = default;
 		virtual ~entity_base() = default;
 
-		void set_game(game* g) noexcept
-		{m_game = g;}
+		void set_render(rndr* r) noexcept
+		{m_render = r;}
 
 		bool is_registered() const noexcept
 		{return m_is_registered || m_id != -1;}

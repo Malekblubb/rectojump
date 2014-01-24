@@ -30,14 +30,11 @@
 
 namespace rj
 {
-	class game;
-
 	template<typename Game_Handler>
 	class main_menu
 	{
 		Game_Handler& m_gamehandler;
 		game_window& m_gamewindow;
-		game& m_game;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 		background_manager& m_backgroundmgr;
@@ -56,7 +53,7 @@ namespace rj
 		comp_ptr<menu_levels<main_menu<Game_Handler>>> m_levels{m_componentmgr.template create_comp<menu_levels<main_menu<Game_Handler>>, menu_state::menu_levels>()};
 
 		// other components (not menus)
-		title m_title{m_game, m_font, m_center};
+		title m_title;
 
 		// menu state
 		submenu_manager<menu_state, menu_state::menu_start> m_submenumgr;
@@ -66,11 +63,11 @@ namespace rj
 		main_menu(Game_Handler& gh) :
 			m_gamehandler{gh},
 			m_gamewindow{gh.get_gamewindow()},
-			m_game{gh.get_game()},
 			m_datamgr{gh.get_datamgr()},
 			m_lvmgr{gh.get_levelmgr()},
 			m_backgroundmgr{gh.get_backgroundmgr()},
-			m_center{settings::get_window_size<vec2f>() / 2.f}
+			m_center{settings::get_window_size<vec2f>() / 2.f},
+			m_title{m_gamehandler.get_render(), m_font, m_center}
 		{this->init();}
 
 		void update(dur duration)
@@ -154,26 +151,32 @@ namespace rj
 
 		void setup_events()
 		{
+			// menu switch
 			m_on_menu_switch[menu_state::menu_levels] +=
 			[this]{m_title.set_text("Levels");};
 
 			m_on_menu_switch[menu_state::menu_start] +=
 			[this]{m_title.set_text("Recto Jump");};
 
-
+			// start menu:
+			// item events:
 			m_start->get_items().on_event("play",
 			[this]{this->do_menu_switch(menu_state::menu_levels);});
+
+			m_start->get_items().on_event("editor",
+			[this]{});
 
 			m_start->get_items().on_event("quit",
 			[this]{m_gamewindow.stop();});
 
-
+			// level menu:
+			// item events:
 			m_levels->get_items().on_event("lv_download",
-			[this]
-			{
-				m_gamehandler.create_popup("Not available yet.", vec2f{settings::get_window_size<vec2f>().x / 2.f,
-																  settings::get_window_size<vec2f>().y - 100.f});
-			});
+			[this]{m_gamehandler.get_popupmgr().create_popup("Not available yet.");});
+
+			// level_squares events:
+			m_levels->on_level_load +=
+			[this](const level_id& id){m_gamehandler.load_level(id);};
 		}
 
 		void setup_interface()

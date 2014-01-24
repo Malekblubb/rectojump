@@ -17,12 +17,11 @@
 
 namespace rj
 {
-	class game;
-
 	template<typename Main_Menu>
 	class items : public basic_component
 	{
 		Main_Menu& m_mainmenu;
+		rndr& m_render;
 
 		static constexpr float m_spacing{50.f};
 		std::map<item, sf::Text> m_menuitems;
@@ -32,8 +31,9 @@ namespace rj
 
 	public:
 		items(Main_Menu& mm) :
-			basic_component{mm.get_gamehandler().get_game(), mm.get_font(), mm.get_center()},
-			m_mainmenu{mm}
+			basic_component{mm.get_gamehandler().get_render(), mm.get_font(), mm.get_center()},
+			m_mainmenu{mm},
+			m_render{mm.get_gamehandler().get_render()}
 		{ }
 
 		void update(dur)
@@ -48,7 +48,7 @@ namespace rj
 		}
 
 		void render()
-		{for(auto& a : m_menuitems) rndr::ro(m_game, a.second);}
+		{for(auto& a : m_menuitems) m_render(a.second);}
 
 		void add_item(const item_id& id, const std::string& text)
 		{

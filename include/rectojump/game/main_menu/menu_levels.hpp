@@ -31,8 +31,8 @@ namespace rj
 	public:
 		mlk::slot<const level_id&>& on_level_load{m_squares_local->on_level_load};
 
-		menu_levels(Main_Menu& mm, menu_state type, game& g, const sf::Font& font, const vec2f& center) :
-			menu_component<Main_Menu>{mm, type, g, font, center},
+		menu_levels(Main_Menu& mm, menu_state type, rndr& r, const sf::Font& font, const vec2f& center) :
+			menu_component<Main_Menu>{mm, type, r, font, center},
 			m_squares_local{std::make_shared<level_squares<Main_Menu>>(mm)},
 			m_items{std::make_shared<items<Main_Menu>>(mm)}
 		{this->init();}

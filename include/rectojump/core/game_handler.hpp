@@ -9,6 +9,7 @@
 
 #include "game.hpp"
 #include "game_window.hpp"
+#include "render.hpp"
 #include <rectojump/game/background/background_manager.hpp>
 #include <rectojump/game/editor/editor.hpp>
 #include <rectojump/game/main_menu/main_menu.hpp>
@@ -29,26 +30,28 @@ namespace rj
 
 	class game_handler
 	{
+		render<game_handler> m_render;
+
 		game_window& m_game_window;
-		game& m_game;
-		editor& m_editor;
+		game<game_handler> m_game;
+		editor m_editor;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 		background_manager m_backgroundmgr;
 		main_menu<game_handler> m_mainmenu;
-
 		popup_manager<game_handler> m_popupmgr;
-		debug_info<game_handler, game> m_debug_info;
+		debug_info<game_handler, game<game_handler>> m_debug_info;
+
 		mlk::ebitset<state, state::num> m_current_states;
 
 	public:
-		game_handler(game_window& gw, game& g, editor& e, data_manager& dm, level_manager& lm) :
+		game_handler(game_window& gw, data_manager& dm, level_manager& lm) :
+			m_render{*this},
 			m_game_window{gw},
-			m_game{g},
-			m_editor{e},
+			m_game{*this},
 			m_datamgr{dm},
 			m_lvmgr{lm},
-			m_backgroundmgr{g},
+			m_backgroundmgr{m_render},
 			m_popupmgr{*this},
 			m_debug_info{*this},
 			m_mainmenu{*this}
@@ -71,7 +74,15 @@ namespace rj
 			m_game.load_level(lv);
 		}
 
+		template<typename... Args>
+		void render_object(Args&&... args)
+		{m_game_window.draw(std::forward<Args>(args)...);}
+
 		// getters
+		auto get_render() noexcept
+		-> decltype(m_render)&
+		{return m_render;}
+
 		auto get_gamewindow() noexcept
 		-> decltype(m_game_window)&
 		{return m_game_window;}

@@ -17,16 +17,14 @@
 
 namespace rj
 {
-	class game;
-
 	template<typename Drawable_Type>
 	class background_component : public basic_background_component
 	{
 		Drawable_Type m_render_object;
 
 	public:
-		background_component(game& g, const vec2f& pos, const vec2f& size, mlk::ullong lifetime, float rotatiostep, const vec2f& movestep) :
-			basic_background_component{g, pos, size, lifetime, rotatiostep, movestep}
+		background_component(rndr& r, const vec2f& pos, const vec2f& size, mlk::ullong lifetime, float rotatiostep, const vec2f& movestep) :
+			basic_background_component{r, pos, size, lifetime, rotatiostep, movestep}
 		{
 			this->set_properties();
 			m_lifetime_timer.run();
@@ -54,7 +52,7 @@ namespace rj
 		{
 			if(m_destroyed)
 				return;
-			rndr::ro(m_game, m_render_object);
+			m_render(m_render_object);
 		}
 
 		Drawable_Type& render_object() noexcept

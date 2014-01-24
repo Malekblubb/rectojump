@@ -16,7 +16,6 @@
 
 namespace rj
 {
-
 	template<typename T>
 	class basic_entity : public entity_base
 	{
@@ -36,9 +35,9 @@ namespace rj
 
 		virtual void render() override
 		{
-			if(m_game == nullptr)
+			if(m_render == nullptr)
 				mlk::lerr(errors::cl_nullptr_access)["rj::basic_entity<T>"];
-			rndr::ro(*m_game, m_render_object);
+			(*m_render)(m_render_object);
 		}
 
 		T& render_object() noexcept

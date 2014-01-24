@@ -14,16 +14,14 @@
 
 namespace rj
 {
-	class game;
-
 	struct basic_component
 	{
-		game& m_game;
+		rndr& m_render;
 		const sf::Font& m_font;
 		const vec2f& m_center;
 
-		basic_component(game& g, const sf::Font& font, const vec2f& center) :
-			m_game{g},
+		basic_component(rndr& r, const sf::Font& font, const vec2f& center) :
+			m_render{r},
 			m_font{font},
 			m_center{center}
 		{ }

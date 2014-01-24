@@ -7,6 +7,8 @@
 #define RJ_GLOBAL_COMMON_HPP
 
 
+#include <rectojump/core/render.hpp>
+
 #include <mlk/types/types.h>
 
 #include <SFML/Window.hpp>
@@ -14,6 +16,10 @@
 
 namespace rj
 {
+	// forward
+	class game_handler;
+	using rndr = render<game_handler>;
+
 	// general
 	using dur = float;
 

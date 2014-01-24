@@ -20,6 +20,7 @@ namespace rj
 	class debug_info
 	{
 		Game_Handler& m_gamehandler;
+		rndr& m_render;
 		Game& m_game;
 
 		sf::RectangleShape m_background{{100.f, 100.f}};
@@ -28,6 +29,7 @@ namespace rj
 	public:
 		debug_info(Game_Handler& gh) :
 			m_gamehandler{gh},
+			m_render{gh.get_render()},
 			m_game{gh.get_game()},
 			m_text{gh.get_datamgr()}
 		{
@@ -53,7 +55,7 @@ namespace rj
 		}
 
 		void render()
-		{rndr::rmo(m_game, m_background, m_text);}
+		{m_render(m_background, m_text);}
 	};
 }
 
