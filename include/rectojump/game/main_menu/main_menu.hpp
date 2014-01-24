@@ -45,7 +45,7 @@ namespace rj
 		const sf::Color m_act_fontcolor{to_rgb("#f15ede") /*"#f15ede"_rgb*/};
 
 		// background
-		background<main_menu<Game_Handler>> m_background{*this};
+		background_main_menu<main_menu<Game_Handler>> m_background{*this};
 
 		// components (menus)
 		component_manager<main_menu<Game_Handler>> m_componentmgr{*this};

@@ -23,7 +23,7 @@
 namespace rj
 {
 	template<typename Main_Menu>
-	class background
+	class background_main_menu
 	{
 		Main_Menu& m_mainmenu;
 		background_manager& m_backgroundmgr;
@@ -33,7 +33,7 @@ namespace rj
 		mlk::tm::simple_timer m_timer{300};
 
 	public:
-		background(Main_Menu& mm) :
+		background_main_menu(Main_Menu& mm) :
 			m_mainmenu{mm},
 			m_backgroundmgr{mm.get_gamehandler().get_backgroundmgr()},
 			m_sides_tx{mm.get_gamehandler().get_datamgr().template get_as<sf::Texture>("menu_side.png")},
