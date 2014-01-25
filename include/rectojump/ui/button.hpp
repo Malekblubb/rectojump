@@ -3,8 +3,8 @@
 // See LICENSE for more information.
 //
 
-#ifndef RJ_GAME_COMPONENTS_BUTTON_HPP
-#define RJ_GAME_COMPONENTS_BUTTON_HPP
+#ifndef RJ_UI_BUTTON_HPP
+#define RJ_UI_BUTTON_HPP
 
 
 #include <rectojump/global/common.hpp>
@@ -185,4 +185,4 @@ namespace rj
 }
 
 
-#endif // RJ_GAME_COMPONENTS_BUTTON_HPP
+#endif // RJ_UI_BUTTON_HPP
