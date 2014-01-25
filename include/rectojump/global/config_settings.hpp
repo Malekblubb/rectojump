@@ -45,8 +45,11 @@ namespace rj
 		inline void set_color_dark(const std::string& hex)
 		{config::get().set_entry("color_dark", hex);}
 
-		inline void set_color_default(const std::string& hex)
-		{config::get().set_entry("color_default", hex);}
+		inline void set_color_default_dark(const std::string& hex)
+		{config::get().set_entry("color_default_dark", hex);}
+
+		inline void set_color_default_light(const std::string& hex)
+		{config::get().set_entry("color_default_light", hex);}
 
 
 		// getters
@@ -66,8 +69,11 @@ namespace rj
 		inline sf::Color get_color_dark()
 		{return to_rgb(config::get().get_entry<std::string>("color_dark"));}
 
-		inline sf::Color get_color_default()
-		{return to_rgb(config::get().get_entry<std::string>("color_default"));}
+		inline sf::Color get_color_default_dark()
+		{return to_rgb(config::get().get_entry<std::string>("color_default_dark"));}
+
+		inline sf::Color get_color_default_light()
+		{return to_rgb(config::get().get_entry<std::string>("color_default_light"));}
 	}
 }
 

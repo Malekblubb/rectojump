@@ -80,7 +80,8 @@ namespace rj
 			m_entrys.emplace_back("sound_volume", "10");
 			m_entrys.emplace_back("color_light", "#f15ede");
 			m_entrys.emplace_back("color_dark", "#bf35ad");
-			m_entrys.emplace_back("color_default", "#797979");
+			m_entrys.emplace_back("color_default_dark", "#797979");
+			m_entrys.emplace_back("color_default_light", "#e3e3e3");
 		}
 
 		void write_config() noexcept

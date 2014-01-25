@@ -41,7 +41,7 @@ namespace rj
 
 		sf::Font m_font{m_datamgr.get_as<sf::Font>("Fipps-Regular.otf")};
 		const vec2f m_center{/*settings::get_window_size<vec2f>() / 2.f*/}; // TODO: clang frontend crash
-		const sf::Color m_def_fontcolor{settings::get_color_default()};
+		const sf::Color m_def_fontcolor{settings::get_color_default_dark()};
 		const sf::Color m_act_fontcolor{settings::get_color_light()};
 
 		// background
