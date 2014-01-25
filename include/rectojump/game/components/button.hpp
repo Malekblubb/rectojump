@@ -90,6 +90,9 @@ namespace rj
 		void set_size(const vec2f& size) noexcept
 		{m_shape.setSize(size); m_restore_shape.setSize(size); this->calculate_textpos();}
 
+		void set_texture(sf::Texture* tx) noexcept
+		{m_shape.setTexture(tx); m_restore_shape.setTexture(tx);}
+
 		void move(const vec2f& offset) noexcept
 		{m_shape.move(offset); m_restore_shape.move(offset); this->calculate_textpos();}
 
@@ -122,6 +125,9 @@ namespace rj
 
 		const vec2f& get_size() const noexcept
 		{return m_shape.getSize();}
+
+		const sf::Texture* get_texture() const noexcept
+		{return m_shape.getTexture();}
 
 	protected:
 		void init()
