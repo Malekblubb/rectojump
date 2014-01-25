@@ -62,6 +62,16 @@ namespace rj
 			return result;
 		}
 
+		template<typename Type>
+		std::vector<Type> get_all_containing_as(const std::string& contain)
+		{
+			std::vector<Type> result;
+			for(auto& a : m_data)
+				if(mlk::stl_string::contains(contain, a.first))
+					result.emplace_back(this->get_as_impl<Type>(a.first));
+			return result;
+		}
+
 		// load:	gets AND loads the data to manager
 		mlk::data_packet load_raw(const data_id& id)
 		{
