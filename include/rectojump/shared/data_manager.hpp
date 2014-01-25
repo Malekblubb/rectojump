@@ -19,6 +19,7 @@
 namespace rj
 {
 	using data_id = std::string;
+	using data_vec = std::vector<mlk::data_packet>;
 
 	class data_manager
 	{
@@ -49,9 +50,9 @@ namespace rj
 			return m_data[id];
 		}
 
-		std::vector<mlk::data_packet> get_all_containing_raw(const std::string& contain)
+		data_vec get_all_containing_raw(const std::string& contain)
 		{
-			std::vector<mlk::data_packet> result;
+			data_vec result;
 			for(auto& a : m_data)
 				if(mlk::stl_string::contains(contain, a.first))
 					result.emplace_back(this->get_raw(a.first));
