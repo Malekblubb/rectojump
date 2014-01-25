@@ -10,6 +10,7 @@
 #include <mlk/filesystem/filesystem.h>
 #include <mlk/log/log.h>
 #include <mlk/tools/compiletime.h>
+#include <mlk/tools/stl_string_utl.h>
 #include <mlk/types/types.h>
 
 #include <map>
@@ -46,6 +47,15 @@ namespace rj
 			if(!this->exists_id(id))
 				return {};
 			return m_data[id];
+		}
+
+		std::vector<mlk::data_packet> get_all_containing_raw(const std::string& contain)
+		{
+			std::vector<mlk::data_packet> result;
+			for(auto& a : m_data)
+				if(mlk::stl_string::contains(contain, a.first))
+					result.emplace_back(this->get_raw(a.first));
+			return result;
 		}
 
 		template<typename T>
