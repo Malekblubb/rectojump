@@ -130,6 +130,9 @@ namespace rj
 
 		friend auto on_mousewheel(wheel w)
 		-> decltype(m_on_mousewheel[w])&;
+
+		friend auto get_mousepos()
+		-> const decltype(m_mousepos)&;
 	};
 
 	inline auto on_key_pressed(key k)
@@ -173,6 +176,10 @@ namespace rj
 	inline auto on_mousewheel(wheel w)
 	-> decltype(input::get().m_on_mousewheel[w])&
 	{return input::get().m_on_mousewheel[w];}
+
+	inline auto get_mousepos()
+	-> const decltype(input::get().m_mousepos)&
+	{return input::get().m_mousepos;}
 }
 
 
