@@ -152,6 +152,7 @@ namespace rj
 			}
 			m_fileh.reopen(path, std::ios::in);
 			m_data[id] = m_fileh.read_all();
+			mlk::lout("rj::data_manager") << "loaded data '" << path << "'";
 		}
 
 		template<typename T>
