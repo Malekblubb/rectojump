@@ -27,10 +27,7 @@ namespace rj
 	public:
 		button(const vec2f& size = {0.f, 0.f}) :
 			m_shape{size}
-		{
-			this->init();
-			this->create_restore_shape();
-		}
+		{this->init_base();}
 
 		button(const vec2f& size, const std::string& text, const sf::Font& font, const sf::Color& fontcolor = {}) :
 			button{size}
@@ -133,6 +130,12 @@ namespace rj
 		virtual void init()
 		{
 			// init the rect
+		}
+
+		void init_base()
+		{
+			this->init();
+			this->create_restore_shape();
 		}
 
 		virtual void on_hover()
