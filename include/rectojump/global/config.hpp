@@ -78,6 +78,9 @@ namespace rj
 			m_entrys.emplace_back("window_height", "720");
 			m_entrys.emplace_back("fullscreen", "0");
 			m_entrys.emplace_back("sound_volume", "10");
+			m_entrys.emplace_back("color_light", "#f15ede");
+			m_entrys.emplace_back("color_dark", "#bf35ad");
+			m_entrys.emplace_back("color_default", "#797979");
 		}
 
 		void write_config() noexcept
@@ -121,6 +124,16 @@ namespace rj
 			}
 		}
 	};
+
+	template<>
+	inline void config::set_entry<std::string>(const std::string& key, const std::string& value)
+	{
+		auto iter(mlk::cnt::find_in_if(
+		[&key](const std::pair<std::string, std::string>& p){return p.first == key;}, m_entrys));
+		if(iter == std::end(m_entrys))
+			return;
+		iter->second = value;
+	}
 }
 
 

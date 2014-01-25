@@ -8,6 +8,7 @@
 
 
 #include "config.hpp"
+#include <rectojump/shared/utils.hpp>
 
 
 namespace rj
@@ -38,6 +39,15 @@ namespace rj
 		inline void set_sound_volume(int vol)
 		{config::get().set_entry("sound_volume", vol);}
 
+		inline void set_color_light(const std::string& hex)
+		{config::get().set_entry("color_light", hex);}
+
+		inline void set_color_dark(const std::string& hex)
+		{config::get().set_entry("color_dark", hex);}
+
+		inline void set_color_default(const std::string& hex)
+		{config::get().set_entry("color_default", hex);}
+
 
 		// getters
 		template<typename Vec_Type = vec2u, typename Val_Type = decltype(Vec_Type::x)>
@@ -49,6 +59,15 @@ namespace rj
 
 		inline int get_sound_volume()
 		{return config::get().get_entry<int>("sound_volume");}
+
+		inline sf::Color get_color_light()
+		{return to_rgb(config::get().get_entry<std::string>("color_light"));}
+
+		inline sf::Color get_color_dark()
+		{return to_rgb(config::get().get_entry<std::string>("color_dark"));}
+
+		inline sf::Color get_color_default()
+		{return to_rgb(config::get().get_entry<std::string>("color_default"));}
 	}
 }
 
