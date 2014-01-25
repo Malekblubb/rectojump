@@ -130,28 +130,28 @@ namespace rj
 		{return m_shape.getTexture();}
 
 	protected:
-		void init()
+		virtual void init()
 		{
 			// init the rect
 		}
 
-		void on_hover()
+		virtual void on_hover()
 		{
 			// do something on hover
 		}
 
-		void on_hover_end()
+		virtual void on_hover_end()
 		{
 			if(m_press) return;
 			this->restore_origin();
 		}
 
-		void on_press()
+		virtual void on_press()
 		{
 			// do something on press
 		}
 
-		void on_press_end()
+		virtual void on_press_end()
 		{
 			if(m_hover) return;
 			this->restore_origin();
@@ -163,7 +163,7 @@ namespace rj
 		void restore_origin() noexcept
 		{m_shape = m_restore_shape;}
 
-		void draw(sf::RenderTarget &target, sf::RenderStates states) const override
+		virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override
 		{
 			target.draw(m_shape, states);
 			target.draw(m_text, states);
