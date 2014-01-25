@@ -84,6 +84,7 @@ namespace rj
 			auto data(m_filemgr.read_all());
 			level_packer<packer_mode::unpack> unpacker{data};
 			m_loaded_levels[id] = unpacker.get_level();
+			mlk::lout("rj::level_manager") << "loaded level '" << path << "' " << (m_loaded_levels[id].is_valid() ? "(valid)" : "(invalid)");
 		}
 
 		std::string make_path(const level_id& id) const noexcept
