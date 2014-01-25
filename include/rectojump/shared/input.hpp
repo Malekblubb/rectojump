@@ -180,6 +180,12 @@ namespace rj
 	inline auto get_mousepos()
 	-> const decltype(input::get().m_mousepos)&
 	{return input::get().m_mousepos;}
+
+	inline sf::FloatRect get_mousebounds()
+	{
+		auto& pos(get_mousepos());
+		return {pos.x, pos.y, 1.f, 1.f};
+	}
 }
 
 
