@@ -94,17 +94,22 @@ namespace rj
 		void clear() noexcept
 		{m_entities.clear();}
 
-		bool exists_entity_at(const vec2f& at) const noexcept
+		auto exists_entity_at(const vec2f& at) const noexcept
+		-> decltype(std::begin(m_entities))
 		{
-			for(auto& a : m_entities)
+			for(auto iter(std::begin(m_entities)); iter != std::end(m_entities); ++iter)
 			{
-				sf::FloatRect ent_bounds{{a->left_out(), a->top_out()}, a->size()};
+				sf::FloatRect ent_bounds{{(*iter)->left_out(), (*iter)->top_out()}, (*iter)->size()};
 				sf::FloatRect at_bounds{at, {1.f, 1.f}};
 				if(ent_bounds.intersects(at_bounds))
-					return true;
+					return iter;
 			}
-			return false;
+			return std::end(m_entities);
 		}
+
+		auto end()
+		-> decltype(std::end(m_entities))
+		{return std::end(m_entities);}
 
 		std::size_t num_entities() const noexcept
 		{return m_entities.size() + this->is_player_registered();}
