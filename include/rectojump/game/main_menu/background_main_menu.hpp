@@ -73,10 +73,8 @@ namespace rj
 					auto ptr(m_backgroundmgr.create_object<triangles4>(vec2f{pos_x, 0.f}, vec2f{15.5f, 30.f}, 5000, rotatestep, movestep));
 					ptr->render_object().setColor({m_fillcolor.r, m_fillcolor.g, m_fillcolor.b, 100});
 //					ptr->render_object().setOrigin(ptr->render_object().getSize() / 2.f);
-
 				}
-
-
+				m_timer.restart(static_cast<mlk::ullong>(mlk::rnd<mlk::ullong>(100, 300) / duration));
 			}
 		}
 
