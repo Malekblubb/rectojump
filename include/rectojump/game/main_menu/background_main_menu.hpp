@@ -3,8 +3,8 @@
 // See LICENSE for more information.
 //
 
-#ifndef RJ_GAME_MAIN_MENU_BACKGROUND_HPP
-#define RJ_GAME_MAIN_MENU_BACKGROUND_HPP
+#ifndef RJ_GAME_MAIN_MENU_BACKGROUND_MAIN_MENU_HPP
+#define RJ_GAME_MAIN_MENU_BACKGROUND_MAIN_MENU_HPP
 
 
 #include <rectojump/core/game_window.hpp>
@@ -43,10 +43,10 @@ namespace rj
 
 		void update(dur duration)
 		{
-			this->update_bg_objs();
+			this->update_bg_objs(duration);
 		}
 
-		void update_bg_objs() noexcept
+		void update_bg_objs(dur duration) noexcept
 		{
 			if(m_timer.timed_out())
 			{
@@ -62,7 +62,6 @@ namespace rj
 				{
 					auto ptr(m_backgroundmgr.create_object<star5>(vec2f{pos_x, 0.f}, vec2f{0.f, length}, 5000, rotatestep, movestep));
 					ptr->render_object().setFillColor({m_fillcolor.r, m_fillcolor.g, m_fillcolor.b, 100});
-					m_timer.restart(mlk::rnd<mlk::ullong>(100, 300));
 				}
 				else
 				{
@@ -74,7 +73,7 @@ namespace rj
 					auto ptr(m_backgroundmgr.create_object<triangles4>(vec2f{pos_x, 0.f}, vec2f{15.5f, 30.f}, 5000, rotatestep, movestep));
 					ptr->render_object().setColor({m_fillcolor.r, m_fillcolor.g, m_fillcolor.b, 100});
 //					ptr->render_object().setOrigin(ptr->render_object().getSize() / 2.f);
-					m_timer.restart(mlk::rnd<mlk::ullong>(100, 300));
+
 				}
 
 
@@ -106,4 +105,4 @@ namespace rj
 }
 
 
-#endif // RJ_GAME_MAIN_MENU_BACKGROUND_HPP
+#endif // RJ_GAME_MAIN_MENU_BACKGROUND_MAIN_MENU_HPP

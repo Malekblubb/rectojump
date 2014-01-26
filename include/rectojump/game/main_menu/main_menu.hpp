@@ -7,7 +7,7 @@
 #define RJ_CORE_MAIN_MENU_MAIN_MENU_HPP
 
 
-#include "background.hpp"
+#include "background_main_menu.hpp"
 #include "component_manager.hpp"
 #include "items.hpp"
 #include "menu_levels.hpp"
