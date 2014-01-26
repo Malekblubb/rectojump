@@ -25,9 +25,12 @@ namespace rj
 		sf::RectangleShape m_restore_shape;
 
 	public:
-		button(const vec2f& size = {0.f, 0.f}) :
+		button(const vec2f& size = {0.f, 0.f}, const vec2f& pos = {0.f, 0.f}) :
 			m_shape{size}
-		{this->init_base();}
+		{
+			m_shape.setPosition(pos);
+			this->init_base();
+		}
 
 		button(const vec2f& size, const std::string& text, const sf::Font& font, const sf::Color& fontcolor = {}) :
 			button{size}
@@ -125,6 +128,12 @@ namespace rj
 
 		const sf::Texture* get_texture() const noexcept
 		{return m_shape.getTexture();}
+
+		bool is_pressed() const noexcept
+		{return m_press;}
+
+		bool is_hover() const noexcept
+		{return m_hover;}
 
 	protected:
 		virtual void init()
