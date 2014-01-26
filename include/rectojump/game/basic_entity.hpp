@@ -47,6 +47,9 @@ namespace rj
 		{return m_render_object;}
 
 		// position, collision
+		const vec2f size() const noexcept override
+		{return m_render_object.getSize();}
+
 		const vec2f& pos() const noexcept override
 		{return m_render_object.getPosition();}
 
@@ -61,6 +64,10 @@ namespace rj
 		virtual float left_out() const noexcept override = 0;
 		virtual float right_out() const noexcept override = 0;
 	};
+
+	template<>
+	inline const vec2f basic_entity<sf::CircleShape>::size() const noexcept
+	{return {m_render_object.getRadius() * 2.f, m_render_object.getRadius() * 2.f};}
 }
 
 

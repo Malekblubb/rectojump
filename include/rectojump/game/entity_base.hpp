@@ -67,6 +67,7 @@ namespace rj
 		{return m_types & type;}
 
 		// position, collision
+		virtual const vec2f size() const noexcept = 0;
 		virtual const vec2f& pos() const noexcept = 0;
 		virtual float pos_x() const noexcept = 0;
 		virtual float pos_y() const noexcept = 0;
