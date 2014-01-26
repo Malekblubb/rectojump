@@ -9,7 +9,6 @@
 
 #include "button.hpp"
 #include <rectojump/global/common.hpp>
-#include <rectojump/global/config_settings.hpp>
 
 
 namespace rj
@@ -55,6 +54,9 @@ namespace rj
 			++m_current_add_index;
 			return ptr;
 		}
+
+		const base_btn_ptr& get_active_btn() const noexcept
+		{return m_buttons.at(m_current_pressed_index);}
 
 	private:
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override
