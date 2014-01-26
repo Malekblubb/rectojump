@@ -27,6 +27,8 @@ namespace rj
 		virtual void init() override { }
 
 	public:
+		using value_type = T;
+
 		basic_entity(const vec2f& pos, const vec2f& velocity) :
 			m_velocity{velocity}
 		{m_render_object.setPosition(pos);}
