@@ -22,6 +22,7 @@ namespace rj
 	protected:
 		T m_render_object;
 		vec2f m_velocity{0.f, 0.f};
+		const vec2f m_size{48.f, 48.f};
 
 		virtual void update(dur duration) override = 0;
 		virtual void init() override { }
