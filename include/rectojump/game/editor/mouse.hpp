@@ -30,7 +30,8 @@ namespace rj
 
 		void update(dur duration)
 		{
-			auto new_pos(get_mousepos());
+			auto mousepos(get_mousepos());
+			vec2f new_pos{round_to(mousepos.x, 48.f), round_to(mousepos.y, 48.f)};
 			m_mouse_shape.render_object().setPosition(new_pos);
 		}
 
