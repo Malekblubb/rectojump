@@ -43,7 +43,8 @@ namespace rj
 					m_current_pressed_index = a.first;
 			}
 			// call the custom user settings
-			on_active_button(m_buttons[m_current_pressed_index]);
+			if(m_current_pressed_index != -1)
+				on_active_button(m_buttons[m_current_pressed_index]);
 		}
 
 		template<typename Button_Type, typename... Args>
@@ -54,6 +55,9 @@ namespace rj
 			++m_current_add_index;
 			return ptr;
 		}
+
+		void inactivate() noexcept
+		{m_current_pressed_index = -1;}
 
 		const base_btn_ptr& get_active_btn() const noexcept
 		{return m_buttons.at(m_current_pressed_index);}
