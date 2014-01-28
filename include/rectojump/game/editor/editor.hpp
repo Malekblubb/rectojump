@@ -94,6 +94,17 @@ namespace rj
 		void init()
 		{
 			m_itembar.on_item_click = [this](base_btn_ptr& b){m_mouse.set_texture(b->get_texture());};
+
+			this->init_input();
+		}
+
+		void init_input()
+		{
+			m_gamehandler.template add_input<state::editor>(
+			[this](const vec2f& pos){this->on_mouse_left(pos);}, btn::Left);
+
+			m_gamehandler.template add_input<state::editor>(
+			[this](const vec2f& pos){this->on_mouse_right(pos);}, btn::Right);
 		}
 	};
 }
