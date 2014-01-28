@@ -25,9 +25,6 @@
 
 namespace rj
 {
-	enum class state : std::size_t
-	{main_menu, game_menu, game, editor, debug_info, num};
-
 	class game_handler
 	{
 		game_window& m_game_window;
@@ -37,7 +34,7 @@ namespace rj
 		render<game_handler> m_render;
 		background_manager m_backgroundmgr;
 		game<game_handler> m_game;
-		editor<game_handler> m_editor;
+		editor<game_handler, decltype(m_game)> m_editor;
 		main_menu<game_handler> m_mainmenu;
 		popup_manager<game_handler> m_popupmgr;
 		debug_info<game_handler, decltype(m_game)> m_debug_info;
@@ -78,6 +75,13 @@ namespace rj
 		template<typename... Args>
 		void render_object(Args&&... args)
 		{m_game_window.draw(std::forward<Args>(args)...);}
+
+		template<typename Input_Type, state active_state, typename On_Input, typename... Input_Type_Args>
+		void add_input(On_Input&& func, Input_Type_Args&&... keys_btns)
+		{
+			add_input_helper<(sizeof...(keys_btns) > 1), Input_Type, active_state, On_Input, Input_Type_Args...>
+			{*this, std::forward<On_Input>(func), std::forward<Input_Type_Args>(keys_btns)...};
+		}
 
 		// getters
 		auto get_render() noexcept
@@ -167,39 +171,6 @@ namespace rj
 			on_key_pressed(key::Escape) +=
 			[this]{if(!this->is_active(state::main_menu)) return; m_game_window.stop();};
 
-			// menu input
-			on_key_pressed(key::Return) +=
-			[this]
-			{
-				if(!this->is_active(state::main_menu))
-					return;
-				m_mainmenu.call_current_itemevent();
-			};
-
-			on_key_pressed(key::BackSpace) +=
-			[this]
-			{
-				if(!this->is_active(state::main_menu))
-					return;
-				m_mainmenu.on_key_backspace();
-			};
-
-			on_key_pressed(key::Up) +=
-			[this]
-			{
-				if(!this->is_active(state::main_menu))
-					return;
-				m_mainmenu.on_key_up();
-			};
-
-			on_keys_pressed(key::Down) +=
-			[this]
-			{
-				if(!this->is_active(state::main_menu))
-					return;
-				m_mainmenu.on_key_down();
-			};
-
 			// game input
 			on_key_pressed(key::P) +=
 			[this]
@@ -244,6 +215,13 @@ namespace rj
 					return;
 				m_game.get_world().c_world();
 			};
+
+			// editor input
+			on_btn_pressed(btn::Left) +=
+			[this](const vec2f& pos){m_editor.on_mouse_left(pos);};
+
+			on_btn_pressed(btn::Right) +=
+			[this](const vec2f& pos){m_editor.on_mouse_right(pos);};
 		}
 
 		void activate_state(state s)
@@ -272,7 +250,10 @@ namespace rj
 				m_game.update(duration);
 
 			else if(this->is_active(state::editor))
+			{
 				m_editor.update(duration);
+				m_game.get_world().get_entityhandler().update(duration);
+			}
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.update(duration);
@@ -292,7 +273,10 @@ namespace rj
 				m_game.render();
 
 			else if(this->is_active(state::editor))
+			{
 				m_editor.render();
+				m_game.get_world().get_entityhandler().render();
+			}
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
@@ -302,6 +286,40 @@ namespace rj
 
 			m_popupmgr.render();
 		}
+
+		// multi_args: true, Input_Type = key
+		template<bool multi_args, typename Input_Type, state s, typename On_Input, typename... Input_Type_Args>
+		struct add_input_helper
+		{
+			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... keys)
+			{
+				on_keys_pressed(std::forward<Input_Type_Args>(keys)...) +=
+				[&gh, func]{if(gh.is_active(s)) func();};
+			}
+		};
+
+		// multi_args: false, Input_Type = key
+		template<typename Input_Type, state s, typename On_Input, typename... Input_Type_Args>
+		struct add_input_helper<false, Input_Type, s, On_Input, Input_Type_Args...>
+		{
+			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... k)
+			{
+				on_key_pressed(std::forward<Input_Type_Args>(k)...) +=
+				[&gh, func]{if(gh.is_active(s)) func();};
+			}
+		};
+
+		// multi_args: false, Input_Type = btn
+		template<state s, typename On_Input, typename... Input_Type_Args>
+		struct add_input_helper<false, btn, s, On_Input, Input_Type_Args...>
+		{
+			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... k)
+			{
+				on_btn_pressed(std::forward<Input_Type_Args>(k)...) +=
+				[&gh, func](const vec2f& pos)
+				{if(gh.is_active(s)) func(pos);};
+			}
+		};
 	};
 }
 
