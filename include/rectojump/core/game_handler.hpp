@@ -79,6 +79,7 @@ namespace rj
 		template<state active_state, typename On_Input, typename... Input_Type_Args>
 		void add_input(On_Input&& func, Input_Type_Args&&... keys_btns)
 		{
+			static_assert(sizeof...(keys_btns) > 0, "at least one key/button/wheel argument needed");
 			add_input_helper<(sizeof...(keys_btns) > 1), typename std::tuple_element<0, std::tuple<Input_Type_Args...>>::type, active_state, On_Input, Input_Type_Args...>
 			{*this, std::forward<On_Input>(func), std::forward<Input_Type_Args>(keys_btns)...};
 		}
