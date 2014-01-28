@@ -84,27 +84,6 @@ namespace rj
 			m_title.render();
 		}
 
-		void on_key_up()
-		{m_submenumgr.event_up();}
-
-		void on_key_down()
-		{m_submenumgr.event_down();}
-
-		void on_key_backspace()
-		{
-			// activate prev state from submenu
-			auto ptr(m_componentmgr.get_comp_from_type(m_submenumgr.get_current_state()));
-			if(ptr != nullptr)
-				if(ptr->is_accessing_submenu())
-				{
-					ptr->on_key_backspace();
-					return;
-				}
-
-			// activate prev state
-			this->do_menu_switch_back();
-		}
-
 		bool is_active(menu_state s) const noexcept
 		{return m_submenumgr.get_current_state() == s;}
 
@@ -153,8 +132,24 @@ namespace rj
 			m_submenumgr.add_menu(menu_state::menu_start, m_start);
 			m_submenumgr.add_menu(menu_state::menu_levels, m_levels);
 
+			this->init_input();
 			this->setup_events();
 			this->setup_interface();
+		}
+
+		void init_input()
+		{
+			m_gamehandler.template add_input<state::main_menu>(
+			[this]{this->call_current_itemevent();}, key::Return);
+
+			m_gamehandler.template add_input<state::main_menu>(
+			[this]{this->on_key_backspace();}, key::BackSpace);
+
+			m_gamehandler.template add_input<state::main_menu>(
+			[this]{this->on_key_up();}, key::Up);
+
+			m_gamehandler.template add_input<state::main_menu>(
+			[this]{this->on_key_down();}, key::Down);
 		}
 
 		void setup_events()
@@ -190,6 +185,28 @@ namespace rj
 		void setup_interface()
 		{
 
+		}
+
+		// on something
+		void on_key_up()
+		{m_submenumgr.event_up();}
+
+		void on_key_down()
+		{m_submenumgr.event_down();}
+
+		void on_key_backspace()
+		{
+			// activate prev state from submenu
+			auto ptr(m_componentmgr.get_comp_from_type(m_submenumgr.get_current_state()));
+			if(ptr != nullptr)
+				if(ptr->is_accessing_submenu())
+				{
+					ptr->on_key_backspace();
+					return;
+				}
+
+			// activate prev state
+			this->do_menu_switch_back();
 		}
 	};
 }
