@@ -76,10 +76,10 @@ namespace rj
 		void render_object(Args&&... args)
 		{m_game_window.draw(std::forward<Args>(args)...);}
 
-		template<typename Input_Type, state active_state, typename On_Input, typename... Input_Type_Args>
+		template<state active_state, typename On_Input, typename... Input_Type_Args>
 		void add_input(On_Input&& func, Input_Type_Args&&... keys_btns)
 		{
-			add_input_helper<(sizeof...(keys_btns) > 1), Input_Type, active_state, On_Input, Input_Type_Args...>
+			add_input_helper<(sizeof...(keys_btns) > 1), typename std::tuple_element<0, std::tuple<Input_Type_Args...>>::type, active_state, On_Input, Input_Type_Args...>
 			{*this, std::forward<On_Input>(func), std::forward<Input_Type_Args>(keys_btns)...};
 		}
 
@@ -215,13 +215,6 @@ namespace rj
 					return;
 				m_game.get_world().c_world();
 			};
-
-			// editor input
-			on_btn_pressed(btn::Left) +=
-			[this](const vec2f& pos){m_editor.on_mouse_left(pos);};
-
-			on_btn_pressed(btn::Right) +=
-			[this](const vec2f& pos){m_editor.on_mouse_right(pos);};
 		}
 
 		void activate_state(state s)
