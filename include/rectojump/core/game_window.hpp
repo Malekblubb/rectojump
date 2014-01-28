@@ -127,6 +127,9 @@ namespace rj
 		{m_window.setView(v);}
 
 		// getters
+		sf::RenderWindow& get_renderwindow() noexcept
+		{return m_window;}
+
 		game_updater& get_updater() noexcept
 		{return m_game_updater;}
 
