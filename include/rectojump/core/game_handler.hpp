@@ -306,11 +306,21 @@ namespace rj
 		template<state s, typename On_Input, typename... Input_Type_Args>
 		struct add_input_helper<false, btn, s, On_Input, Input_Type_Args...>
 		{
-			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... k)
+			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... b)
 			{
-				on_btn_pressed(std::forward<Input_Type_Args>(k)...) +=
-				[&gh, func](const vec2f& pos)
-				{if(gh.is_active(s)) func(pos);};
+				on_btn_pressed(std::forward<Input_Type_Args>(b)...) +=
+				[&gh, func](const vec2f& pos){if(gh.is_active(s)) func(pos);};
+			}
+		};
+
+		// multi_args: false, Input_Type = wheel
+		template<state s, typename On_Input, typename... Input_Type_Args>
+		struct add_input_helper<false, wheel, s, On_Input, Input_Type_Args...>
+		{
+			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... w)
+			{
+				on_mousewheel(std::forward<Input_Type_Args>(w)...) +=
+				[&gh, func](const vec2f& pos){if(gh.is_active(s)) func(pos);};
 			}
 		};
 	};
