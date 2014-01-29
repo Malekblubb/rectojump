@@ -16,6 +16,9 @@
 
 namespace rj
 {
+	enum class state : std::size_t
+	{main_menu, game_menu, game, editor, debug_info, num};
+
 	// forward
 	class game_handler;
 	using rndr = render<game_handler>;
