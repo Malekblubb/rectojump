@@ -148,6 +148,7 @@ namespace rj
 	private:
 		void init()
 		{
+			m_input.m_renderwindow = &m_window;
 			m_windowstyles |= sf::Style::Default;
 			this->recreate();
 		}
