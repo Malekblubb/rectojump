@@ -46,6 +46,9 @@ namespace rj
 		void set_view(const sf::View& v) noexcept
 		{m_userview = v; m_startcenter = m_userview.getCenter();}
 
+		bool is_centered() const noexcept
+		{return m_userview.getCenter() == m_startcenter;}
+
 		bool has_moved_left() const noexcept
 		{return m_userview.getCenter().x > m_startcenter.x;}
 
