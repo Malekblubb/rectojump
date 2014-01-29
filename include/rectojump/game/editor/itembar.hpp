@@ -32,10 +32,11 @@ namespace rj
 	public:
 		mlk::slot<base_btn_ptr&> on_item_click;
 
-		itembar(Game_Handler& gh) :
+		itembar(Game_Handler& gh, const vec2f& size) :
 			m_gamehandler{gh},
 			m_render{gh.get_render()},
 			m_datamgr{gh.get_datamgr()},
+			m_shape{size},
 			m_button_textures{m_datamgr.get_all_containing_as<sf::Texture>("editor_item")}
 		{this->init();}
 
@@ -61,10 +62,9 @@ namespace rj
 		void init()
 		{
 			auto window_size(settings::get_window_size<vec2f>());
-			vec2f rec_size{window_size.x, 100.f};
+			auto& rec_size(m_shape.getSize());
 			m_shape.setOrigin(rec_size / 2.f);
-			m_shape.setSize(rec_size);
-			m_shape.setPosition({window_size.x / 2.f, window_size.y - rec_size.y / 2.f});
+			m_shape.setPosition({window_size.x / 2.f, rec_size.y / 2.f});
 			m_shape.setFillColor(settings::get_color_default_light());
 
 			auto pos_x(150.f);
