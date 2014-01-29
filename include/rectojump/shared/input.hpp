@@ -18,13 +18,12 @@
 
 namespace rj
 {
-	class game_window;
-
 	using key_vec = std::vector<key>;
 
 	class input
 	{
 		friend class game_window;
+		sf::RenderWindow* m_renderwindow;
 
 		mlk::bitset<btn, btn::ButtonCount> m_mousebtn_bits;
 		mlk::bitset<key, key::KeyCount> m_key_bits;
@@ -133,6 +132,8 @@ namespace rj
 
 		friend auto get_mousepos()
 		-> const decltype(m_mousepos)&;
+
+		friend vec2f get_mousepos_current_view();
 	};
 
 	inline auto on_key_pressed(key k)
@@ -181,12 +182,26 @@ namespace rj
 	-> const decltype(input::get().m_mousepos)&
 	{return input::get().m_mousepos;}
 
+	inline vec2f get_mousepos_current_view()
+	{
+		auto& rw(input::get().m_renderwindow);
+		return rw->mapPixelToCoords(sf::Mouse::getPosition(*rw), rw->getView());
+	}
+
 	vec2f get_mousepos(const sf::RenderWindow& rw, const sf::View& v)
 	{return rw.mapPixelToCoords(sf::Mouse::getPosition(rw), v);}
 
-	inline sf::FloatRect get_mousebounds()
+	template<bool current_view = false>
+	sf::FloatRect get_mousebounds()
 	{
 		auto& pos(get_mousepos());
+		return {pos.x, pos.y, 1.f, 1.f};
+	}
+
+	template<>
+	inline sf::FloatRect get_mousebounds<true>()
+	{
+		auto pos(get_mousepos_current_view());
 		return {pos.x, pos.y, 1.f, 1.f};
 	}
 }
