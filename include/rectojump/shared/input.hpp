@@ -188,7 +188,7 @@ namespace rj
 		return rw->mapPixelToCoords(sf::Mouse::getPosition(*rw), rw->getView());
 	}
 
-	vec2f get_mousepos(const sf::RenderWindow& rw, const sf::View& v)
+	inline vec2f get_mousepos(const sf::RenderWindow& rw, const sf::View& v)
 	{return rw.mapPixelToCoords(sf::Mouse::getPosition(rw), v);}
 
 	template<bool current_view = false>
