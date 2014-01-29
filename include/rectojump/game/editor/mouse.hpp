@@ -8,8 +8,9 @@
 
 
 #include "editor_entity.hpp"
-#include <rectojump/shared/input.hpp>
+#include <rectojump/game/camera.hpp>
 #include <rectojump/global/config_settings.hpp>
+#include <rectojump/shared/input.hpp>
 
 
 namespace rj
@@ -24,13 +25,11 @@ namespace rj
 	public:
 		editor_mouse(rndr& r) :
 			m_render{r}
-		{
+		{ }
 
-		}
-
-		void update(dur duration)
+		void update(dur)
 		{
-			auto mousepos(get_mousepos());
+			auto mousepos(get_mousepos_current_view());
 			vec2f new_pos{round_to(mousepos.x, 48.f), round_to(mousepos.y, 48.f)};
 			m_mouse_shape.render_object().setPosition(new_pos);
 		}
