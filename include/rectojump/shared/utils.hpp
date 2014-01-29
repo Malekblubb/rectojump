@@ -11,9 +11,23 @@
 
 #include <mlk/graphics/color.h>
 
+#include <cmath>
+
 
 namespace rj
 {
+	template<typename T>
+	T round_to(T value, T to)
+	{return (std::round(value / to)) * to;}
+
+	template<typename T>
+	sf::Vector2<T> operator-(const sf::Vector2<T>& vec, T minus)
+	{return {vec.x - minus, vec.y - minus};}
+
+	template<typename T>
+	sf::Vector2<T> operator+(const sf::Vector2<T>& vec, T plus)
+	{return {vec.x + plus, vec.y + plus};}
+
 	inline sf::Color to_rgb(const std::string& hex_str, std::uint8_t custom_alpha = 255)
 	{
 		mlk::gcs::color_rgb tmp{hex_str};
