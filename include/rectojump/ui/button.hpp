@@ -52,7 +52,7 @@ namespace rj
 
 			// collision
 			auto bounds(m_shape.getGlobalBounds());
-			auto mousebounds(get_mousebounds());
+			auto mousebounds(get_mousebounds<true>());
 
 			if(bounds.intersects(mousebounds))
 				m_hover = true;
