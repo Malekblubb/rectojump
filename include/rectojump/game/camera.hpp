@@ -19,12 +19,14 @@ namespace rj
 
 		const sf::View& m_default_window_view{m_renderwindow.getDefaultView()};
 		sf::View m_userview;
+		vec2f m_startcenter;
 
 	public:
 		camera(game_window& gw, const sf::View& v = {}) :
 			m_gamewindow{gw},
 			m_renderwindow{m_gamewindow.get_renderwindow()},
-			m_userview{v}
+			m_userview{v},
+			m_startcenter{m_userview.getCenter()}
 		{ }
 
 		void update(dur duration)
@@ -42,7 +44,13 @@ namespace rj
 		}
 
 		void set_view(const sf::View& v) noexcept
-		{m_userview = v;}
+		{m_userview = v; m_startcenter = m_userview.getCenter();}
+
+		bool has_moved_left() const noexcept
+		{return m_userview.getCenter().x > m_startcenter.x;}
+
+		bool has_moved_right() const noexcept
+		{return m_userview.getCenter().x < m_startcenter.x;}
 
 		const vec2f& get_center() noexcept
 		{return m_userview.getCenter();}
@@ -54,7 +62,6 @@ namespace rj
 		{return get_mousepos(m_renderwindow, m_userview);}
 	};
 }
-
 
 
 #endif // RJ_GAME_CAMERA_HPP
