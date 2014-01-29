@@ -181,6 +181,9 @@ namespace rj
 	-> const decltype(input::get().m_mousepos)&
 	{return input::get().m_mousepos;}
 
+	vec2f get_mousepos(const sf::RenderWindow& rw, const sf::View& v)
+	{return rw.mapPixelToCoords(sf::Mouse::getPosition(rw), v);}
+
 	inline sf::FloatRect get_mousebounds()
 	{
 		auto& pos(get_mousepos());
