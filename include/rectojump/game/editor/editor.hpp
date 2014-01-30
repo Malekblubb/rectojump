@@ -96,13 +96,14 @@ namespace rj
 			[this](const vec2f& pos){this->on_mouse_right(pos);}, btn::Right);
 
 			m_gamehandler.template add_input<state::editor>(
-			[this](const vec2f& pos){m_editarea_camera.move({10.2f, 0.f});}, wheel::down);
+			[this](const vec2f& pos)
+			{m_editarea_camera.move({settings::get_editor_scroll_step(), 0.f});}, wheel::down);
 
 			m_gamehandler.template add_input<state::editor>(
 			[this](const vec2f& pos)
 			{
 				if(m_editarea_camera.get_center().x >= m_editarea_camera.get_startcenter().x)
-					m_editarea_camera.move({-10.5f, 0.f});
+					m_editarea_camera.move({-settings::get_editor_scroll_step(), 0.f});
 			}, wheel::up);
 		}
 
