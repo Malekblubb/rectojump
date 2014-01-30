@@ -11,6 +11,7 @@
 #include "game_window.hpp"
 #include "render.hpp"
 #include <rectojump/game/background/background_manager.hpp>
+#include <rectojump/game/camera.hpp>
 #include <rectojump/game/editor/editor.hpp>
 #include <rectojump/game/main_menu/main_menu.hpp>
 #include <rectojump/game/popup_manager.hpp>
@@ -31,6 +32,7 @@ namespace rj
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
+		camera m_default_camera;
 		render<game_handler> m_render;
 		background_manager m_backgroundmgr;
 		game<game_handler> m_game;
@@ -46,6 +48,7 @@ namespace rj
 			m_game_window{gw},
 			m_datamgr{dm},
 			m_lvmgr{lm},
+			m_default_camera{gw, {settings::get_window_size<vec2f>() / 2.f, settings::get_window_size<vec2f>()}},
 			m_render{*this},
 			m_backgroundmgr{m_render},
 			m_game{*this},
@@ -260,6 +263,7 @@ namespace rj
 
 		void render()
 		{
+m_default_camera.set_changes();
 			m_backgroundmgr.render();
 
 			// render game when in game menu
@@ -269,16 +273,17 @@ namespace rj
 			else if(this->is_active(state::editor))
 			{
 				m_editor.render();
-				m_game.get_world().get_entityhandler().render();
+//				m_game.get_world().get_entityhandler().render();
 			}
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
-
+m_default_camera.set_changes();
 			if(this->is_active(state::debug_info))
 				m_debug_info.render();
 
 			m_popupmgr.render();
+
 		}
 
 		// multi_args: true, Input_Type = key
