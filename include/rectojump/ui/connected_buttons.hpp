@@ -13,62 +13,65 @@
 
 namespace rj
 {
-	template<typename T>
-	using btn_ptr = mlk::sptr<T>;
-
-	using base_btn_ptr = btn_ptr<button>;
-
-	class connected_buttons : public sf::Drawable
+	namespace ui
 	{
-		std::map<int, base_btn_ptr> m_buttons;
-		int m_current_pressed_index{0};
-		int m_current_add_index{0};
+		template<typename T>
+		using btn_ptr = mlk::sptr<T>;
 
-	public:
-		mlk::slot<base_btn_ptr&> on_active_button;
-		mlk::slot<base_btn_ptr&> on_inactive_button;
+		using base_btn_ptr = btn_ptr<button>;
 
-		connected_buttons() = default;
-
-		void update(dur duration)
+		class connected_buttons : public sf::Drawable
 		{
-			for(auto& a : m_buttons)
+			std::map<int, base_btn_ptr> m_buttons;
+			int m_current_pressed_index{0};
+			int m_current_add_index{0};
+
+		public:
+			mlk::slot<base_btn_ptr&> on_active_button;
+			mlk::slot<base_btn_ptr&> on_inactive_button;
+
+			connected_buttons() = default;
+
+			void update(dur duration)
 			{
-				// update all buttons
-				a.second->update(duration);
+				for(auto& a : m_buttons)
+				{
+					// update all buttons
+					a.second->update(duration);
 
-				// get current pressed button
-				on_inactive_button(a.second);
-				if(a.second->is_pressed())
-					m_current_pressed_index = a.first;
+					// get current pressed button
+					on_inactive_button(a.second);
+					if(a.second->is_pressed())
+						m_current_pressed_index = a.first;
+				}
+				// call the custom user settings
+				if(m_current_pressed_index != -1)
+					on_active_button(m_buttons[m_current_pressed_index]);
 			}
-			// call the custom user settings
-			if(m_current_pressed_index != -1)
-				on_active_button(m_buttons[m_current_pressed_index]);
-		}
 
-		template<typename Button_Type, typename... Args>
-		btn_ptr<Button_Type> add_button(Args&&... args)
-		{
-			auto ptr(std::make_shared<Button_Type>(std::forward<Args>(args)...));
-			m_buttons.emplace(m_current_add_index, ptr);
-			++m_current_add_index;
-			return ptr;
-		}
+			template<typename Button_Type, typename... Args>
+			btn_ptr<Button_Type> add_button(Args&&... args)
+			{
+				auto ptr(std::make_shared<Button_Type>(std::forward<Args>(args)...));
+				m_buttons.emplace(m_current_add_index, ptr);
+				++m_current_add_index;
+				return ptr;
+			}
 
-		void inactivate() noexcept
-		{m_current_pressed_index = -1;}
+			void inactivate() noexcept
+			{m_current_pressed_index = -1;}
 
-		const base_btn_ptr& get_active_btn() const noexcept
-		{return m_buttons.at(m_current_pressed_index);}
+			const base_btn_ptr& get_active_btn() const noexcept
+			{return m_buttons.at(m_current_pressed_index);}
 
-	private:
-		void draw(sf::RenderTarget& target, sf::RenderStates states) const override
-		{
-			for(auto& a : m_buttons)
-				target.draw(*a.second, states);
-		}
-	};
+		private:
+			void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+			{
+				for(auto& a : m_buttons)
+					target.draw(*a.second, states);
+			}
+		};
+	}
 }
 
 
