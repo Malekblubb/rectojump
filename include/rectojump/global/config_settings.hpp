@@ -51,6 +51,9 @@ namespace rj
 		inline void set_color_default_light(const std::string& hex)
 		{config::get().set_entry("color_default_light", hex);}
 
+		inline void set_editor_scroll_step(float step)
+		{config::get().set_entry("editor_scroll_step", step);}
+
 
 		// getters
 		template<typename Vec_Type = vec2u, typename Val_Type = decltype(Vec_Type::x)>
@@ -74,6 +77,9 @@ namespace rj
 
 		inline sf::Color get_color_default_light()
 		{return to_rgb(config::get().get_entry<std::string>("color_default_light"));}
+
+		inline float get_editor_scroll_step()
+		{return config::get().get_entry<float>("editor_scroll_step");}
 	}
 }
 
