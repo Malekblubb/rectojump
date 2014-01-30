@@ -26,11 +26,11 @@ namespace rj
 
 		sf::RectangleShape m_shape;
 		std::vector<sf::Texture> m_button_textures;
-		connected_buttons m_buttons;
+		ui::connected_buttons m_buttons;
 		const vec2f m_buttonsize{64.f, 64.f};
 
 	public:
-		mlk::slot<base_btn_ptr&> on_item_click;
+		mlk::slot<ui::base_btn_ptr&> on_item_click;
 
 		itembar(Game_Handler& gh, const vec2f& size) :
 			m_gamehandler{gh},
@@ -79,7 +79,7 @@ namespace rj
 			}
 
 			m_buttons.on_active_button =
-			[this](base_btn_ptr& b)
+			[this](ui::base_btn_ptr& b)
 			{
 				b->set_color(settings::get_color_light());
 				b->set_outlinecolor(settings::get_color_light());
@@ -87,7 +87,7 @@ namespace rj
 			};
 
 			m_buttons.on_inactive_button =
-			[](base_btn_ptr& b)
+			[](ui::base_btn_ptr& b)
 			{
 				b->set_color(settings::get_color_default_dark());
 				b->set_outlinecolor(settings::get_color_default_dark());

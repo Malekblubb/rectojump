@@ -11,6 +11,7 @@
 #include "editor_entity.hpp"
 #include "itembar.hpp"
 #include "mouse.hpp"
+#include "settingsbar.hpp"
 #include <rectojump/game/components/platfrom.hpp>
 #include <rectojump/game/camera.hpp>
 #include <rectojump/game/world.hpp>
@@ -28,11 +29,12 @@ namespace rj
 
 		camera m_editarea_camera;
 		camera m_itembar_camera;
+		camera m_settingsbar_camera;
 
-		static constexpr float m_itembar_height{100.f};
 		editor_mouse m_mouse;
 		background_editor<editor> m_background{*this};
 		itembar<Game_Handler> m_itembar;
+		settingsbar<Game_Handler> m_settingsbar;
 
 	public:
 		editor(Game_Handler& gh) :
@@ -42,8 +44,10 @@ namespace rj
 			m_entityhandler{m_gameworld.get_entityhandler()},
 			m_editarea_camera{m_gamehandler.get_gamewindow()},
 			m_itembar_camera{m_gamehandler.get_gamewindow()},
+			m_settingsbar_camera{m_gamehandler.get_gamewindow()},
 			m_mouse{gh.get_render()},
-			m_itembar{gh, {settings::get_window_size<vec2f>().x, m_itembar_height}}
+			m_itembar{gh, {settings::get_window_size<vec2f>().x, 100.f}},
+			m_settingsbar{gh, {300.f, settings::get_window_size<vec2f>().y}}
 		{this->init();}
 
 		void update(dur duration)
@@ -55,6 +59,10 @@ namespace rj
 			// itembar
 			m_itembar_camera.set_changes();
 			m_itembar.update(duration);
+
+			// settingsbar
+			m_settingsbar_camera.set_changes();
+			m_settingsbar.update(duration);
 		}
 
 		void render()
@@ -67,6 +75,10 @@ namespace rj
 			// itembar
 			m_itembar_camera.set_changes();
 			m_itembar.render();
+
+			// settingsbar
+			m_settingsbar_camera.set_changes();
+			m_settingsbar.render();
 		}
 
 		void on_activate()
@@ -81,7 +93,7 @@ namespace rj
 	private:
 		void init()
 		{
-			m_itembar.on_item_click = [this](base_btn_ptr& b){m_mouse.set_texture(b->get_texture());};
+			m_itembar.on_item_click = [this](ui::base_btn_ptr& b){m_mouse.set_texture(b->get_texture());};
 
 			this->init_input();
 			this->init_cameras();
@@ -110,19 +122,25 @@ namespace rj
 		void init_cameras() noexcept
 		{
 			auto window_size(settings::get_window_size<vec2f>());
+			auto& itembar_size(m_itembar.get_size());
+			auto& settingsbar_size(m_settingsbar.get_size());
 
-			float itembar_top{(window_size.y - m_itembar_height) / window_size.y};
-			float itembar_height{m_itembar_height / window_size.y};
-			float editarea_height{(window_size.y - m_itembar_height) / window_size.y};
+			float itembar_top{(window_size.y - itembar_size.y) / window_size.y};
+			float itembar_height{itembar_size.y / window_size.y};
+			float editarea_height{(window_size.y - itembar_size.y) / window_size.y};
 
 
-			sf::View editarea_view{vec2f{window_size.x, window_size.y - m_itembar_height} / 2.f, {window_size.x, window_size.y - m_itembar_height}};
+			sf::View editarea_view{vec2f{window_size.x, window_size.y - itembar_size.y} / 2.f, {window_size.x, window_size.y - itembar_size.y}};
 			editarea_view.setViewport({0.f, 0.f, 1.f ,editarea_height});
 			m_editarea_camera.set_view(editarea_view);
 
-			sf::View itembar_view{vec2f{window_size.x, m_itembar_height} / 2.f, {window_size.x, m_itembar_height}};
+			sf::View itembar_view{vec2f{window_size.x, itembar_size.y} / 2.f, {window_size.x, itembar_size.y}};
 			itembar_view.setViewport({0.f, itembar_top, 1.f, itembar_height});
 			m_itembar_camera.set_view(itembar_view);
+
+			sf::View settingsbar_view{vec2f{settingsbar_size.x, window_size.y} / 2.f, {settingsbar_size.x, window_size.y}};
+			settingsbar_view.setViewport({(window_size.x - settingsbar_size.x) / window_size.x, 0.f, settingsbar_size.x / window_size.x, 1.f});
+			m_settingsbar_camera.set_view(settingsbar_view);
 		}
 
 		void on_mouse_left(const vec2f&)
