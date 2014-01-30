@@ -22,12 +22,12 @@ namespace rj
 		vec2f m_startcenter;
 
 	public:
-		camera(game_window& gw, const sf::View& v = {}) :
+		camera(game_window& gw, const sf::View& v = {}, const sf::FloatRect& viewport = {0.f, 0.f, 1.f, 1.f}) :
 			m_gamewindow{gw},
 			m_renderwindow{m_gamewindow.get_renderwindow()},
 			m_userview{v},
 			m_startcenter{m_userview.getCenter()}
-		{ }
+		{m_userview.setViewport(viewport);}
 
 		void update(dur duration)
 		{ }
@@ -57,6 +57,9 @@ namespace rj
 
 		const vec2f& get_center() noexcept
 		{return m_userview.getCenter();}
+
+		const vec2f& get_startcenter() const noexcept
+		{return m_startcenter;}
 
 		const sf::View& get_view() const noexcept
 		{return m_userview;}
