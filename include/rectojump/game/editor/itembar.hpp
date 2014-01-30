@@ -64,10 +64,9 @@ namespace rj
 	private:
 		void init()
 		{
-			auto window_size(settings::get_window_size<vec2f>());
 			auto& rec_size(m_shape.getSize());
 			m_shape.setOrigin(rec_size / 2.f);
-			m_shape.setPosition({window_size.x / 2.f, rec_size.y / 2.f});
+			m_shape.setPosition(rec_size / 2.f);
 			m_shape.setFillColor(settings::get_color_default_light());
 
 			auto pos_x(150.f);
