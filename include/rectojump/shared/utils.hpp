@@ -32,6 +32,10 @@ namespace rj
 	sf::Rect<T> bounds_from_vec(const sf::Vector2<T>& v, const sf::Vector2<T>& size = {1, 1})
 	{return {{v.x, v.y}, size};}
 
+	template<typename T>
+	void flip_h(T& obj)
+	{obj.rotate(180.f);}
+
 	inline sf::Color to_rgb(const std::string& hex_str, std::uint8_t custom_alpha = 255)
 	{
 		mlk::gcs::color_rgb tmp{hex_str};
