@@ -22,9 +22,12 @@ namespace rj
 
 		using base_btn_ptr = btn_ptr<button>;
 
+		struct button_event
+		{base_btn_ptr button; mlk::slot<> event;};
+
 		class connected_buttons : public sf::Drawable
 		{
-			std::map<int, base_btn_ptr> m_buttons;
+			std::map<int, button_event> m_buttons;
 			int m_current_pressed_index{0};
 			int m_current_add_index{0};
 
@@ -39,23 +42,35 @@ namespace rj
 				for(auto& a : m_buttons)
 				{
 					// update all buttons
-					a.second->update(duration);
+					a.second.button->update(duration);
 
 					// get current pressed button
-					on_inactive_button(a.second);
-					if(a.second->is_pressed())
+					on_inactive_button(a.second.button);
+					if(a.second.button->is_pressed())
+					{
 						m_current_pressed_index = a.first;
+						a.second.event();
+					}
 				}
 				// call the custom user settings
 				if(m_current_pressed_index != -1)
-					on_active_button(m_buttons[m_current_pressed_index]);
+					on_active_button(m_buttons[m_current_pressed_index].button);
 			}
 
 			template<typename Button_Type, typename... Args>
 			btn_ptr<Button_Type> add_button(Args&&... args)
 			{
 				auto ptr(std::make_shared<Button_Type>(std::forward<Args>(args)...));
-				m_buttons.emplace(m_current_add_index, ptr);
+				m_buttons.emplace(m_current_add_index, button_event{ptr, {}});
+				++m_current_add_index;
+				return ptr;
+			}
+
+			template<typename Button_Type, typename Func, typename... Args>
+			btn_ptr<Button_Type> add_button_event(Func&& f, Args&&... args)
+			{
+				auto ptr(std::make_shared<Button_Type>(std::forward<Args>(args)...));
+				m_buttons.emplace(m_current_add_index, button_event{ptr, {f}});
 				++m_current_add_index;
 				return ptr;
 			}
@@ -64,13 +79,13 @@ namespace rj
 			{m_current_pressed_index = -1;}
 
 			const base_btn_ptr& get_active_btn() const noexcept
-			{return m_buttons.at(m_current_pressed_index);}
+			{return m_buttons.at(m_current_pressed_index).button;}
 
 		private:
 			void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 			{
 				for(auto& a : m_buttons)
-					target.draw(*a.second, states);
+					target.draw(*a.second.button, states);
 			}
 		};
 	}
