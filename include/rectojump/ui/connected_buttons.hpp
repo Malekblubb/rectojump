@@ -10,6 +10,8 @@
 #include "button.hpp"
 #include <rectojump/global/common.hpp>
 
+#include <mlk/signals_slots/slot.h>
+
 
 namespace rj
 {
