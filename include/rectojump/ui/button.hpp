@@ -10,6 +10,8 @@
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/input.hpp>
 
+#include <mlk/types/types.h>
+
 
 namespace rj
 {
