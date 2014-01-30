@@ -58,6 +58,9 @@ namespace rj
 		-> decltype(m_shape.getGlobalBounds())
 		{return m_shape.getGlobalBounds();}
 
+		const vec2f& get_size() const noexcept
+		{return m_shape.getSize();}
+
 	private:
 		void init()
 		{
