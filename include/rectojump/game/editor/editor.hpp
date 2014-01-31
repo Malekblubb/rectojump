@@ -12,7 +12,7 @@
 #include "itembar.hpp"
 #include "mouse.hpp"
 #include "settingsbar.hpp"
-#include <rectojump/game/components/platfrom.hpp>
+#include <rectojump/game/components/platform.hpp>
 #include <rectojump/game/camera.hpp>
 #include <rectojump/game/world.hpp>
 

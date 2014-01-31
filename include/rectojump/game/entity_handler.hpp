@@ -37,6 +37,9 @@ namespace rj
 		static constexpr float m_despawn_zone{0.f};
 
 	public:
+		using iterator = std::vector<entity_base_ptr>::iterator;
+		using const_iterator = std::vector<entity_base_ptr>::const_iterator;
+
 		entity_handler(rndr& r, std::size_t max_entities = 1000) :
 			m_render{r},
 			m_max_entities{max_entities}
@@ -94,8 +97,10 @@ namespace rj
 		void clear() noexcept
 		{m_entities.clear();}
 
-		auto exists_entity_at(const vec2f& at) const noexcept
-		-> decltype(std::begin(m_entities))
+		void delete_entity(iterator iter)
+		{m_entities.erase(iter);}
+
+		iterator exists_entity_at(const vec2f& at) noexcept
 		{
 			for(auto iter(std::begin(m_entities)); iter != std::end(m_entities); ++iter)
 			{
@@ -107,8 +112,7 @@ namespace rj
 			return std::end(m_entities);
 		}
 
-		auto end()
-		-> decltype(std::end(m_entities))
+		iterator end()
 		{return std::end(m_entities);}
 
 		std::size_t num_entities() const noexcept
