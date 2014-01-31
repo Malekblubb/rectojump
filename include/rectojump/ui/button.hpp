@@ -67,6 +67,9 @@ namespace rj
 				else m_press = false;
 			}
 
+			void set_text(const std::string& text) noexcept
+			{m_text.setString(text); this->calculate_textpos();}
+
 			void set_font(const sf::Font& font) noexcept
 			{m_text.setFont(font); this->calculate_textpos();}
 
@@ -102,6 +105,9 @@ namespace rj
 
 			void rotate(float angle) noexcept
 			{m_shape.rotate(angle); m_restore_shape.rotate(angle); this->calculate_textpos();}
+
+			std::string get_text() const noexcept
+			{return m_text.getString();}
 
 			const sf::Font* get_font() const noexcept
 			{return m_text.getFont();}
