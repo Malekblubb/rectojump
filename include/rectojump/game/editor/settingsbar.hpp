@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013-2014 Christoph Malek
 // See LICENSE for more information.
 //
@@ -10,15 +10,17 @@
 #include "button_item.hpp"
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/config_settings.hpp>
+#include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/ui/connected_buttons.hpp>
 
 
 namespace rj
 {
-	template<typename Game_Handler>
+	template<typename Editor>
 	class settingsbar
 	{
-		Game_Handler& m_gamehandler;
+		Editor& m_editor;
+		typename Editor::gh_type& m_gamehandler;
 		rndr& m_render;
 
 		// interface
@@ -35,12 +37,13 @@ namespace rj
 		static constexpr float m_move_step{1.f};
 
 	public:
-		settingsbar(Game_Handler& gh, const vec2f& size) :
-			m_gamehandler{gh},
-			m_render{gh.get_render()},
+		settingsbar(Editor& e, const vec2f& size) :
+			m_editor{e},
+			m_gamehandler{e.get_gamehandler()},
+			m_render{m_gamehandler.get_render()},
 			m_shape{size},
-			m_toggle_bar_button_tx{gh.get_datamgr().template get_as<sf::Texture>("arrow.png")},
-			m_font{gh.get_datamgr().template get_as<sf::Font>("Fipps-Regular.otf")}
+			m_toggle_bar_button_tx{m_gamehandler.get_datamgr().template get_as<sf::Texture>("arrow.png")},
+			m_font{m_gamehandler.get_datamgr().template get_as<sf::Font>("Fipps-Regular.otf")}
 		{this->init();}
 
 		void update(dur duration)
@@ -63,6 +66,7 @@ namespace rj
 					m_moving = false;
 					m_need_move_right = false;
 					m_is_expanded = false;
+					settings::set_editor_settings_expanded(false);
 					return;
 				}
 
@@ -80,6 +84,7 @@ namespace rj
 					m_moving = false;
 					m_need_move_left = false;
 					m_is_expanded = true;
+					settings::set_editor_settings_expanded(true);
 					return;
 				}
 
@@ -101,24 +106,31 @@ namespace rj
 	private:
 		void init()
 		{
+			// shape
 			auto& shape_size(m_shape.getSize());
 			m_shape.setOrigin(shape_size / 2.f);
 			m_shape.setPosition(shape_size / 2.f);
 			m_shape.setFillColor(settings::get_color_default_light());
 
+			// toggle (expand) settings bar
 			m_toggle_bar_button.set_origin(m_toggle_bar_button.get_size() / 2.f);
 			m_toggle_bar_button.set_texture(&m_toggle_bar_button_tx);
-			flip_h(m_toggle_bar_button);
+			if(settings::get_editor_settings_expanded())
+				flip_h(m_toggle_bar_button);
+			else m_need_move_right = true;
 
+			// buttons
 			vec2f btn_size{80.f, 40.f};
-			auto save_btn(m_buttons.add_button_event<button_item>([]{}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
+			auto save_btn(m_buttons.add_button_event<button_item>(
+			[this]{m_editor.handle_save();}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
 			save_btn->set_origin(btn_size / 2.f);
 			save_btn->set_font(m_font);
 			save_btn->set_fontsize(16);
 			save_btn->set_text("Save");
 			save_btn->set_fontcolor(settings::get_color_light());
 
-			auto load_btn(m_buttons.add_button_event<button_item>([]{}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
+			auto load_btn(m_buttons.add_button_event<button_item>(
+			[this]{m_editor.handle_load();}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
 			load_btn->set_origin(btn_size / 2.f);
 			load_btn->set_font(m_font);
 			load_btn->set_fontsize(16);
@@ -126,7 +138,7 @@ namespace rj
 			load_btn->set_fontcolor(settings::get_color_light());
 		}
 
-		void move(const vec2f& offset)
+		void move(const vec2f& offset) noexcept
 		{
 			m_shape.move(offset);
 			m_toggle_bar_button.move(offset);
