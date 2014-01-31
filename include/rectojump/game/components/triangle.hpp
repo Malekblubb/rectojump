@@ -17,8 +17,8 @@ namespace rj
 	class triangle final : public basic_entity<sf::CircleShape>
 	{
 	public:
-		triangle(const vec2f& pos) :
-			basic_entity{pos, {-0.3f, 0.f}}
+		triangle(const vec2f& pos, const vec2f& velocity = {-0.3f, 0.f}) :
+			basic_entity{pos, velocity}
 		{
 			m_render_object.setPointCount(3);
 			m_render_object.setRadius(15.f);
