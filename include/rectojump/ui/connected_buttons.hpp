@@ -82,6 +82,10 @@ namespace rj
 			const base_btn_ptr& get_active_btn() const noexcept
 			{return m_buttons.at(m_current_pressed_index).button;}
 
+			auto get_buttons()
+			-> const decltype(m_buttons)&
+			{return m_buttons;}
+
 		private:
 			void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 			{
