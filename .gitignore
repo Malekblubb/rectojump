@@ -1,6 +1,6 @@
 #Project
-rectojump
-config
+/rectojump*
+/config
 
 #logs
 *log*.*
