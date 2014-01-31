@@ -13,7 +13,7 @@
 
 namespace rj
 {
-	class button_item : public button
+	class button_item : public ui::button
 	{
 	public:
 		button_item(const vec2f& size, const vec2f& pos) :
@@ -28,10 +28,9 @@ namespace rj
 	private:
 		void init() override
 		{
-			m_shape.setFillColor(settings::get_color_dark());
+			m_shape.setFillColor({0, 0, 0, 0});
 			m_shape.setOutlineColor(settings::get_color_default_dark());
 			m_shape.setOutlineThickness(2.f);
-
 		}
 
 		void on_hover() override
