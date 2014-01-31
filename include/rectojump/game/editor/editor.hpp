@@ -47,7 +47,7 @@ namespace rj
 			m_settingsbar_camera{m_gamehandler.get_gamewindow()},
 			m_mouse{gh.get_render()},
 			m_itembar{gh, {settings::get_window_size<vec2f>().x, 100.f}},
-			m_settingsbar{gh, {300.f, settings::get_window_size<vec2f>().y}}
+			m_settingsbar{gh, {300.f, settings::get_window_size<vec2f>().y - m_itembar.get_size().y}}
 		{this->init();}
 
 		void update(dur duration)
