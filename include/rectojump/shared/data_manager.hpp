@@ -27,7 +27,7 @@ namespace rj
 		mlk::fs::file_handle m_fileh;
 		const std::string& m_abs_path;
 
-		std::map<std::string, mlk::data_packet> m_data;
+		std::map<data_id, mlk::data_packet> m_data;
 
 		bool m_valid{false};
 
