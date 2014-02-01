@@ -7,14 +7,17 @@
 #define RJ_GAME_EDITOR_BUTTON_ITEM_HPP
 
 
-#include <rectojump/ui/button.hpp>
+#include <rectojump/game/entity_groups.hpp>
 #include <rectojump/global/config_settings.hpp>
+#include <rectojump/ui/button.hpp>
 
 
 namespace rj
 {
 	class button_item : public ui::button
 	{
+		entity_figure m_figure;
+
 	public:
 		button_item(const vec2f& size, const vec2f& pos) :
 			button{size, pos}
@@ -24,6 +27,12 @@ namespace rj
 		{
 			button::update(duration);
 		}
+
+		void set_figure(entity_figure f) noexcept
+		{m_figure = f;}
+
+		entity_figure get_figure() const noexcept
+		{return m_figure;}
 
 	private:
 		void init() override

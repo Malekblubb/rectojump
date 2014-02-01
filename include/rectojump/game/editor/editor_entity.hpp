@@ -15,6 +15,8 @@ namespace rj
 {
 	class editor_entity final : public entity_rect
 	{
+		entity_figure m_figure;
+
 	public:
 		editor_entity(const vec2f& pos) :
 			entity_rect{pos, m_size, {0.f, 0.f}}
@@ -28,8 +30,14 @@ namespace rj
 		void update(dur)
 		{ }
 
+		void set_figure(entity_figure f) noexcept
+		{m_figure = f;}
+
 		void set_texture(const sf::Texture* tx)
 		{m_render_object.setTexture(tx);}
+
+		entity_figure get_figure() const noexcept
+		{return m_figure;}
 	};
 }
 
