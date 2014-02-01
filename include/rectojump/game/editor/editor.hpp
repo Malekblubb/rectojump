@@ -22,10 +22,14 @@ namespace rj
 	template<typename Game_Handler, typename Game>
 	class editor
 	{
+	public:
+		using gh_type = Game_Handler;
+
 		Game_Handler& m_gamehandler;
 		Game& m_game;
 		world& m_gameworld;
 		entity_handler& m_entityhandler;
+		level_manager& m_levelmgr;
 
 		camera m_editarea_camera;
 		camera m_itembar_camera;
@@ -34,7 +38,7 @@ namespace rj
 		editor_mouse m_mouse;
 		background_editor<editor> m_background{*this};
 		itembar<Game_Handler> m_itembar;
-		settingsbar<Game_Handler> m_settingsbar;
+		settingsbar<editor> m_settingsbar;
 
 	public:
 		editor(Game_Handler& gh) :
@@ -42,12 +46,13 @@ namespace rj
 			m_game{gh.get_game()},
 			m_gameworld{m_game.get_world()},
 			m_entityhandler{m_gameworld.get_entityhandler()},
+			m_levelmgr{gh.get_levelmgr()},
 			m_editarea_camera{m_gamehandler.get_gamewindow()},
 			m_itembar_camera{m_gamehandler.get_gamewindow()},
 			m_settingsbar_camera{m_gamehandler.get_gamewindow()},
 			m_mouse{gh.get_render()},
 			m_itembar{gh, {settings::get_window_size<vec2f>().x, 100.f}},
-			m_settingsbar{gh, {300.f, settings::get_window_size<vec2f>().y - m_itembar.get_size().y}}
+			m_settingsbar{*this, {300.f, settings::get_window_size<vec2f>().y - m_itembar.get_size().y}}
 		{this->init();}
 
 		void update(dur duration)
@@ -79,6 +84,24 @@ namespace rj
 			// settingsbar
 			m_settingsbar_camera.set_changes();
 			m_settingsbar.render();
+		}
+
+		void handle_save()
+		{
+			level_data lv_data;
+			for(auto& a : m_entityhandler)
+				lv_data.add_entity(entity_figure::f_rectagle, entity_propertie::solid, a->pos());
+
+			level_info lv_info{"Test", "ABC"};
+			music_data lv_music{'M'};
+			level_packer<packer_mode::pack> lv_packer{lv_music, lv_data, lv_info};
+
+			m_levelmgr.save_level(lv_packer, "TESTLV0");
+		}
+
+		void handle_load()
+		{
+
 		}
 
 		void on_activate()
@@ -145,8 +168,10 @@ namespace rj
 
 		void on_mouse_left(const vec2f&)
 		{
-			auto mouse_bounds(bounds_from_vec(m_itembar_camera.get_mapped_mousepos()));
-			if(mouse_bounds.intersects(m_itembar.get_bounds()))
+			auto itembar_mouse_bounds(bounds_from_vec(m_itembar_camera.get_mapped_mousepos()));
+			auto settingsbar_mouse_bounds(bounds_from_vec(m_settingsbar_camera.get_mapped_mousepos()));
+			if(itembar_mouse_bounds.intersects(m_itembar.get_bounds()) ||
+			   settingsbar_mouse_bounds.intersects(m_settingsbar.get_bounds()))
 				return;
 
 
