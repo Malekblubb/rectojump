@@ -101,6 +101,10 @@ namespace rj
 			m_render(m_shape, m_toggle_bar_button, m_buttons);
 		}
 
+		auto get_bounds() const noexcept
+		-> decltype(m_shape.getGlobalBounds())
+		{return m_shape.getGlobalBounds();}
+
 		const vec2f& get_size() const noexcept
 		{return m_shape.getSize();}
 
