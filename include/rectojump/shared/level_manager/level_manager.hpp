@@ -48,6 +48,7 @@ namespace rj
 			if(!m_filemgr.reopen(this->make_path(id), std::ios::out | std::ios::trunc))
 				return false;
 			m_filemgr.write(lv.packed_data());
+			m_filemgr.close();
 			return true;
 		}
 
