@@ -84,17 +84,17 @@ namespace rj
 	private:
 		void init()
 		{
-			auto size(settings::get_window_size<vec2f>());
+			auto window_size(settings::get_window_size<vec2f>());
 
 			// nova
-			auto triangles(m_backgroundmgr.create_object<triangles4>(vec2f{size.x / 2.f, size.y}, vec2f{200.f, 900.f}, 0, 0.1f, vec2f{0.f, 0.f}));
-			triangles->render_object().setColor(to_rgb("#bdbdbd", 100));
+			auto nova(m_backgroundmgr.create_object<triangles4>(vec2f{window_size.x / 2.f, window_size.y}, vec2f{window_size.y / 3.f, window_size.x}, 0, 0.1f, vec2f{0.f, 0.f}));
+			nova->render_object().setColor(to_rgb("#bdbdbd", 100));
 
 			// background
-			sf::RectangleShape tx_shape{size};
+			sf::RectangleShape tx_shape{window_size};
 			tx_shape.setTexture(&m_sides_tx);
 			m_backgroundmgr.set_tx_shape(tx_shape);
-			m_backgroundmgr.set_bg_shape({size, to_rgb("#e3e3e3"), to_rgb("#e3e3e3"), 1});
+			m_backgroundmgr.set_bg_shape({window_size, to_rgb("#e3e3e3"), to_rgb("#e3e3e3"), 1});
 
 			// timer
 			m_timer.run();
