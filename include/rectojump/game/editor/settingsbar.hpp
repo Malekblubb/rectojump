@@ -46,6 +46,9 @@ namespace rj
 			m_font{m_gamehandler.get_datamgr().template get_as<sf::Font>("Fipps-Regular.otf")}
 		{this->init();}
 
+		~settingsbar()
+		{settings::set_editor_settings_expanded(m_is_expanded);}
+
 		void update(dur duration)
 		{
 			m_buttons.update(duration);
@@ -66,7 +69,6 @@ namespace rj
 					m_moving = false;
 					m_need_move_right = false;
 					m_is_expanded = false;
-					settings::set_editor_settings_expanded(false);
 					return;
 				}
 
@@ -84,7 +86,6 @@ namespace rj
 					m_moving = false;
 					m_need_move_left = false;
 					m_is_expanded = true;
-					settings::set_editor_settings_expanded(true);
 					return;
 				}
 
