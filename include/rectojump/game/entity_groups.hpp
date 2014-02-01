@@ -19,7 +19,7 @@ namespace rj
 	{moveable_left, jumpable, solid, death, num};
 
 	enum entity_figure : char
-	{f_rectagle, f_triangle};
+	{f_rectangle, f_triangle, f_num};
 
 	using etypes = mlk::ebitset<entity_type, entity_type::num>;
 	using eprops = mlk::ebitset<entity_propertie, entity_propertie::num>;
