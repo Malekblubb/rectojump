@@ -112,6 +112,9 @@ namespace rj
 			return std::end(m_entities);
 		}
 
+		iterator begin()
+		{return std::begin(m_entities);}
+
 		iterator end()
 		{return std::end(m_entities);}
 
