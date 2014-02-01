@@ -30,6 +30,7 @@ namespace rj
 			std::map<int, button_event> m_buttons;
 			int m_current_pressed_index{0};
 			int m_current_add_index{0};
+			bool m_pressed{false};
 
 		public:
 			mlk::slot<base_btn_ptr&> on_active_button;
@@ -50,12 +51,21 @@ namespace rj
 					if(a.second.button->is_pressed())
 					{
 						m_current_pressed_index = a.first;
-						a.second.event();
+						if(!m_pressed)
+						{
+							a.second.event();
+							m_pressed = true;
+						}
 					}
 				}
+
 				// call the custom user settings
 				if(m_current_pressed_index != -1)
+				{
 					on_active_button(m_buttons[m_current_pressed_index].button);
+					if(!m_buttons[m_current_pressed_index].button->is_pressed())
+						m_pressed = false;
+				}
 			}
 
 			template<typename Button_Type, typename... Args>
