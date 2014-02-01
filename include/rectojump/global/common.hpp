@@ -40,7 +40,7 @@ namespace rj
 	using entity_prototype = std::vector<float>;
 	using entity_proto_vec = std::vector<entity_prototype>;
 	enum entity_prototype_value : std::size_t
-	{type, prop, x, y};
+	{figure, prop, x, y};
 
 	// fixed paths
 	static const std::string data_path{"data/"};
