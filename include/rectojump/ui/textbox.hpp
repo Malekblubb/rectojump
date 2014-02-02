@@ -113,6 +113,9 @@ namespace rj
 			mlk::uint getTextSize() const noexcept
 			{return m_text.getCharacterSize();}
 
+			std::string get_text() const noexcept
+			{return m_text.getString();}
+
 			sf::FloatRect getGlobalBounds() const noexcept
 			{return {bounds_from_vec({this->getPosition().x - this->getOrigin().x, this->getPosition().y - this->getOrigin().y}, m_shape.getSize())};}
 
