@@ -33,6 +33,7 @@ namespace rj
 			bool m_pressed{false};
 
 		public:
+			mlk::slot<base_btn_ptr&> on_press;
 			mlk::slot<base_btn_ptr&> on_active_button;
 			mlk::slot<base_btn_ptr&> on_inactive_button;
 
@@ -54,6 +55,7 @@ namespace rj
 						if(!m_pressed)
 						{
 							a.second.event();
+							on_press(m_buttons[m_current_pressed_index].button);
 							m_pressed = true;
 						}
 					}
