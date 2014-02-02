@@ -48,6 +48,9 @@ namespace rj
 		void render()
 		{m_render(m_shape, m_buttons);}
 
+		void select(int index) noexcept
+		{m_buttons.set_active_button(index);}
+
 		void deselect_all() noexcept
 		{m_buttons.inactivate();}
 
