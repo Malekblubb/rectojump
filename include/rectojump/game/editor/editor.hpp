@@ -27,7 +27,7 @@ namespace rj
 
 		Game_Handler& m_gamehandler;
 		Game& m_game;
-		world& m_gameworld;
+		world<Game_Handler>& m_gameworld;
 		entity_handler& m_entityhandler;
 		level_manager& m_levelmgr;
 
@@ -90,10 +90,14 @@ namespace rj
 		{
 			level_data lv_data;
 			for(auto& a : m_entityhandler)
-				lv_data.add_entity(entity_figure::f_rectagle, entity_propertie::solid, a->pos());
+			{
+				auto ent(this->to_editor_entity(a));
+				lv_data.add_entity(ent->get_figure(), entity_propertie::solid, ent->pos());
+
+			}
 
 			level_info lv_info{"Test", "ABC"};
-			music_data lv_music{'M'};
+			music_data lv_music{'M', 'U', 'S', 'I', 'C'};
 			level_packer<packer_mode::pack> lv_packer{lv_music, lv_data, lv_info};
 
 			m_levelmgr.save_level(lv_packer, "TESTLV0");
@@ -116,7 +120,12 @@ namespace rj
 	private:
 		void init()
 		{
-			m_itembar.on_item_click = [this](ui::base_btn_ptr& b){m_mouse.set_texture(b->get_texture());};
+			// change mousetexture on itembar-item click
+			m_itembar.on_item_click =
+			[this](ui::base_btn_ptr& b){m_mouse.set_texture(b->get_texture());};
+
+			// init mouse texture
+			m_mouse.set_texture(&m_itembar.get_current_texture());
 
 			this->init_input();
 			this->init_cameras();
@@ -168,6 +177,7 @@ namespace rj
 
 		void on_mouse_left(const vec2f&)
 		{
+			// check the itembar and settingsbar bounds
 			auto itembar_mouse_bounds(bounds_from_vec(m_itembar_camera.get_mapped_mousepos()));
 			auto settingsbar_mouse_bounds(bounds_from_vec(m_settingsbar_camera.get_mapped_mousepos()));
 			if(itembar_mouse_bounds.intersects(m_itembar.get_bounds()) ||
@@ -178,10 +188,22 @@ namespace rj
 			float f{48.f};
 			vec2f new_pos{round_to(m_editarea_camera.get_mapped_mousepos().x, f), round_to(m_editarea_camera.get_mapped_mousepos().y, f)};
 
+			// check if entity exists at this pos
+			auto iter(m_entityhandler.exists_entity_at(m_editarea_camera.get_mapped_mousepos()));
+			if(iter != std::end(m_entityhandler))
+			{
+				auto ptr(this->to_editor_entity(*iter));
+				m_mouse.set_texture(ptr->get_texture());
+				m_itembar.select(ptr->get_figure());
+				return;
+			}
+
+			// set entity at pos
 			if(m_mouse.get_texture())
 			{
 				auto ptr(m_gameworld.template create_entity<editor_entity>(new_pos));
 				ptr->render_object().setTexture(m_mouse.get_texture());
+				ptr->set_figure(m_itembar.get_current_figure());
 			}
 		}
 
@@ -194,6 +216,11 @@ namespace rj
 			if(iter != std::end(m_entityhandler))
 				m_entityhandler.delete_entity(iter);
 		}
+
+		template<typename Ent_Ptr>
+		auto to_editor_entity(const Ent_Ptr& ptr)
+		-> decltype(std::static_pointer_cast<editor_entity>(ptr))
+		{return std::static_pointer_cast<editor_entity>(ptr);}
 	};
 }
 
