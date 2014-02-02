@@ -36,6 +36,9 @@ namespace rj
 		void set_texture(const sf::Texture* tx)
 		{m_render_object.setTexture(tx);}
 
+		const sf::Texture* get_texture() const noexcept
+		{return m_render_object.getTexture();}
+
 		entity_figure get_figure() const noexcept
 		{return m_figure;}
 	};
