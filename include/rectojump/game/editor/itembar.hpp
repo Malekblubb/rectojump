@@ -8,6 +8,7 @@
 
 
 #include "button_item.hpp"
+#include <rectojump/game/entity_groups.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/data_manager.hpp>
@@ -36,8 +37,7 @@ namespace rj
 			m_gamehandler{gh},
 			m_render{gh.get_render()},
 			m_datamgr{gh.get_datamgr()},
-			m_shape{size},
-			m_button_textures{m_datamgr.get_all_containing_as<sf::Texture>("editor_item")}
+			m_shape{size}
 		{this->init();}
 
 		void update(dur duration)
@@ -54,6 +54,9 @@ namespace rj
 		const sf::Texture& get_current_texture() const noexcept
 		{return *m_buttons.get_active_btn()->get_texture();}
 
+		entity_figure get_current_figure() const noexcept
+		{return std::static_pointer_cast<button_item>(m_buttons.get_active_btn())->get_figure();}
+
 		auto get_bounds() const noexcept
 		-> decltype(m_shape.getGlobalBounds())
 		{return m_shape.getGlobalBounds();}
@@ -69,13 +72,20 @@ namespace rj
 			m_shape.setPosition(rec_size / 2.f);
 			m_shape.setFillColor(settings::get_color_default_light());
 
+			m_button_textures.emplace_back(m_datamgr.get_as<sf::Texture>("editor_item_rect.png"));
+			m_button_textures.emplace_back(m_datamgr.get_as<sf::Texture>("editor_item_triangle.png"));
+			m_button_textures.emplace_back(m_datamgr.get_as<sf::Texture>("editor_item_triangles4.png"));
+
 			auto pos_x(150.f);
+			std::size_t index{0};
 			for(auto& a : m_button_textures)
 			{
-				auto ptr(m_buttons.add_button<button_item>(m_buttonsize, vec2f{pos_x, m_shape.getPosition().y}));
-				ptr->set_origin(m_buttonsize / 2.f);
-				ptr->set_texture(&a);
+				auto rect_ptr(m_buttons.add_button<button_item>(m_buttonsize, vec2f{pos_x, m_shape.getPosition().y}));
+				rect_ptr->set_origin(m_buttonsize / 2.f);
+				rect_ptr->set_texture(&a);
+				rect_ptr->set_figure(static_cast<entity_figure>(index));
 				pos_x += 100.f;
+				++index;
 			}
 
 			m_buttons.on_active_button =
@@ -83,7 +93,6 @@ namespace rj
 			{
 				b->set_color(settings::get_color_light());
 				b->set_outlinecolor(settings::get_color_light());
-				on_item_click(b);
 			};
 
 			m_buttons.on_inactive_button =
@@ -92,6 +101,8 @@ namespace rj
 				b->set_color(settings::get_color_default_dark());
 				b->set_outlinecolor(settings::get_color_default_dark());
 			};
+
+			m_buttons.on_press = [this](ui::base_btn_ptr& b){on_item_click(b);};
 		}
 	};
 }
