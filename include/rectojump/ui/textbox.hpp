@@ -48,8 +48,7 @@ namespace rj
 			{
 				if(is_btn_pressed(btn::Left))
 				{
-					auto shape_bounds(bounds_from_vec(this->getPosition(), m_shape.getSize()));
-					if(shape_bounds.intersects(get_mousebounds<true>()))
+					if(this->getGlobalBounds().intersects(get_mousebounds<true>()))
 						m_focus = true;
 					else m_focus = false;
 				}
@@ -113,6 +112,9 @@ namespace rj
 
 			mlk::uint getTextSize() const noexcept
 			{return m_text.getCharacterSize();}
+
+			sf::FloatRect getGlobalBounds() const noexcept
+			{return {bounds_from_vec({this->getPosition().x - this->getOrigin().x, this->getPosition().y - this->getOrigin().y}, m_shape.getSize())};}
 
 		private:
 			void init() noexcept
