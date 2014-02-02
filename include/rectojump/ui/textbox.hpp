@@ -14,6 +14,8 @@
 
 #include <mlk/time/simple_timer.h>
 
+#include <stack>
+
 
 namespace rj
 {
@@ -26,6 +28,7 @@ namespace rj
 			sf::Text m_text;
 			sf::VertexArray m_cursor{sf::Lines};
 			sf::Color m_cursorcolor{sf::Color::Black};
+			std::stack<char> m_char_stack;
 
 			mlk::ullong m_cursor_blinkinterval{700};
 			mlk::tm::simple_timer m_blinktimer{m_cursor_blinkinterval};
@@ -36,7 +39,10 @@ namespace rj
 				m_gamewindow{gw},
 				m_shape{size},
 				m_text{text, font}
-			{this->setPosition(pos); this->init();}
+			{
+				this->setPosition(pos);
+				this->init();
+			}
 
 			void update(dur)
 			{
@@ -60,7 +66,7 @@ namespace rj
 			// sfml-func-style interface
 			// setters
 			void setSize(const vec2f& size) noexcept
-			{m_shape.setSize(size); this->update_cursor(); this->update_text_pos();}
+			{m_shape.setSize(size); this->update_text_pos(); this->update_cursor();}
 
 			void setFillColor(const sf::Color& color) noexcept
 			{m_shape.setFillColor(color);}
@@ -81,7 +87,7 @@ namespace rj
 			{m_text.setColor(color);}
 
 			void setTextSize(mlk::uint size) noexcept
-			{m_text.setCharacterSize(size); this->update_text_pos();}
+			{m_text.setCharacterSize(size); this->update_text_pos(); this->update_cursor();}
 
 			// getters
 			const vec2f& getSize(const vec2f& size) const noexcept
@@ -113,8 +119,8 @@ namespace rj
 			{
 				m_cursor.append({{0.f, 0.f}, m_cursorcolor});
 				m_cursor.append({{0.f, 0.f}, m_cursorcolor});
-				this->update_cursor();
 				this->update_text_pos();
+				this->update_cursor();
 
 				// bind the event
 				m_gamewindow.on_event(sf::Event::TextEntered) +=
@@ -135,13 +141,37 @@ namespace rj
 
 			void update_text(std::uint32_t u)
 			{
+				if(u != 0x08 && (u < 0x20 || u > 0x7E))
+					return;
+
 				auto text(m_text.getString());
-				if(u == 8) // backspace
+				auto shape_bounds(m_shape.getGlobalBounds());
+				auto text_bounds(m_text.getGlobalBounds());
+
+				// check bounds
+				if(text_bounds.left + text_bounds.width > shape_bounds.left + shape_bounds.width)
 				{
+					// textbounds are bigger than shapebounds
+					// save and delete first char
+					m_char_stack.push(*text.begin());
+					text.erase(0, 1);
+				}
+
+				// backspace
+				if(u == 0x08)
+				{
+					// erase last char
 					if(!text.isEmpty())
 						text.erase(text.getSize() - 1, 1);
+
+					// get last removed char
+					if(!m_char_stack.empty())
+					{
+						text.insert(0, m_char_stack.top());
+						m_char_stack.pop();
+					}
 				}
-				else text += u;
+				else text += u; // append input char to full text
 
 				m_text.setString(text);
 				this->update_cursor();
