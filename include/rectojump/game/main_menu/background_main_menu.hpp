@@ -28,7 +28,6 @@ namespace rj
 		Main_Menu& m_mainmenu;
 		background_manager& m_backgroundmgr;
 
-		sf::Texture m_sides_tx;
 		const sf::Color& m_fillcolor;
 		mlk::tm::simple_timer m_timer{300};
 
@@ -36,7 +35,6 @@ namespace rj
 		background_main_menu(Main_Menu& mm) :
 			m_mainmenu{mm},
 			m_backgroundmgr{mm.get_gamehandler().get_backgroundmgr()},
-			m_sides_tx{mm.get_gamehandler().get_datamgr().template get_as<sf::Texture>("menu_side.png")},
 			m_fillcolor{mm.get_act_fontcolor()}
 		{this->init();}
 
@@ -92,7 +90,11 @@ namespace rj
 
 			// background
 			sf::RectangleShape tx_shape{window_size};
-			tx_shape.setTexture(&m_sides_tx);
+
+			// TODO: remove this try...catch and check the needed data at programstart
+			try{tx_shape.setTexture(&m_mainmenu.get_gamehandler().get_datastore().template get<sf::Texture>("menu_side.png"));}
+			catch(const std::exception& e){mlk::lerr()["rj::background_main_menu"] << e.what();}
+
 			m_backgroundmgr.set_tx_shape(tx_shape);
 			m_backgroundmgr.set_bg_shape({window_size, to_rgb("#e3e3e3"), to_rgb("#e3e3e3"), 1});
 
