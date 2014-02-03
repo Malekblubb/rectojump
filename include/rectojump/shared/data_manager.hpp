@@ -87,6 +87,17 @@ namespace rj
 			return result;
 		}
 
+		template<typename Type>
+		std::map<data_id, Type> get_all_containing_as_map_as(const std::string& contain)
+		{
+			std::map<data_id, Type> result;
+			for(auto& a : m_data)
+				if(mlk::stl_string::contains(contain, a.first))
+					result.emplace(a.first, this->get_as_impl<Type>(a.first));
+			return result;
+
+		}
+
 		// load:	gets AND loads the data to manager
 		mlk::data_packet load_raw(const data_id& id)
 		{
