@@ -12,6 +12,7 @@
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/ui/connected_buttons.hpp>
+#include <rectojump/ui/textbox.hpp>
 
 
 namespace rj
@@ -29,6 +30,7 @@ namespace rj
 		ui::button m_toggle_bar_button{{16.f, 16.f}, {16.f, 16.f}};
 		sf::Texture m_toggle_bar_button_tx;
 		sf::Font m_font;
+		std::vector<ui::textbox> m_textboxes;
 
 		// moving
 		bool m_is_expanded{true}, m_moving{false}, m_need_move_right{false}, m_need_move_left{false};
@@ -51,6 +53,8 @@ namespace rj
 
 		void update(dur duration)
 		{
+			for(auto& a : m_textboxes)
+				a.update(duration);
 			m_buttons.update(duration);
 			m_toggle_bar_button.update(duration);
 
@@ -98,7 +102,7 @@ namespace rj
 
 		void render()
 		{
-			m_render(m_shape, m_toggle_bar_button, m_buttons);
+			m_render(m_shape, m_toggle_bar_button, m_buttons, m_textboxes);
 		}
 
 		auto get_bounds() const noexcept
@@ -127,7 +131,7 @@ namespace rj
 			// buttons
 			vec2f btn_size{80.f, 40.f};
 			auto save_btn(m_buttons.add_button_event<button_item>(
-			[this]{m_editor.handle_save();}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
+			[this]{m_editor.handle_save(m_textboxes[0].get_text());}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
 			save_btn->set_origin(btn_size / 2.f);
 			save_btn->set_font(m_font);
 			save_btn->set_fontsize(16);
@@ -135,12 +139,21 @@ namespace rj
 			save_btn->set_fontcolor(settings::get_color_light());
 
 			auto load_btn(m_buttons.add_button_event<button_item>(
-			[this]{m_editor.handle_load();}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
+			[this]{m_editor.handle_load(m_textboxes[0].get_text());}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
 			load_btn->set_origin(btn_size / 2.f);
 			load_btn->set_font(m_font);
 			load_btn->set_fontsize(16);
 			load_btn->set_text("Load");
 			load_btn->set_fontcolor(settings::get_color_light());
+
+			vec2f tb_size{200.f, 40.f};
+			m_textboxes.emplace_back(m_editor.get_gamehandler().get_gamewindow(), tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 100.f}, m_font, "Level Name");
+			m_textboxes.back().setOrigin(tb_size / 2.f);
+			m_textboxes.back().setTextColor(settings::get_color_light());
+			m_textboxes.back().setTextSize(15);
+			m_textboxes.back().setOutlineThickness(2.f);
+			m_textboxes.back().setOutlineColor(settings::get_color_default_dark());
+			m_textboxes.back().setFillColor({0, 0, 0, 0});
 		}
 
 		void move(const vec2f& offset) noexcept
@@ -149,6 +162,8 @@ namespace rj
 			m_toggle_bar_button.move(offset);
 			for(auto& a : m_buttons.get_buttons())
 				a.second.button->move(offset);
+			for(auto& a : m_textboxes)
+				a.move(offset);
 		}
 	};
 }
