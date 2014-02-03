@@ -25,6 +25,7 @@ namespace rj
 	public:
 		using gh_type = Game_Handler;
 
+	private:
 		Game_Handler& m_gamehandler;
 		Game& m_game;
 		world<Game_Handler>& m_gameworld;
@@ -86,7 +87,7 @@ namespace rj
 			m_settingsbar.render();
 		}
 
-		void handle_save()
+		void handle_save(const std::string& level_name)
 		{
 			level_data lv_data;
 			for(auto& a : m_entityhandler)
@@ -100,10 +101,10 @@ namespace rj
 			music_data lv_music{'M', 'U', 'S', 'I', 'C'};
 			level_packer<packer_mode::pack> lv_packer{lv_music, lv_data, lv_info};
 
-			m_levelmgr.save_level(lv_packer, "TESTLV0");
+			m_levelmgr.save_level(lv_packer, level_name);
 		}
 
-		void handle_load()
+		void handle_load(const std::string& level_name)
 		{
 
 		}
