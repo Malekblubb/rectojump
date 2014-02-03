@@ -12,6 +12,7 @@
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/data_manager.hpp>
+#include <rectojump/shared/data_store.hpp>
 #include <rectojump/shared/utils.hpp>
 #include <rectojump/ui/connected_buttons.hpp>
 
@@ -24,9 +25,10 @@ namespace rj
 		Game_Handler& m_gamehandler;
 		rndr& m_render;
 		data_manager& m_datamgr;
+		typename Game_Handler::data_store_type& m_datastore;
 
 		sf::RectangleShape m_shape;
-		std::vector<sf::Texture> m_button_textures;
+		std::vector<std::reference_wrapper<sf::Texture>> m_button_textures;
 		ui::connected_buttons m_buttons;
 		const vec2f m_buttonsize{64.f, 64.f};
 
@@ -37,6 +39,7 @@ namespace rj
 			m_gamehandler{gh},
 			m_render{gh.get_render()},
 			m_datamgr{gh.get_datamgr()},
+			m_datastore{gh.get_datastore()},
 			m_shape{size}
 		{this->init();}
 
@@ -75,9 +78,9 @@ namespace rj
 			m_shape.setPosition(rec_size / 2.f);
 			m_shape.setFillColor(settings::get_color_default_light());
 
-			m_button_textures.emplace_back(m_datamgr.get_as<sf::Texture>("editor_item_rect.png"));
-			m_button_textures.emplace_back(m_datamgr.get_as<sf::Texture>("editor_item_triangle.png"));
-			m_button_textures.emplace_back(m_datamgr.get_as<sf::Texture>("editor_item_triangles4.png"));
+			m_button_textures.emplace_back(m_datastore.template get<sf::Texture>("editor_item_rect.png"));
+			m_button_textures.emplace_back(m_datastore.template get<sf::Texture>("editor_item_triangle.png"));
+			m_button_textures.emplace_back(m_datastore.template get<sf::Texture>("editor_item_triangles4.png"));
 
 			auto pos_x(150.f);
 			std::size_t index{0};
@@ -85,7 +88,7 @@ namespace rj
 			{
 				auto rect_ptr(m_buttons.add_button<button_item>(m_buttonsize, vec2f{pos_x, m_shape.getPosition().y}));
 				rect_ptr->set_origin(m_buttonsize / 2.f);
-				rect_ptr->set_texture(&a);
+				rect_ptr->set_texture(&a.get());
 				rect_ptr->set_figure(static_cast<entity_figure>(index));
 				pos_x += 100.f;
 				++index;
