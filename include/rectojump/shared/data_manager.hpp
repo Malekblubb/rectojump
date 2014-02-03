@@ -43,6 +43,10 @@ namespace rj
 		// interface
 		// get:		don't loads the data to manager
 		//			just 'gets' it
+		auto get_all() const noexcept
+		-> const decltype(m_data)&
+		{return m_data;}
+
 		mlk::data_packet get_raw(const data_id& id)
 		{
 			if(!this->exists_id(id))
