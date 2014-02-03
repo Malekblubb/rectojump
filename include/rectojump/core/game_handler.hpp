@@ -17,8 +17,9 @@
 #include <rectojump/game/popup_manager.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/config_settings.hpp>
-#include <rectojump/shared/data_manager.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
+#include <rectojump/shared/data_manager.hpp>
+#include <rectojump/shared/data_store.hpp>
 
 #include <mlk/containers/container_utl.h>
 #include <mlk/tools/bitset.h>
@@ -28,10 +29,16 @@ namespace rj
 {
 	class game_handler
 	{
+	public:
+		// type decls
+		using data_store_type = data_store<sf::Texture>;
+
+	private:
 		game_window& m_game_window;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
+		data_store_type m_datastore{m_datamgr.get_all_containing_as_map_as<sf::Texture>(".png")};
 		camera m_default_camera;
 		render<game_handler> m_render;
 		background_manager m_backgroundmgr;
@@ -108,6 +115,10 @@ namespace rj
 		-> decltype(m_mainmenu)&
 		{return m_mainmenu;}
 
+		auto get_datastore() noexcept
+		-> decltype(m_datastore)&
+		{return m_datastore;}
+
 		auto get_datamgr() noexcept
 		-> decltype(m_datamgr)&
 		{return m_datamgr;}
@@ -155,14 +166,14 @@ namespace rj
 		void init_input()
 		{
 			// global input
-			on_key_pressed(key::F) +=
+			on_keys_pressed(key::LShift, key::F) +=
 			[this]
 			{
 				m_game_window.toggle_fullscreen();
 				rj::settings::set_fullscreen(m_game_window.get_fullscreen());
 			};
 
-			on_key_pressed(key::T) +=
+			on_keys_pressed(key::LShift, key::T) +=
 			[this]{m_game_window.toggle_titlebar();};
 
 			on_keys_pressed(key::LShift, key::D) +=
@@ -195,30 +206,6 @@ namespace rj
 
 			on_key_pressed(key::D) +=
 			[this]{if(!this->is_active(state::game)) return; m_game.get_world().c_player();};
-
-			on_btn_pressed(btn::Left) +=
-			[this](const vec2f& pos)
-			{
-				if(!this->is_active(state::game))
-					return;
-				m_game.get_world().c_ent(pos);
-			};
-
-			on_btn_pressed(btn::Right) +=
-			[this](const vec2f& pos)
-			{
-				if(!this->is_active(state::game))
-					return;
-				m_game.get_world().c_ent_death(pos);
-			};
-
-			on_key_pressed(key::A) +=
-			[this]
-			{
-				if(!this->is_active(state::game))
-					return;
-				m_game.get_world().c_world();
-			};
 		}
 
 		void activate_state(state s)
@@ -263,27 +250,25 @@ namespace rj
 
 		void render()
 		{
-m_default_camera.set_changes();
+			m_default_camera.set_changes();
 			m_backgroundmgr.render();
 
+			m_default_camera.set_changes();
 			// render game when in game menu
 			if(this->is_active(state::game) || this->is_active(state::game_menu))
 				m_game.render();
 
 			else if(this->is_active(state::editor))
-			{
 				m_editor.render();
-//				m_game.get_world().get_entityhandler().render();
-			}
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
-m_default_camera.set_changes();
+
+			m_default_camera.set_changes();
 			if(this->is_active(state::debug_info))
 				m_debug_info.render();
 
 			m_popupmgr.render();
-
 		}
 
 		// multi_args: true, Input_Type = key
