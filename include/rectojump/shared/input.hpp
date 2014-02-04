@@ -53,9 +53,7 @@ namespace rj
 			if(!this->is_key_valid(k))
 				return;
 
-			if(mlk::cnt::exists_if(
-			[=](const std::pair<key, mlk::slot<>>& p)
-			{return p.first == k;}, m_on_key_pressed))
+			if(mlk::cnt::exists_map_first(k, m_on_key_pressed))
 				m_on_key_pressed[k]();
 
 			m_key_bits |= k;
@@ -96,9 +94,7 @@ namespace rj
 		{
 			m_mousebtn_bits |= b;
 
-			if(mlk::cnt::exists_if(
-			[=](const std::pair<btn, mlk::slot<const vec2f&>>& p)
-			{return p.first == b;}, m_on_btn_pressed))
+			if(mlk::cnt::exists_map_first(b, m_on_btn_pressed))
 				m_on_btn_pressed[b](m_mousepos);
 		}
 
