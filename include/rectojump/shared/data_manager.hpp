@@ -122,6 +122,14 @@ namespace rj
 		bool exists_id(const data_id& id) const noexcept
 		{return m_data.find(id) != std::end(m_data);}
 
+		bool exists_ids(const std::initializer_list<data_id>& il) const noexcept
+		{
+			for(auto& a : il)
+				if(!mlk::cnt::exists_map_first(a, m_data))
+					return false;
+			return true;
+		}
+
 		std::size_t num_data() const noexcept
 		{return m_data.size();}
 
