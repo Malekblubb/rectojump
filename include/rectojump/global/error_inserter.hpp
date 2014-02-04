@@ -8,6 +8,7 @@
 
 
 #include "errors.hpp"
+#include <rectojump/shared/error_handler.hpp>
 
 #include <mlk/containers/containers.h>
 #include <mlk/log/log.h>
@@ -17,11 +18,14 @@ namespace rj
 {
 	class error_inserter
 	{
+		error_handler& m_errorhandler;
+
 		using et = mlk::cnt::error_type<errors>;
 		std::vector<et> m_list;
 
 	public:
-		error_inserter()
+		error_inserter(error_handler& eh) :
+			m_errorhandler{eh}
 		{
 			this->create_list();
 			for(auto& a : m_list)
@@ -37,7 +41,8 @@ namespace rj
 			m_list.emplace_back(errors::ntw_connect, "failed to connect.");
 			m_list.emplace_back(errors::ntw_send, "failed to send.");
 			m_list.emplace_back(errors::ntw_recv, "failed to recv.");
-			m_list.emplace_back(errors::cl_nullptr_access, "FATAL: access to odd memory.", mlk::slot<>{[]{/* TODO: do smth. here */}});
+			m_list.emplace_back(errors::cl_nullptr_access, "FATAL: access to odd memory.", mlk::slot<>{[this]{m_errorhandler.exec_error_instance(errors::cl_nullptr_access);}});
+			m_list.emplace_back(errors::cl_data, "FATAL: needed data not loaded", mlk::slot<>{[this]{m_errorhandler.exec_error_instance(errors::cl_data);}});
 		}
 	};
 }

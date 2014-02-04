@@ -22,7 +22,8 @@ namespace rj
 		ntw_recv,
 
 		// client / other
-		cl_nullptr_access
+		cl_nullptr_access,
+		cl_data
 	};
 }
 
