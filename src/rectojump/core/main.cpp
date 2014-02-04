@@ -16,6 +16,7 @@
 
 int main()
 {
+	mlk::lerr_i().set_write_on_exit(true);
 	mlk::lout("main", true) << "rectojump version " << rj::get_version() << " started";
 
 	// init settings/config
