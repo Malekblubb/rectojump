@@ -20,6 +20,7 @@
 #include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/shared/data_manager.hpp>
 #include <rectojump/shared/data_store.hpp>
+#include <rectojump/shared/error_handler.hpp>
 
 #include <mlk/containers/container_utl.h>
 #include <mlk/tools/bitset.h>
@@ -31,14 +32,15 @@ namespace rj
 	{
 	public:
 		// type decls
-		using data_store_type = data_store<sf::Texture>;
+		using data_store_type = data_store<sf::Texture, sf::Font>;
 
 	private:
 		game_window& m_game_window;
+		error_handler& m_errorhandler;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
-		data_store_type m_datastore{m_datamgr.get_all_containing_as_map_as<sf::Texture>(".png")};
+		data_store_type m_datastore{m_datamgr.get_all_containing_as_map_as<sf::Texture>(".png"), m_datamgr.get_all_containing_as_map_as<sf::Font>(".otf")};
 		camera m_default_camera;
 		render<game_handler> m_render;
 		background_manager m_backgroundmgr;
@@ -51,8 +53,9 @@ namespace rj
 		mlk::ebitset<state, state::num> m_current_states;
 
 	public:
-		game_handler(game_window& gw, data_manager& dm, level_manager& lm) :
+		game_handler(game_window& gw, error_handler& eh, data_manager& dm, level_manager& lm) :
 			m_game_window{gw},
+			m_errorhandler{eh},
 			m_datamgr{dm},
 			m_lvmgr{lm},
 			m_default_camera{gw, {settings::get_window_size<vec2f>() / 2.f, settings::get_window_size<vec2f>()}},
@@ -154,8 +157,36 @@ namespace rj
 				m_editor.on_activate();
 			});
 
+			this->init_errors();
 			this->init_pointers();
 			this->init_input();
+		}
+
+		void init_errors() noexcept
+		{
+			auto& font(m_datastore.get<sf::Font>("Fipps-Regular.otf"));
+
+			// add the error instances
+			m_errorhandler.create_error_instance(errors::cl_nullptr_access,
+			"Something went wrong during program execution.\nPlease consider to make a bugreport at:\nhttps://github.com/Malekblubb/rectojump\n(Please attach 'log.log' and 'error.log'.)",
+			font,
+			[this]{this->set_only_state(state::error);});
+
+			// TODO: add homepage here
+			m_errorhandler.create_error_instance(errors::cl_data, "Some data wasn't loaded, can't run the game.\nPlease download a full release at: ",
+			font,
+			[this]{this->set_only_state(state::error);});
+
+
+			// checking font
+			if(!m_datamgr.exists_id("Fipps-Regular.otf"))
+				mlk::exit_with("main font ('Fipps-Regular.otf') not loaded", mlk::lerr(errors::cl_data)["rj::game_handler"]);
+
+			// checking data
+			if(!m_datamgr.exists_ids({"debug_font.png", "Fipps-Regular.otf", "arrow.png",
+									  "editor_item_rect.png", "editor_item_triangle.png", "editor_item_triangles4.png",
+									  "menu_side.png"}))
+				mlk::lerr(errors::cl_data);
 		}
 
 		void init_pointers() noexcept
@@ -228,6 +259,9 @@ namespace rj
 
 		void update(dur duration)
 		{
+			if(this->is_active(state::error))
+				return;
+
 			m_backgroundmgr.update(duration);
 
 			if(this->is_active(state::game))
@@ -250,6 +284,12 @@ namespace rj
 
 		void render()
 		{
+			if(this->is_active(state::error))
+			{
+				m_render(m_errorhandler.get_current_error_instance().error_text);
+				return;
+			}
+
 			m_default_camera.set_changes();
 			m_backgroundmgr.render();
 
