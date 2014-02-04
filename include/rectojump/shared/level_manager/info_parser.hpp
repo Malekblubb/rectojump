@@ -49,8 +49,6 @@ namespace rj
 				as_str.substr(null_pos + 1, null_pos2 - null_pos - 1),
 				as_str.substr(null_pos2 + 1, as_str.size() - null_pos2 - 2) // -2: cut space at the end
 			};
-
-			std::cout << m_result.creator_name << std::endl;
 		}
 	};
 }
