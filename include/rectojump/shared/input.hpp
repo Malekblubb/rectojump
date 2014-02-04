@@ -13,8 +13,6 @@
 #include <mlk/signals_slots/slot.h>
 #include <mlk/tools/bitset.h>
 
-#include <map>
-
 
 namespace rj
 {
