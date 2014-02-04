@@ -16,6 +16,7 @@ namespace rj
 {
 	struct level_info
 	{
+		std::string level_name;
 		std::string creator_name;
 		std::string creation_date;
 
@@ -26,6 +27,7 @@ namespace rj
 		{
 			mlk::data_packet result;
 			mlk::cnt::append(std::string{"RJINFO\0"}, result);
+			mlk::cnt::append(level_name + '\0', result);
 			mlk::cnt::append(creator_name + '\0', result);
 			mlk::cnt::append(creation_date + '\0', result);
 			return result;

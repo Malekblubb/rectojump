@@ -35,8 +35,9 @@ namespace rj
 		{
 			std::string as_str{reinterpret_cast<const char*>(m_data.data()), m_data.size()};
 			auto null_pos(as_str.find('\0'));
+			auto null_pos2(as_str.find('\0', null_pos + 1));
 
-			if(null_pos == std::string::npos)
+			if(null_pos == std::string::npos || null_pos2 == std::string::npos)
 			{
 				m_result = {"invalid", "invalid"};
 				return;
@@ -45,8 +46,11 @@ namespace rj
 			m_result =
 			{
 				as_str.substr(m_id_size, null_pos - m_id_size),
-				as_str.substr(null_pos + 1, as_str.size() - null_pos - 2) // -2: cut space at the end
+				as_str.substr(null_pos + 1, null_pos2 - null_pos - 1),
+				as_str.substr(null_pos2 + 1, as_str.size() - null_pos2 - 2) // -2: cut space at the end
 			};
+
+			std::cout << m_result.creator_name << std::endl;
 		}
 	};
 }
