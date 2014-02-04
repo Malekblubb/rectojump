@@ -53,7 +53,7 @@ namespace rj
 		}
 
 		const level& get_level(const level_id& id) const noexcept
-		{return m_loaded_levels.at(id);}
+		{return m_loaded_levels.at(this->make_id(id));}
 
 		auto get_levels() const noexcept
 		-> const decltype(m_loaded_levels)&
@@ -90,6 +90,14 @@ namespace rj
 
 		std::string make_path(const level_id& id) const noexcept
 		{return m_abs_path + id + ".rjl";}
+
+		level_id make_id(const std::string& str) const noexcept
+		{
+			auto result(str);
+			if(str.find(".rjl") == std::string::npos)
+				result += ".rjl";
+			return result;
+		}
 	};
 }
 
