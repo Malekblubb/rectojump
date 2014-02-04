@@ -35,7 +35,7 @@ namespace rj
 			m_abs_path{m_dirh.get_path()}
 		{this->init();}
 
-		const level& open_level(const level_id& id)
+		const level& load_level(const level_id& id)
 		{
 			this->load_to_mgr(id, this->make_path(id));
 			if(m_loaded_levels.find(id) == std::end(m_loaded_levels))
