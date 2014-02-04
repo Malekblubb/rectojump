@@ -11,6 +11,7 @@
 #include <rectojump/global/error_inserter.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/shared/data_manager.hpp>
+#include <rectojump/shared/error_handler.hpp>
 
 
 int main()
@@ -21,7 +22,8 @@ int main()
 	rj::settings::init();
 
 	// generate errors
-	rj::error_inserter{};
+	rj::error_handler eh;
+	rj::error_inserter{eh};
 
 	// data
 	rj::data_manager dm{rj::data_path, true};
@@ -29,7 +31,7 @@ int main()
 
 	// game
 	rj::game_window gw{rj::settings::get_window_size(), rj::settings::get_fullscreen()};
-	rj::game_handler gh{gw, dm, lm};
+	rj::game_handler gh{gw, eh, dm, lm};
 
 	gw.start();
 	return 0;
