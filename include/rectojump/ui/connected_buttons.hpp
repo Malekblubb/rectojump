@@ -92,7 +92,7 @@ namespace rj
 			{m_current_pressed_index = -1;}
 
 			void set_active_button(int index) noexcept
-			{m_current_pressed_index = index;}
+			{m_current_pressed_index = index; on_press(m_buttons[m_current_pressed_index].button);}
 
 			const base_btn_ptr& get_active_btn() const noexcept
 			{return m_buttons.at(m_current_pressed_index).button;}
