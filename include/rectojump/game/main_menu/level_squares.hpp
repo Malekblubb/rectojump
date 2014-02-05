@@ -104,7 +104,7 @@ namespace rj
 				auto& inf(lv.info);
 
 				m_squares.emplace_back(m_mainmenu, vec2f{m_center.x, pos_y}, m_square_size,
-									   "Name", mlk::stl_string::str_format("Creator: %%\nDate: %%", inf.creator_name, inf.creation_date), id);
+									   inf.level_name, mlk::stl_string::str_format("Creator: %%\nDate: %%", inf.creator_name, inf.creation_date), id);
 				pos_y += m_squares.back().get_height();
 			}
 		}
