@@ -39,7 +39,10 @@ namespace rj
 		virtual void render() override
 		{
 			if(m_render == nullptr)
+			{
 				mlk::lerr(errors::cl_nullptr_access)["rj::basic_entity<T>"];
+				return;
+			}
 			(*m_render)(m_render_object);
 		}
 

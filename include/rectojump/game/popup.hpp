@@ -78,7 +78,10 @@ namespace rj
 		void render()
 		{
 			if(m_render == nullptr)
+			{
 				mlk::lerr(errors::cl_nullptr_access)["rj::popup"];
+				return;
+			}
 			(*m_render)(m_shape, m_text);
 		}
 

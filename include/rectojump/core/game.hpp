@@ -24,12 +24,12 @@ namespace rj
 		level_manager* m_lvmgr{nullptr};
 
 		// gameworld
-		world m_world;
+		world<Game_Handler> m_world;
 
 	public:
 		game(Game_Handler& gh) :
 			m_gamehandler{gh},
-			m_world{m_gamehandler.get_render()}
+			m_world{gh}
 		{ }
 
 		void update(dur duration)
@@ -45,7 +45,10 @@ namespace rj
 		void load_level(const level& lv)
 		{
 			if(m_lvmgr == nullptr)
+			{
 				mlk::lerr(errors::cl_nullptr_access)["rj::game"];
+				return;
+			}
 
 			m_world.load_level(lv.entities);
 		}
@@ -53,7 +56,11 @@ namespace rj
 		void set_levelmgr(level_manager* lm)
 		{m_lvmgr = lm;}
 
-		world& get_world()
+		Game_Handler& get_gamehandler() noexcept
+		{return m_gamehandler;}
+
+		auto get_world()
+		-> decltype(m_world)&
 		{return m_world;}
 	};
 }
