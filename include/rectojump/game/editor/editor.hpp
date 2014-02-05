@@ -14,6 +14,7 @@
 #include "settingsbar.hpp"
 #include <rectojump/game/components/platform.hpp>
 #include <rectojump/game/camera.hpp>
+#include <rectojump/game/popup_manager.hpp>
 #include <rectojump/game/world.hpp>
 
 
@@ -87,8 +88,16 @@ namespace rj
 			m_settingsbar.render();
 		}
 
-		void handle_save(const std::string& level_name)
+		void on_activate()
 		{
+			m_background.reset();
+		}
+
+		void handle_save(const level_id& level_name)
+		{
+			if(!this->check_level_name(level_name))
+				return;
+
 			level_data lv_data;
 			for(auto& a : m_entityhandler)
 			{
@@ -97,21 +106,20 @@ namespace rj
 
 			}
 
-			level_info lv_info{"Test", "ABC"};
+			level_info lv_info{level_name, "Creator", "Date"};
 			music_data lv_music{'M', 'U', 'S', 'I', 'C'};
 			level_packer<packer_mode::pack> lv_packer{lv_music, lv_data, lv_info};
 
 			m_levelmgr.save_level(lv_packer, level_name);
 		}
 
-		void handle_load(const std::string& level_name)
+		void handle_load(const level_id& level_name)
 		{
+			if(!this->check_level_name(level_name))
+				return;
 
-		}
-
-		void on_activate()
-		{
-			m_background.reset();
+//			auto& lv(m_levelmgr.get_level(level_name));
+//			m_gameworld.load_level(lv.entities);
 		}
 
 		auto get_gamehandler() noexcept
@@ -222,6 +230,14 @@ namespace rj
 		auto to_editor_entity(const Ent_Ptr& ptr)
 		-> decltype(std::static_pointer_cast<editor_entity>(ptr))
 		{return std::static_pointer_cast<editor_entity>(ptr);}
+
+		bool check_level_name(const level_id& id) const noexcept
+		{
+			if(!id.empty())
+				return true;
+			m_gamehandler.get_popupmgr().template create_popup<popup_type::error>("Couldn't save level: " + mlk::lerr_i().error_str(errors::lv_bad_name));
+			return false;
+		}
 	};
 }
 
