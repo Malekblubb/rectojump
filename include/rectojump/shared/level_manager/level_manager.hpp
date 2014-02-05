@@ -52,7 +52,7 @@ namespace rj
 			return true;
 		}
 
-		const level& get_level(const level_id& id) const noexcept
+		const level& get_level(const level_id& id) const
 		{return m_loaded_levels.at(this->make_id(id));}
 
 		auto get_levels() const noexcept
