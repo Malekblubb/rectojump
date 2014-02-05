@@ -129,12 +129,12 @@ namespace rj
 			else m_need_move_right = true;
 
 			// buttons
-			vec2f btn_size{80.f, 40.f};
+			vec2f btn_size{80.f, 25.f};
 			auto save_btn(m_buttons.add_button_event<button_item>(
 			[this]{m_editor.handle_save(m_textboxes[0].get_text());}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
 			save_btn->set_origin(btn_size / 2.f);
 			save_btn->set_font(m_font);
-			save_btn->set_fontsize(16);
+			save_btn->set_fontsize(12);
 			save_btn->set_text("Save");
 			save_btn->set_fontcolor(settings::get_color_light());
 
@@ -142,15 +142,15 @@ namespace rj
 			[this]{m_editor.handle_load(m_textboxes[0].get_text());}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
 			load_btn->set_origin(btn_size / 2.f);
 			load_btn->set_font(m_font);
-			load_btn->set_fontsize(16);
+			load_btn->set_fontsize(12);
 			load_btn->set_text("Load");
 			load_btn->set_fontcolor(settings::get_color_light());
 
-			vec2f tb_size{200.f, 40.f};
-			m_textboxes.emplace_back(m_editor.get_gamehandler().get_gamewindow(), tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 100.f}, m_font, "Level Name");
+			vec2f tb_size{200.f, 30.f};
+			m_textboxes.emplace_back(m_editor.get_gamehandler().get_gamewindow(), tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 60.f}, m_font, "Level Name");
 			m_textboxes.back().setOrigin(tb_size / 2.f);
 			m_textboxes.back().setTextColor(settings::get_color_light());
-			m_textboxes.back().setTextSize(15);
+			m_textboxes.back().setTextSize(12);
 			m_textboxes.back().setOutlineThickness(2.f);
 			m_textboxes.back().setOutlineColor(settings::get_color_default_dark());
 			m_textboxes.back().setFillColor({0, 0, 0, 0});
