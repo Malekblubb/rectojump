@@ -21,9 +21,14 @@ namespace rj
 		ntw_send,
 		ntw_recv,
 
+		// level
+		lv_load,
+		lv_save,
+		lv_bad_name,
+
 		// client / other
 		cl_nullptr_access,
-		cl_data
+		cl_data,
 	};
 }
 
