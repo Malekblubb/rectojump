@@ -194,10 +194,10 @@ namespace rj
 			{
 				auto shape_bounds(m_shape.getGlobalBounds());
 				auto text_bounds(m_text.getGlobalBounds());
-				auto cursor_margin(shape_bounds.height - (0.9f * shape_bounds.height));
-				m_cursor[0].position = {shape_bounds.left + text_bounds.width, shape_bounds.top + cursor_margin};
+				auto cursor_margin_tb(0.1f * shape_bounds.height); // top / bottom
+				m_cursor[0].position = {shape_bounds.left + text_bounds.width, shape_bounds.top + cursor_margin_tb};
 				m_cursor[0].color = m_cursorcolor;
-				m_cursor[1].position = {shape_bounds.left + text_bounds.width, shape_bounds.top + shape_bounds.height - cursor_margin};
+				m_cursor[1].position = {shape_bounds.left + text_bounds.width, shape_bounds.top + shape_bounds.height - cursor_margin_tb};
 				m_cursor[1].color = m_cursorcolor;
 			}
 		};
