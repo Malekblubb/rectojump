@@ -89,7 +89,7 @@ namespace rj
 			{m_text.setCharacterSize(size); this->update_text_pos(); this->update_cursor();}
 
 			// getters
-			const vec2f& getSize(const vec2f& size) const noexcept
+			const vec2f& getSize() const noexcept
 			{return m_shape.getSize();}
 
 			const sf::Color& getFillColor() const noexcept
