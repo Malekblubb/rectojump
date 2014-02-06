@@ -94,7 +94,7 @@ namespace rj
 		level_id make_id(const std::string& str) const noexcept
 		{
 			auto result(str);
-			if(str.find(".rjl") == std::string::npos)
+			if(result.substr(result.size() - 4, 4) != ".rjl")
 				result += ".rjl";
 			return result;
 		}
