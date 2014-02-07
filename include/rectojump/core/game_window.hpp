@@ -32,7 +32,7 @@ namespace rj
 		bool m_need_recreate{false};
 
 		game_updater m_game_updater;
-		input& m_input{input::get()};
+		input<game_window>& m_input{input<game_window>::get()};
 
 		mlk::event_delegates<sf::Event::EventType, sf::Event> m_on_event;
 
@@ -62,7 +62,7 @@ namespace rj
 
 				// update
 				this->update_events();
-				m_input.update(m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window)));
+				m_input.update();
 				m_game_updater.update();
 
 				// render
@@ -148,7 +148,7 @@ namespace rj
 	private:
 		void init()
 		{
-			m_input.m_renderwindow = &m_window;
+			m_input.init(this);
 			m_windowstyles |= sf::Style::Default;
 			this->recreate();
 		}

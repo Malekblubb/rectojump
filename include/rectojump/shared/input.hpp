@@ -8,8 +8,10 @@
 
 
 #include <rectojump/global/common.hpp>
+#include <rectojump/global/errors.hpp>
 
 #include <mlk/containers/container_utl.h>
+#include <mlk/log/log.h>
 #include <mlk/signals_slots/slot.h>
 #include <mlk/tools/bitset.h>
 
@@ -18,9 +20,13 @@ namespace rj
 {
 	using key_vec = std::vector<key>;
 
+	class game_window;
+
+	template<typename Game_Window>
 	class input
 	{
 		friend class game_window;
+		Game_Window* m_gamewindow;
 		sf::RenderWindow* m_renderwindow;
 
 		mlk::bitset<btn, btn::ButtonCount> m_mousebtn_bits;
@@ -43,8 +49,17 @@ namespace rj
 		{return k != key::Unknown;}
 
 	private:
-		void update(const vec2f& mousepos)
-		{m_mousepos = mousepos;}
+		void init(Game_Window* gw) noexcept
+		{
+			m_gamewindow = gw;
+			m_renderwindow = &gw->get_renderwindow();
+
+			if(m_gamewindow == nullptr || m_renderwindow == nullptr)
+				mlk::lerr(errors::cl_nullptr_access)["rj::input<T>"];
+		}
+
+		void update()
+		{m_mousepos = m_renderwindow->mapPixelToCoords(sf::Mouse::getPosition(*m_renderwindow));}
 
 		void key_pressed(key k)
 		{
@@ -131,54 +146,54 @@ namespace rj
 	};
 
 	inline auto on_key_pressed(key k)
-	-> decltype(input::get().m_on_key_pressed[k])&
+	-> decltype(input<game_window>::get().m_on_key_pressed[k])&
 	{
-		if(!input::get().is_key_valid(k))
+		if(!input<game_window>::get().is_key_valid(k))
 			throw std::runtime_error{"invalid key passed"};
-		return input::get().m_on_key_pressed[k];
+		return input<game_window>::get().m_on_key_pressed[k];
 	}
 
 	template<typename... Keys>
 	auto on_keys_pressed(Keys&&... keys)
-	-> decltype(input::get().m_on_keys_pressed[key_vec{}])&
+	-> decltype(input<game_window>::get().m_on_keys_pressed[key_vec{}])&
 	{
 		key_vec keys_vec{std::forward<Keys>(keys)...};
-		return input::get().m_on_keys_pressed[keys_vec];
+		return input<game_window>::get().m_on_keys_pressed[keys_vec];
 	}
 
 	inline bool is_key_pressed(key k)
-	{return input::get().m_key_bits & k;}
+	{return input<game_window>::get().m_key_bits & k;}
 
 	inline void simulate_keypress(key k)
 	{
-		input::get().key_pressed(k);
-		input::get().key_released(k);
+		input<game_window>::get().key_pressed(k);
+		input<game_window>::get().key_released(k);
 	}
 
 	inline auto on_btn_pressed(btn b)
-	-> decltype(input::get().m_on_btn_pressed[b])&
-	{return input::get().m_on_btn_pressed[b];}
+	-> decltype(input<game_window>::get().m_on_btn_pressed[b])&
+	{return input<game_window>::get().m_on_btn_pressed[b];}
 
 	inline bool is_btn_pressed(btn b)
-	{return input::get().m_mousebtn_bits & b;}
+	{return input<game_window>::get().m_mousebtn_bits & b;}
 
 	inline void simulate_btnpress(btn b)
 	{
-		input::get().btn_pressed(b);
-		input::get().btn_released(b);
+		input<game_window>::get().btn_pressed(b);
+		input<game_window>::get().btn_released(b);
 	}
 
 	inline auto on_mousewheel(wheel w)
-	-> decltype(input::get().m_on_mousewheel[w])&
-	{return input::get().m_on_mousewheel[w];}
+	-> decltype(input<game_window>::get().m_on_mousewheel[w])&
+	{return input<game_window>::get().m_on_mousewheel[w];}
 
 	inline auto get_mousepos()
-	-> const decltype(input::get().m_mousepos)&
-	{return input::get().m_mousepos;}
+	-> const decltype(input<game_window>::get().m_mousepos)&
+	{return input<game_window>::get().m_mousepos;}
 
 	inline vec2f get_mousepos_current_view()
 	{
-		auto& rw(input::get().m_renderwindow);
+		auto& rw(input<game_window>::get().m_renderwindow);
 		return rw->mapPixelToCoords(sf::Mouse::getPosition(*rw), rw->getView());
 	}
 
