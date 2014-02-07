@@ -7,7 +7,6 @@
 #define RJ_UI_TEXTBOX_HPP
 
 
-#include <rectojump/core/game_window.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/input.hpp>
 #include <rectojump/shared/utils.hpp>
@@ -23,7 +22,6 @@ namespace rj
 	{
 		class textbox : public sf::Drawable, public sf::Transformable
 		{
-			game_window& m_gamewindow;
 			sf::RectangleShape m_shape;
 			sf::Text m_text;
 			sf::VertexArray m_cursor{sf::Lines};
@@ -35,8 +33,7 @@ namespace rj
 			bool m_focus{false}, m_cursor_visible{true};
 
 		public:
-			textbox(game_window& gw, const vec2f& size, const vec2f& pos, const sf::Font& font, const std::string& text = "") :
-				m_gamewindow{gw},
+			textbox(const vec2f& size, const vec2f& pos, const sf::Font& font, const std::string& text = "") :
 				m_shape{size},
 				m_text{text, font}
 			{
@@ -61,6 +58,9 @@ namespace rj
 					m_blinktimer.restart();
 				}
 			}
+
+			void addChar(char c) noexcept
+			{if(!m_focus) return; this->update_text(c);}
 
 			// sfml-func-style interface
 			// setters
@@ -126,15 +126,10 @@ namespace rj
 				m_cursor.append({{0.f, 0.f}, m_cursorcolor});
 				this->update_text_pos();
 				this->update_cursor();
-
-				// bind the event
-				m_gamewindow.on_event(sf::Event::TextEntered) +=
-				[this](sf::Event e){if(!m_focus) return; this->update_text(e.text.unicode);};
-
 				m_blinktimer.run();
 			}
 
-			void draw(sf::RenderTarget &target, sf::RenderStates states) const override
+			void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 			{
 				auto s(states);
 				s.transform = sf::Transformable::getTransform();
