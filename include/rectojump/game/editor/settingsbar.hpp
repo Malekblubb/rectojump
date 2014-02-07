@@ -8,6 +8,9 @@
 
 
 #include "button_item.hpp"
+#include <rectojump/game/background/background_manager.hpp>
+#include <rectojump/game/components/gradient_rect.hpp>
+#include <rectojump/game/popup_manager.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
@@ -22,6 +25,7 @@ namespace rj
 	{
 		Editor& m_editor;
 		typename Editor::gh_type& m_gamehandler;
+		background_manager& m_backgroundmgr;
 		rndr& m_render;
 
 		// interface
@@ -42,6 +46,7 @@ namespace rj
 		settingsbar(Editor& e, const vec2f& size) :
 			m_editor{e},
 			m_gamehandler{e.get_gamehandler()},
+			m_backgroundmgr{m_gamehandler.get_backgroundmgr()},
 			m_render{m_gamehandler.get_render()},
 			m_shape{size},
 			m_toggle_bar_button_tx{m_gamehandler.get_datamgr().template get_as<sf::Texture>("arrow.png")},
@@ -139,12 +144,12 @@ namespace rj
 			// buttons
 			vec2f btn_size{80.f, 25.f};
 			auto save_btn(m_buttons.add_button_event<button_item>(
-			[this]{m_editor.handle_save(m_textboxes[0].get_text());}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
+			[this]{m_editor.handle_save(m_textboxes[0].getText());}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
 			this->prepare_button(*save_btn);
 			save_btn->set_text("Save");
 
 			auto load_btn(m_buttons.add_button_event<button_item>(
-			[this]{m_editor.handle_load(m_textboxes[0].get_text());}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
+			[this]{m_editor.handle_load(m_textboxes[0].getText());}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
 			this->prepare_button(*load_btn);
 			load_btn->set_text("Load");
 
@@ -152,10 +157,39 @@ namespace rj
 			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 60.f}, m_font, "Level Name");
 			this->prepare_textbox(m_textboxes.back());
 
-			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, 60.f}, m_font, "BG begin color");
+			// textboxes
+			auto spacing(10.f);
+			auto bg_return_key_func(
+			[this]
+			{
+				auto start_color(to_rgb(m_textboxes[1].getText()));
+				auto end_color(to_rgb(m_textboxes[2].getText()));
+				auto point_count(m_textboxes[3].getText());
+				if(!mlk::stl_string::is_numeric(point_count))
+				{
+					m_gamehandler.get_popupmgr().template create_popup<popup_type::error>("invalid content (must be numeric): " + point_count);
+					return;
+				}
+				m_backgroundmgr.bg_shape().set_startcolor(start_color);
+				m_backgroundmgr.bg_shape().set_endcolor(end_color);
+				m_backgroundmgr.bg_shape().set_gradient_points(mlk::stl_string::to_int<std::size_t>(point_count));
+			});
+
+			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, tb_size.y + spacing}, m_font, "BG begin color");
+			m_textboxes.back().on_key_return = bg_return_key_func;
 			this->prepare_textbox(m_textboxes.back());
-			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, 120.f}, m_font, "BG end color");
+
+			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, (tb_size.y + spacing) * 2}, m_font, "BG end color");
+			m_textboxes.back().on_key_return = bg_return_key_func;
 			this->prepare_textbox(m_textboxes.back());
+
+			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, (tb_size.y + spacing) * 3}, m_font, "BG gradient count");
+			m_textboxes.back().on_key_return = bg_return_key_func;
+			this->prepare_textbox(m_textboxes.back());
+
+			auto btn_gradient_apply(m_buttons.add_button_event<button_item>(bg_return_key_func, btn_size, vec2f{shape_size.x / 2.f, (tb_size.y + spacing) * 4}));
+			btn_gradient_apply->set_text("Apply");
+			this->prepare_button(*btn_gradient_apply);
 		}
 
 		template<typename Btn_Type>
