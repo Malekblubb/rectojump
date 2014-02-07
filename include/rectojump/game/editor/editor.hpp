@@ -72,6 +72,11 @@ namespace rj
 			m_settingsbar.update(duration);
 		}
 
+		void update_input()
+		{
+			m_settingsbar.update_input();
+		}
+
 		void render()
 		{
 			// edit area

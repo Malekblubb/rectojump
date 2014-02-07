@@ -100,6 +100,14 @@ namespace rj
 			}
 		}
 
+		void update_input()
+		{
+			auto lasttextinput(get_last_textinput());
+			for(auto& a : m_textboxes)
+				if(lasttextinput)
+					a.addChar(lasttextinput);
+		}
+
 		void render()
 		{
 			m_render(m_shape, m_toggle_bar_button, m_buttons, m_textboxes);
@@ -132,28 +140,41 @@ namespace rj
 			vec2f btn_size{80.f, 25.f};
 			auto save_btn(m_buttons.add_button_event<button_item>(
 			[this]{m_editor.handle_save(m_textboxes[0].get_text());}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
-			save_btn->set_origin(btn_size / 2.f);
-			save_btn->set_font(m_font);
-			save_btn->set_fontsize(12);
+			this->prepare_button(*save_btn);
 			save_btn->set_text("Save");
-			save_btn->set_fontcolor(settings::get_color_light());
 
 			auto load_btn(m_buttons.add_button_event<button_item>(
 			[this]{m_editor.handle_load(m_textboxes[0].get_text());}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
-			load_btn->set_origin(btn_size / 2.f);
-			load_btn->set_font(m_font);
-			load_btn->set_fontsize(12);
+			this->prepare_button(*load_btn);
 			load_btn->set_text("Load");
-			load_btn->set_fontcolor(settings::get_color_light());
 
 			vec2f tb_size{200.f, 30.f};
-			m_textboxes.emplace_back(m_editor.get_gamehandler().get_gamewindow(), tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 60.f}, m_font, "Level Name");
-			m_textboxes.back().setOrigin(tb_size / 2.f);
-			m_textboxes.back().setTextColor(settings::get_color_light());
-			m_textboxes.back().setTextSize(12);
-			m_textboxes.back().setOutlineThickness(2.f);
-			m_textboxes.back().setOutlineColor(settings::get_color_default_dark());
-			m_textboxes.back().setFillColor({0, 0, 0, 0});
+			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 60.f}, m_font, "Level Name");
+			this->prepare_textbox(m_textboxes.back());
+
+			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, 60.f}, m_font, "BG begin color");
+			this->prepare_textbox(m_textboxes.back());
+			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, 120.f}, m_font, "BG end color");
+			this->prepare_textbox(m_textboxes.back());
+		}
+
+		template<typename Btn_Type>
+		void prepare_button(Btn_Type& btn)
+		{
+			btn.set_origin(btn.get_size() / 2.f);
+			btn.set_font(m_font);
+			btn.set_fontsize(12);
+			btn.set_fontcolor(settings::get_color_light());
+		}
+
+		void prepare_textbox(ui::textbox& tb)
+		{
+			tb.setOrigin(tb.getSize() / 2.f);
+			tb.setTextColor(settings::get_color_light());
+			tb.setTextSize(12);
+			tb.setOutlineThickness(2.f);
+			tb.setOutlineColor(settings::get_color_default_dark());
+			tb.setFillColor({0, 0, 0, 0});
 		}
 
 		void move(const vec2f& offset) noexcept
