@@ -185,7 +185,7 @@ namespace rj
 			void restore_origin() noexcept
 			{m_shape = m_restore_shape;}
 
-			virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override
+			virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 			{
 				target.draw(m_shape, states);
 				target.draw(m_text, states);
@@ -196,9 +196,7 @@ namespace rj
 			{
 				auto text_bounds(m_text.getGlobalBounds());
 				m_text.setOrigin(text_bounds.width / 2.f, text_bounds.height / 2.f);
-				auto shape_bounds(m_shape.getGlobalBounds());
-				auto shape_size(m_shape.getSize());
-				m_text.setPosition({shape_bounds.left + shape_size.x / 2.f, shape_bounds.top + shape_size.y / 2.f});
+				m_text.setPosition(m_shape.getPosition());
 			}
 		};
 	}
