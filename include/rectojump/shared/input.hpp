@@ -36,8 +36,11 @@ namespace rj
 		mlk::event_delegates<key_vec> m_on_keys_pressed;
 		mlk::event_delegates<btn, const vec2f&> m_on_btn_pressed;
 		mlk::event_delegates<wheel, const vec2f&> m_on_mousewheel;
+		char m_last_textinput;
 
 		vec2f m_mousepos{0.f, 0.f};
+
+		mlk::slot<> m_on_update;
 
 	public:
 		input() = default;
@@ -56,10 +59,17 @@ namespace rj
 
 			if(m_gamewindow == nullptr || m_renderwindow == nullptr)
 				mlk::lerr(errors::cl_nullptr_access)["rj::input<T>"];
+
+			m_gamewindow->on_event(sf::Event::EventType::TextEntered) +=
+			[this](sf::Event e){m_last_textinput = e.text.unicode;};
 		}
 
 		void update()
-		{m_mousepos = m_renderwindow->mapPixelToCoords(sf::Mouse::getPosition(*m_renderwindow));}
+		{
+			m_mousepos = m_renderwindow->mapPixelToCoords(sf::Mouse::getPosition(*m_renderwindow));
+			m_on_update();
+			m_last_textinput = 0;
+		}
 
 		void key_pressed(key k)
 		{
@@ -118,6 +128,11 @@ namespace rj
 		{delta < 0 ? m_on_mousewheel[wheel::down](m_mousepos) : m_on_mousewheel[wheel::up](m_mousepos);}
 
 
+		friend auto on_input_update()
+		-> decltype(m_on_update)&;
+
+		friend char get_last_textinput();
+
 		friend auto on_key_pressed(key k)
 		-> decltype(m_on_key_pressed[k])&;
 
@@ -144,6 +159,13 @@ namespace rj
 
 		friend vec2f get_mousepos_current_view();
 	};
+
+	inline auto on_input_update()
+	-> decltype(input<game_window>::get().m_on_update)&
+	{return input<game_window>::get().m_on_update;}
+
+	inline char get_last_textinput()
+	{return input<game_window>::get().m_last_textinput;}
 
 	inline auto on_key_pressed(key k)
 	-> decltype(input<game_window>::get().m_on_key_pressed[k])&
