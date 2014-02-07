@@ -33,6 +33,8 @@ namespace rj
 			bool m_focus{false}, m_cursor_visible{true};
 
 		public:
+			mlk::slot<> on_key_return;
+
 			textbox(const vec2f& size, const vec2f& pos, const sf::Font& font, const std::string& text = "") :
 				m_shape{size},
 				m_text{text, font}
@@ -141,6 +143,13 @@ namespace rj
 
 			void update_text(std::uint32_t u)
 			{
+				// return event
+				if(u == 0x0d)
+				{
+					on_key_return();
+					return;
+				}
+
 				if(u != 0x08 && (u < 0x20 || u > 0x7E))
 					return;
 
