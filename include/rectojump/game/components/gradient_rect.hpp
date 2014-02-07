@@ -75,6 +75,7 @@ namespace rj
 		void recalculate() noexcept
 		{
 			m_verts.clear();
+			m_step_ratio = 1.f / m_num_gradient_points;
 
 			auto single_size(m_size.y / m_num_gradient_points);
 			auto pos_y(m_position.y);
