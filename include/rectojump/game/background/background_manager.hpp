@@ -51,6 +51,12 @@ namespace rj
 		void set_tx_shape(const sf::RectangleShape& shape) noexcept
 		{m_textureshape = shape;}
 
+		gradient_rect& bg_shape() noexcept
+		{return m_bgshape;}
+
+		const gradient_rect& get_bg_shape() const noexcept
+		{return m_bgshape;}
+
 		void clear() noexcept
 		{
 			// clear components
