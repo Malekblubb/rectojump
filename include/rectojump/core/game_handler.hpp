@@ -196,6 +196,10 @@ namespace rj
 
 		void init_input()
 		{
+			// input update
+			on_input_update() +=
+			[this]{this->update_input();};
+
 			// global input
 			on_keys_pressed(key::LShift, key::F) +=
 			[this]
@@ -280,6 +284,11 @@ namespace rj
 				m_debug_info.update(duration);
 
 			m_popupmgr.update(duration);
+		}
+
+		void update_input()
+		{
+			m_editor.update_input();
 		}
 
 		void render()
