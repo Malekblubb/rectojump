@@ -11,6 +11,7 @@
 #include <rectojump/shared/input.hpp>
 #include <rectojump/shared/utils.hpp>
 
+#include <mlk/containers/container_utl.h>
 #include <mlk/time/simple_timer.h>
 
 #include <stack>
@@ -115,8 +116,19 @@ namespace rj
 			mlk::uint getTextSize() const noexcept
 			{return m_text.getCharacterSize();}
 
-			std::string get_text() const noexcept
-			{return m_text.getString();}
+			std::string getText() const noexcept
+			{
+				std::string result;
+				auto char_stack(m_char_stack);
+				auto size(char_stack.size());
+				for(std::size_t i{0}; i < size; ++i)
+				{
+					result += char_stack.top();
+					char_stack.pop();
+				}
+				mlk::cnt::reverse_all(result);
+				return result += m_text.getString();
+			}
 
 			sf::FloatRect getGlobalBounds() const noexcept
 			{return {bounds_from_vec({this->getPosition().x - this->getOrigin().x, this->getPosition().y - this->getOrigin().y}, m_shape.getSize())};}
