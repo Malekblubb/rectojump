@@ -37,7 +37,7 @@ namespace rj
 		camera m_itembar_camera;
 		camera m_settingsbar_camera;
 
-		editor_mouse m_mouse;
+		editor_mouse<Game_Handler> m_mouse;
 		background_editor<editor> m_background{*this};
 		itembar<Game_Handler> m_itembar;
 		settingsbar<editor> m_settingsbar;
@@ -52,7 +52,7 @@ namespace rj
 			m_editarea_camera{m_gamehandler.get_gamewindow()},
 			m_itembar_camera{m_gamehandler.get_gamewindow()},
 			m_settingsbar_camera{m_gamehandler.get_gamewindow()},
-			m_mouse{gh.get_render()},
+			m_mouse{gh},
 			m_itembar{gh, {settings::get_window_size<vec2f>().x, 100.f}},
 			m_settingsbar{*this, {300.f, settings::get_window_size<vec2f>().y - m_itembar.get_size().y}}
 		{this->init();}
@@ -136,7 +136,12 @@ namespace rj
 		{
 			// change mousetexture on itembar-item click
 			m_itembar.on_item_click =
-			[this](ui::base_btn_ptr& b){m_mouse.set_texture(b->get_texture());};
+			[this](ui::base_btn_ptr& b)
+			{
+				m_mouse.set_texture(b->get_texture());
+				m_mouse.deactivate_selection();
+				m_mouse.set_mouse_visible(true);
+			};
 
 			// init mouse texture
 			m_mouse.set_texture(&m_itembar.get_current_texture());
@@ -199,26 +204,35 @@ namespace rj
 				return;
 
 
-			float f{48.f};
-			vec2f new_pos{round_to(m_editarea_camera.get_mapped_mousepos().x, f), round_to(m_editarea_camera.get_mapped_mousepos().y, f)};
+			m_editarea_camera.set_changes();
 
-			// check if entity exists at this pos
-			auto iter(m_entityhandler.exists_entity_at(m_editarea_camera.get_mapped_mousepos()));
-			if(iter != std::end(m_entityhandler))
+			if(m_mouse.is_selection_visible())
 			{
-				auto ptr(this->to_editor_entity(*iter));
-				m_mouse.set_texture(ptr->get_texture());
-				m_itembar.select(ptr->get_figure());
-				return;
-			}
+				if(m_mouse.get_selected().size() == 0)
+					m_mouse.deactivate_selection();
 
-			// set entity at pos
-			if(m_mouse.get_texture())
-			{
-				auto ptr(m_gameworld.template create_entity<editor_entity>(new_pos));
-				ptr->render_object().setTexture(m_mouse.get_texture());
-				ptr->set_figure(m_itembar.get_current_figure());
+				for(auto& a : m_mouse.get_selected())
+				{
+					auto new_ent(m_gameworld.template create_entity<editor_entity>(a.pos()));
+					new_ent->set_texture(a.get_render_object().getTexture());
+					new_ent->set_figure(a.get_figure());
+				}
 			}
+			else if(m_mouse.is_mouse_visible())
+			{
+				float f{48.f};
+				vec2f new_pos{round_to(m_editarea_camera.get_mapped_mousepos().x, f), round_to(m_editarea_camera.get_mapped_mousepos().y, f)};
+
+				// set entity at pos
+				if(m_mouse.get_texture())
+				{
+					auto ptr(m_gameworld.template create_entity<editor_entity>(new_pos));
+					ptr->render_object().setTexture(m_mouse.get_texture());
+					ptr->set_figure(m_itembar.get_current_figure());
+				}
+			}
+			else
+				m_mouse.selection_start();
 		}
 
 		void on_mouse_right(const vec2f&)
