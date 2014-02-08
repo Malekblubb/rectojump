@@ -97,23 +97,25 @@ namespace rj
 		void clear() noexcept
 		{m_entities.clear();}
 
-		void delete_entity(iterator iter)
-		{m_entities.erase(iter);}
+		// deleting ents on next update
+		void delete_entities(std::vector<iterator>& iters)
+		{for(auto& a : iters) (*a)->destroy();}
 
-		bool exists_entity_at(const vec2f& at) noexcept
-		{return this->get_entity_at(at) != std::end(m_entities);}
-
-		iterator get_entity_at(const vec2f& at) noexcept
+		std::vector<iterator> get_entities_at(const vec2f& at, const vec2f& size = {1.f, 1.f}) noexcept
 		{
+			std::vector<iterator> result;
+			sf::FloatRect at_bounds{at, size};
 			for(auto iter(std::begin(m_entities)); iter != std::end(m_entities); ++iter)
 			{
 				sf::FloatRect ent_bounds{{(*iter)->left_out(), (*iter)->top_out()}, (*iter)->size()};
-				sf::FloatRect at_bounds{at, {1.f, 1.f}};
 				if(ent_bounds.intersects(at_bounds))
-					return iter;
+					result.emplace_back(iter);
 			}
-			return std::end(m_entities);
+			return result;
 		}
+
+		bool exists_entity_at(const vec2f& at, const vec2f& size = {1.f, 1.f}) noexcept
+		{return !this->get_entities_at(at, size).empty();}
 
 		iterator begin()
 		{return std::begin(m_entities);}
