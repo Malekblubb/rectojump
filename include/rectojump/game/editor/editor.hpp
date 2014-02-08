@@ -213,6 +213,8 @@ namespace rj
 
 				for(auto& a : m_mouse.get_selected())
 				{
+					if(m_gameworld.get_entityhandler().exists_entity_at(a.pos()))
+						continue;
 					auto new_ent(m_gameworld.template create_entity<editor_entity>(a.pos()));
 					new_ent->set_texture(a.get_render_object().getTexture());
 					new_ent->set_figure(a.get_figure());
@@ -224,7 +226,7 @@ namespace rj
 				vec2f new_pos{round_to(m_editarea_camera.get_mapped_mousepos().x, f), round_to(m_editarea_camera.get_mapped_mousepos().y, f)};
 
 				// set entity at pos
-				if(m_mouse.get_texture())
+				if(m_mouse.get_texture() && !m_gameworld.get_entityhandler().exists_entity_at(new_pos))
 				{
 					auto ptr(m_gameworld.template create_entity<editor_entity>(new_pos));
 					ptr->render_object().setTexture(m_mouse.get_texture());
@@ -240,7 +242,7 @@ namespace rj
 			m_itembar.deselect_all();
 			m_mouse.clear();
 
-			auto iter(m_entityhandler.exists_entity_at(m_editarea_camera.get_mapped_mousepos()));
+			auto iter(m_entityhandler.get_entity_at(m_editarea_camera.get_mapped_mousepos()));
 			if(iter != std::end(m_entityhandler))
 				m_entityhandler.delete_entity(iter);
 		}
