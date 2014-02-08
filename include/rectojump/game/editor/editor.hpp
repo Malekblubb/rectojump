@@ -144,7 +144,7 @@ namespace rj
 			};
 
 			// init mouse texture
-			m_mouse.set_texture(&m_itembar.get_current_texture());
+			m_itembar.deselect_all();
 
 			this->init_input();
 			this->init_cameras();
