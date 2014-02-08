@@ -100,7 +100,10 @@ namespace rj
 		void delete_entity(iterator iter)
 		{m_entities.erase(iter);}
 
-		iterator exists_entity_at(const vec2f& at) noexcept
+		bool exists_entity_at(const vec2f& at) noexcept
+		{return this->get_entity_at(at) != std::end(m_entities);}
+
+		iterator get_entity_at(const vec2f& at) noexcept
 		{
 			for(auto iter(std::begin(m_entities)); iter != std::end(m_entities); ++iter)
 			{
