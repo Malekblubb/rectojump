@@ -208,10 +208,14 @@ namespace rj
 
 			if(m_mouse.is_selection_visible())
 			{
-				if(m_mouse.get_selected().size() == 0)
-					m_mouse.deactivate_selection();
+				auto& selected(m_mouse.get_selected());
+				if(selected.size() == 0)
+				{
+					auto bounds(m_mouse.get_selectionshape_bounds());
+					this->delete_editor_entity({bounds.left, bounds.top}, {bounds.width, bounds.height});
+				}
 
-				for(auto& a : m_mouse.get_selected())
+				for(auto& a : selected)
 					if(!m_gameworld.get_entityhandler().exists_entity_at(a.pos()))
 						this->create_editor_entity(a.pos(), a.get_texture(), a.get_figure());
 			}
@@ -244,11 +248,10 @@ namespace rj
 			return ptr;
 		}
 
-		void delete_editor_entity(const vec2f& pos)
+		void delete_editor_entity(const vec2f& pos, const vec2f& size = {1.f, 1.f})
 		{
-			auto iter(m_entityhandler.get_entity_at(pos));
-			if(iter != std::end(m_entityhandler))
-				m_entityhandler.delete_entity(iter);
+			auto iters(m_entityhandler.get_entities_at(pos, size));
+			m_entityhandler.delete_entities(iters);
 		}
 
 		template<typename Ent_Ptr>
