@@ -232,10 +232,7 @@ namespace rj
 		{
 			m_itembar.deselect_all();
 			m_mouse.clear();
-
-			auto iter(m_entityhandler.get_entity_at(m_editarea_camera.get_mapped_mousepos()));
-			if(iter != std::end(m_entityhandler))
-				m_entityhandler.delete_entity(iter);
+			this->delete_editor_entity(m_editarea_camera.get_mapped_mousepos());
 		}
 
 		auto create_editor_entity(const vec2f& pos, const sf::Texture* tx, entity_figure f)
@@ -245,6 +242,13 @@ namespace rj
 			ptr->set_texture(tx);
 			ptr->set_figure(f);
 			return ptr;
+		}
+
+		void delete_editor_entity(const vec2f& pos)
+		{
+			auto iter(m_entityhandler.get_entity_at(pos));
+			if(iter != std::end(m_entityhandler))
+				m_entityhandler.delete_entity(iter);
 		}
 
 		template<typename Ent_Ptr>
