@@ -60,15 +60,15 @@ namespace rj
 		void update(dur duration)
 		{
 			// edit area
-			m_editarea_camera.set_changes();
+			m_editarea_camera.activate();
 			m_mouse.update(duration);
 
 			// itembar
-			m_itembar_camera.set_changes();
+			m_itembar_camera.activate();
 			m_itembar.update(duration);
 
 			// settingsbar
-			m_settingsbar_camera.set_changes();
+			m_settingsbar_camera.activate();
 			m_settingsbar.update(duration);
 		}
 
@@ -80,16 +80,16 @@ namespace rj
 		void render()
 		{
 			// edit area
-			m_editarea_camera.set_changes();
+			m_editarea_camera.activate();
 			m_entityhandler.render();
 			m_mouse.render();
 
 			// itembar
-			m_itembar_camera.set_changes();
+			m_itembar_camera.activate();
 			m_itembar.render();
 
 			// settingsbar
-			m_settingsbar_camera.set_changes();
+			m_settingsbar_camera.activate();
 			m_settingsbar.render();
 		}
 
@@ -204,7 +204,7 @@ namespace rj
 				return;
 
 
-			m_editarea_camera.set_changes();
+			m_editarea_camera.activate();
 
 			if(m_mouse.is_selection_visible())
 			{

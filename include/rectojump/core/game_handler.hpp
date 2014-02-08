@@ -299,10 +299,10 @@ namespace rj
 				return;
 			}
 
-			m_default_camera.set_changes();
+			m_default_camera.activate();
 			m_backgroundmgr.render();
 
-			m_default_camera.set_changes();
+			m_default_camera.activate();
 			// render game when in game menu
 			if(this->is_active(state::game) || this->is_active(state::game_menu))
 				m_game.render();
@@ -313,7 +313,7 @@ namespace rj
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
 
-			m_default_camera.set_changes();
+			m_default_camera.activate();
 			if(this->is_active(state::debug_info))
 				m_debug_info.render();
 
