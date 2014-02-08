@@ -176,9 +176,9 @@ namespace rj
 			auto& itembar_size(m_itembar.get_size());
 			auto& settingsbar_size(m_settingsbar.get_size());
 
-			float itembar_top{(window_size.y - itembar_size.y) / window_size.y};
-			float itembar_height{itembar_size.y / window_size.y};
-			float editarea_height{(window_size.y - itembar_size.y) / window_size.y};
+			auto itembar_top((window_size.y - itembar_size.y) / window_size.y);
+			auto itembar_height(itembar_size.y / window_size.y);
+			auto editarea_height((window_size.y - itembar_size.y) / window_size.y);
 
 
 			sf::View editarea_view{vec2f{window_size.x, window_size.y - itembar_size.y} / 2.f, {window_size.x, window_size.y - itembar_size.y}};
