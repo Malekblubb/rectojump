@@ -49,6 +49,9 @@ namespace rj
 		T& render_object() noexcept
 		{return m_render_object;}
 
+		const T& get_render_object() const noexcept
+		{return m_render_object;}
+
 		// position, collision
 		const vec2f size() const noexcept override
 		{return m_render_object.getSize();}
