@@ -38,10 +38,8 @@ namespace rj
 		void zoom(float factor) noexcept
 		{m_userview.zoom(factor);}
 
-		void set_changes() noexcept
-		{
-			m_gamewindow.set_view(m_userview);
-		}
+		void activate() noexcept
+		{m_gamewindow.set_view(m_userview);}
 
 		void set_view(const sf::View& v) noexcept
 		{m_userview = v; m_startcenter = m_userview.getCenter();}
