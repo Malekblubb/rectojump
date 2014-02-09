@@ -77,11 +77,19 @@ namespace rj
 				return;
 			}
 
-			m_backgroundmgr.clear();
-
+			// (de)activate right states
 			this->deactivate_state(state::main_menu);
 			this->activate_state(state::game);
 
+			// load background
+			m_backgroundmgr.clear();
+			auto& lv_bg(lv.background);
+			auto& bgshape(m_backgroundmgr.bg_shape());
+			bgshape.set_startcolor(lv_bg.get_startcolor());
+			bgshape.set_endcolor(lv_bg.get_endcolor());
+			bgshape.set_gradient_points(lv_bg.get_pointcount());
+
+			// load level to gameworld
 			m_game.load_level(lv);
 		}
 
