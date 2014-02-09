@@ -72,13 +72,10 @@ namespace rj
 				m_render(m_selection_shape);
 				for(auto& a : m_copy_shapes)
 					a.render();
-
 			}
 
 			if(m_mouse_visible)
 				m_render(m_mouse_shape.get_render_object());
-
-
 		}
 
 		void selection_start()
@@ -127,6 +124,9 @@ namespace rj
 		auto get_selected()
 		-> const decltype(m_copy_shapes)&
 		{return m_copy_shapes;}
+
+		sf::FloatRect get_selectionshape_bounds() const noexcept
+		{return m_selection_shape.getGlobalBounds();}
 
 		bool is_selection_visible() const noexcept
 		{return m_selection_visible;}
