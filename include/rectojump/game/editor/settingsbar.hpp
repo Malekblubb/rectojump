@@ -118,6 +118,15 @@ namespace rj
 			m_render(m_shape, m_toggle_bar_button, m_buttons, m_textboxes);
 		}
 
+		std::string get_tb_startcolor_text() noexcept
+		{return m_textboxes["tb_bgstartcolor"].getText();}
+
+		std::string get_tb_endcolor_text() noexcept
+		{return m_textboxes["tb_bgendcolor"].getText();}
+
+		std::string get_tb_pointcount_text() noexcept
+		{return m_textboxes["tb_bgpointcount"].getText();}
+
 		auto get_bounds() const noexcept
 		-> decltype(m_shape.getGlobalBounds())
 		{return m_shape.getGlobalBounds();}
