@@ -168,14 +168,32 @@ namespace rj
 
 			m_gamehandler.template add_input<state::editor>(
 			[this](const vec2f& pos)
-			{m_editarea_camera.move({settings::get_editor_scroll_step(), 0.f});}, wheel::down);
+			{
+				if(!is_key_pressed(key::LShift))
+					m_editarea_camera.move({settings::get_editor_scroll_step(), 0.f});
+			}, wheel::down);
 
 			m_gamehandler.template add_input<state::editor>(
 			[this](const vec2f& pos)
 			{
-				if(m_editarea_camera.get_center().x >= m_editarea_camera.get_startcenter().x)
-					m_editarea_camera.move({-settings::get_editor_scroll_step(), 0.f});
+				if(!is_key_pressed(key::LShift))
+					if(m_editarea_camera.get_center().x >= m_editarea_camera.get_startcenter().x)
+						m_editarea_camera.move({-settings::get_editor_scroll_step(), 0.f});
 			}, wheel::up);
+
+			m_gamehandler.template add_input<state::editor>(
+			[this](const vec2f& pos)
+			{
+				if(is_key_pressed(key::LShift))
+					m_editarea_camera.zoom(0.9);
+			}, wheel::up);
+
+			m_gamehandler.template add_input<state::editor>(
+			[this](const vec2f& pos)
+			{
+				if(is_key_pressed(key::LShift))
+					m_editarea_camera.zoom(1.1);
+			}, wheel::down);
 		}
 
 		void init_cameras() noexcept
