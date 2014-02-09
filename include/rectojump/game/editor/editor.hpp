@@ -103,17 +103,25 @@ namespace rj
 			if(!this->check_level_name(level_name))
 				return;
 
+			// level background
+			level_background lv_bg
+			{
+				m_settingsbar.get_tb_startcolor_text(),
+				m_settingsbar.get_tb_endcolor_text(),
+				mlk::stl_string::to_int<std::size_t>(m_settingsbar.get_tb_pointcount_text())
+			};
+
+			// level data
 			level_data lv_data;
 			for(auto& a : m_entityhandler)
 			{
 				auto ent(this->to_editor_entity(a));
 				lv_data.add_entity(ent->get_figure(), entity_propertie::solid, ent->pos());
-
 			}
 
 			level_info lv_info{level_name, "Creator", "Date"};
 			music_data lv_music{'M', 'U', 'S', 'I', 'C'};
-			level_packer<packer_mode::pack> lv_packer{lv_music, lv_data, lv_info};
+			level_packer<packer_mode::pack> lv_packer{lv_music, lv_bg, lv_data, lv_info};
 
 			m_levelmgr.save_level(lv_packer, level_name);
 		}
