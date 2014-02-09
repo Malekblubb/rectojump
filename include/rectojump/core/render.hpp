@@ -27,6 +27,13 @@ namespace rj
 			{for(auto& a : obj) ro(gh, a);}
 		};
 
+		template<typename Game_Handler, typename T, typename E>
+		struct ro_helper<Game_Handler, std::map<T, E>, false>
+		{
+			ro_helper(Game_Handler& gh, const std::map<T, E>& m)
+			{for(auto& a : m) ro(gh, a.second);}
+		};
+
 		template<typename Game_Handler, typename T>
 		struct ro_helper<Game_Handler, T, true>
 		{
