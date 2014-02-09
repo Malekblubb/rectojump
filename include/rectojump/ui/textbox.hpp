@@ -36,6 +36,8 @@ namespace rj
 		public:
 			mlk::slot<> on_key_return;
 
+			textbox() = default;
+
 			textbox(const vec2f& size, const vec2f& pos, const sf::Font& font, const std::string& text = "") :
 				m_shape{size},
 				m_text{text, font}
