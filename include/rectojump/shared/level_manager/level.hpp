@@ -7,6 +7,7 @@
 #define RJ_SHARED_LEVEL_MANAGER_LEVEL_HPP
 
 
+#include "level_background.hpp"
 #include "level_info.hpp"
 #include <rectojump/global/common.hpp>
 
@@ -16,6 +17,7 @@ namespace rj
 	struct level_header
 	{
 		int music_size;
+		int background_size;
 		int data_size;
 		int info_size;
 		int reserved;
@@ -24,6 +26,7 @@ namespace rj
 	struct level
 	{
 		music_data music;
+		level_background background;
 		entity_proto_vec entities;
 		level_info info;
 

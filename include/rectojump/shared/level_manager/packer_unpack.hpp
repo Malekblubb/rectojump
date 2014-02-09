@@ -61,24 +61,29 @@ namespace rj
 		{
 			auto music_data(mlk::data_packet{std::begin(m_work_data) + sizeof(level_header),
 											 std::begin(m_work_data) + sizeof(level_header) + this->music_size()});
-			auto level_data(mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size(),
-											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->data_size()});
-			auto infos_data(mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->data_size(),
-											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->data_size() + this->info_size()});
+			auto backg_data(mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size(),
+											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size()});
+			auto level_data(mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size(),
+											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size() + this->data_size()});
+			auto infos_data(mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size() + this->data_size(),
+											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size() + this->data_size() + this->info_size()});
 
-			level_parser lv_parser{level_data};
+			level_parser lv_parser{backg_data, level_data};
 			info_parser inf_parser{infos_data};
-			m_result = {std::move(music_data), lv_parser.get_result(), inf_parser.get_result()};
+			m_result = {std::move(music_data), lv_parser.get_bg_result(), lv_parser.get_level_result(), inf_parser.get_result()};
 		}
 
 		int music_size() const noexcept
 		{return mlk::cnt::make_int(0, m_work_data);}
 
-		int data_size() const noexcept
+		int background_size() const noexcept
 		{return mlk::cnt::make_int(4, m_work_data);}
 
-		int info_size() const noexcept
+		int data_size() const noexcept
 		{return mlk::cnt::make_int(8, m_work_data);}
+
+		int info_size() const noexcept
+		{return mlk::cnt::make_int(12, m_work_data);}
 	};
 }
 

@@ -25,6 +25,7 @@ namespace rj
 	{
 		const music_data& m_music;
 		const level_data& m_data;
+		const level_background& m_background;
 		const level_info& m_info;
 
 		mlk::data_packet m_packed_level;
@@ -32,9 +33,10 @@ namespace rj
 		bool m_valid{false};
 
 	public:
-		level_packer(const music_data& music, const level_data& data, const level_info& info) :
+		level_packer(const music_data& music, const level_background& bg, const level_data& data, const level_info& info) :
 			m_music{music},
 			m_data{data},
+			m_background{bg},
 			m_info{info}
 		{this->create_level();}
 
@@ -55,13 +57,14 @@ namespace rj
 
 		void make_header()
 		{
-			level_header header{this->music_size(), this->data_size(), this->info_size(), 0};
+			level_header header{this->music_size(), this->background_size(), this->data_size(), this->info_size(), 0};
 			mlk::cnt::append(std::string{reinterpret_cast<char*>(&header), sizeof header}, m_packed_level);
 		}
 
 		void make_content()
 		{
 			m_packed_level += m_music;
+			m_packed_level += m_background.data();
 			m_packed_level += m_data.data();
 			m_packed_level += m_info.data();
 		}
@@ -82,6 +85,9 @@ namespace rj
 
 		int music_size() const noexcept
 		{return m_music.size();}
+
+		int background_size() const noexcept
+		{return m_background.size();}
 
 		int data_size() const noexcept
 		{return m_data.size();}

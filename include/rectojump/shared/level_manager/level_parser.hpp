@@ -7,6 +7,7 @@
 #define RJ_SHARED_LEVEL_MANAGER_LEVEL_PARSER_HPP
 
 
+#include "level_background.hpp"
 #include <rectojump/global/common.hpp>
 
 #include <mlk/tools/stl_string_utl.h>
@@ -20,21 +21,29 @@ namespace rj
 {
 	class level_parser
 	{
-		static constexpr std::uint8_t m_id_size{7};
-		const mlk::data_packet& m_data;
-		std::string m_work_string;
+		static constexpr std::uint8_t m_bgdata_id_size{4};
+		static constexpr std::uint8_t m_leveldata_id_size{7};
+		const mlk::data_packet& m_bg_data;
+		const mlk::data_packet& m_level_data;
+		std::string m_bgdata_work_string;
+		std::string m_leveldata_work_string;
 
-		entity_proto_vec m_result;
+		level_background m_bg_result;
+		entity_proto_vec m_level_result;
 
 		bool m_valid{false};
 
 	public:
-		level_parser(const mlk::data_packet& data) :
-			m_data{data}
+		level_parser(const mlk::data_packet& bg_data, const mlk::data_packet& level_data) :
+			m_bg_data{bg_data},
+			m_level_data{level_data}
 		{this->parse();}
 
-		const entity_proto_vec& get_result() const noexcept
-		{return m_result;}
+		const level_background& get_bg_result() const noexcept
+		{return m_bg_result;}
+
+		const entity_proto_vec& get_level_result() const noexcept
+		{return m_level_result;}
 
 	private:
 		void parse()
@@ -43,13 +52,39 @@ namespace rj
 			if(!m_valid)
 				return;
 
+			// prepare the strings
 			this->prepare_string();
-			auto num_ents(mlk::stl_string::count_of("Ent", m_work_string));
+
+			// parse background data
+			this->parse_bgdata();
+
+			// parse level data
+			this->parse_leveldata();
+		}
+
+		void parse_bgdata()
+		{
+			auto nullpos(m_bgdata_work_string.find('\0'));
+			auto nullpos2(m_bgdata_work_string.find('\0', nullpos + 1));
+			if(nullpos == std::string::npos || nullpos2 == std::string::npos)
+				return;
+
+			m_bg_result =
+			{
+				m_bgdata_work_string.substr(m_bgdata_id_size, nullpos - m_bgdata_id_size),
+				m_bgdata_work_string.substr(nullpos + 1, nullpos2 - nullpos - 1),
+				static_cast<std::size_t>(m_bgdata_work_string.substr(nullpos2 + 1, m_bgdata_work_string.size() - nullpos2 - 1).at(0))
+			};
+		}
+
+		void parse_leveldata()
+		{
+			auto num_ents(mlk::stl_string::count_of("Ent", m_leveldata_work_string));
 			for(std::size_t i{0}; i < num_ents; ++i)
 			{
-				auto brace_open(m_work_string.find('[') + 1);
-				auto brace_close(m_work_string.find(']'));
-				auto line(m_work_string.substr(brace_open, brace_close - brace_open));
+				auto brace_open(m_leveldata_work_string.find('[') + 1);
+				auto brace_close(m_leveldata_work_string.find(']'));
+				auto line(m_leveldata_work_string.substr(brace_open, brace_close - brace_open));
 
 				auto space_pos(line.find(' '));
 				entity_prototype tmp_entity;
@@ -60,23 +95,28 @@ namespace rj
 					space_pos = line.find(' ');
 				}
 
-				m_result.push_back(tmp_entity);
-				m_work_string.erase(0, brace_close + 1);
+				m_level_result.push_back(tmp_entity);
+				m_leveldata_work_string.erase(0, brace_close + 1);
 			}
 		}
 
 		void check_valid()
 		{
-			m_valid = m_data.size() > 0 ? (mlk::data_packet{std::begin(m_data), std::begin(m_data) + m_id_size} ==
-										   mlk::data_packet{'R', 'J', 'L', 'E', 'V', 'E', 'L'}) : false;
+			m_valid = m_bg_data.size() > 0 ? (mlk::data_packet{std::begin(m_bg_data), std::begin(m_bg_data) + m_bgdata_id_size} ==
+											  mlk::data_packet{'R', 'J', 'B', 'G'}) : false;
+
+			m_valid == true ? m_valid = m_level_data.size() > 0 ? (mlk::data_packet{std::begin(m_level_data), std::begin(m_level_data) + m_leveldata_id_size} ==
+																   mlk::data_packet{'R', 'J', 'L', 'E', 'V', 'E', 'L'}) : false : false;
 		}
 
 		void prepare_string()
 		{
-			m_work_string = {reinterpret_cast<const char*>(m_data.data()), m_data.size()};
-			mlk::stl_string::erase_all('{', m_work_string);
-			mlk::stl_string::erase_all('}', m_work_string);
-			mlk::stl_string::erase_all(',', m_work_string);
+			m_bgdata_work_string = {reinterpret_cast<const char*>(m_bg_data.data()), m_bg_data.size()};
+
+			m_leveldata_work_string = {reinterpret_cast<const char*>(m_level_data.data()), m_level_data.size()};
+			mlk::stl_string::erase_all('{', m_leveldata_work_string);
+			mlk::stl_string::erase_all('}', m_leveldata_work_string);
+			mlk::stl_string::erase_all(',', m_leveldata_work_string);
 		}
 	};
 }
