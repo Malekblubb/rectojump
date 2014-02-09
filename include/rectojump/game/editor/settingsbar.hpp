@@ -127,6 +127,9 @@ namespace rj
 		std::string get_tb_pointcount_text() noexcept
 		{return m_textboxes["tb_bgpointcount"].getText();}
 
+		std::string get_tb_lvcreator_text() noexcept
+		{return m_textboxes["tb_lvinf_creator"].getText();}
+
 		auto get_bounds() const noexcept
 		-> decltype(m_shape.getGlobalBounds())
 		{return m_shape.getGlobalBounds();}
@@ -163,10 +166,16 @@ namespace rj
 			load_btn->set_text("Load");
 
 			// textboxes
+			// level name
 			vec2f tb_size{200.f, 30.f};
-			m_textboxes.emplace(std::string{"tb_lvname"}, ui::textbox{tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 60.f}, m_font, "Level Name"});
+			m_textboxes.emplace("tb_lvname", ui::textbox{tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 100.f}, m_font, "Level Name"});
 			this->prepare_textbox(m_textboxes["tb_lvname"]);
 
+			// level info
+			m_textboxes.emplace("tb_lvinf_creator", ui::textbox{tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 60.f}, m_font, "Level Creator"});
+			this->prepare_textbox(m_textboxes["tb_lvinf_creator"]);
+
+			// backgroundcolors
 			auto spacing(10.f);
 			auto bg_return_key_func(
 			[this]

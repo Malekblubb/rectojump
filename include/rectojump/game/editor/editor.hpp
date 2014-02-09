@@ -119,7 +119,7 @@ namespace rj
 				lv_data.add_entity(ent->get_figure(), entity_propertie::solid, ent->pos());
 			}
 
-			level_info lv_info{level_name, "Creator", "Date"};
+			level_info lv_info{level_name, m_settingsbar.get_tb_lvcreator_text(), "Date"};
 			music_data lv_music{'M', 'U', 'S', 'I', 'C'};
 			level_packer<packer_mode::pack> lv_packer{lv_music, lv_bg, lv_data, lv_info};
 
