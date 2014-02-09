@@ -34,7 +34,7 @@ namespace rj
 		ui::button m_toggle_bar_button{{16.f, 16.f}, {16.f, 16.f}};
 		sf::Texture m_toggle_bar_button_tx;
 		sf::Font m_font;
-		std::vector<ui::textbox> m_textboxes;
+		std::map<std::string, ui::textbox> m_textboxes;
 
 		// moving
 		bool m_is_expanded{true}, m_moving{false}, m_need_move_right{false}, m_need_move_left{false};
@@ -59,7 +59,7 @@ namespace rj
 		void update(dur duration)
 		{
 			for(auto& a : m_textboxes)
-				a.update(duration);
+				a.second.update(duration);
 			m_buttons.update(duration);
 			m_toggle_bar_button.update(duration);
 
@@ -110,7 +110,7 @@ namespace rj
 			auto lasttextinput(get_last_textinput());
 			for(auto& a : m_textboxes)
 				if(lasttextinput)
-					a.addChar(lasttextinput);
+					a.second.addChar(lasttextinput);
 		}
 
 		void render()
@@ -144,27 +144,27 @@ namespace rj
 			// buttons
 			vec2f btn_size{80.f, 25.f};
 			auto save_btn(m_buttons.add_button_event<button_item>(
-			[this]{m_editor.handle_save(m_textboxes[0].getText());}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
+			[this]{m_editor.handle_save(m_textboxes["tb_lvname"].getText());}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
 			this->prepare_button(*save_btn);
 			save_btn->set_text("Save");
 
 			auto load_btn(m_buttons.add_button_event<button_item>(
-			[this]{m_editor.handle_load(m_textboxes[0].getText());}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
+			[this]{m_editor.handle_load(m_textboxes["tb_lvname"].getText());}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
 			this->prepare_button(*load_btn);
 			load_btn->set_text("Load");
 
-			vec2f tb_size{200.f, 30.f};
-			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 60.f}, m_font, "Level Name");
-			this->prepare_textbox(m_textboxes.back());
-
 			// textboxes
+			vec2f tb_size{200.f, 30.f};
+			m_textboxes.emplace(std::string{"tb_lvname"}, ui::textbox{tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 60.f}, m_font, "Level Name"});
+			this->prepare_textbox(m_textboxes["tb_lvname"]);
+
 			auto spacing(10.f);
 			auto bg_return_key_func(
 			[this]
 			{
-				auto start_color(to_rgb(m_textboxes[1].getText()));
-				auto end_color(to_rgb(m_textboxes[2].getText()));
-				auto point_count(m_textboxes[3].getText());
+				auto start_color(to_rgb(m_textboxes["tb_bgstartcolor"].getText()));
+				auto end_color(to_rgb(m_textboxes["tb_bgendcolor"].getText()));
+				auto point_count(m_textboxes["tb_bgpointcount"].getText());
 				if(!mlk::stl_string::is_numeric(point_count))
 				{
 					m_gamehandler.get_popupmgr().template create_popup<popup_type::error>("invalid content (must be numeric): " + point_count);
@@ -175,17 +175,17 @@ namespace rj
 				m_backgroundmgr.bg_shape().set_gradient_points(mlk::stl_string::to_int<std::size_t>(point_count));
 			});
 
-			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, tb_size.y + spacing}, m_font, "BG begin color");
-			m_textboxes.back().on_key_return = bg_return_key_func;
-			this->prepare_textbox(m_textboxes.back());
+			m_textboxes.emplace("tb_bgstartcolor", ui::textbox{tb_size, vec2f{shape_size.x / 2.f, tb_size.y + spacing}, m_font, "BG begin color"});
+			m_textboxes["tb_bgstartcolor"].on_key_return = bg_return_key_func;
+			this->prepare_textbox(m_textboxes["tb_bgstartcolor"]);
 
-			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, (tb_size.y + spacing) * 2}, m_font, "BG end color");
-			m_textboxes.back().on_key_return = bg_return_key_func;
-			this->prepare_textbox(m_textboxes.back());
+			m_textboxes.emplace("tb_bgendcolor", ui::textbox{tb_size, vec2f{shape_size.x / 2.f, (tb_size.y + spacing) * 2}, m_font, "BG end color"});
+			m_textboxes["tb_bgendcolor"].on_key_return = bg_return_key_func;
+			this->prepare_textbox(m_textboxes["tb_bgendcolor"]);
 
-			m_textboxes.emplace_back(tb_size, vec2f{shape_size.x / 2.f, (tb_size.y + spacing) * 3}, m_font, "BG gradient count");
-			m_textboxes.back().on_key_return = bg_return_key_func;
-			this->prepare_textbox(m_textboxes.back());
+			m_textboxes.emplace("tb_bgpointcount", ui::textbox{tb_size, vec2f{shape_size.x / 2.f, (tb_size.y + spacing) * 3}, m_font, "BG gradient count"});
+			m_textboxes["tb_bgpointcount"].on_key_return = bg_return_key_func;
+			this->prepare_textbox(m_textboxes["tb_bgpointcount"]);
 
 			auto btn_gradient_apply(m_buttons.add_button_event<button_item>(bg_return_key_func, btn_size, vec2f{shape_size.x / 2.f, (tb_size.y + spacing) * 4}));
 			btn_gradient_apply->set_text("Apply");
@@ -218,7 +218,7 @@ namespace rj
 			for(auto& a : m_buttons.get_buttons())
 				a.second.button->move(offset);
 			for(auto& a : m_textboxes)
-				a.move(offset);
+				a.second.move(offset);
 		}
 	};
 }
