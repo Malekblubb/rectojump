@@ -135,9 +135,21 @@ namespace rj
 //			m_gameworld.load_level(lv.entities);
 		}
 
+		void reset_zoom() noexcept
+		{m_editarea_camera.reset_zoom();}
+
 		auto get_gamehandler() noexcept
 		-> decltype(m_gamehandler)&
 		{return m_gamehandler;}
+
+		camera& editarea_camera() noexcept
+		{return m_editarea_camera;}
+
+		camera& itembar_camera() noexcept
+		{return m_itembar_camera;}
+
+		camera& settingsbar_camera() noexcept
+		{return m_settingsbar_camera;}
 
 	private:
 		void init()
