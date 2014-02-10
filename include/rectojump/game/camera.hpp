@@ -20,6 +20,7 @@ namespace rj
 		const sf::View& m_default_window_view{m_renderwindow.getDefaultView()};
 		sf::View m_userview;
 		vec2f m_startcenter;
+		float m_reset_zoomfactor{1.f};
 
 	public:
 		camera(game_window& gw, const sf::View& v = {}, const sf::FloatRect& viewport = {0.f, 0.f, 1.f, 1.f}) :
@@ -36,7 +37,10 @@ namespace rj
 		{m_userview.move(offset);}
 
 		void zoom(float factor) noexcept
-		{m_userview.zoom(factor);}
+		{m_userview.zoom(factor); m_reset_zoomfactor *= factor;}
+
+		void reset_zoom() noexcept
+		{m_userview.zoom(1.f / m_reset_zoomfactor); m_reset_zoomfactor = 1.f;}
 
 		void activate() noexcept
 		{m_gamewindow.set_view(m_userview);}
