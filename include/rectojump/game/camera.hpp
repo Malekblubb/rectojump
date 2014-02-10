@@ -68,6 +68,9 @@ namespace rj
 
 		vec2f get_mapped_mousepos() const noexcept
 		{return get_mousepos(m_renderwindow, m_userview);}
+
+		float get_zoomfactor() const noexcept
+		{return m_reset_zoomfactor;}
 	};
 }
 
