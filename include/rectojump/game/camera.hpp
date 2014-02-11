@@ -45,6 +45,9 @@ namespace rj
 		void activate() noexcept
 		{m_gamewindow.set_view(m_userview);}
 
+		void set_center(const vec2f& center) noexcept
+		{m_userview.setCenter(center);}
+
 		void set_view(const sf::View& v) noexcept
 		{m_userview = v; m_startcenter = m_userview.getCenter();}
 
