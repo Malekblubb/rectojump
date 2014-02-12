@@ -60,8 +60,8 @@ namespace rj
 		void update(dur duration)
 		{
 			// editareacamera move
-			if(is_btn_pressed(btn::Middle)) // TODO: impl this better
-				m_editarea_camera.set_center(get_mousepos());
+			if(is_btn_pressed(btn::Middle))
+				m_editarea_camera.move(((get_lastmousepos() - get_mousepos()) / 4.f) * duration); // * duration ???
 
 			// edit area
 			m_editarea_camera.activate();
