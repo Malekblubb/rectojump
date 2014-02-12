@@ -140,6 +140,8 @@ namespace rj
 	private:
 		void init()
 		{
+			// TODO: avoid magic numbers here
+
 			// shape
 			auto& shape_size(m_shape.getSize());
 			m_shape.setOrigin(shape_size / 2.f);
@@ -164,6 +166,16 @@ namespace rj
 			[this]{m_editor.handle_load(m_textboxes["tb_lvname"].getText());}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
 			this->prepare_button(*load_btn);
 			load_btn->set_text("Load");
+
+			auto reset_zoom_btn(m_buttons.add_button_event<button_item>(
+			[this]{m_editor.reset_zoom();}, vec2f{160.f, 25.f}, vec2f{shape_size.x / 2.f, shape_size.y / 2.f}));
+			this->prepare_button(*reset_zoom_btn);
+			reset_zoom_btn->set_text("Reset zoom");
+
+			auto reset_center_btn(m_buttons.add_button_event<button_item>(
+			[this]{m_editor.reset_center();}, vec2f{160.f, 25.f}, vec2f{shape_size.x / 2.f, shape_size.y / 2.f + 30.f}));
+			this->prepare_button(*reset_center_btn);
+			reset_center_btn->set_text("Reset center");
 
 			// textboxes
 			// level name

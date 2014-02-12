@@ -33,6 +33,7 @@ namespace rj
 		entity_handler& m_entityhandler;
 		level_manager& m_levelmgr;
 
+		sf::RectangleShape m_camera_indicator_shape;
 		camera m_editarea_camera;
 		camera m_itembar_camera;
 		camera m_settingsbar_camera;
@@ -85,6 +86,7 @@ namespace rj
 		{
 			// edit area
 			m_editarea_camera.activate();
+			m_gamehandler.get_render()(m_camera_indicator_shape);
 			m_entityhandler.render();
 			m_mouse.render();
 
@@ -141,6 +143,9 @@ namespace rj
 
 		void reset_zoom() noexcept
 		{m_editarea_camera.reset_zoom();}
+
+		void reset_center() noexcept
+		{m_editarea_camera.reset_center();}
 
 		auto get_gamehandler() noexcept
 		-> decltype(m_gamehandler)&
