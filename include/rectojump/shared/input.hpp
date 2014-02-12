@@ -39,6 +39,7 @@ namespace rj
 		char m_last_textinput;
 
 		vec2f m_mousepos{0.f, 0.f};
+		vec2f m_last_mousepos{0.f, 0.f};
 
 		mlk::slot<> m_on_update;
 
@@ -66,6 +67,7 @@ namespace rj
 
 		void update()
 		{
+			m_last_mousepos = m_mousepos;
 			m_mousepos = m_renderwindow->mapPixelToCoords(sf::Mouse::getPosition(*m_renderwindow));
 			m_on_update();
 			m_last_textinput = 0;
@@ -157,6 +159,9 @@ namespace rj
 		friend auto get_mousepos()
 		-> const decltype(m_mousepos)&;
 
+		friend auto get_lastmousepos()
+		-> const decltype(m_last_mousepos)&;
+
 		friend vec2f get_mousepos_current_view();
 	};
 
@@ -212,6 +217,10 @@ namespace rj
 	inline auto get_mousepos()
 	-> const decltype(input<game_window>::get().m_mousepos)&
 	{return input<game_window>::get().m_mousepos;}
+
+	inline auto get_lastmousepos()
+	-> const decltype(input<game_window>::get().m_last_mousepos)&
+	{return input<game_window>::get().m_last_mousepos;}
 
 	inline vec2f get_mousepos_current_view()
 	{
