@@ -39,6 +39,9 @@ namespace rj
 		void zoom(float factor) noexcept
 		{m_userview.zoom(factor); m_reset_zoomfactor *= factor;}
 
+		void reset_center() noexcept
+		{m_userview.setCenter(m_startcenter);}
+
 		void reset_zoom() noexcept
 		{m_userview.zoom(1.f / m_reset_zoomfactor); m_reset_zoomfactor = 1.f;}
 
