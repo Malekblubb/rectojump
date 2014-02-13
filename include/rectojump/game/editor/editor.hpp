@@ -62,7 +62,7 @@ namespace rj
 		{
 			// editareacamera move
 			if(is_btn_pressed(btn::Middle))
-				m_editarea_camera.move(((get_lastmousepos() - get_mousepos()) / 4.f) * duration); // * duration ???
+				m_editarea_camera.move(((get_lastmousepos() - get_mousepos()) / 6.f) * m_editarea_camera.get_zoomfactor() * duration); // * duration ???
 
 			// edit area
 			m_editarea_camera.activate();
