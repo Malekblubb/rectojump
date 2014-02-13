@@ -56,10 +56,10 @@ namespace rj
 		void set_levelmgr(level_manager* lm)
 		{m_lvmgr = lm;}
 
-		Game_Handler& get_gamehandler() noexcept
+		Game_Handler& gamehandler() noexcept
 		{return m_gamehandler;}
 
-		auto get_world()
+		auto world()
 		-> decltype(m_world)&
 		{return m_world;}
 	};

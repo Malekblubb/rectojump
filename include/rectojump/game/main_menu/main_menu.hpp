@@ -62,12 +62,12 @@ namespace rj
 	public:
 		main_menu(Game_Handler& gh) :
 			m_gamehandler{gh},
-			m_gamewindow{gh.get_gamewindow()},
-			m_datamgr{gh.get_datamgr()},
-			m_lvmgr{gh.get_levelmgr()},
-			m_backgroundmgr{gh.get_backgroundmgr()},
+			m_gamewindow{gh.gamewindow()},
+			m_datamgr{gh.datamgr()},
+			m_lvmgr{gh.levelmgr()},
+			m_backgroundmgr{gh.backgroundmgr()},
 			m_center{settings::get_window_size<vec2f>() / 2.f},
-			m_title{m_gamehandler.get_render(), m_font, m_center}
+			m_title{m_gamehandler.rendermgr(), m_font, m_center}
 		{this->init();}
 
 		void update(dur duration)
@@ -102,15 +102,15 @@ namespace rj
 			m_on_menu_switch[m_submenumgr.get_current_state()]();
 		}
 
-		auto get_gamehandler() noexcept
+		auto gamehandler() noexcept
 		-> decltype(m_gamehandler)&
 		{return m_gamehandler;}
 
-		auto get_menu_start() noexcept
+		auto mmenu_start() noexcept
 		-> decltype(m_start)&
 		{return m_start;}
 
-		auto get_menu_levels() noexcept
+		auto mmenu_levels() noexcept
 		-> decltype(m_levels)&
 		{return m_levels;}
 
@@ -175,7 +175,7 @@ namespace rj
 			// level menu:
 			// item events:
 			m_levels->get_items().on_event("lv_download",
-			[this]{m_gamehandler.get_popupmgr().create_popup("Not available yet.");});
+			[this]{m_gamehandler.popupmgr().create_popup("Not available yet.");});
 
 			// level_squares events:
 			m_levels->on_level_load +=

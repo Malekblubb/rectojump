@@ -34,7 +34,7 @@ namespace rj
 	public:
 		background_main_menu(Main_Menu& mm) :
 			m_mainmenu{mm},
-			m_backgroundmgr{mm.get_gamehandler().get_backgroundmgr()},
+			m_backgroundmgr{mm.gamehandler().backgroundmgr()},
 			m_fillcolor{mm.get_act_fontcolor()}
 		{this->init();}
 
@@ -92,7 +92,7 @@ namespace rj
 			sf::RectangleShape tx_shape{window_size};
 
 			// TODO: remove this try...catch and check the needed data at programstart
-			try{tx_shape.setTexture(&m_mainmenu.get_gamehandler().get_datastore().template get<sf::Texture>("menu_side.png"));}
+			try{tx_shape.setTexture(&m_mainmenu.gamehandler().datastore().template get<sf::Texture>("menu_side.png"));}
 			catch(const std::exception& e){mlk::lerr()["rj::background_main_menu"] << e.what();}
 
 			m_backgroundmgr.set_tx_shape(tx_shape);

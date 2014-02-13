@@ -33,8 +33,8 @@ namespace rj
 
 	public:
 		editor_mouse(Game_Handler& gh) :
-			m_render{gh.get_render()},
-			m_entityhandler{gh.get_game().get_world().get_entityhandler()}
+			m_render{gh.rendermgr()},
+			m_entityhandler{gh.game().world().entityhandler()}
 		{this->init();}
 
 		void update(dur)

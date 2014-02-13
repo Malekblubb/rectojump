@@ -7,25 +7,35 @@
 #define RJ_GAME_WORLD_HPP
 
 
-#include "entity_handler.hpp"
-#include "factory.hpp"
-#include "components/platfrom.hpp"
+#include "components/platform.hpp"
 #include "components/player.hpp"
 #include "components/triangle.hpp"
+#include "components/triangles4.hpp"
+#include "entity_handler.hpp"
+#include "factory.hpp"
+#include <rectojump/game/background/background_manager.hpp>
+#include <rectojump/shared/data_store.hpp>
 
 #include <mlk/tools/random_utl.h>
 
 
 namespace rj
 {
+	template<typename Game_Handler>
 	class world
 	{
+		Game_Handler& m_gamehandler;
+		background_manager& m_backgroundmgr;
+		typename Game_Handler::data_store_type& m_datastore;
+
 		entity_handler m_entity_handler;
 
-
 	public:
-		world(rndr& r) :
-			m_entity_handler{r}
+		world(Game_Handler& gh) :
+			m_gamehandler{gh},
+			m_backgroundmgr{gh.backgroundmgr()},
+			m_entity_handler{gh.rendermgr()},
+			m_datastore{gh.datastore()}
 		{ }
 
 		void c_player()
@@ -34,45 +44,9 @@ namespace rj
 			m_entity_handler.create_entity(plr);
 		}
 
-		void c_world()
-		{
-//			auto rec1(std::make_shared<platform>(platform{{600.f, 450.f}, {40.f, 40.f}}));
-			auto rec1(factory::create<platform>(vec2f{600.f, 450.f}, vec2f{40.f, 40.f}));
-			m_entity_handler.create_entity(rec1);
-
-			auto rec2(std::make_shared<platform>(platform{{700.f, 400.f}, {40.f, 40.f}}));
-			m_entity_handler.create_entity(rec2);
-
-			auto rec3(std::make_shared<platform>(platform{{800.f, 400.f}, {40.f, 40.f}}));
-			m_entity_handler.create_entity(rec3);
-
-			auto rec4(std::make_shared<platform>(platform{{900.f, 350.f}, {40.f, 40.f}}));
-			m_entity_handler.create_entity(rec4);
-
-			auto tri(std::make_shared<triangle>(triangle{{1000.f, 500.f}}));
-			m_entity_handler.create_entity(tri);
-		}
-
-		void c_ent(const vec2f& pos)
-		{
-			auto rec1(factory::create<platform>(pos, vec2f{40.f, 40.f}));
-			m_entity_handler.create_entity(rec1);
-		}
-
-		void c_ent_death(const vec2f& pos)
-		{
-			auto r(mlk::rnd<std::uint8_t>(0, 255)), g(mlk::rnd<std::uint8_t>(0, 255)), b(mlk::rnd<std::uint8_t>(0, 255)), a(mlk::rnd<std::uint8_t>(150, 255));
-			auto rec1(factory::create<platform>(pos, vec2f{40.f, 40.f}));
-			rec1->render_object().setFillColor({r, g, b, a});
-			rec1->set_propertie(entity_propertie::death);
-			m_entity_handler.create_entity(rec1);
-		}
-
 		void update(dur duration)
 		{
 			m_entity_handler.update(duration);
-
-			// m_background.update(duration);
 		}
 
 		void render()
@@ -86,14 +60,67 @@ namespace rj
 
 			for(auto& entity : entities)
 			{
-				auto tmp(factory::create<platform>(vec2f{entity[x], entity[y]}, vec2f{40.f, 40.f}));
-				m_entity_handler.create_entity(tmp);
+				mlk::sptr<entity_base> ptr{nullptr};
+				vec2f pos{entity[x], entity[y]};
+
+				auto entity_figure(static_cast<char>(entity[figure]));
+
+				if(entity_figure == entity_figure::f_rectangle)
+				{
+					auto obj(factory::create<platform>(pos, vec2f{48.f, 48.f}));
+					obj->render_object().setTexture(&m_datastore.template get<sf::Texture>("editor_item_rect.png"));
+//					obj->render_object().setOutlineThickness(1);
+//					obj->render_object().setOutlineColor(sf::Color::Red);
+					ptr = obj;
+				}
+				else if(entity_figure == entity_figure::f_triangle)
+				{
+					auto obj(factory::create<platform>(pos, vec2f{48.f, 48.f}));
+					obj->render_object().setTexture(&m_datastore.template get<sf::Texture>("editor_item_triangle.png"));
+					obj->set_propertie(entity_propertie::death);
+					ptr = obj;
+				}
+
+
+				switch(static_cast<char>(entity[figure]))
+				{
+				case entity_figure::f_rectangle:
+				{
+//					auto obj(factory::create<platform>(pos, vec2f{48.f, 48.f}));
+//					obj->render_object().setTexture(&m_datastore.template get<sf::Texture>("editor_item_rect.png"));
+//					ptr = obj;
+
+					break;
+				}
+				case entity_figure::f_triangle:
+//					ptr = factory::create<triangle>(pos, 19.f);
+					break;
+				case entity_figure::f_triangles4:
+					m_backgroundmgr.create_object<triangles4>(pos, vec2f{50.f, 200.f}, 0, 0.5f, vec2f{0, 0});
+					break;
+				default:
+					ptr = nullptr;
+					break;
+				}
+
+				if(ptr)
+					m_entity_handler.create_entity(ptr);
 			}
 		}
 
+		template<typename Entity_Type, typename... Args>
+		entity_ptr<Entity_Type> create_entity(Args&&... args)
+		{
+			auto ptr(factory::create<Entity_Type>(std::forward<Args>(args)...));
+			m_entity_handler.create_entity(ptr);
+			return ptr;
+		}
 
 		std::size_t num_entities() const noexcept
 		{return m_entity_handler.num_entities();}
+
+		entity_handler& entityhandler() noexcept
+		{return m_entity_handler;}
 
 	private:
 

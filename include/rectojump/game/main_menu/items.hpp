@@ -31,9 +31,9 @@ namespace rj
 
 	public:
 		items(Main_Menu& mm) :
-			basic_component{mm.get_gamehandler().get_render(), mm.get_font(), mm.get_center()},
+			basic_component{mm.gamehandler().rendermgr(), mm.get_font(), mm.get_center()},
 			m_mainmenu{mm},
-			m_render{mm.get_gamehandler().get_render()}
+			m_render{mm.gamehandler().rendermgr()}
 		{ }
 
 		void update(dur)

@@ -24,7 +24,7 @@ namespace rj
 	public:
 		background_editor(Editor& e) :
 			m_editor{e},
-			m_backgroundmgr{e.get_gamehandler().get_backgroundmgr()}
+			m_backgroundmgr{e.gamehandler().backgroundmgr()}
 		{this->reset();}
 
 

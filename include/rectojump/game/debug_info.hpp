@@ -72,9 +72,9 @@ namespace rj
 	public:
 		debug_info(Game_Handler& gh) :
 			m_gamehandler{gh},
-			m_render{gh.get_render()},
-			m_game{gh.get_game()},
-			m_text{gh.get_datamgr()}
+			m_render{gh.rendermgr()},
+			m_game{gh.game()},
+			m_text{gh.datamgr()}
 		{this->init();}
 
 		void update(dur)
@@ -98,17 +98,17 @@ namespace rj
 			m_background.setOutlineColor({255, 0, 0});
 
 			this->add_title_line("Performance");
-			this->add_line("FPS:        %%", [this]{return m_gamehandler.get_gamewindow().get_updater().get_fps();});
-			this->add_line("FDur:       %%\n", [this]{return m_gamehandler.get_gamewindow().get_updater().get_frameduration();});
+			this->add_line("FPS:        %%", [this]{return m_gamehandler.gamewindow().get_updater().get_fps();});
+			this->add_line("FDur:       %%\n", [this]{return m_gamehandler.gamewindow().get_updater().get_frameduration();});
 
 			this->add_title_line("Components");
-			this->add_line("Gameworld:  %%", [this]{return m_game.get_world().num_entities();});
-			this->add_line("Background: %%", [this]{return m_gamehandler.get_backgroundmgr().num_components();});
-			this->add_line("Popups:     %%\n", [this]{return m_gamehandler.get_popupmgr().num_popups();});
+			this->add_line("Gameworld:  %%", [this]{return m_game.world().num_entities();});
+			this->add_line("Background: %%", [this]{return m_gamehandler.backgroundmgr().num_components();});
+			this->add_line("Popups:     %%\n", [this]{return m_gamehandler.popupmgr().num_popups();});
 
 			this->add_title_line("Managers");
-			this->add_line("Data:       %%", [this]{return m_gamehandler.get_datamgr().num_data();});
-			this->add_line("Levels:     %%", [this]{return m_gamehandler.get_levelmgr().num_levels();});
+			this->add_line("Data:       %%", [this]{return m_gamehandler.datamgr().num_data();});
+			this->add_line("Levels:     %%", [this]{return m_gamehandler.levelmgr().num_levels();});
 		}
 
 		void add_title_line(const std::string& text)

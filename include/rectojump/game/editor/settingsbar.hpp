@@ -45,12 +45,12 @@ namespace rj
 	public:
 		settingsbar(Editor& e, const vec2f& size) :
 			m_editor{e},
-			m_gamehandler{e.get_gamehandler()},
-			m_backgroundmgr{m_gamehandler.get_backgroundmgr()},
-			m_render{m_gamehandler.get_render()},
+			m_gamehandler{e.gamehandler()},
+			m_backgroundmgr{m_gamehandler.backgroundmgr()},
+			m_render{m_gamehandler.rendermgr()},
 			m_shape{size},
-			m_toggle_bar_button_tx{m_gamehandler.get_datamgr().template get_as<sf::Texture>("arrow.png")},
-			m_font{m_gamehandler.get_datamgr().template get_as<sf::Font>("Fipps-Regular.otf")}
+			m_toggle_bar_button_tx{m_gamehandler.datamgr().template get_as<sf::Texture>("arrow.png")},
+			m_font{m_gamehandler.datamgr().template get_as<sf::Font>("Fipps-Regular.otf")}
 		{this->init();}
 
 		~settingsbar()
@@ -197,7 +197,7 @@ namespace rj
 				auto point_count(m_textboxes["tb_bgpointcount"].getText());
 				if(!mlk::stl_string::is_numeric(point_count))
 				{
-					m_gamehandler.get_popupmgr().template create_popup<popup_type::error>("invalid content (must be numeric): " + point_count);
+					m_gamehandler.popupmgr().template create_popup<popup_type::error>("invalid content (must be numeric): " + point_count);
 					return;
 				}
 				m_backgroundmgr.bg_shape().set_startcolor(start_color);

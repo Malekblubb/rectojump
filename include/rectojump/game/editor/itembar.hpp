@@ -37,9 +37,9 @@ namespace rj
 
 		itembar(Game_Handler& gh, const vec2f& size) :
 			m_gamehandler{gh},
-			m_render{gh.get_render()},
-			m_datamgr{gh.get_datamgr()},
-			m_datastore{gh.get_datastore()},
+			m_render{gh.rendermgr()},
+			m_datamgr{gh.datamgr()},
+			m_datastore{gh.datastore()},
 			m_shape{size}
 		{this->init();}
 

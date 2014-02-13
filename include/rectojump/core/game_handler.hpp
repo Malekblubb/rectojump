@@ -106,43 +106,43 @@ namespace rj
 		}
 
 		// getters
-		auto get_render() noexcept
+		auto rendermgr() noexcept
 		-> decltype(m_render)&
 		{return m_render;}
 
-		auto get_gamewindow() noexcept
+		auto gamewindow() noexcept
 		-> decltype(m_game_window)&
 		{return m_game_window;}
 
-		auto get_game() noexcept
+		auto game() noexcept
 		-> decltype(m_game)&
 		{return m_game;}
 
-		auto get_backgroundmgr() noexcept
+		auto backgroundmgr() noexcept
 		-> decltype(m_backgroundmgr)&
 		{return m_backgroundmgr;}
 
-		auto get_mainmenu() noexcept
+		auto mainmenu() noexcept
 		-> decltype(m_mainmenu)&
 		{return m_mainmenu;}
 
-		auto get_datastore() noexcept
+		auto datastore() noexcept
 		-> decltype(m_datastore)&
 		{return m_datastore;}
 
-		auto get_datamgr() noexcept
+		auto datamgr() noexcept
 		-> decltype(m_datamgr)&
 		{return m_datamgr;}
 
-		auto get_levelmgr() noexcept
+		auto levelmgr() noexcept
 		-> decltype(m_lvmgr)&
 		{return m_lvmgr;}
 
-		auto get_debuginfo() noexcept
+		auto debuginfo() noexcept
 		-> decltype(m_debug_info)&
 		{return m_debug_info;}
 
-		auto get_popupmgr() noexcept
+		auto popupmgr() noexcept
 		-> decltype(m_popupmgr)&
 		{return m_popupmgr;}
 
@@ -157,7 +157,7 @@ namespace rj
 			settings::on_changed() +=
 			[this]{m_game_window.set_size(settings::get_window_size());};
 
-			m_mainmenu.get_menu_start()->get_items().on_event("editor",
+			m_mainmenu.mmenu_start()->get_items().on_event("editor",
 			[this]
 			{
 				this->deactivate_state(state::main_menu);
@@ -248,7 +248,7 @@ namespace rj
 			};
 
 			on_key_pressed(key::D) +=
-			[this]{if(!this->is_active(state::game)) return; m_game.get_world().c_player();};
+			[this]{if(!this->is_active(state::game)) return; m_game.world().c_player();};
 		}
 
 		void activate_state(state s)
@@ -282,7 +282,7 @@ namespace rj
 			else if(this->is_active(state::editor))
 			{
 				m_editor.update(duration);
-				m_game.get_world().get_entityhandler().update(duration);
+				m_game.world().entityhandler().update(duration);
 			}
 
 			else if(this->is_active(state::main_menu))

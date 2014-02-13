@@ -46,13 +46,13 @@ namespace rj
 	public:
 		editor(Game_Handler& gh) :
 			m_gamehandler{gh},
-			m_game{gh.get_game()},
-			m_gameworld{m_game.get_world()},
-			m_entityhandler{m_gameworld.get_entityhandler()},
-			m_levelmgr{gh.get_levelmgr()},
-			m_editarea_camera{m_gamehandler.get_gamewindow()},
-			m_itembar_camera{m_gamehandler.get_gamewindow()},
-			m_settingsbar_camera{m_gamehandler.get_gamewindow()},
+			m_game{gh.game()},
+			m_gameworld{m_game.world()},
+			m_entityhandler{m_gameworld.entityhandler()},
+			m_levelmgr{gh.levelmgr()},
+			m_editarea_camera{m_gamehandler.gamewindow()},
+			m_itembar_camera{m_gamehandler.gamewindow()},
+			m_settingsbar_camera{m_gamehandler.gamewindow()},
 			m_mouse{gh},
 			m_itembar{gh, {settings::get_window_size<vec2f>().x, 100.f}},
 			m_settingsbar{*this, {300.f, settings::get_window_size<vec2f>().y - m_itembar.get_size().y}}
@@ -86,7 +86,7 @@ namespace rj
 		{
 			// edit area
 			m_editarea_camera.activate();
-			m_gamehandler.get_render()(m_camera_indicator_shape);
+			m_gamehandler.rendermgr()(m_camera_indicator_shape);
 			m_entityhandler.render();
 			m_mouse.render();
 
@@ -147,7 +147,7 @@ namespace rj
 		void reset_center() noexcept
 		{m_editarea_camera.reset_center();}
 
-		auto get_gamehandler() noexcept
+		auto gamehandler() noexcept
 		-> decltype(m_gamehandler)&
 		{return m_gamehandler;}
 
@@ -263,7 +263,7 @@ namespace rj
 				}
 
 				for(auto& a : selected)
-					if(!m_gameworld.get_entityhandler().exists_entity_at(a.pos()))
+					if(!m_gameworld.entityhandler().exists_entity_at(a.pos()))
 						this->create_editor_entity(a.pos(), a.get_texture(), a.get_figure());
 			}
 			else if(m_mouse.is_mouse_visible())
@@ -272,7 +272,7 @@ namespace rj
 				vec2f new_pos{round_to(m_editarea_camera.get_mapped_mousepos().x, f), round_to(m_editarea_camera.get_mapped_mousepos().y, f)};
 
 				// set entity at pos
-				if(m_mouse.get_texture() && !m_gameworld.get_entityhandler().exists_entity_at(new_pos))
+				if(m_mouse.get_texture() && !m_gameworld.entityhandler().exists_entity_at(new_pos))
 					this->create_editor_entity(new_pos, m_mouse.get_texture(), m_itembar.get_current_figure());
 			}
 			else
@@ -310,7 +310,7 @@ namespace rj
 		{
 			if(!id.empty())
 				return true;
-			m_gamehandler.get_popupmgr().template create_popup<popup_type::error>("Couldn't save level: " + mlk::lerr_i().error_str(errors::lv_bad_name));
+			m_gamehandler.popupmgr().template create_popup<popup_type::error>("Couldn't save level: " + mlk::lerr_i().error_str(errors::lv_bad_name));
 			return false;
 		}
 	};

@@ -34,7 +34,7 @@ namespace rj
 		template<typename Comp_Type, menu_state type, typename... Args>
 		comp_ptr<Comp_Type> create_comp(Args&&... args)
 		{
-			auto ptr(std::make_shared<Comp_Type>(m_mainmenu, type, m_mainmenu.get_gamehandler().get_render(), m_mainmenu.get_font(), m_mainmenu.get_center(), std::forward<Args>(args)...));
+			auto ptr(std::make_shared<Comp_Type>(m_mainmenu, type, m_mainmenu.gamehandler().rendermgr(), m_mainmenu.get_font(), m_mainmenu.get_center(), std::forward<Args>(args)...));
 			m_components.emplace_back(ptr);
 			return ptr;
 		}

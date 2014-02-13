@@ -33,7 +33,7 @@ namespace rj
 	public:
 		popup_manager(Game_Handler& gh) :
 			m_gamehandler{gh},
-			m_font{gh.get_datamgr().template get_as<sf::Font>("Fipps-Regular.otf")}
+			m_font{gh.datamgr().template get_as<sf::Font>("Fipps-Regular.otf")}
 		{ }
 
 		void update(dur duration)
@@ -55,7 +55,7 @@ namespace rj
 
 		template<typename... Args>
 		void create_popup_impl(Args&&... args)
-		{m_popups.emplace_back(&m_gamehandler.get_render(), m_font, std::forward<Args>(args)...);}
+		{m_popups.emplace_back(&m_gamehandler.rendermgr(), m_font, std::forward<Args>(args)...);}
 
 		std::size_t num_popups() const noexcept
 		{return m_popups.size();}

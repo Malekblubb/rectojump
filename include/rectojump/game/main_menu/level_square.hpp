@@ -32,7 +32,7 @@ namespace rj
 	public:
 		level_square(Main_Menu& mm, const vec2f& pos, const vec2f& size, const std::string& name, const std::string& text, const level_id& id) :
 			m_mainmenu{mm},
-			m_render{mm.get_gamehandler().get_render()},
+			m_render{mm.gamehandler().rendermgr()},
 			m_shape{size},
 			m_name{name, mm.get_font(), 30},
 			m_text{text, mm.get_font(), 15},
