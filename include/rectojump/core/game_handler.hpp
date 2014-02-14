@@ -128,6 +128,10 @@ namespace rj
 		-> decltype(m_mainmenu)&
 		{return m_mainmenu;}
 
+		auto gamemenu() noexcept
+		-> decltype(m_gamemenu)&
+		{return m_gamemenu;}
+
 		auto datastore() noexcept
 		-> decltype(m_datastore)&
 		{return m_datastore;}
