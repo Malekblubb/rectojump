@@ -66,6 +66,7 @@ namespace rj
 			m_game{*this},
 			m_editor{*this},
 			m_mainmenu{*this},
+			m_gamemenu{*this},
 			m_popupmgr{*this},
 			m_debug_info{*this}
 		{this->init();}
@@ -233,7 +234,12 @@ namespace rj
 
 			// window input
 			on_key_pressed(key::Escape) +=
-			[this]{if(!this->is_active(state::main_menu)) return; m_game_window.stop();};
+			[this]
+			{
+				if(this->is_active(state::main_menu))
+					return;
+				m_current_states.toggle(state::game_menu);
+			};
 
 			// game input
 			on_key_pressed(key::P) +=
