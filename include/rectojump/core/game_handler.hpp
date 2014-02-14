@@ -13,6 +13,7 @@
 #include <rectojump/game/background/background_manager.hpp>
 #include <rectojump/game/camera.hpp>
 #include <rectojump/game/editor/editor.hpp>
+#include <rectojump/game/game_menu/game_menu.hpp>
 #include <rectojump/game/main_menu/main_menu.hpp>
 #include <rectojump/game/popup_manager.hpp>
 #include <rectojump/global/common.hpp>
@@ -47,6 +48,7 @@ namespace rj
 		game<game_handler> m_game;
 		editor<game_handler, decltype(m_game)> m_editor;
 		main_menu<game_handler> m_mainmenu;
+		game_menu<game_handler> m_gamemenu;
 		popup_manager<game_handler> m_popupmgr;
 		debug_info<game_handler, decltype(m_game)> m_debug_info;
 
