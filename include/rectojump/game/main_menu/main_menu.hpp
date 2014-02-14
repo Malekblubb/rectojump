@@ -3,8 +3,8 @@
 // See LICENSE for more information.
 //
 
-#ifndef RJ_CORE_MAIN_MENU_MAIN_MENU_HPP
-#define RJ_CORE_MAIN_MENU_MAIN_MENU_HPP
+#ifndef RJ_GAME_MAIN_MENU_MAIN_MENU_HPP
+#define RJ_GAME_MAIN_MENU_MAIN_MENU_HPP
 
 
 #include "background_main_menu.hpp"
@@ -212,4 +212,4 @@ namespace rj
 }
 
 
-#endif // RJ_CORE_MAIN_MENU_MAIN_MENU_HPP
+#endif // RJ_GAME_MAIN_MENU_MAIN_MENU_HPP

@@ -3,8 +3,8 @@
 // See LICENSE for more information.
 //
 
-#ifndef RJ_CORE_GAME_MENU_GAME_MENU_HPP
-#define RJ_CORE_GAME_MENU_GAME_MENU_HPP
+#ifndef RJ_GAME_GAME_MENU_GAME_MENU_HPP
+#define RJ_GAME_GAME_MENU_GAME_MENU_HPP
 
 
 namespace rj
@@ -17,4 +17,4 @@ namespace rj
 }
 
 
-#endif // RJ_CORE_GAME_MENU_GAME_MENU_HPP
+#endif // RJ_GAME_GAME_MENU_GAME_MENU_HPP
