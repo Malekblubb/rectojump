@@ -64,7 +64,7 @@ namespace rj
 		void erase_destroyed() noexcept
 		{
 			mlk::cnt::remove_all_if(
-			[](const popup& p){return p.is_destroyed();}, m_popups);
+			[](const auto& p){return p.is_destroyed();}, m_popups);
 		}
 	};
 

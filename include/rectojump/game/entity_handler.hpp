@@ -203,7 +203,7 @@ namespace rj
 		void erase_destroyed() noexcept
 		{
 			mlk::cnt::remove_all_if(
-			[](const entity_base_ptr& entity){return entity->m_destroyed;}, m_entities);
+			[](const auto& entity){return entity->m_destroyed;}, m_entities);
 		}
 	};
 }

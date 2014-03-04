@@ -59,7 +59,7 @@ namespace rj
 		void call_current_event() override
 		{
 			mlk::cnt::map_first_foreach(m_menuitems,
-			[this](const item& i)
+			[this](const auto& i)
 			{
 				if(i.index == m_current_index)
 					m_events[i.id]();

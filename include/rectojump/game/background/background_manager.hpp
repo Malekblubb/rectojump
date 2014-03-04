@@ -85,7 +85,7 @@ namespace rj
 		void erase_destroyed() noexcept
 		{
 			mlk::cnt::remove_all_if(
-			[](const bbc_ptr& p){return p->is_destroyed();}, m_components);
+			[](const auto& p){return p->is_destroyed();}, m_components);
 		}
 	};
 }
