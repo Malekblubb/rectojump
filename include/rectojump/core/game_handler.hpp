@@ -300,6 +300,9 @@ namespace rj
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.update(duration);
 
+			else if(this->is_active(state::game_menu))
+				m_gamemenu.update(duration);
+
 			if(this->is_active(state::debug_info))
 				m_debug_info.update(duration);
 
@@ -332,6 +335,9 @@ namespace rj
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
+
+			if(this->is_active(state::game_menu))
+				m_gamemenu.render();
 
 			m_default_camera.activate();
 			if(this->is_active(state::debug_info))
