@@ -232,32 +232,17 @@ namespace rj
 			on_keys_pressed(key::LShift, key::Q) +=
 			[this]{m_game_window.stop();};
 
-			// window input
-			on_key_pressed(key::Escape) +=
-			[this]
-			{
-				if(this->is_active(state::main_menu))
-					return;
-				m_current_states.toggle(state::game_menu);
-			};
-
 			// game input
-			on_key_pressed(key::P) +=
+			// pause / game_menu
+			auto pause_fnc(
 			[this]
 			{
-				if(this->is_active(state::game))
-				{
-					m_current_states.remove(state::game);
-					m_current_states |= state::game_menu;
-					return;
-				}
-				else if(this->is_active(state::game_menu))
-				{
-					m_current_states.remove(state::game_menu);
-					m_current_states |= state::game;
-					return;
-				}
-			};
+				if(!this->is_active(state::main_menu))
+					m_current_states.toggle(state::game_menu);
+			});
+
+			on_key_pressed(key::Escape) += pause_fnc;
+			on_key_pressed(key::P) += pause_fnc;
 
 			on_key_pressed(key::D) +=
 			[this]{if(!this->is_active(state::game)) return; m_game.world().c_player();};
@@ -288,10 +273,10 @@ namespace rj
 
 			m_backgroundmgr.update(duration);
 
-			if(this->is_active(state::game))
+			if(this->is_active(state::game) && !this->is_active(state::game_menu))
 				m_game.update(duration);
 
-			else if(this->is_active(state::editor))
+			else if(this->is_active(state::editor) && !this->is_active(state::game_menu))
 			{
 				m_editor.update(duration);
 				m_game.world().entityhandler().update(duration);
@@ -327,7 +312,7 @@ namespace rj
 
 			m_default_camera.activate();
 			// render game when in game menu
-			if(this->is_active(state::game) || this->is_active(state::game_menu))
+			if(this->is_active(state::game))
 				m_game.render();
 
 			else if(this->is_active(state::editor))
@@ -337,7 +322,10 @@ namespace rj
 				m_mainmenu.render();
 
 			if(this->is_active(state::game_menu))
+			{
+				m_default_camera.activate();
 				m_gamemenu.render();
+			}
 
 			m_default_camera.activate();
 			if(this->is_active(state::debug_info))
