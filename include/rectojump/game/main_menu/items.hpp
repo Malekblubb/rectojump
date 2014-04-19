@@ -10,6 +10,7 @@
 #include "basic_component.hpp"
 #include "item.hpp"
 #include <rectojump/core/render.hpp>
+#include <rectojump/shared/input.hpp>
 
 #include <mlk/containers/container_utl.h>
 #include <mlk/signals_slots/slot.h>
@@ -40,6 +41,13 @@ namespace rj
 		{
 			for(auto& a : m_menuitems)
 			{
+				if(a.second.getGlobalBounds().intersects(get_mousebounds()))
+				{
+					m_current_index = a.first.index;
+					if(is_btn_pressed(btn::Left))
+						this->call_current_event();
+				}
+
 				if(a.first.index == m_current_index)
 					a.second.setColor(m_mainmenu.get_act_fontcolor());
 				else
