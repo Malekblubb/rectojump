@@ -65,6 +65,15 @@ namespace rj
 	private:
 		void init()
 		{
+			if(!m_dirh.exists())
+			{
+				if(m_dirh.create())
+					mlk::lout("rj::level_manager") << "created levels directory '" << m_abs_path << "'";
+				else
+					mlk::lerr()["rj::level_manager"] << "creating levels directory failed";
+				return;
+			}
+
 			mlk::lout("rj::level_manager") << "loading levels recursive from directory '" << m_abs_path << "'...";
 			auto content(m_dirh.get_content<true>());
 			auto count(0);
