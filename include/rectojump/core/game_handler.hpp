@@ -109,48 +109,37 @@ namespace rj
 		}
 
 		// getters
-		auto rendermgr() noexcept
-		-> decltype(m_render)&
+		auto& rendermgr() noexcept
 		{return m_render;}
 
-		auto gamewindow() noexcept
-		-> decltype(m_game_window)&
+		auto& gamewindow() noexcept
 		{return m_game_window;}
 
-		auto game() noexcept
-		-> decltype(m_game)&
+		auto& game() noexcept
 		{return m_game;}
 
-		auto backgroundmgr() noexcept
-		-> decltype(m_backgroundmgr)&
+		auto& backgroundmgr() noexcept
 		{return m_backgroundmgr;}
 
-		auto mainmenu() noexcept
-		-> decltype(m_mainmenu)&
+		auto& mainmenu() noexcept
 		{return m_mainmenu;}
 
-		auto gamemenu() noexcept
-		-> decltype(m_gamemenu)&
+		auto& gamemenu() noexcept
 		{return m_gamemenu;}
 
-		auto datastore() noexcept
-		-> decltype(m_datastore)&
+		auto& datastore() noexcept
 		{return m_datastore;}
 
-		auto datamgr() noexcept
-		-> decltype(m_datamgr)&
+		auto& datamgr() noexcept
 		{return m_datamgr;}
 
-		auto levelmgr() noexcept
-		-> decltype(m_lvmgr)&
+		auto& levelmgr() noexcept
 		{return m_lvmgr;}
 
-		auto debuginfo() noexcept
-		-> decltype(m_debug_info)&
+		auto& debuginfo() noexcept
 		{return m_debug_info;}
 
-		auto popupmgr() noexcept
-		-> decltype(m_popupmgr)&
+		auto& popupmgr() noexcept
 		{return m_popupmgr;}
 
 	private:
@@ -195,7 +184,7 @@ namespace rj
 
 			// checking font
 			if(!m_datamgr.exists_id("Fipps-Regular.otf"))
-				mlk::exit_with("main font ('Fipps-Regular.otf') not loaded", mlk::lerr(errors::cl_data)["rj::game_handler"]);
+				mlk::exit_with("main font ('Fipps-Regular.otf') not loaded", EXIT_FAILURE, mlk::lerr(errors::cl_data)["rj::game_handler"]);
 
 			// checking data
 			if(!m_datamgr.exists_ids({"debug_font.png", "Fipps-Regular.otf", "arrow.png",
