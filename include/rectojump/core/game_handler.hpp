@@ -281,6 +281,9 @@ namespace rj
 				m_debug_info.update(duration);
 
 			m_popupmgr.update(duration);
+
+			// reset the input states (input update != game update)
+			inp::i().reset_last_states();
 		}
 
 		void update_input()
