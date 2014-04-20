@@ -33,7 +33,7 @@ namespace rj
 	{
 	public:
 		// type decls
-		using data_store_type = data_store<sf::Texture, sf::Font>;
+		using data_store_type = data_store<sf::Texture, sf::Font, sf::Font>;
 
 	private:
 		game_window& m_game_window;
@@ -41,7 +41,7 @@ namespace rj
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
-		data_store_type m_datastore{m_datamgr.get_all_containing_as_map_as<sf::Texture>(".png"), m_datamgr.get_all_containing_as_map_as<sf::Font>(".otf")};
+		data_store_type m_datastore{m_datamgr.get_all_containing_as_map_as<sf::Texture>(".png"), m_datamgr.get_all_containing_as_map_as<sf::Font>(".otf"), m_datamgr.get_all_containing_as_map_as<sf::Font>(".ttf")};
 		camera m_default_camera;
 		render<game_handler> m_render;
 		background_manager m_backgroundmgr;
@@ -168,7 +168,7 @@ namespace rj
 
 		void init_errors() noexcept
 		{
-			auto& font(m_datastore.get<sf::Font>("Fipps-Regular.otf"));
+			auto& font(m_datastore.get<sf::Font>("Ubuntu-R.ttf"));
 
 			// add the error instances
 			m_errorhandler.create_error_instance(errors::cl_nullptr_access,
@@ -187,7 +187,7 @@ namespace rj
 				mlk::exit_with("main font ('Fipps-Regular.otf') not loaded", EXIT_FAILURE, mlk::lerr(errors::cl_data)["rj::game_handler"]);
 
 			// checking data
-			if(!m_datamgr.exists_ids({"debug_font.png", "Fipps-Regular.otf", "arrow.png",
+			if(!m_datamgr.exists_ids({"debug_font.png", "Fipps-Regular.otf", "Ubuntu-R.ttf", "arrow.png",
 									  "editor_item_rect.png", "editor_item_triangle.png", "editor_item_triangles4.png",
 									  "menu_side.png"}))
 				mlk::lerr(errors::cl_data);
