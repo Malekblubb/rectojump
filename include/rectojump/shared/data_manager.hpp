@@ -26,15 +26,17 @@ namespace rj
 		mlk::fs::dir_handle m_dirh;
 		mlk::fs::file_handle m_fileh;
 		const std::string& m_abs_path;
+		std::vector<data_id> m_load_not;
 
 		std::map<data_id, mlk::data_packet> m_data;
 
 		bool m_valid{false};
 
 	public:
-		data_manager(const std::string& abs_datapath, bool auto_load = false) :
+		data_manager(const std::string& abs_datapath, std::vector<data_id> load_not = {}, bool auto_load = false) :
 			m_dirh{abs_datapath},
 			m_abs_path{m_dirh.get_path()},
+			m_load_not{std::move(load_not)},
 			m_valid{m_dirh.exists()}
 		{
 			if(auto_load) this->load_all();
@@ -155,6 +157,11 @@ namespace rj
 			for(auto& a : content)
 				if(a.type == mlk::fs::item_type::file)
 				{
+					// load not
+					if(mlk::cnt::exists(a.name, m_load_not))
+						continue;
+
+					// load
 					this->load_raw_impl(a.name, a.path);
 					++count;
 				}

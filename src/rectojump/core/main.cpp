@@ -27,7 +27,7 @@ int main()
 	rj::error_inserter{eh};
 
 	// data
-	rj::data_manager dm{rj::data_path, true};
+	rj::data_manager dm{rj::data_path, {"LICENSE.Fipps-Regular.pdf", "LICENSE.Ubuntu-Font"}, true};
 	rj::level_manager lm{rj::level_path};
 
 	// game
