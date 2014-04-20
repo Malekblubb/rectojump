@@ -29,6 +29,7 @@ namespace rj
 		void simulate_keypress(key);
 		mlk::slot<const vec2f&>& on_btn_pressed(btn b);
 		bool is_btn_pressed(btn);
+		bool was_real_mousepress_left();
 		void simulate_btnpress(btn);
 		mlk::slot<const vec2f&>& on_mousewheel(wheel w);
 		vec2f& get_mousepos();
@@ -55,6 +56,7 @@ namespace rj
 		mlk::event_delegates<btn, const vec2f&> m_on_btn_pressed;
 		mlk::event_delegates<wheel, const vec2f&> m_on_mousewheel;
 		char m_last_textinput;
+		bool m_real_mousepress_left{false};
 
 		vec2f m_mousepos{0.f, 0.f};
 		vec2f m_last_mousepos{0.f, 0.f};
@@ -69,6 +71,12 @@ namespace rj
 
 		bool is_key_valid(key k) const noexcept
 		{return k != key::Unknown;}
+
+		void reset_last_states() noexcept
+		{
+			m_last_textinput = 0;
+			m_real_mousepress_left = false;
+		}
 
 	private:
 		void init(Game_Window* gw) noexcept
@@ -142,7 +150,11 @@ namespace rj
 		}
 
 		void btn_released(btn b)
-		{m_mousebtn_bits.remove(b);}
+		{
+			if((b == btn::Left) && (m_mousebtn_bits & b))
+				m_real_mousepress_left = true;
+			m_mousebtn_bits.remove(b);
+		}
 
 		void mousewheel_moved(int delta)
 		{delta < 0 ? m_on_mousewheel[wheel::down](m_mousepos) : m_on_mousewheel[wheel::up](m_mousepos);}
@@ -157,6 +169,7 @@ namespace rj
 		friend void inp::simulate_keypress(key);
 		friend mlk::slot<const vec2f&>& inp::on_btn_pressed(btn b);
 		friend bool inp::is_btn_pressed(btn);
+		friend bool inp::was_real_mousepress_left();
 		friend void inp::simulate_btnpress(btn);
 		friend mlk::slot<const vec2f&>& inp::on_mousewheel(wheel w);
 		friend vec2f& inp::get_mousepos();
@@ -166,6 +179,10 @@ namespace rj
 
 	namespace inp
 	{
+		// get a instance of input<game_window>
+		inline auto& i()
+		{return input<game_window>::get();}
+
 		inline mlk::slot<>& on_input_update()
 		{return input<game_window>::get().m_on_update;}
 
@@ -188,6 +205,9 @@ namespace rj
 
 		inline bool is_key_pressed(key k)
 		{return input<game_window>::get().m_key_bits & k;}
+
+		inline bool was_real_mousepress_left()
+		{return input<game_window>::get().m_real_mousepress_left;}
 
 		inline void simulate_keypress(key k)
 		{
