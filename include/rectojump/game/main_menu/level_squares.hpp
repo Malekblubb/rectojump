@@ -10,6 +10,7 @@
 #include "basic_component.hpp"
 #include "level_square.hpp"
 #include <rectojump/core/render.hpp>
+#include <rectojump/shared/input.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
 
 #include <mlk/signals_slots/slot.h>
@@ -58,7 +59,12 @@ namespace rj
 				else if(m_sdir == scroll_dir::up) a.move({0.f, m_scrollstep});
 			}
 
-			m_squares[m_current_index].activate();
+			auto& active(m_squares[m_current_index]);
+			active.activate();
+
+			// mousepress left
+			if(active.get_bounds().intersects(inp::get_mousebounds()) && inp::was_real_mousepress_left())
+				this->call_current_event();
 		}
 
 		void render()
