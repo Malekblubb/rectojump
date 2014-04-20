@@ -62,7 +62,12 @@ namespace rj
 	public:
 		template<typename... Map_Data_Types>
 		data_store(Map_Data_Types&&... vars)
-		{this->init(std::forward<Map_Data_Types>(vars)...);}
+		{
+			// check number of args
+			static_assert(sizeof...(vars) == sizeof...(Data_Types), "rj::data_store<T...>: number of args is not matching");
+
+			this->init(std::forward<Map_Data_Types>(vars)...);
+		}
 
 		template<typename Data_Type>
 		Data_Type& get(const std::string& id)
