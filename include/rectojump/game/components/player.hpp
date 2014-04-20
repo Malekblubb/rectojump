@@ -42,7 +42,7 @@ namespace rj
 
 		// 'bind' space key (can't do this in ctor)
 		void init() override
-		{on_key_pressed(key::Space) += [this]{m_need_jump = true;};}
+		{inp::on_key_pressed(key::Space) += [this]{m_need_jump = true;};}
 
 		void update(dur duration) override
 		{

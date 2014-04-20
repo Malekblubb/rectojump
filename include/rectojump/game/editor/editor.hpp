@@ -61,8 +61,8 @@ namespace rj
 		void update(dur duration)
 		{
 			// editareacamera move
-			if(is_btn_pressed(btn::Middle))
-				m_editarea_camera.move(((get_lastmousepos() - get_mousepos()) / 6.f) * m_editarea_camera.get_zoomfactor() * duration); // * duration ???
+			if(inp::is_btn_pressed(btn::Middle))
+				m_editarea_camera.move(((inp::get_lastmousepos() - inp::get_mousepos()) / 6.f) * m_editarea_camera.get_zoomfactor() * duration); // * duration ???
 
 			// edit area
 			m_editarea_camera.activate();
@@ -190,14 +190,14 @@ namespace rj
 			m_gamehandler.template add_input<state::editor>(
 			[this](const vec2f& pos)
 			{
-				if(!is_key_pressed(key::LShift))
+				if(!inp::is_key_pressed(key::LShift))
 					m_editarea_camera.move({settings::get_editor_scroll_step(), 0.f});
 			}, wheel::down);
 
 			m_gamehandler.template add_input<state::editor>(
 			[this](const vec2f& pos)
 			{
-				if(!is_key_pressed(key::LShift))
+				if(!inp::is_key_pressed(key::LShift))
 					if(m_editarea_camera.get_center().x >= m_editarea_camera.get_startcenter().x)
 						m_editarea_camera.move({-settings::get_editor_scroll_step(), 0.f});
 			}, wheel::up);
@@ -205,14 +205,14 @@ namespace rj
 			m_gamehandler.template add_input<state::editor>(
 			[this](const vec2f& pos)
 			{
-				if(is_key_pressed(key::LShift))
+				if(inp::is_key_pressed(key::LShift))
 					m_editarea_camera.zoom(0.9);
 			}, wheel::up);
 
 			m_gamehandler.template add_input<state::editor>(
 			[this](const vec2f& pos)
 			{
-				if(is_key_pressed(key::LShift))
+				if(inp::is_key_pressed(key::LShift))
 					m_editarea_camera.zoom(1.1);
 			}, wheel::down);
 		}

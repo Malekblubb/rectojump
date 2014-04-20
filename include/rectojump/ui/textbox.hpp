@@ -48,9 +48,9 @@ namespace rj
 
 			void update(dur)
 			{
-				if(is_btn_pressed(btn::Left))
+				if(inp::is_btn_pressed(btn::Left))
 				{
-					if(this->getGlobalBounds().intersects(get_mousebounds<true>()))
+					if(this->getGlobalBounds().intersects(inp::get_mousebounds<true>()))
 						m_focus = true;
 					else m_focus = false;
 				}

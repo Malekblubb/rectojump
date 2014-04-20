@@ -73,7 +73,7 @@ namespace rj
 		{return m_userview;}
 
 		vec2f get_mapped_mousepos() const noexcept
-		{return get_mousepos(m_renderwindow, m_userview);}
+		{return inp::get_mousepos(m_renderwindow, m_userview);}
 
 		float get_zoomfactor() const noexcept
 		{return m_reset_zoomfactor;}

@@ -201,24 +201,24 @@ namespace rj
 		void init_input()
 		{
 			// input update
-			on_input_update() +=
+			inp::on_input_update() +=
 			[this]{this->update_input();};
 
 			// global input
-			on_keys_pressed(key::LShift, key::F) +=
+			inp::on_keys_pressed(key::LShift, key::F) +=
 			[this]
 			{
 				m_game_window.toggle_fullscreen();
 				rj::settings::set_fullscreen(m_game_window.get_fullscreen());
 			};
 
-			on_keys_pressed(key::LShift, key::T) +=
+			inp::on_keys_pressed(key::LShift, key::T) +=
 			[this]{m_game_window.toggle_titlebar();};
 
-			on_keys_pressed(key::LShift, key::D) +=
+			inp::on_keys_pressed(key::LShift, key::D) +=
 			[this]{this->toggle_state(state::debug_info);};
 
-			on_keys_pressed(key::LShift, key::Q) +=
+			inp::on_keys_pressed(key::LShift, key::Q) +=
 			[this]{m_game_window.stop();};
 
 			// game input
@@ -230,10 +230,10 @@ namespace rj
 					m_current_states.toggle(state::game_menu);
 			});
 
-			on_key_pressed(key::Escape) += pause_fnc;
-			on_key_pressed(key::P) += pause_fnc;
+			inp::on_key_pressed(key::Escape) += pause_fnc;
+			inp::on_key_pressed(key::P) += pause_fnc;
 
-			on_key_pressed(key::D) +=
+			inp::on_key_pressed(key::D) +=
 			[this]{if(!this->is_active(state::game)) return; m_game.world().c_player();};
 		}
 
@@ -329,7 +329,7 @@ namespace rj
 		{
 			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... keys)
 			{
-				on_keys_pressed(std::forward<Input_Type_Args>(keys)...) +=
+				inp::on_keys_pressed(std::forward<Input_Type_Args>(keys)...) +=
 				[&gh, func]{if(gh.is_active(s)) func();};
 			}
 		};
@@ -340,7 +340,7 @@ namespace rj
 		{
 			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... k)
 			{
-				on_key_pressed(std::forward<Input_Type_Args>(k)...) +=
+				inp::on_key_pressed(std::forward<Input_Type_Args>(k)...) +=
 				[&gh, func]{if(gh.is_active(s)) func();};
 			}
 		};
@@ -351,7 +351,7 @@ namespace rj
 		{
 			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... b)
 			{
-				on_btn_pressed(std::forward<Input_Type_Args>(b)...) +=
+				inp::on_btn_pressed(std::forward<Input_Type_Args>(b)...) +=
 				[&gh, func](const vec2f& pos){if(gh.is_active(s)) func(pos);};
 			}
 		};
@@ -362,7 +362,7 @@ namespace rj
 		{
 			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... w)
 			{
-				on_mousewheel(std::forward<Input_Type_Args>(w)...) +=
+				inp::on_mousewheel(std::forward<Input_Type_Args>(w)...) +=
 				[&gh, func](const vec2f& pos){if(gh.is_active(s)) func(pos);};
 			}
 		};

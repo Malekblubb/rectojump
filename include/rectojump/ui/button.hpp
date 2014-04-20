@@ -56,13 +56,13 @@ namespace rj
 
 				// collision
 				auto bounds(m_shape.getGlobalBounds());
-				auto mousebounds(get_mousebounds<true>());
+				auto mousebounds(inp::get_mousebounds<true>());
 
 				if(bounds.intersects(mousebounds))
 					m_hover = true;
 				else m_hover = false;
 
-				if(m_hover && is_btn_pressed(btn::Left))
+				if(m_hover && inp::is_btn_pressed(btn::Left))
 					m_press = true;
 				else m_press = false;
 			}

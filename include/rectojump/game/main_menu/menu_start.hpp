@@ -43,7 +43,7 @@ namespace rj
 			// update player
 			if(m_player_timer.timed_out())
 			{
-				simulate_keypress(key::Space);
+				inp::simulate_keypress(key::Space);
 				m_player_timer.restart(mlk::rnd<mlk::ullong>(500, 5000));
 			}
 			m_player_prev->update(duration);

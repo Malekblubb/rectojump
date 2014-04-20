@@ -51,7 +51,7 @@ namespace rj
 				auto new_size(pos - m_selection_shape.getPosition());
 				m_selection_shape.setSize(new_size);
 
-				if(!is_btn_pressed(btn::Left))
+				if(!inp::is_btn_pressed(btn::Left))
 					this->selection_end();
 			}
 
@@ -144,7 +144,7 @@ namespace rj
 
 		vec2f get_rounded_mousepos() const noexcept
 		{
-			auto pos(get_mousepos_current_view());
+			auto pos(inp::get_mousepos_current_view());
 			return {round_to(pos.x, 48.f), round_to(pos.y, 48.f)};
 		}
 	};

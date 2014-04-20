@@ -41,10 +41,10 @@ namespace rj
 		{
 			for(auto& a : m_menuitems)
 			{
-				if(a.second.getGlobalBounds().intersects(get_mousebounds()))
+				if(a.second.getGlobalBounds().intersects(inp::get_mousebounds()))
 				{
 					m_current_index = a.first.index;
-					if(is_btn_pressed(btn::Left))
+					if(inp::is_btn_pressed(btn::Left))
 						this->call_current_event();
 				}
 

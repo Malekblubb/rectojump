@@ -107,7 +107,7 @@ namespace rj
 
 		void update_input()
 		{
-			auto lasttextinput(get_last_textinput());
+			auto lasttextinput(inp::get_last_textinput());
 			for(auto& a : m_textboxes)
 				if(lasttextinput)
 					a.second.addChar(lasttextinput);
