@@ -150,6 +150,12 @@ namespace rj
 
 			m_gamehandler.template add_input<state::main_menu>(
 			[this]{this->on_key_down();}, key::Down);
+
+			m_gamehandler.template add_input<state::main_menu>(
+			[this](const vec2f&){this->on_key_up();}, wheel::up);
+
+			m_gamehandler.template add_input<state::main_menu>(
+			[this](const vec2f&){this->on_key_down();}, wheel::down);
 		}
 
 		void setup_events()
