@@ -205,20 +205,20 @@ namespace rj
 			[this]{this->update_input();};
 
 			// global input
-			inp::on_keys_pressed(key::LShift, key::F) +=
+			inp::on_keys_pressed(key::LShift, key::LControl, key::F) +=
 			[this]
 			{
 				m_game_window.toggle_fullscreen();
 				rj::settings::set_fullscreen(m_game_window.get_fullscreen());
 			};
 
-			inp::on_keys_pressed(key::LShift, key::T) +=
+			inp::on_keys_pressed(key::LShift, key::LControl, key::T) +=
 			[this]{m_game_window.toggle_titlebar();};
 
-			inp::on_keys_pressed(key::LShift, key::D) +=
+			inp::on_keys_pressed(key::LShift, key::LControl, key::D) +=
 			[this]{this->toggle_state(state::debug_info);};
 
-			inp::on_keys_pressed(key::LShift, key::Q) +=
+			inp::on_keys_pressed(key::LShift, key::LControl, key::Q) +=
 			[this]{m_game_window.stop();};
 
 			// game input
