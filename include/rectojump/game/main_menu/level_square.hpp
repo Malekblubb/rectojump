@@ -91,6 +91,12 @@ namespace rj
 		float get_height() const noexcept
 		{return m_shape.getSize().y + m_name.getGlobalBounds().height + m_text.getGlobalBounds().height;}
 
+		const sf::FloatRect get_bounds()
+		{
+			auto shapebounds(m_shape.getGlobalBounds());
+			return {shapebounds.left, shapebounds.top, m_shape.getSize().x + m_text.getGlobalBounds().width, this->get_height()};
+		}
+
 		const level_id& get_id() const noexcept
 		{return m_id;}
 	};
