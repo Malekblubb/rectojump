@@ -44,7 +44,7 @@ namespace rj
 				if(a.second.getGlobalBounds().intersects(inp::get_mousebounds()))
 				{
 					m_current_index = a.first.index;
-					if(inp::is_btn_pressed(btn::Left))
+					if(inp::was_real_mousepress_left())
 						this->call_current_event();
 				}
 
