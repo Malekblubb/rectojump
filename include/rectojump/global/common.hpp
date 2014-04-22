@@ -45,6 +45,8 @@ namespace rj
 	// fixed paths
 	static const std::string data_path{"data/"};
 	static const std::string level_path{"levels/"};
+	static const std::string rj_font{"Fipps-Regular.otf"};
+	static const std::string text_font{"Ubuntu-R.ttf"};
 
 	// other
 	inline std::string get_version()
