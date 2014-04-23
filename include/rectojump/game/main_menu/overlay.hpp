@@ -7,18 +7,26 @@
 #define RJ_GAME_MAIN_MENU_OVERLAY_HPP
 
 
+#include "site_credits.hpp"
+#include "site_editor.hpp"
+#include "site_home.hpp"
+#include "site_inventar.hpp"
+#include "site_levels.hpp"
+#include "site_play.hpp"
+#include "site_scores.hpp"
+#include "site_settings.hpp"
 #include <rectojump/ui/connected_buttons.hpp>
 #include <rectojump/ui/stacked_widget.hpp>
 
 
 namespace rj
 {
-	template<typename Game_Handler>
+	template<typename Main_Menu>
 	class overlay
 	{
-		Game_Handler& m_gamehandler;
+		Main_Menu& m_mainmenu;
 		rndr& m_render;
-		typename Game_Handler::data_store_type& m_datastore;
+		typename Main_Menu::data_store_type& m_datastore;
 
 		sf::RectangleShape m_logo;
 		sf::RectangleShape m_blubber;
@@ -31,12 +39,30 @@ namespace rj
 		// stacked widget (sites)
 		ui::stacked_widget m_sites;
 
+		// encapsulate sites construction
+		site_home<overlay> m_sitehome;
+		site_play<overlay> m_siteplay;
+		site_inventar<overlay> m_siteinventar;
+		site_editor<overlay> m_siteeditor;
+		site_levels<overlay> m_sitelevels;
+		site_scores<overlay> m_sitescores;
+		site_settings<overlay> m_sitesettings;
+		site_credits<overlay> m_sitecredits;
+
 	public:
-		overlay(Game_Handler& gh) :
-			m_gamehandler{gh},
-			m_render{gh.rendermgr()},
-			m_datastore{gh.datastore()},
-			m_sites{gh.gamewindow()}
+		overlay(Main_Menu& mm) :
+			m_mainmenu{mm},
+			m_render{mm.gamehandler().rendermgr()},
+			m_datastore{mm.gamehandler().datastore()},
+			m_sites{mm.gamehandler().gamewindow()},
+			m_sitehome{*this},
+			m_siteplay{*this},
+			m_siteinventar{*this},
+			m_siteeditor{*this},
+			m_sitelevels{*this},
+			m_sitescores{*this},
+			m_sitesettings{*this},
+			m_sitecredits{*this}
 		{this->init();}
 
 		void update(dur duration)
@@ -54,6 +80,12 @@ namespace rj
 			m_sites.activate_cam();
 			m_render(m_sites);
 		}
+
+		auto& mainmenu() noexcept
+		{return m_mainmenu;}
+
+		auto& sites() noexcept
+		{return m_sites;}
 
 	private:
 		void init()
@@ -124,26 +156,15 @@ namespace rj
 			m_sites.add_site("settings");
 			m_sites.add_site("credits");
 
-			// add sites content
-			// site: home
-			auto logo_shape(m_sites.add_object<sf::RectangleShape>("home", vec2f{128, 128}));
-			logo_shape->setTexture(&m_datastore.template get<sf::Texture>("rj_logo.png"));
-			logo_shape->setPosition({(m_sites.bounds().width - logo_shape->getSize().x) / 2.f, 50.f});
-
-
-			// site: play
-			m_sites.add_object<sf::RectangleShape>("play", vec2f{500, 500});
-
-
-			// site: credits
-			auto text(m_sites.add_object<sf::Text>("credits", "", m_datastore.template get<sf::Font>(glob::text_font), glob::text_size));
-			text->setString("Programmer: Christoph Malek <>\n"
-							"Graphics: -\n"
-							"Icons: Adam Whitcroft <http://adamwhitcroft.com/batch/>\n\n"
-							"Libs: SFML, zlib");
-			text->setColor(to_rgb("#555555"));
-			text->setPosition({(m_sites.bounds().width - text->getGlobalBounds().width) / 2.f, 150.f});
-
+			// construct sites content
+			m_sitehome.construct();
+			m_siteplay.construct();
+			m_siteinventar.construct();
+			m_siteeditor.construct();
+			m_sitelevels.construct();
+			m_sitescores.construct();
+			m_sitesettings.construct();
+			m_sitecredits.construct();
 
 			// switch to home-site by default
 			m_sites.switch_site("home");

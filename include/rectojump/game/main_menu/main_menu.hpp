@@ -7,6 +7,7 @@
 #define RJ_GAME_MAIN_MENU_MAIN_MENU_HPP
 
 
+#include "background_main_menu.hpp"
 #include "overlay.hpp"
 #include <rectojump/core/game_window.hpp>
 #include <rectojump/core/render.hpp>
@@ -28,6 +29,9 @@ namespace rj
 	template<typename Game_Handler>
 	class main_menu
 	{
+	public:
+		using data_store_type = typename Game_Handler::data_store_type;
+
 		Game_Handler& m_gamehandler;
 		game_window& m_gamewindow;
 		data_manager& m_datamgr;
@@ -35,8 +39,10 @@ namespace rj
 		typename Game_Handler::data_store_type& m_datastore;
 		background_manager& m_backgroundmgr;
 
+		background_main_menu<main_menu> m_background;
+
 		// overlay
-		overlay<Game_Handler> m_overlay;
+		overlay<main_menu> m_overlay;
 
 	public:
 		main_menu(Game_Handler& gh) :
@@ -46,11 +52,13 @@ namespace rj
 			m_lvmgr{gh.levelmgr()},
 			m_datastore{gh.datastore()},
 			m_backgroundmgr{gh.backgroundmgr()},
-			m_overlay{gh}
+			m_background{*this},
+			m_overlay{*this}
 		{this->init();}
 
 		void update(dur duration)
 		{
+			m_background.update(duration);
 			m_overlay.update(duration);
 		}
 
