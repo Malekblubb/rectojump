@@ -15,13 +15,15 @@
 
 
 namespace rj
-{
+{	
 	enum class state : std::size_t
 	{main_menu, game_menu, game, editor, debug_info, error, num};
 
 	// forward
 	class game_handler;
 	using rndr = render<game_handler>;
+	template<typename... T> class data_store;
+	using data_store_type = data_store<sf::Texture, sf::Font, sf::Font>;
 
 	// general
 	using dur = float;
