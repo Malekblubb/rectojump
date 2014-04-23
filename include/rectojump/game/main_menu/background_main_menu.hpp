@@ -28,14 +28,13 @@ namespace rj
 		Main_Menu& m_mainmenu;
 		background_manager& m_backgroundmgr;
 
-		const sf::Color& m_fillcolor;
+		const sf::Color m_fillcolor{settings::get_color_light()};
 		mlk::tm::simple_timer m_timer{300};
 
 	public:
 		background_main_menu(Main_Menu& mm) :
 			m_mainmenu{mm},
-			m_backgroundmgr{mm.gamehandler().backgroundmgr()},
-			m_fillcolor{mm.get_act_fontcolor()}
+			m_backgroundmgr{mm.gamehandler().backgroundmgr()}
 		{this->init();}
 
 
@@ -87,16 +86,6 @@ namespace rj
 			// nova
 			auto nova(m_backgroundmgr.create_object<triangles4>(vec2f{window_size.x / 2.f, window_size.y}, vec2f{window_size.y / 3.f, window_size.x}, 0, 0.1f, vec2f{0.f, 0.f}));
 			nova->render_object().setColor(to_rgb("#bdbdbd", 100));
-
-			// background
-			sf::RectangleShape tx_shape{window_size};
-
-			// TODO: remove this try...catch and check the needed data at programstart
-			try{tx_shape.setTexture(&m_mainmenu.gamehandler().datastore().template get<sf::Texture>("menu_side.png"));}
-			catch(const std::exception& e){mlk::lerr()["rj::background_main_menu"] << e.what();}
-
-			m_backgroundmgr.set_tx_shape(tx_shape);
-			m_backgroundmgr.set_bg_shape({window_size, to_rgb("#e3e3e3"), to_rgb("#e3e3e3"), 1});
 
 			// timer
 			m_timer.run();
