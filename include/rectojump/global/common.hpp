@@ -49,6 +49,7 @@ namespace rj
 		static const std::string level_path{"levels/"};
 		static const std::string rj_font{"Fipps-Regular.otf"};
 		static const std::string text_font{"Ubuntu-R.ttf"};
+		static const mlk::uint text_size{15};
 
 		// other
 		inline std::string get_version()
