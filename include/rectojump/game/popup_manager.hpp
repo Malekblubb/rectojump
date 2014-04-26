@@ -33,7 +33,7 @@ namespace rj
 	public:
 		popup_manager(Game_Handler& gh) :
 			m_gamehandler{gh},
-			m_font{gh.datamgr().template get_as<sf::Font>("Fipps-Regular.otf")}
+			m_font{gh.datamgr().template get_as<sf::Font>(glob::text_font)}
 		{ }
 
 		void update(dur duration)
@@ -80,14 +80,14 @@ namespace rj
 	struct popup_creator<popup_type::info, Game_Handler>
 	{
 		popup_creator(popup_manager<Game_Handler>& pm, const std::string& text, const vec2f& pos)
-		{pm.create_popup_impl(text, pos, 3000, to_rgb("#000375", 200), to_rgb("#000352"), to_rgb("#e3e3e3"));}
+		{pm.create_popup_impl(text, pos, 4000, to_rgb("#000375", 200), to_rgb("#000352"), to_rgb("#e3e3e3"));}
 	};
 
 	template<typename Game_Handler>
 	struct popup_creator<popup_type::error, Game_Handler>
 	{
 		popup_creator(popup_manager<Game_Handler>& pm, const std::string& text, const vec2f& pos)
-		{pm.create_popup_impl(text, pos, 3000, to_rgb("#820006", 200), to_rgb("#d80042"), to_rgb("#e3e3e3"));}
+		{pm.create_popup_impl(text, pos, 4000, to_rgb("#820006", 200), to_rgb("#d80042"), to_rgb("#e3e3e3"));}
 	};
 }
 
