@@ -7,6 +7,7 @@
 #define RJ_UI_STACKED_WIDGET_HPP
 
 
+#include "widget.hpp"
 #include <rectojump/game/camera.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/config_settings.hpp>
@@ -19,7 +20,7 @@ namespace rj
 		struct site
 		{
 			camera cam;
-			std::vector<mlk::sptr<void>> objects;
+			std::vector<mlk::sptr<ui::widget>> objects;
 		};
 
 		class stacked_widget : public sf::Drawable
@@ -31,7 +32,6 @@ namespace rj
 
 			std::map<std::string, site> m_sites;
 			std::string m_active;
-			bool m_need_activate{false};
 
 		public:
 			stacked_widget(game_window& gw, const vec2f& size = {0.f, 0.f}, const vec2f& pos = {0.f, 0.f}) :
@@ -40,17 +40,18 @@ namespace rj
 				m_pos{pos}
 			{ }
 
-			void update(dur)
+			void update(dur duration)
 			{
-				if(m_need_activate)
-				{
-					if(!m_active.empty())
-						m_sites.at(m_active).cam.activate();
-					m_need_activate = false;
-				}
+				if(m_active.empty())
+					return;
+
+				this->activate_current_cam();
+
+				for(const auto& a : m_sites.at(m_active).objects)
+					a->update(duration);
 			}
 
-			void activate_cam()
+			void activate_current_cam()
 			{
 				if(!m_active.empty())
 					m_sites.at(m_active).cam.activate();
@@ -88,7 +89,6 @@ namespace rj
 				}
 
 				m_active = site_name;
-				m_need_activate = true;
 			}
 
 			const vec2f& size() const noexcept
@@ -104,14 +104,8 @@ namespace rj
 			virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 			{
 				if(!m_active.empty())
-				{
 					for(const auto& a : m_sites.at(m_active).objects)
-					{
-						auto ptr(std::static_pointer_cast<sf::Drawable>(a));
-						if(ptr != nullptr)
-							target.draw(*ptr, states);
-					}
-				}
+						target.draw(*a, states);
 			}
 		};
 	}
