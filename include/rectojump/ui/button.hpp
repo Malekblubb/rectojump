@@ -7,6 +7,7 @@
 #define RJ_UI_BUTTON_HPP
 
 
+#include "widget.hpp"
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/input.hpp>
 
@@ -17,7 +18,7 @@ namespace rj
 {
 	namespace ui
 	{
-		class button : public sf::Drawable
+		class button : public ui::widget
 		{
 		protected:
 			sf::RectangleShape m_shape;
