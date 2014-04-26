@@ -195,9 +195,10 @@ namespace rj
 		private:
 			void calculate_textpos()
 			{
+				auto shape_bounds(m_shape.getGlobalBounds());
 				auto text_bounds(m_text.getGlobalBounds());
 				m_text.setOrigin(text_bounds.width / 2.f, text_bounds.height / 2.f);
-				m_text.setPosition(m_shape.getPosition());
+				m_text.setPosition(shape_bounds.left + shape_bounds.width / 2.f, shape_bounds.top + shape_bounds.height / 2.f);
 			}
 		};
 	}
