@@ -39,11 +39,11 @@ namespace rj
 			auto size(m_text.getGlobalBounds());
 			vec2f origin{size.width / 2.f, size.height / 2.f};
 			m_text.setOrigin(origin);
-			m_text.setPosition(pos.x + 2.f, pos.y + 6.f);
+			m_text.setPosition(pos);
 			m_text.setColor(fontcolor);
-			m_shape.setOrigin(origin.x, origin.y);
+			m_shape.setOrigin(origin);
 			m_shape.setPosition(pos);
-			m_shape.setSize({size.width, size.height});
+			m_shape.setSize({size.width, size.height + 10.f});
 			m_shape.setOutlineThickness(1.f);
 			m_shape.setOutlineColor(outline_color);
 			m_shape.setFillColor(bg_color);
