@@ -7,6 +7,7 @@
 #define RJ_UI_TEXTBOX_HPP
 
 
+#include "widget.hpp"
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/input.hpp>
 #include <rectojump/shared/utils.hpp>
@@ -21,7 +22,7 @@ namespace rj
 {
 	namespace ui
 	{
-		class textbox : public sf::Drawable, public sf::Transformable
+		class textbox : public ui::widget, public sf::Transformable
 		{
 			sf::RectangleShape m_shape;
 			sf::Text m_text;
