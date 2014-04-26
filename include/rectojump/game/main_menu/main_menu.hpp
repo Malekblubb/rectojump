@@ -29,14 +29,11 @@ namespace rj
 	template<typename Game_Handler>
 	class main_menu
 	{
-	public:
-		using data_store_type = typename Game_Handler::data_store_type;
-
 		Game_Handler& m_gamehandler;
 		game_window& m_gamewindow;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
-		typename Game_Handler::data_store_type& m_datastore;
+		data_store_type& m_datastore;
 		background_manager& m_backgroundmgr;
 
 		background_main_menu<main_menu> m_background;
