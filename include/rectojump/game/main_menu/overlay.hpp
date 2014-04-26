@@ -26,7 +26,7 @@ namespace rj
 	{
 		Main_Menu& m_mainmenu;
 		rndr& m_render;
-		typename Main_Menu::data_store_type& m_datastore;
+		data_store_type& m_datastore;
 
 		sf::RectangleShape m_logo;
 		sf::RectangleShape m_blubber;
@@ -77,7 +77,7 @@ namespace rj
 			m_render(m_menu_bar, m_main_border, m_menu_buttons, m_logo, m_blubber);
 
 			// render sites
-			m_sites.activate_cam();
+			m_sites.activate_current_cam();
 			m_render(m_sites);
 		}
 
