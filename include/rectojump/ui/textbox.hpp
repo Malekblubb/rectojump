@@ -55,9 +55,15 @@ namespace rj
 						m_focus = true;
 					else m_focus = false;
 				}
+
 				if(!m_focus)
 					return;
 
+				// input
+				if(inp::get_last_textinput() != 0)
+					this->addChar(inp::get_last_textinput());
+
+				// cursor
 				if(m_blinktimer.timed_out())
 				{
 					m_cursor_visible = !m_cursor_visible;
