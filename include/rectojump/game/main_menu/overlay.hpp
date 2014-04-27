@@ -30,6 +30,7 @@ namespace rj
 
 		sf::RectangleShape m_logo;
 		sf::RectangleShape m_blubber;
+		sf::Text m_infotext;
 
 		sf::RectangleShape m_main_border;
 		sf::RectangleShape m_menu_bar;
@@ -54,6 +55,7 @@ namespace rj
 			m_mainmenu{mm},
 			m_render{mm.gamehandler().rendermgr()},
 			m_datastore{mm.gamehandler().datastore()},
+			m_infotext{"", m_datastore.template get<sf::Font>(glob::text_font)},
 			m_sites{mm.gamehandler().gamewindow()},
 			m_sitehome{*this},
 			m_siteplay{*this},
@@ -74,7 +76,7 @@ namespace rj
 		void render()
 		{
 			// render border, logo, buttons...
-			m_render(m_menu_bar, m_main_border, m_menu_buttons, m_logo, m_blubber);
+			m_render(m_main_border, m_menu_bar, m_menu_buttons, m_logo, m_blubber, m_infotext);
 
 			// render sites
 			m_sites.activate_current_cam();
@@ -114,18 +116,24 @@ namespace rj
 			m_main_border.setPosition(40, 100);
 			m_main_border.setOutlineThickness(4.f);
 			m_main_border.setOutlineColor(to_rgb("#bf35ad"));
-			m_main_border.setFillColor({0, 0, 0, 0}); // transparent fillcolor
+			m_main_border.setFillColor(to_rgb("#e3e3e3"));
+
+			// info text
+			m_infotext.setString("(c) 2013-2014 Christoph Malek");
+			m_infotext.setCharacterSize(glob::text_size);
+			m_infotext.setColor(to_rgb("#e3e3e3"));
+			m_infotext.setPosition(m_main_border.getPosition().x, m_main_border.getGlobalBounds().top + m_main_border.getGlobalBounds().height + 10.f);
 
 			// menu bar
 			m_menu_bar.setSize({size.x - 80, 40});
 			m_menu_bar.setPosition(40, 140);
 			m_menu_bar.setOutlineThickness(2.f);
 			m_menu_bar.setOutlineColor(to_rgb("#f15ede"));
-			m_menu_bar.setFillColor({0, 0, 0, 0});
+			m_menu_bar.setFillColor({255, 255, 255, 255});
 
 			// menu buttons
-			m_menu_buttons.on_active_button = [](auto& btn){btn->set_color(to_rgb("#f15ede"));};
-			m_menu_buttons.on_inactive_button = [](auto& btn){btn->set_color(to_rgb("#cecece"));};
+			m_menu_buttons.on_active_button = [](auto& btn){btn->setColor(to_rgb("#f15ede"));};
+			m_menu_buttons.on_inactive_button = [](auto& btn){btn->setColor(to_rgb("#cecece"));};
 
 			const auto next((size.x - 80.f) / 9);
 			this->add_menu_button(next, 1.f, "home.png");
@@ -176,8 +184,8 @@ namespace rj
 			mlk::stl_string::erase_all(".png", site_name);
 
 			auto btn(m_menu_buttons.add_button_event<ui::button>([this, site_name]{m_sites.switch_site(site_name);}, m_btn_size, vec2f{next * btn_nr, 140}));
-			btn->set_texture(&m_datastore.template get<sf::Texture>(texture));
-			btn->set_origin({m_btn_size.x / 2.f, 0});
+			btn->setTexture(&m_datastore.template get<sf::Texture>(texture));
+			btn->setOrigin({m_btn_size.x / 2.f, 0});
 		}
 	};
 }
