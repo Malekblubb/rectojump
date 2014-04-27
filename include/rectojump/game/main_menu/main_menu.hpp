@@ -70,7 +70,7 @@ namespace rj
 		void on_activate()
 		{
 			// set the background
-			m_backgroundmgr.set_bg_shape({settings::get_window_size<vec2f>(), to_rgb("#e3e3e3"), to_rgb("#e3e3e3")});
+			m_backgroundmgr.set_bg_shape({settings::get_window_size<vec2f>(), to_rgb("#373737"), to_rgb("#373737")});
 		}
 
 	private:
