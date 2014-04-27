@@ -7,8 +7,11 @@
 #define RJ_GAME_MAIN_MENU_SITE_HOME_HPP
 
 
+#include <rectojump/game/popup_manager.hpp>
+#include <rectojump/ui/button.hpp>
 #include <rectojump/ui/sf_widget.hpp>
 #include <rectojump/ui/stacked_widget.hpp>
+#include <rectojump/ui/textbox.hpp>
 
 
 namespace rj
@@ -30,15 +33,42 @@ namespace rj
 
 		void construct()
 		{
-			auto logo_shape(m_sites.add_object<widget::rectangle_shape>("home", vec2f{128, 128}));
-			logo_shape->get().setTexture(&m_datasore.template get<sf::Texture>("rj_logo.png"));
-			logo_shape->get().setPosition({(m_sites.bounds().width - logo_shape->get().getSize().x) / 2.f, 50.f});
+			const auto& font(m_datasore.template get<sf::Font>(glob::text_font));
 
-			auto username(m_sites.add_object<ui::textbox>("home", vec2f{150.f, 50.f}, vec2f{20, 20}, m_datasore.template get<sf::Font>(glob::text_font), "text"));
-			username->setOutlineThickness(2.f);
-			username->setOutlineColor(sf::Color::Red);
-			username->setTextColor(sf::Color::Green);
-			username->setCursorColor(sf::Color::Green);
+			// logo
+			auto logo_shape(m_sites.add_object<widget::rectangle_shape>("home", vec2f{128.f, 128.f}));
+			logo_shape->get().setTexture(&m_datasore.template get<sf::Texture>("rj_logo.png"));
+			logo_shape->get().setPosition({(m_sites.bounds().width - logo_shape->get().getSize().x) / 2.f, m_sites.size().y * 0.35f - logo_shape->get().getSize().y});
+
+			// textboxes
+			const vec2f tbsize{250.f, 30.f};
+			auto username(m_sites.add_object<ui::textbox>("home",
+														  tbsize,
+														  vec2f{(m_sites.bounds().width - tbsize.x) / 2.f, logo_shape->get().getPosition().y + 140.f},
+														  font,
+														  "Username"));
+			auto password(m_sites.add_object<ui::textbox>("home",
+														  tbsize,
+														  vec2f{(m_sites.bounds().width - tbsize.x) / 2.f, logo_shape->get().getPosition().y + 180.f},
+														  font,
+														  "Password"));
+			default_textbox(*username);
+			default_textbox(*password);
+			password->setPasswordMode(true);
+
+			// buttons
+			const vec2f btnsize{100.f, 30.f};
+			auto login(m_sites.add_object<ui::button>("home", btnsize, vec2f{password->getPosition().x, password->getPosition().y + 40.f}));
+			login->set_font(font);
+			login->set_text("Login");
+
+			auto register_acc(m_sites.add_object<ui::button>("home", btnsize, vec2f{password->getPosition().x + 150.f, password->getPosition().y + 40.f}));
+			register_acc->set_font(font);
+			register_acc->set_text("Register");
+			register_acc->on_clicked = [this]{m_overlay.mainmenu().gamehandler().popupmgr().template create_popup<popup_type::info>("Register a new account online at: http://");};
+
+			default_button(*login);
+			default_button(*register_acc);
 		}
 	};
 }
