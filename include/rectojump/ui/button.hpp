@@ -71,9 +71,10 @@ namespace rj
 				{
 					if(inp::is_btn_pressed(btn::Left))
 						m_press = true;
-					else if(inp::was_real_mousepress_left())
-						this->on_clicked();
 					else m_press = false;
+
+					if(inp::was_real_mousepress_left())
+						this->on_clicked();
 				}
 				else m_press = false;
 			}
