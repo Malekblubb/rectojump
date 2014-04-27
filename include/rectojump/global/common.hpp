@@ -8,6 +8,7 @@
 
 
 #include <rectojump/core/render.hpp>
+#include <rectojump/shared/utils.hpp>
 
 #include <mlk/types/types.h>
 
@@ -58,6 +59,24 @@ namespace rj
 		{return "0.0.0";}
 	}
 
+	template<typename Textbox_Type>
+	void default_textbox(Textbox_Type& tb)
+	{
+		tb.setOutlineThickness(1.f);
+		tb.setOutlineColor(to_rgb("#f15ede"));
+		tb.setTextColor(to_rgb("#555555"));
+		tb.setTextSize(13);
+		tb.setCursorColor(to_rgb("#555555"));
+	}
+
+	template<typename Button_Type>
+	void default_button(Button_Type& btn)
+	{
+		btn.setOutlineThickness(1.f);
+		btn.setOutlineColor(to_rgb("#f15ede"));
+		btn.setFontColor(to_rgb("#555555"));
+		btn.setFontSize(13);
+	}
 }
 
 inline std::string operator""_data(const char* str, std::size_t)
