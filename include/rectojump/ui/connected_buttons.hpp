@@ -47,9 +47,9 @@ namespace rj
 					a.second.button->update(duration);
 
 					// get current pressed button
-					if(!a.second.button->is_pressed() && !a.second.button->is_hover())
+					if(!a.second.button->pressed() && !a.second.button->hover())
 						on_inactive_button(a.second.button);
-					if(a.second.button->is_pressed())
+					if(a.second.button->pressed())
 					{
 						m_current_pressed_index = a.first;
 						if(!m_pressed)
@@ -65,7 +65,7 @@ namespace rj
 				if(m_current_pressed_index != -1)
 				{
 					on_active_button(m_buttons[m_current_pressed_index].button);
-					if(!m_buttons[m_current_pressed_index].button->is_pressed())
+					if(!m_buttons[m_current_pressed_index].button->pressed())
 						m_pressed = false;
 				}
 			}
