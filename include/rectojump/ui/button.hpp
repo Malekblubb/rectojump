@@ -11,6 +11,7 @@
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/input.hpp>
 
+#include <mlk/signals_slots/slot.h>
 #include <mlk/types/types.h>
 
 
@@ -30,6 +31,9 @@ namespace rj
 			sf::RectangleShape m_restore_shape;
 
 		public:
+			mlk::slot<> on_clicked;
+			mlk::slot<> on_hovered;
+
 			button(const vec2f& size = {0.f, 0.f}, const vec2f& pos = {0.f, 0.f}) :
 				m_shape{size}
 			{
@@ -63,42 +67,48 @@ namespace rj
 					m_hover = true;
 				else m_hover = false;
 
-				if(m_hover && inp::is_btn_pressed(btn::Left))
-					m_press = true;
+				if(m_hover)
+				{
+					if(inp::is_btn_pressed(btn::Left))
+						m_press = true;
+					else if(inp::was_real_mousepress_left())
+						this->on_clicked();
+					else m_press = false;
+				}
 				else m_press = false;
 			}
 
-			void set_text(const std::string& text) noexcept
+			void setText(const std::string& text) noexcept
 			{m_text.setString(text); this->calculate_textpos();}
 
-			void set_font(const sf::Font& font) noexcept
+			void setFont(const sf::Font& font) noexcept
 			{m_text.setFont(font); this->calculate_textpos();}
 
-			void set_fontcolor(const sf::Color& color) noexcept
+			void setFontColor(const sf::Color& color) noexcept
 			{m_text.setColor(color);}
 
-			void set_fontsize(mlk::uint size) noexcept
+			void setFontSize(mlk::uint size) noexcept
 			{m_text.setCharacterSize(size); this->calculate_textpos();}
 
-			void set_color(const sf::Color& color) noexcept
+			void setColor(const sf::Color& color) noexcept
 			{m_shape.setFillColor(color); m_restore_shape.setFillColor(color);}
 
-			void set_outlinethickness(float thickness) noexcept
+			void setOutlineThickness(float thickness) noexcept
 			{m_shape.setOutlineThickness(thickness); m_restore_shape.setOutlineThickness(thickness);}
 
-			void set_outlinecolor(const sf::Color& color) noexcept
+			void setOutlineColor(const sf::Color& color) noexcept
 			{m_shape.setOutlineColor(color); m_restore_shape.setOutlineColor(color);}
 
-			void set_position(const vec2f& pos) noexcept
+			void setPosition(const vec2f& pos) noexcept
 			{m_shape.setPosition(pos); m_restore_shape.setPosition(pos); this->calculate_textpos();}
 
-			void set_origin(const vec2f& pos) noexcept
+			void setOrigin(const vec2f& pos) noexcept
 			{m_shape.setOrigin(pos); m_restore_shape.setOrigin(pos); this->calculate_textpos();}
 
-			void set_size(const vec2f& size) noexcept
+			void setSize(const vec2f& size) noexcept
 			{m_shape.setSize(size); m_restore_shape.setSize(size); this->calculate_textpos();}
 
-			void set_texture(sf::Texture* tx) noexcept
+			void setTexture(sf::Texture* tx) noexcept
 			{m_shape.setTexture(tx); m_restore_shape.setTexture(tx);}
 
 			void move(const vec2f& offset) noexcept
@@ -107,43 +117,43 @@ namespace rj
 			void rotate(float angle) noexcept
 			{m_shape.rotate(angle); m_restore_shape.rotate(angle); this->calculate_textpos();}
 
-			std::string get_text() const noexcept
+			std::string getText() const noexcept
 			{return m_text.getString();}
 
-			const sf::Font* get_font() const noexcept
+			const sf::Font* getFont() const noexcept
 			{return m_text.getFont();}
 
-			const sf::Color& get_fontcolor() const noexcept
+			const sf::Color& getFontColor() const noexcept
 			{return m_text.getColor();}
 
-			mlk::uint get_fontsize() const noexcept
+			mlk::uint getFontSize() const noexcept
 			{return m_text.getCharacterSize();}
 
-			const sf::Color& get_color() const noexcept
+			const sf::Color& getColor() const noexcept
 			{return m_shape.getFillColor();}
 
-			float get_outlinethickness() const noexcept
+			float getOutlineThickness() const noexcept
 			{return m_shape.getOutlineThickness();}
 
-			const sf::Color& get_outlinecolor() const noexcept
+			const sf::Color& getOutlineColor() const noexcept
 			{return m_shape.getOutlineColor();}
 
-			const vec2f& get_position() const noexcept
+			const vec2f& getPosition() const noexcept
 			{return m_shape.getPosition();}
 
-			const vec2f& get_origin() const noexcept
+			const vec2f& getOrigin() const noexcept
 			{return m_shape.getOrigin();}
 
-			const vec2f& get_size() const noexcept
+			const vec2f& getSize() const noexcept
 			{return m_shape.getSize();}
 
-			const sf::Texture* get_texture() const noexcept
+			const sf::Texture* getTexture() const noexcept
 			{return m_shape.getTexture();}
 
-			bool is_pressed() const noexcept
+			bool pressed() const noexcept
 			{return m_press;}
 
-			bool is_hover() const noexcept
+			bool hover() const noexcept
 			{return m_hover;}
 
 		protected:
