@@ -96,7 +96,6 @@ namespace rj
 			m_last_mousepos = m_mousepos;
 			m_mousepos = m_renderwindow->mapPixelToCoords(sf::Mouse::getPosition(*m_renderwindow));
 			m_on_update();
-			m_last_textinput = 0;
 		}
 
 		void key_pressed(key k)
