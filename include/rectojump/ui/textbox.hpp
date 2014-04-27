@@ -50,7 +50,7 @@ namespace rj
 
 			void update(dur)
 			{
-				if(inp::is_btn_pressed(btn::Left))
+				if(inp::was_real_mousepress_left())
 				{
 					if(this->getGlobalBounds().intersects(inp::get_mousebounds<true>()))
 						m_focus = true;
