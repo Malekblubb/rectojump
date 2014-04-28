@@ -48,7 +48,7 @@ namespace rj
 				this->init();
 			}
 
-			void update(dur)
+			void update(dur) override
 			{
 				if(inp::was_real_mousepress_left())
 				{

@@ -50,7 +50,7 @@ namespace rj
 				this->calculate_textpos();
 			}
 
-			void update(dur)
+			void update(dur) override
 			{
 				// check states
 				if(m_hover) this->on_hover();
