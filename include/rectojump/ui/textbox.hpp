@@ -22,7 +22,7 @@ namespace rj
 {
 	namespace ui
 	{
-		class textbox : public ui::widget, public sf::Transformable
+		class textbox : public widget, public sf::Transformable
 		{
 			sf::RectangleShape m_shape;
 			sf::Text m_text, m_password_text;

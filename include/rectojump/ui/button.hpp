@@ -19,7 +19,7 @@ namespace rj
 {
 	namespace ui
 	{
-		class button : public ui::widget
+		class button : public widget
 		{
 		protected:
 			sf::RectangleShape m_shape;
