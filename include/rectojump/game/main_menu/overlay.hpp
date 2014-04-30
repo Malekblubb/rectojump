@@ -15,6 +15,7 @@
 #include "site_play.hpp"
 #include "site_scores.hpp"
 #include "site_settings.hpp"
+#include <rectojump/global/config_settings.hpp>
 #include <rectojump/ui/connected_buttons.hpp>
 #include <rectojump/ui/stacked_widget.hpp>
 
@@ -55,7 +56,7 @@ namespace rj
 			m_mainmenu{mm},
 			m_render{mm.gamehandler().rendermgr()},
 			m_datastore{mm.gamehandler().datastore()},
-			m_infotext{"", m_datastore.template get<sf::Font>(glob::text_font)},
+			m_infotext{"", m_datastore.template get<sf::Font>(settings::text_font())},
 			m_sites{mm.gamehandler().gamewindow()},
 			m_sitehome{*this},
 			m_siteplay{*this},
@@ -120,7 +121,7 @@ namespace rj
 
 			// info text
 			m_infotext.setString("(c) 2013-2014 Christoph Malek");
-			m_infotext.setCharacterSize(glob::text_size);
+			m_infotext.setCharacterSize(settings::text_size());
 			m_infotext.setColor(to_rgb("#e3e3e3"));
 			m_infotext.setPosition(m_main_border.getPosition().x, m_main_border.getGlobalBounds().top + m_main_border.getGlobalBounds().height + 10.f);
 

@@ -7,6 +7,7 @@
 #define RJ_GAME_MAIN_MENU_SITE_CREDITS_HPP
 
 
+#include <rectojump/global/config_settings.hpp>
 #include <rectojump/ui/sf_widget.hpp>
 #include <rectojump/ui/stacked_widget.hpp>
 
@@ -27,7 +28,7 @@ namespace rj
 
 		void construct()
 		{
-			auto text(m_sites.add_object<widget::text>("credits", "", m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>(glob::text_font), glob::text_size));
+			auto text(m_sites.add_object<widget::text>("credits", "", m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>(settings::text_font()), settings::text_size()));
 			text->get().setString("Programmer: Christoph Malek <>\n"
 							"Graphics: -\n"
 							"Icons: Adam Whitcroft <http://adamwhitcroft.com/batch/>\n\n"

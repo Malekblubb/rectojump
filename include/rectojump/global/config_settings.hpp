@@ -89,6 +89,26 @@ namespace rj
 
 		inline bool get_editor_settings_expanded()
 		{return mlk::parse_bool(config::get().get_entry<std::string>("editor_settings_expanded"));}
+
+
+		// fixed settings
+		std::string data_path()
+		{return "data/";}
+
+		std::string level_path()
+		{return "levels/";}
+
+		std::string rj_font()
+		{return "Fipps-Regular.otf";}
+
+		std::string text_font()
+		{return "Ubuntu-R.ttf";}
+
+		mlk::uint text_size()
+		{return 15;}
+
+		inline std::string version()
+		{return "0.0.0";}
 	}
 }
 

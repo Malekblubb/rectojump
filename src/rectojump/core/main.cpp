@@ -17,7 +17,7 @@
 int main()
 {
 	mlk::lerr_i().set_write_on_exit(true);
-	mlk::lout("main", true) << "rectojump version " << rj::glob::get_version() << " started";
+	mlk::lout("main", true) << "rectojump version " << rj::settings::version() << " started";
 
 	// init settings/config
 	rj::settings::init();
@@ -27,8 +27,8 @@ int main()
 	rj::error_inserter{eh};
 
 	// data
-	rj::data_manager dm{rj::glob::data_path, {"LICENSE.Fipps-Regular.pdf", "LICENSE.Ubuntu-Font"}, true};
-	rj::level_manager lm{rj::glob::level_path};
+	rj::data_manager dm{rj::settings::data_path(), {"LICENSE.Fipps-Regular.pdf", "LICENSE.Ubuntu-Font"}, true};
+	rj::level_manager lm{rj::settings::level_path()};
 
 	// game
 	rj::game_window gw{rj::settings::get_window_size(), rj::settings::get_fullscreen()};

@@ -7,6 +7,7 @@
 #define RJ_GAME_MAIN_MENU_SITE_PLAY_HPP
 
 
+#include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/ui/level_widget.hpp>
 #include <rectojump/ui/stacked_widget.hpp>
@@ -32,7 +33,7 @@ namespace rj
 		void construct()
 		{
 			auto& site_play(m_sites.get("play"));
-			auto& font(m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>(glob::text_font));
+			auto& font(m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>(settings::text_font()));
 
 			auto level_widget(m_sites.add_object<ui::level_widget>("play", m_overlay.mainmenu().gamehandler().gamewindow(), m_sites.size(), m_sites.pos()));
 			level_widget->add_item(m_lvmgr.get_level("test.rjl"), font);

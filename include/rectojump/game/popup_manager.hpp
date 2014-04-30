@@ -8,6 +8,7 @@
 
 
 #include "popup.hpp"
+#include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/data_manager.hpp>
 
 #include <mlk/containers/container_utl.h>
@@ -33,7 +34,7 @@ namespace rj
 	public:
 		popup_manager(Game_Handler& gh) :
 			m_gamehandler{gh},
-			m_font{gh.datamgr().template get_as<sf::Font>(glob::text_font)}
+			m_font{gh.datamgr().template get_as<sf::Font>(settings::text_font())}
 		{ }
 
 		void update(dur duration)

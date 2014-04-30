@@ -45,20 +45,6 @@ namespace rj
 	enum entity_prototype_value : std::size_t
 	{figure, prop, x, y};
 
-	namespace glob
-	{
-		// fixed paths
-		static const std::string data_path{"data/"};
-		static const std::string level_path{"levels/"};
-		static const std::string rj_font{"Fipps-Regular.otf"};
-		static const std::string text_font{"Ubuntu-R.ttf"};
-		static const mlk::uint text_size{15};
-
-		// other
-		inline std::string get_version()
-		{return "0.0.0";}
-	}
-
 	template<typename Textbox_Type>
 	void default_textbox(Textbox_Type& tb)
 	{
@@ -78,12 +64,6 @@ namespace rj
 		btn.setFontSize(13);
 	}
 }
-
-inline std::string operator""_data(const char* str, std::size_t)
-{return rj::glob::data_path + str;}
-
-inline std::string operator""_lvl(const char* str, std::size_t)
-{return rj::glob::level_path + str;}
 
 
 #endif // RJ_GLOBAL_COMMON_HPP
