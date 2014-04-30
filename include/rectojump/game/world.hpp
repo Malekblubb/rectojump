@@ -25,15 +25,15 @@ namespace rj
 	class world
 	{
 		Game_Handler& m_gamehandler;
-		background_manager& m_backgroundmgr;
-		typename Game_Handler::data_store_type& m_datastore;
+//		background_manager& m_backgroundmgr;
+		data_store_type& m_datastore;
 
 		entity_handler m_entity_handler;
 
 	public:
 		world(Game_Handler& gh) :
 			m_gamehandler{gh},
-			m_backgroundmgr{gh.backgroundmgr()},
+//			m_backgroundmgr{gh.backgroundmgr()},
 			m_entity_handler{gh.rendermgr()},
 			m_datastore{gh.datastore()}
 		{ }
@@ -96,7 +96,7 @@ namespace rj
 //					ptr = factory::create<triangle>(pos, 19.f);
 					break;
 				case entity_figure::f_triangles4:
-					m_backgroundmgr.create_object<triangles4>(pos, vec2f{50.f, 200.f}, 0, 0.5f, vec2f{0, 0});
+//					m_backgroundmgr.create_object<triangles4>(pos, vec2f{50.f, 200.f}, 0, 0.5f, vec2f{0, 0});
 					break;
 				default:
 					ptr = nullptr;

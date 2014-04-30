@@ -97,15 +97,15 @@ namespace rj
 			m_buttons.on_active_button =
 			[this](ui::base_btn_ptr& b)
 			{
-				b->set_color(settings::get_color_light());
-				b->set_outlinecolor(settings::get_color_light());
+				b->setColor(settings::get_color_light());
+				b->setOutlineColor(settings::get_color_light());
 			};
 
 			m_buttons.on_inactive_button =
 			[](ui::base_btn_ptr& b)
 			{
-				b->set_color(settings::get_color_default_dark());
-				b->set_outlinecolor(settings::get_color_default_dark());
+				b->setColor(settings::get_color_default_dark());
+				b->setOutlineColor(settings::get_color_default_dark());
 			};
 
 			m_buttons.on_press = [this](ui::base_btn_ptr& b){on_item_click(b);};

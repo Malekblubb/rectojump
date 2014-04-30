@@ -33,7 +33,7 @@ namespace rj
 
 		void construct()
 		{
-			const auto& font(m_datasore.template get<sf::Font>(glob::text_font));
+			const auto& font(m_datasore.get<sf::Font>(glob::text_font));
 
 			// logo
 			auto logo_shape(m_sites.add_object<widget::rectangle_shape>("home", vec2f{128.f, 128.f}));
@@ -41,7 +41,7 @@ namespace rj
 			logo_shape->get().setPosition((m_sites.bounds().width - logo_shape->get().getSize().x) / 2.f, m_sites.size().y * 0.35f - logo_shape->get().getSize().y);
 
 			// info text
-			auto text(m_sites.add_object<widget::text>("home", "", m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>(glob::text_font), glob::text_size));
+			auto text(m_sites.add_object<widget::text>("home", "", m_datasore.get<sf::Font>(glob::text_font), glob::text_size));
 			text->get().setString("version " + glob::get_version());
 			text->get().setColor(to_rgb("#373737"));
 			text->get().setPosition((m_sites.bounds().width - text->get().getGlobalBounds().width) / 2.f, logo_shape->get().getPosition().y + 120.f);

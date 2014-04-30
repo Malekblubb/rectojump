@@ -24,7 +24,9 @@ namespace rj
 //			sf::Text m_creator_text; // TODO: impl
 
 		public:
-			level_widget_item(const level& lv)
+			level_widget_item(const level& lv, const sf::Font& font) :
+				m_level_name{"", font},
+				m_creator_date{"", font}
 			{
 				if(!lv.is_valid())
 					return;

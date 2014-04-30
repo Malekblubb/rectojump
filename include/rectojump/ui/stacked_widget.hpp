@@ -21,6 +21,7 @@ namespace rj
 		{
 			camera cam;
 			std::vector<mlk::sptr<ui::widget>> objects;
+			mlk::slot<> on_render;
 		};
 
 		class stacked_widget : public sf::Drawable
@@ -66,8 +67,11 @@ namespace rj
 			void add_site(const std::string& site_name)
 			{
 				auto size(settings::get_window_size<vec2f>());
-				m_sites.emplace(site_name, site{{m_gamewindow, {{m_size / 2.f}, m_size}, {m_pos.x / size.x, m_pos.y / size.y, m_size.x / size.x, m_size.y / size.y}}});
+				m_sites.emplace(site_name, site{{m_gamewindow, {m_size / 2.f, m_size}, {m_pos.x / size.x, m_pos.y / size.y, m_size.x / size.x, m_size.y / size.y}}});
 			}
+
+			auto& get(const std::string& site_name) noexcept
+			{return m_sites.at(site_name);}
 
 			template<typename Any_Type, typename... Any_Args>
 			mlk::sptr<Any_Type> add_object(const std::string& site_name, Any_Args&&... args)
@@ -103,6 +107,9 @@ namespace rj
 		private:
 			virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 			{
+				// call on_render event; set custom site camera, etc...
+				m_sites.at(m_active).on_render();
+
 				if(!m_active.empty())
 					for(const auto& a : m_sites.at(m_active).objects)
 						target.draw(*a, states);

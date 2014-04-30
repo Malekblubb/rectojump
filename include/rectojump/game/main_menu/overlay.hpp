@@ -151,7 +151,7 @@ namespace rj
 			const auto size(settings::get_window_size<vec2f>());
 
 			// set default properties
-			m_sites.set_size({size.x - 80.f, size.y - 180.f});
+			m_sites.set_size({size.x - 80.f, size.y - 220.f});
 			m_sites.set_pos({40.f, 180.f});
 
 			// add sites

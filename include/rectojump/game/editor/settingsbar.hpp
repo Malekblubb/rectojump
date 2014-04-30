@@ -63,7 +63,7 @@ namespace rj
 			m_buttons.update(duration);
 			m_toggle_bar_button.update(duration);
 
-			if(m_toggle_bar_button.is_pressed() && !m_moving)
+			if(m_toggle_bar_button.pressed() && !m_moving)
 			{
 				m_moved = 0.f;
 				flip_h(m_toggle_bar_button);
@@ -149,8 +149,8 @@ namespace rj
 			m_shape.setFillColor(settings::get_color_default_light());
 
 			// toggle (expand) settings bar
-			m_toggle_bar_button.set_origin(m_toggle_bar_button.get_size() / 2.f);
-			m_toggle_bar_button.set_texture(&m_toggle_bar_button_tx);
+			m_toggle_bar_button.setOrigin(m_toggle_bar_button.getSize() / 2.f);
+			m_toggle_bar_button.setTexture(&m_toggle_bar_button_tx);
 			if(settings::get_editor_settings_expanded())
 				flip_h(m_toggle_bar_button);
 			else m_need_move_right = true;

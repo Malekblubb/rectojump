@@ -167,7 +167,7 @@ namespace rj
 			m_itembar.on_item_click =
 			[this](ui::base_btn_ptr& b)
 			{
-				m_mouse.set_texture(b->get_texture());
+				m_mouse.set_texture(b->getTexture());
 				m_mouse.deactivate_selection();
 				m_mouse.set_mouse_visible(true);
 			};

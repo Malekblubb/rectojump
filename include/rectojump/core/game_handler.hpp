@@ -31,11 +31,6 @@ namespace rj
 {
 	class game_handler
 	{
-	public:
-		// type decls
-		using data_store_type = data_store<sf::Texture, sf::Font, sf::Font>;
-
-	private:
 		game_window& m_game_window;
 		error_handler& m_errorhandler;
 		data_manager& m_datamgr;
@@ -46,9 +41,9 @@ namespace rj
 		render<game_handler> m_render;
 		background_manager m_backgroundmgr;
 		game<game_handler> m_game;
-		editor<game_handler, decltype(m_game)> m_editor;
+//		editor<game_handler, decltype(m_game)> m_editor;
 		main_menu<game_handler> m_mainmenu;
-		game_menu<game_handler> m_gamemenu;
+//		game_menu<game_handler> m_gamemenu;
 		popup_manager<game_handler> m_popupmgr;
 		debug_info<game_handler, decltype(m_game)> m_debug_info;
 
@@ -64,9 +59,9 @@ namespace rj
 			m_render{*this},
 			m_backgroundmgr{m_render},
 			m_game{*this},
-			m_editor{*this},
+//			m_editor{*this},
 			m_mainmenu{*this},
-			m_gamemenu{*this},
+//			m_gamemenu{*this},
 			m_popupmgr{*this},
 			m_debug_info{*this}
 		{this->init();}
@@ -85,15 +80,15 @@ namespace rj
 			this->activate_state(state::game);
 
 			// load background
-			m_backgroundmgr.clear();
-			auto& lv_bg(lv.background);
-			auto& bgshape(m_backgroundmgr.bg_shape());
-			bgshape.set_startcolor(lv_bg.get_startcolor());
-			bgshape.set_endcolor(lv_bg.get_endcolor());
-			bgshape.set_gradient_points(lv_bg.get_pointcount());
+//			m_backgroundmgr.clear();
+//			auto& lv_bg(lv.background);
+//			auto& bgshape(m_backgroundmgr.bg_shape());
+//			bgshape.set_startcolor(lv_bg.get_startcolor());
+//			bgshape.set_endcolor(lv_bg.get_endcolor());
+//			bgshape.set_gradient_points(lv_bg.get_pointcount());
 
 			// load level to gameworld
-			m_game.load_level(lv);
+//			m_game.load_level(lv);
 		}
 
 		template<typename... Args>
@@ -124,8 +119,8 @@ namespace rj
 		auto& mainmenu() noexcept
 		{return m_mainmenu;}
 
-		auto& gamemenu() noexcept
-		{return m_gamemenu;}
+//		auto& gamemenu() noexcept
+//		{return m_gamemenu;}
 
 		auto& datastore() noexcept
 		{return m_datastore;}
@@ -153,13 +148,13 @@ namespace rj
 			settings::on_changed() +=
 			[this]{m_game_window.set_size(settings::get_window_size());};
 
-			m_mainmenu.mmenu_start()->get_items().on_event("editor",
-			[this]
-			{
-				this->deactivate_state(state::main_menu);
-				this->activate_state(state::editor);
-				m_editor.on_activate();
-			});
+//			m_mainmenu.mmenu_start()->get_items().on_event("editor",
+//			[this]
+//			{
+//				this->deactivate_state(state::main_menu);
+//				this->activate_state(state::editor);
+//				m_editor.on_activate();
+//			});
 
 			this->init_errors();
 			this->init_pointers();
@@ -257,25 +252,29 @@ namespace rj
 
 		void update(dur duration)
 		{
+			// activate default camera
+			m_default_camera.activate();
+
 			if(this->is_active(state::error))
 				return;
+
 
 			m_backgroundmgr.update(duration);
 
 			if(this->is_active(state::game) && !this->is_active(state::game_menu))
 				m_game.update(duration);
 
-			else if(this->is_active(state::editor) && !this->is_active(state::game_menu))
-			{
-				m_editor.update(duration);
-				m_game.world().entityhandler().update(duration);
-			}
+//			else if(this->is_active(state::editor) && !this->is_active(state::game_menu))
+//			{
+//				m_editor.update(duration);
+//				m_game.world().entityhandler().update(duration);
+//			}
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.update(duration);
 
-			else if(this->is_active(state::game_menu))
-				m_gamemenu.update(duration);
+//			else if(this->is_active(state::game_menu))
+//				m_gamemenu.update(duration);
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.update(duration);
@@ -288,18 +287,19 @@ namespace rj
 
 		void update_input()
 		{
-			m_editor.update_input();
+//			m_editor.update_input();
 		}
 
 		void render()
 		{
+			m_default_camera.activate();
+
 			if(this->is_active(state::error))
 			{
 				m_render(m_errorhandler.get_current_error_instance().error_text);
 				return;
 			}
 
-			m_default_camera.activate();
 			m_backgroundmgr.render();
 
 			m_default_camera.activate();
@@ -307,17 +307,17 @@ namespace rj
 			if(this->is_active(state::game))
 				m_game.render();
 
-			else if(this->is_active(state::editor))
-				m_editor.render();
+//			else if(this->is_active(state::editor))
+//				m_editor.render();
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
 
-			if(this->is_active(state::game_menu))
-			{
-				m_default_camera.activate();
-				m_gamemenu.render();
-			}
+//			if(this->is_active(state::game_menu))
+//			{
+//				m_default_camera.activate();
+//				m_gamemenu.render();
+//			}
 
 			m_default_camera.activate();
 			if(this->is_active(state::debug_info))
