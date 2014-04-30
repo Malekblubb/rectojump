@@ -107,6 +107,9 @@ namespace rj
 		mlk::uint text_size()
 		{return 15;}
 
+		sf::Color text_color()
+		{return to_rgb("#373737");}
+
 		inline std::string version()
 		{return "0.0.0";}
 	}
