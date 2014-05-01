@@ -44,7 +44,7 @@ namespace rj
 			// info text
 			auto text(m_sites.add_object<widget::text>("home", "", font, settings::text_size()));
 			text->get().setString("version " + settings::version());
-			text->get().setColor(to_rgb("#373737"));
+			text->get().setColor(settings::text_color());
 			text->get().setPosition((m_sites.bounds().width - text->get().getGlobalBounds().width) / 2.f, logo_shape->get().getPosition().y + 120.f);
 
 			// textboxes
