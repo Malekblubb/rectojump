@@ -33,7 +33,7 @@ namespace rj
 							"Graphics: -\n"
 							"Icons: Adam Whitcroft <http://adamwhitcroft.com/batch/>\n\n"
 							"Libs: SFML, zlib");
-			text->get().setColor(to_rgb("#555555"));
+			text->get().setColor(settings::text_color());
 			text->get().setPosition({(m_sites.bounds().width - text->get().getGlobalBounds().width) / 2.f, 150.f});
 		}
 	};
