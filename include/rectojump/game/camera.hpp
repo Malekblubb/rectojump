@@ -63,6 +63,12 @@ namespace rj
 		bool has_moved_right() const noexcept
 		{return m_userview.getCenter().x < m_startcenter.x;}
 
+		bool has_moved_up() const noexcept
+		{return m_userview.getCenter().y < m_startcenter.y;}
+
+		bool has_moved_down() const noexcept
+		{return m_userview.getCenter().y > m_startcenter.y;}
+
 		const vec2f& get_center() noexcept
 		{return m_userview.getCenter();}
 
