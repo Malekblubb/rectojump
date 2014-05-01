@@ -21,25 +21,40 @@ namespace rj
 	{
 		class level_widget : public widget
 		{
+			// cam
 			camera m_scrollcam;
 
+			// properties
+			vec2f m_size;
+			vec2f m_pos;
+
+			// scrolling
+			static constexpr float m_spacing{10.f};
+			float m_full_height{0.f};
+
+			// items
 			std::vector<level_widget_item> m_items;
 
 		public:
 			level_widget(game_window& gw, const vec2f& size = {}, const vec2f& pos = {}) :
-				m_scrollcam{gw}
+				m_scrollcam{gw},
+				m_size{size},
+				m_pos{pos}
 			{
 				auto wsize(settings::get_window_size<vec2f>());
 
 				sf::View view{size / 2.f, size};
-				view.setViewport({pos.x / wsize.x, pos.y / wsize.y , size.x / wsize.x, size.y / wsize.y});
+				view.setViewport({pos.x / wsize.x, (pos.y + 2.f) / wsize.y, size.x / wsize.x, size.y / wsize.y});
 
 				m_scrollcam.set_view(view);
 			}
 
-			void update(dur) override
+			void update(dur duration) override
 			{
-				m_scrollcam.activate();
+				this->activate_cam();
+
+				for(auto& a : m_items)
+					a.update(duration);
 			}
 
 			void activate_cam()
@@ -47,9 +62,40 @@ namespace rj
 				m_scrollcam.activate();
 			}
 
+			void scroll_up(float step = -15.f)
+			{
+				if(!m_scrollcam.has_moved_down())
+					return;
+
+				m_scrollcam.move({0.f, step});
+			}
+
+			void scroll_down(float step = 15.f)
+			{
+				if(m_scrollcam.get_center().y >= m_full_height)
+					return;
+
+				m_scrollcam.move({0.f, step});
+			}
+
 			template<typename... Args>
 			void add_item(Args&&... args)
-			{m_items.emplace_back(std::forward<Args>(args)...);}
+			{
+				// add item
+				m_items.emplace_back(std::forward<Args>(args)..., m_size.x);
+
+				// move the next item under the previous
+				float pos_y{0.f};
+				if(m_items.size() > 1)
+					pos_y = m_items[m_items.size() - 2].pos_y_h();
+
+				m_items.back().move({0.f, pos_y + m_spacing});
+
+				// calc full height
+				m_full_height = -m_scrollcam.get_startcenter().y;
+				for(const auto& a : m_items)
+					m_full_height += a.size().y + m_spacing;
+			}
 
 		private:
 			void draw(sf::RenderTarget& target, sf::RenderStates states) const override
