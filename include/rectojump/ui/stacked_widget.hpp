@@ -104,6 +104,9 @@ namespace rj
 			sf::FloatRect bounds() const noexcept
 			{return {m_pos, m_size};}
 
+			bool active(const std::string& site_name) const noexcept
+			{return m_active == site_name;}
+
 		private:
 			virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 			{
