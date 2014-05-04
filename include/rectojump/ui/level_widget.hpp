@@ -78,11 +78,13 @@ namespace rj
 				m_scrollcam.move({0.f, step});
 			}
 
-			template<typename... Args>
-			void add_item(Args&&... args)
+			void add_item(const level& lv, const sf::Font& font)
 			{
+				if(!lv.is_valid())
+					return;
+
 				// add item
-				m_items.emplace_back(std::forward<Args>(args)..., m_size.x);
+				m_items.emplace_back(lv, font, m_size.x);
 
 				// move the next item under the previous
 				float pos_y{0.f};
