@@ -15,6 +15,7 @@
 #include <rectojump/game/editor/editor.hpp>
 #include <rectojump/game/game_menu/game_menu.hpp>
 #include <rectojump/game/main_menu/main_menu.hpp>
+#include <rectojump/game/particle_manager.hpp>
 #include <rectojump/game/popup_manager.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/config_settings.hpp>
@@ -44,6 +45,7 @@ namespace rj
 //		editor<game_handler, decltype(m_game)> m_editor;
 		main_menu<game_handler> m_mainmenu;
 //		game_menu<game_handler> m_gamemenu;
+		particle_manager<game_handler> m_particlemgr;
 		popup_manager<game_handler> m_popupmgr;
 		debug_info<game_handler, decltype(m_game)> m_debug_info;
 
@@ -62,6 +64,7 @@ namespace rj
 //			m_editor{*this},
 			m_mainmenu{*this},
 //			m_gamemenu{*this},
+			m_particlemgr{*this},
 			m_popupmgr{*this},
 			m_debug_info{*this}
 		{this->init();}
@@ -133,6 +136,9 @@ namespace rj
 
 		auto& debuginfo() noexcept
 		{return m_debug_info;}
+
+		auto& particlemgr() noexcept
+		{return m_particlemgr;}
 
 		auto& popupmgr() noexcept
 		{return m_popupmgr;}
@@ -210,7 +216,7 @@ namespace rj
 			inp::on_keys_pressed(key::LShift, key::LControl, key::T) +=
 			[this]{m_game_window.toggle_titlebar();};
 
-			inp::on_keys_pressed(key::LShift, key::LControl, key::D) +=
+			inp::on_key_pressed(key::F3) +=
 			[this]{this->toggle_state(state::debug_info);};
 
 			inp::on_keys_pressed(key::LShift, key::LControl, key::Q) +=
@@ -280,6 +286,7 @@ namespace rj
 				m_debug_info.update(duration);
 
 			m_popupmgr.update(duration);
+			m_particlemgr.update(duration);
 
 			// reset the input states (input update != game update)
 			inp::i().reset_last_states();
@@ -324,6 +331,7 @@ namespace rj
 				m_debug_info.render();
 
 			m_popupmgr.render();
+			m_particlemgr.render();
 		}
 
 		// multi_args: true, Input_Type = key
