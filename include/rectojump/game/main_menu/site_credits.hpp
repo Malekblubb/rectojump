@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -33,7 +33,7 @@ namespace rj
 							"Graphics: -\n"
 							"Icons: Adam Whitcroft <http://adamwhitcroft.com/batch/>\n\n"
 							"Libs: SFML, zlib");
-			text->get().setColor(settings::text_color());
+			text->get().setFillColor(settings::text_color());
 			text->get().setPosition({(m_sites.bounds().width - text->get().getGlobalBounds().width) / 2.f, 150.f});
 		}
 	};

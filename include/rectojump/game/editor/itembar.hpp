@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -25,7 +25,7 @@ namespace rj
 		Game_Handler& m_gamehandler;
 		rndr& m_render;
 		data_manager& m_datamgr;
-		typename Game_Handler::data_store_type& m_datastore;
+        data_store_type& m_datastore;
 
 		sf::RectangleShape m_shape;
 		std::vector<std::reference_wrapper<sf::Texture>> m_button_textures;
@@ -58,7 +58,7 @@ namespace rj
 		{m_buttons.inactivate();}
 
 		const sf::Texture& get_current_texture() const noexcept
-		{return *m_buttons.get_active_btn()->get_texture();}
+        {return *m_buttons.get_active_btn()->getTexture();}
 
 		entity_figure get_current_figure() const noexcept
 		{return std::static_pointer_cast<button_item>(m_buttons.get_active_btn())->get_figure();}
@@ -87,8 +87,8 @@ namespace rj
 			for(auto& a : m_button_textures)
 			{
 				auto rect_ptr(m_buttons.add_button<button_item>(m_buttonsize, vec2f{pos_x, m_shape.getPosition().y}));
-				rect_ptr->set_origin(m_buttonsize / 2.f);
-				rect_ptr->set_texture(&a.get());
+                rect_ptr->setOrigin(m_buttonsize / 2.f);
+                rect_ptr->setTexture(&a.get());
 				rect_ptr->set_figure(static_cast<entity_figure>(index));
 				pos_x += 100.f;
 				++index;
@@ -97,14 +97,14 @@ namespace rj
 			m_buttons.on_active_button =
 			[this](ui::base_btn_ptr& b)
 			{
-				b->setColor(settings::get_color_light());
+				b->setFillColor(settings::get_color_light());
 				b->setOutlineColor(settings::get_color_light());
 			};
 
 			m_buttons.on_inactive_button =
 			[](ui::base_btn_ptr& b)
 			{
-				b->setColor(settings::get_color_default_dark());
+				b->setFillColor(settings::get_color_default_dark());
 				b->setOutlineColor(settings::get_color_default_dark());
 			};
 

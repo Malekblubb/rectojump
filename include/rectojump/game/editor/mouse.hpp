@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -34,7 +34,7 @@ namespace rj
 	public:
 		editor_mouse(Game_Handler& gh) :
 			m_render{gh.rendermgr()},
-			m_entityhandler{gh.game().world().entityhandler()}
+            m_entityhandler{gh.get_game().get_world().entityhandler()}
 		{this->init();}
 
 		void update(dur)

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -96,7 +96,7 @@ namespace rj
 			{m_cursorcolor = color; this->update_cursor();}
 
 			void setTextColor(const sf::Color& color) noexcept
-			{m_text.setColor(color); m_password_text.setColor(color);}
+            {m_text.setFillColor(color); m_password_text.setFillColor(color);}
 
 			void setTextSize(mlk::uint size) noexcept
 			{m_text.setCharacterSize(size); m_password_text.setCharacterSize(size); this->update_text_pos(); this->update_cursor();}
@@ -132,12 +132,12 @@ namespace rj
 			{return m_cursorcolor;}
 
 			const sf::Color& getTextColor() const noexcept
-			{return m_text.getColor();}
+            {return m_text.getFillColor();}
 
 			mlk::uint getTextSize() const noexcept
 			{return m_text.getCharacterSize();}
 
-			std::string getText() const noexcept
+            std::string getText() const noexcept
 			{
 				std::string result;
 				auto char_stack(m_char_stack);
@@ -146,10 +146,10 @@ namespace rj
 				{
 					result += char_stack.top();
 					char_stack.pop();
-				}
-				mlk::cnt::reverse_all(result);
-				return result += m_text.getString();
-			}
+                }
+                mlk::cnt::reverse_all(result);
+                return result += m_text.getString();
+            }
 
 			sf::FloatRect getGlobalBounds() const noexcept
 			{return {bounds_from_vec({this->getPosition().x - this->getOrigin().x, this->getPosition().y - this->getOrigin().y}, m_shape.getSize())};}
@@ -241,6 +241,8 @@ namespace rj
 					this->update_password_mode();
 
 				this->update_cursor();
+
+                std::cout << text.toAnsiString() << std::endl;
 			}
 
 			void update_text_pos()

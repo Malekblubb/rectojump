@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -41,10 +41,10 @@ namespace rj
 		camera m_default_camera;
 		render<game_handler> m_render;
 		background_manager m_backgroundmgr;
-		game<game_handler> m_game;
-//		editor<game_handler, decltype(m_game)> m_editor;
+        game<game_handler> m_game;
+        editor<game_handler, decltype(m_game)> m_editor;
 		main_menu<game_handler> m_mainmenu;
-//		game_menu<game_handler> m_gamemenu;
+        game_menu<game_handler> m_gamemenu;
 		particle_manager<game_handler> m_particlemgr;
 		popup_manager<game_handler> m_popupmgr;
 		debug_info<game_handler, decltype(m_game)> m_debug_info;
@@ -60,10 +60,10 @@ namespace rj
 			m_default_camera{gw, {settings::get_window_size<vec2f>() / 2.f, settings::get_window_size<vec2f>()}},
 			m_render{*this},
 			m_backgroundmgr{m_render},
-			m_game{*this},
-//			m_editor{*this},
+            m_game{*this},
+            m_editor{*this},
 			m_mainmenu{*this},
-//			m_gamemenu{*this},
+            m_gamemenu{*this},
 			m_particlemgr{*this},
 			m_popupmgr{*this},
 			m_debug_info{*this}
@@ -113,7 +113,7 @@ namespace rj
 		auto& gamewindow() noexcept
 		{return m_game_window;}
 
-		auto& game() noexcept
+        auto& get_game() noexcept
 		{return m_game;}
 
 		auto& backgroundmgr() noexcept
@@ -122,8 +122,8 @@ namespace rj
 		auto& mainmenu() noexcept
 		{return m_mainmenu;}
 
-//		auto& gamemenu() noexcept
-//		{return m_gamemenu;}
+        auto& gamemenu() noexcept
+        {return m_gamemenu;}
 
 		auto& datastore() noexcept
 		{return m_datastore;}
@@ -149,7 +149,7 @@ namespace rj
 			m_current_states |= state::main_menu;
 
 			m_game_window.get_updater().on_update += [this](dur duration){this->update(duration);};
-			m_game_window.get_updater().on_render += [this]{this->render();};
+            m_game_window.get_updater().on_render += [this]{this->render_f();};
 
 			settings::on_changed() +=
 			[this]{m_game_window.set_size(settings::get_window_size());};
@@ -157,9 +157,9 @@ namespace rj
 //			m_mainmenu.mmenu_start()->get_items().on_event("editor",
 //			[this]
 //			{
-//				this->deactivate_state(state::main_menu);
-//				this->activate_state(state::editor);
-//				m_editor.on_activate();
+                this->deactivate_state(state::main_menu);
+                this->activate_state(state::editor);
+                m_editor.on_activate();
 //			});
 
 			this->init_errors();
@@ -235,7 +235,7 @@ namespace rj
 			inp::on_key_pressed(key::P) += pause_fnc;
 
 			inp::on_key_pressed(key::D) +=
-			[this]{if(!this->is_active(state::game)) return; m_game.world().c_player();};
+            [this]{if(!this->is_active(state::game)) return; m_game.get_world().c_player();};
 		}
 
 		void activate_state(state s)
@@ -270,17 +270,17 @@ namespace rj
 			if(this->is_active(state::game) && !this->is_active(state::game_menu))
 				m_game.update(duration);
 
-//			else if(this->is_active(state::editor) && !this->is_active(state::game_menu))
-//			{
-//				m_editor.update(duration);
-//				m_game.world().entityhandler().update(duration);
-//			}
+            else if(this->is_active(state::editor) && !this->is_active(state::game_menu))
+            {
+                m_editor.update(duration);
+                m_game.get_world().entityhandler().update(duration);
+            }
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.update(duration);
 
-//			else if(this->is_active(state::game_menu))
-//				m_gamemenu.update(duration);
+            else if(this->is_active(state::game_menu))
+                m_gamemenu.update(duration);
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.update(duration);
@@ -294,10 +294,10 @@ namespace rj
 
 		void update_input()
 		{
-//			m_editor.update_input();
+            m_editor.update_input();
 		}
 
-		void render()
+        void render_f()
 		{
 			m_default_camera.activate();
 
@@ -314,17 +314,17 @@ namespace rj
 			if(this->is_active(state::game))
 				m_game.render();
 
-//			else if(this->is_active(state::editor))
-//				m_editor.render();
+            else if(this->is_active(state::editor))
+                m_editor.render();
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
 
-//			if(this->is_active(state::game_menu))
-//			{
-//				m_default_camera.activate();
-//				m_gamemenu.render();
-//			}
+            if(this->is_active(state::game_menu))
+            {
+                m_default_camera.activate();
+                m_gamemenu.render();
+            }
 
 			m_default_camera.activate();
 			if(this->is_active(state::debug_info))

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -59,8 +59,8 @@ namespace rj
 		Game_Handler& gamehandler() noexcept
 		{return m_gamehandler;}
 
-		auto world()
-		-> decltype(m_world)&
+        auto get_world()
+        -> decltype(m_world)&
 		{return m_world;}
 	};
 }

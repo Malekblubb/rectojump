@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -46,8 +46,8 @@ namespace rj
 	public:
 		editor(Game_Handler& gh) :
 			m_gamehandler{gh},
-			m_game{gh.game()},
-			m_gameworld{m_game.world()},
+            m_game{gh.get_game()},
+            m_gameworld{m_game.get_world()},
 			m_entityhandler{m_gameworld.entityhandler()},
 			m_levelmgr{gh.levelmgr()},
 			m_editarea_camera{m_gamehandler.gamewindow()},

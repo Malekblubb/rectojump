@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -120,9 +120,9 @@ namespace rj
 			m_main_border.setFillColor(to_rgb("#e3e3e3"));
 
 			// info text
-			m_infotext.setString("(c) 2013-2014 Christoph Malek");
+			m_infotext.setString("(c) 2013-2017 Christoph Malek");
 			m_infotext.setCharacterSize(settings::text_size());
-			m_infotext.setColor(to_rgb("#e3e3e3"));
+			m_infotext.setFillColor(to_rgb("#e3e3e3"));
 			m_infotext.setPosition(m_main_border.getPosition().x, m_main_border.getGlobalBounds().top + m_main_border.getGlobalBounds().height + 10.f);
 
 			// menu bar
@@ -133,8 +133,8 @@ namespace rj
 			m_menu_bar.setFillColor({255, 255, 255, 255});
 
 			// menu buttons
-			m_menu_buttons.on_active_button = [](auto& btn){btn->setColor(to_rgb("#f15ede"));};
-			m_menu_buttons.on_inactive_button = [](auto& btn){btn->setColor(to_rgb("#cecece"));};
+			m_menu_buttons.on_active_button = [](auto& btn){btn->setFillColor(to_rgb("#f15ede"));};
+			m_menu_buttons.on_inactive_button = [](auto& btn){btn->setFillColor(to_rgb("#cecece"));};
 
 			const auto next((size.x - 80.f) / 9);
 			this->add_menu_button(next, 1.f, "home.png");

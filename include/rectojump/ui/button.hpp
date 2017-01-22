@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -46,7 +46,7 @@ namespace rj
 			{
 				m_text.setString(text);
 				m_text.setFont(font);
-				m_text.setColor(fontcolor);
+                m_text.setFillColor(fontcolor);
 				this->calculate_textpos();
 			}
 
@@ -86,12 +86,12 @@ namespace rj
 			{m_text.setFont(font); this->calculate_textpos();}
 
 			void setFontColor(const sf::Color& color) noexcept
-			{m_text.setColor(color);}
+            {m_text.setFillColor(color);}
 
 			void setFontSize(mlk::uint size) noexcept
 			{m_text.setCharacterSize(size); this->calculate_textpos();}
 
-			void setColor(const sf::Color& color) noexcept
+            void setFillColor(const sf::Color& color) noexcept
 			{m_shape.setFillColor(color); m_restore_shape.setFillColor(color);}
 
 			void setOutlineThickness(float thickness) noexcept
@@ -125,12 +125,12 @@ namespace rj
 			{return m_text.getFont();}
 
 			const sf::Color& getFontColor() const noexcept
-			{return m_text.getColor();}
+            {return m_text.getFillColor();}
 
 			mlk::uint getFontSize() const noexcept
 			{return m_text.getCharacterSize();}
 
-			const sf::Color& getColor() const noexcept
+            const sf::Color& getFillColor() const noexcept
 			{return m_shape.getFillColor();}
 
 			float getOutlineThickness() const noexcept

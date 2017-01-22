@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -73,7 +73,7 @@ namespace rj
 		debug_info(Game_Handler& gh) :
 			m_gamehandler{gh},
 			m_render{gh.rendermgr()},
-			m_game{gh.game()},
+            m_game{gh.get_game()},
 			m_text{gh.datamgr()}
 		{this->init();}
 
@@ -102,7 +102,7 @@ namespace rj
 			this->add_line("FDur:       %%\n", [this]{return m_gamehandler.gamewindow().get_updater().get_frameduration();});
 
 			this->add_title_line("Components");
-			this->add_line("Gameworld:  %%", [this]{return m_game.world().num_entities();});
+            this->add_line("Gameworld:  %%", [this]{return m_game.get_world().num_entities();});
 			this->add_line("Background: %%", [this]{return m_gamehandler.backgroundmgr().num_components();});
 			this->add_line("Popups:     %%\n", [this]{return m_gamehandler.popupmgr().num_popups();});
 

@@ -1,5 +1,5 @@
 ﻿//
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -160,22 +160,22 @@ namespace rj
 			auto save_btn(m_buttons.add_button_event<button_item>(
 			[this]{m_editor.handle_save(m_textboxes["tb_lvname"].getText());}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
 			this->prepare_button(*save_btn);
-			save_btn->set_text("Save");
+            save_btn->setText("Save");
 
 			auto load_btn(m_buttons.add_button_event<button_item>(
 			[this]{m_editor.handle_load(m_textboxes["tb_lvname"].getText());}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
 			this->prepare_button(*load_btn);
-			load_btn->set_text("Load");
+            load_btn->setText("Load");
 
 			auto reset_zoom_btn(m_buttons.add_button_event<button_item>(
 			[this]{m_editor.reset_zoom();}, vec2f{160.f, 25.f}, vec2f{shape_size.x / 2.f, shape_size.y / 2.f}));
 			this->prepare_button(*reset_zoom_btn);
-			reset_zoom_btn->set_text("Reset zoom");
+            reset_zoom_btn->setText("Reset zoom");
 
 			auto reset_center_btn(m_buttons.add_button_event<button_item>(
 			[this]{m_editor.reset_center();}, vec2f{160.f, 25.f}, vec2f{shape_size.x / 2.f, shape_size.y / 2.f + 30.f}));
 			this->prepare_button(*reset_center_btn);
-			reset_center_btn->set_text("Reset center");
+            reset_center_btn->setText("Reset center");
 
 			// textboxes
 			// level name
@@ -218,17 +218,17 @@ namespace rj
 			this->prepare_textbox(m_textboxes["tb_bgpointcount"]);
 
 			auto btn_gradient_apply(m_buttons.add_button_event<button_item>(bg_return_key_func, btn_size, vec2f{shape_size.x / 2.f, (tb_size.y + spacing) * 4}));
-			btn_gradient_apply->set_text("Apply");
+            btn_gradient_apply->setText("Apply");
 			this->prepare_button(*btn_gradient_apply);
 		}
 
 		template<typename Btn_Type>
 		void prepare_button(Btn_Type& btn)
 		{
-			btn.set_origin(btn.get_size() / 2.f);
-			btn.set_font(m_font);
-			btn.set_fontsize(12);
-			btn.set_fontcolor(settings::get_color_light());
+            btn.setOrigin(btn.getSize() / 2.f);
+            btn.setFont(m_font);
+            btn.setFontSize(12);
+            btn.setFontColor(settings::get_color_light());
 		}
 
 		void prepare_textbox(ui::textbox& tb)

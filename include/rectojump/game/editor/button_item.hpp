@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -23,7 +23,7 @@ namespace rj
 			button{size, pos}
 		{this->init_base();}
 
-		void update(dur duration)
+        void update(dur duration) override
 		{
 			button::update(duration);
 		}

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -40,7 +40,7 @@ namespace rj
 			vec2f origin{size.width / 2.f, size.height / 2.f};
 			m_text.setOrigin(origin);
 			m_text.setPosition(pos);
-			m_text.setColor(fontcolor);
+			m_text.setFillColor(fontcolor);
 			m_shape.setOrigin(origin);
 			m_shape.setPosition(pos);
 			m_shape.setSize({size.width, size.height + 10.f});
@@ -69,9 +69,9 @@ namespace rj
 				ocolor.a = m_current_alpha;
 				m_shape.setOutlineColor(ocolor);
 
-				auto tcolor(m_text.getColor());
+				auto tcolor(m_text.getFillColor());
 				tcolor.a = m_current_alpha;
-				m_text.setColor(tcolor);
+				m_text.setFillColor(tcolor);
 			}
 		}
 

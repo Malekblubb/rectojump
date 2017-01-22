@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -36,7 +36,7 @@ namespace rj
 		void setSize(const vec2f& size) noexcept
 		{m_size = size; this->recalculate();}
 
-		void setColor(const sf::Color& color) noexcept
+		void setFillColor(const sf::Color& color) noexcept
 		{m_color = color; this->recolor();}
 
 		void rotate(float angle)
@@ -54,7 +54,7 @@ namespace rj
 		const vec2f& getSize() const noexcept
 		{return m_size;}
 
-		const sf::Color& getColor() const noexcept
+		const sf::Color& getFillColor() const noexcept
 		{return m_color;}
 
 	private:

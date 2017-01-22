@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -51,7 +51,7 @@ namespace rj
 		}
 
 		template<popup_type type = popup_type::normal, typename... Args>
-		void create_popup(const std::string& text, const vec2f& pos = {settings::get_window_size<vec2f>().x / 2.f, settings::get_window_size<vec2f>().y - 100.f}, Args&&... args = {})
+                void create_popup(const std::string& text, const vec2f& pos = {settings::get_window_size<vec2f>().x / 2.f, settings::get_window_size<vec2f>().y - 100.f}, Args&&... args)
 		{popup_creator<type, Game_Handler>{*this, text, pos, std::forward<Args>(args)...};}
 
 		template<typename... Args>

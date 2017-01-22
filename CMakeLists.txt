@@ -8,12 +8,12 @@ include_directories("./include" "./external/mlk/include")
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 
 # set compiler flags
-set(CMAKE_CXX_FLAGS "-std=c++1y -stdlib=libc++ -O3")
+set(CMAKE_CXX_FLAGS "-std=c++1y -O3")
 set(CMAKE_CXX_COMPILER "clang++")
 
 
 # link
-#zlib
+# zlib
 find_package(ZLIB REQUIRED)
 if(ZLIB_FOUND)
     include_directories(${ZLIB_INCLUDE_DIR})
@@ -21,7 +21,8 @@ if(ZLIB_FOUND)
 endif()
 
 # sfml
-find_package(SFML 2 REQUIRED system window graphics network audio)
+#set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+find_package(SFML 2.4.0 REQUIRED system window graphics network audio)
 if(SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})

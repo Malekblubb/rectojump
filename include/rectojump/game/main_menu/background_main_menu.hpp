@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2014 Christoph Malek
+// Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -68,7 +68,7 @@ namespace rj
 //					m_timer.restart(mlk::rnd<mlk::ullong>(100, 300));
 
 					auto ptr(m_backgroundmgr.create_object<triangles4>(vec2f{pos_x, 0.f}, vec2f{15.5f, 30.f}, 5000, rotatestep, movestep));
-					ptr->render_object().setColor({m_fillcolor.r, m_fillcolor.g, m_fillcolor.b, 100});
+					ptr->render_object().setFillColor({m_fillcolor.r, m_fillcolor.g, m_fillcolor.b, 100});
 //					ptr->render_object().setOrigin(ptr->render_object().getSize() / 2.f);
 				}
 				m_timer.restart(static_cast<mlk::ullong>(mlk::rnd<mlk::ullong>(70, 100) / duration));
@@ -85,7 +85,7 @@ namespace rj
 
 			// nova
 			auto nova(m_backgroundmgr.create_object<triangles4>(vec2f{window_size.x / 2.f, window_size.y / 2.f}, vec2f{window_size.y / 3.f, window_size.x}, 0, 0.1f, vec2f{0.f, 0.f}));
-			nova->render_object().setColor(to_rgb("#bdbdbd", 100));
+			nova->render_object().setFillColor(to_rgb("#bdbdbd", 100));
 
 			// timer
 			m_timer.run();
