@@ -39,7 +39,7 @@ namespace rj
 		background_main_menu<main_menu> m_background;
 
 		// overlay
-		overlay<main_menu> m_overlay;
+        overlay<main_menu, Game_Handler> m_overlay;
 
 	public:
 		main_menu(Game_Handler& gh) :

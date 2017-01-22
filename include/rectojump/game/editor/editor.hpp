@@ -129,7 +129,9 @@ namespace rj
 			music_data lv_music{'M', 'U', 'S', 'I', 'C'};
 			level_packer<packer_mode::pack> lv_packer{lv_music, lv_bg, lv_data, lv_info};
 
-			m_levelmgr.save_level(lv_packer, level_name);
+            m_levelmgr.save_level(lv_packer, level_name) ?
+                        mlk::lout("rj::editor") << "Level '" << level_name << "' successfully saved!" :
+                        mlk::lerr(errors::io_create_file) << "(levelname" << level_name << ")";
 		}
 
 		void handle_load(const level_id& level_name)

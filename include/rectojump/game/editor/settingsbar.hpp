@@ -107,11 +107,7 @@ namespace rj
 
 		void update_input()
 		{
-			auto lasttextinput(inp::get_last_textinput());
-			for(auto& a : m_textboxes)
-				if(lasttextinput)
-					a.second.addChar(lasttextinput);
-		}
+        }
 
 		void render()
 		{
@@ -158,22 +154,34 @@ namespace rj
 			// buttons
 			vec2f btn_size{80.f, 25.f};
 			auto save_btn(m_buttons.add_button_event<button_item>(
-			[this]{m_editor.handle_save(m_textboxes["tb_lvname"].getText());}, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
+            [this]
+            {
+                m_editor.handle_save(m_textboxes["tb_lvname"].getText());
+            }, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
 			this->prepare_button(*save_btn);
             save_btn->setText("Save");
 
 			auto load_btn(m_buttons.add_button_event<button_item>(
-			[this]{m_editor.handle_load(m_textboxes["tb_lvname"].getText());}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
+            [this]
+            {
+                m_editor.handle_load(m_textboxes["tb_lvname"].getText());
+            }, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
 			this->prepare_button(*load_btn);
             load_btn->setText("Load");
 
 			auto reset_zoom_btn(m_buttons.add_button_event<button_item>(
-			[this]{m_editor.reset_zoom();}, vec2f{160.f, 25.f}, vec2f{shape_size.x / 2.f, shape_size.y / 2.f}));
+            [this]
+            {
+                m_editor.reset_zoom();
+            }, vec2f{160.f, 25.f}, vec2f{shape_size.x / 2.f, shape_size.y / 2.f}));
 			this->prepare_button(*reset_zoom_btn);
             reset_zoom_btn->setText("Reset zoom");
 
 			auto reset_center_btn(m_buttons.add_button_event<button_item>(
-			[this]{m_editor.reset_center();}, vec2f{160.f, 25.f}, vec2f{shape_size.x / 2.f, shape_size.y / 2.f + 30.f}));
+            [this]
+            {
+                m_editor.reset_center();
+            }, vec2f{160.f, 25.f}, vec2f{shape_size.x / 2.f, shape_size.y / 2.f + 30.f}));
 			this->prepare_button(*reset_center_btn);
             reset_center_btn->setText("Reset center");
 

@@ -22,9 +22,9 @@
 
 namespace rj
 {
-	template<typename Main_Menu>
+    template<typename Main_Menu, typename Game_Handler>
 	class overlay
-	{
+	{        
 		Main_Menu& m_mainmenu;
 		rndr& m_render;
 		data_store_type& m_datastore;
@@ -45,7 +45,7 @@ namespace rj
 		site_home<overlay> m_sitehome;
 		site_play<overlay> m_siteplay;
 		site_inventar<overlay> m_siteinventar;
-		site_editor<overlay> m_siteeditor;
+        site_editor<overlay, Game_Handler> m_siteeditor;
 		site_levels<overlay> m_sitelevels;
 		site_scores<overlay> m_sitescores;
 		site_settings<overlay> m_sitesettings;

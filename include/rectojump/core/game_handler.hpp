@@ -94,6 +94,13 @@ namespace rj
 //			m_game.load_level(lv);
 		}
 
+        void switch_to_editor()
+        {
+            this->deactivate_state(state::main_menu);
+            this->activate_state(state::editor);
+            m_editor.on_activate();
+        }
+
 		template<typename... Args>
 		void render_object(Args&&... args)
 		{m_game_window.draw(std::forward<Args>(args)...);}
@@ -146,7 +153,7 @@ namespace rj
 	private:
 		void init()
 		{
-			m_current_states |= state::main_menu;
+            this->activate_state(state::main_menu);
 
 			m_game_window.get_updater().on_update += [this](dur duration){this->update(duration);};
             m_game_window.get_updater().on_render += [this]{this->render_f();};
@@ -157,9 +164,9 @@ namespace rj
 //			m_mainmenu.mmenu_start()->get_items().on_event("editor",
 //			[this]
 //			{
-                this->deactivate_state(state::main_menu);
-                this->activate_state(state::editor);
-                m_editor.on_activate();
+//                this->deactivate_state(state::main_menu);
+//                this->activate_state(state::editor);
+//                m_editor.on_activate();
 //			});
 
 			this->init_errors();
@@ -238,14 +245,35 @@ namespace rj
             [this]{if(!this->is_active(state::game)) return; m_game.get_world().c_player();};
 		}
 
+        void log_state()
+        {
+            // output the current states
+            std::string active_states;
+            for(std::size_t i{0}; i < (std::size_t)state::num; ++i)
+            {
+                 if(m_current_states & (rj::state)i)
+                     active_states += std::string{state_as_string[i]} + " ";
+            }
+            mlk::lout("rj::game_handler") << "States got changed, active: " << active_states;
+        }
+
 		void activate_state(state s)
-		{m_current_states |= s;}
+        {
+            m_current_states |= s;
+            log_state();
+        }
 
 		void deactivate_state(state s)
-		{m_current_states.remove(s);}
+        {
+            m_current_states.remove(s);
+            log_state();
+        }
 
 		void toggle_state(state s)
-		{m_current_states.toggle(s);}
+        {
+            m_current_states.toggle(s);
+            log_state();
+        }
 
 		bool is_active(state s) const
 		{return m_current_states & s;}
@@ -254,6 +282,7 @@ namespace rj
 		{
 			m_current_states.remove_all();
 			m_current_states |= s;
+            log_state();
 		}
 
 		void update(dur duration)
