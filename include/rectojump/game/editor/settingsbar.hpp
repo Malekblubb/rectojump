@@ -151,24 +151,12 @@ namespace rj
 				flip_h(m_toggle_bar_button);
 			else m_need_move_right = true;
 
-			// buttons
+            // button size
 			vec2f btn_size{80.f, 25.f};
-			auto save_btn(m_buttons.add_button_event<button_item>(
-            [this]
-            {
-                m_editor.handle_save(m_textboxes["tb_lvname"].getText());
-            }, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
-			this->prepare_button(*save_btn);
-            save_btn->setText("Save");
+            // textbox size
+            vec2f tb_size{200.f, 30.f};
 
-			auto load_btn(m_buttons.add_button_event<button_item>(
-            [this]
-            {
-                m_editor.handle_load(m_textboxes["tb_lvname"].getText());
-            }, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
-			this->prepare_button(*load_btn);
-            load_btn->setText("Load");
-
+            // buttons
 			auto reset_zoom_btn(m_buttons.add_button_event<button_item>(
             [this]
             {
@@ -187,7 +175,6 @@ namespace rj
 
 			// textboxes
 			// level name
-			vec2f tb_size{200.f, 30.f};
 			m_textboxes.emplace("tb_lvname", ui::textbox{tb_size, vec2f{shape_size.x / 2.f, shape_size.y - 100.f}, m_font, "Level Name"});
 			this->prepare_textbox(m_textboxes["tb_lvname"]);
 
@@ -225,9 +212,34 @@ namespace rj
 			m_textboxes["tb_bgpointcount"].on_key_return = bg_return_key_func;
 			this->prepare_textbox(m_textboxes["tb_bgpointcount"]);
 
+            // buttons
 			auto btn_gradient_apply(m_buttons.add_button_event<button_item>(bg_return_key_func, btn_size, vec2f{shape_size.x / 2.f, (tb_size.y + spacing) * 4}));
             btn_gradient_apply->setText("Apply");
 			this->prepare_button(*btn_gradient_apply);
+
+            auto go_back_btn(m_buttons.add_button_event<button_item>(
+            [this]
+            {
+                m_gamehandler.switch_to_main_menu();
+            }, vec2f{200.f, btn_size.y}, vec2f{shape_size.x / 2.f, m_textboxes["tb_lvname"].getGlobalBounds().top - 30.f}));
+            this->prepare_button(*go_back_btn);
+            go_back_btn->setText("Back to Main Menu");
+
+            auto save_btn(m_buttons.add_button_event<button_item>(
+            [this]
+            {
+                m_editor.handle_save(m_textboxes["tb_lvname"].getText());
+            }, btn_size, vec2f{shape_size.x / 2.f - 60.f, shape_size.y - btn_size.y}));
+            this->prepare_button(*save_btn);
+            save_btn->setText("Save");
+
+            auto load_btn(m_buttons.add_button_event<button_item>(
+            [this]
+            {
+                m_editor.handle_load(m_textboxes["tb_lvname"].getText());
+            }, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y}));
+            this->prepare_button(*load_btn);
+            load_btn->setText("Load");
 		}
 
 		template<typename Btn_Type>

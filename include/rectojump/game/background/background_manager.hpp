@@ -22,6 +22,16 @@ namespace rj
 		using bbc_ptr = mlk::sptr<basic_background_component>;
 		rndr& m_render;
 
+        // TODO: save background for diferent states, so the effects can be activated on switch
+//        struct objects_for_state
+//        {
+//            gradient_rect m_bgshape;
+//            sf::RectangleShape m_textureshape;
+//            std::vector<bbc_ptr> m_components;
+//        };
+//        std::map<state, objects_for_state> m_objects;
+        // create_object(state, Args&&...)
+
 		gradient_rect m_bgshape;
 		sf::RectangleShape m_textureshape;
 		std::vector<bbc_ptr> m_components;

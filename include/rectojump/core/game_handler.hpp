@@ -101,6 +101,12 @@ namespace rj
             m_editor.on_activate();
         }
 
+        void switch_to_main_menu()
+        {
+            this->deactivate_state(state::editor);
+            this->activate_state(state::main_menu);
+        }
+
 		template<typename... Args>
 		void render_object(Args&&... args)
 		{m_game_window.draw(std::forward<Args>(args)...);}
