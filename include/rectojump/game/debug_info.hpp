@@ -103,7 +103,7 @@ namespace rj
 
 			this->add_title_line("Components");
             this->add_line("Gameworld:  %%", [this]{return m_game.get_world().num_entities();});
-			this->add_line("Background: %%", [this]{return m_gamehandler.backgroundmgr().num_components();});
+            this->add_line("Background: %%", [this]{return m_gamehandler.backgroundmgr().num_components_current_state();});
 			this->add_line("Popups:     %%\n", [this]{return m_gamehandler.popupmgr().num_popups();});
 
 			this->add_title_line("Managers");

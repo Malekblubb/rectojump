@@ -37,10 +37,12 @@ namespace rj
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
-		data_store_type m_datastore{m_datamgr.get_all_containing_as_map_as<sf::Texture>(".png"), m_datamgr.get_all_containing_as_map_as<sf::Font>(".otf"), m_datamgr.get_all_containing_as_map_as<sf::Font>(".ttf")};
+        data_store_type m_datastore{m_datamgr.get_all_containing_as_map_as<sf::Texture>(".png"),
+                    m_datamgr.get_all_containing_as_map_as<sf::Font>(".otf"),
+                    m_datamgr.get_all_containing_as_map_as<sf::Font>(".ttf")};
 		camera m_default_camera;
 		render<game_handler> m_render;
-		background_manager m_backgroundmgr;
+        background_manager<game_handler> m_backgroundmgr;
         game<game_handler> m_game;
         editor<game_handler, decltype(m_game)> m_editor;
 		main_menu<game_handler> m_mainmenu;
@@ -59,7 +61,7 @@ namespace rj
 			m_lvmgr{lm},
 			m_default_camera{gw, {settings::get_window_size<vec2f>() / 2.f, settings::get_window_size<vec2f>()}},
 			m_render{*this},
-			m_backgroundmgr{m_render},
+            m_backgroundmgr{m_render, *this},
             m_game{*this},
             m_editor{*this},
 			m_mainmenu{*this},
@@ -115,7 +117,11 @@ namespace rj
 		void add_input(On_Input&& func, Input_Type_Args&&... keys_btns)
 		{
 			static_assert(sizeof...(keys_btns) > 0, "at least one key/button/wheel argument needed");
-			add_input_helper<(sizeof...(keys_btns) > 1), typename std::tuple_element<0, std::tuple<Input_Type_Args...>>::type, active_state, On_Input, Input_Type_Args...>
+            add_input_helper<(sizeof...(keys_btns) > 1),
+                    typename std::tuple_element<0, std::tuple<Input_Type_Args...>>::type,
+                    active_state,
+                    On_Input,
+                    Input_Type_Args...>
 			{*this, std::forward<On_Input>(func), std::forward<Input_Type_Args>(keys_btns)...};
 		}
 
@@ -156,6 +162,22 @@ namespace rj
 		auto& popupmgr() noexcept
 		{return m_popupmgr;}
 
+        auto& states() noexcept
+        {return m_current_states;}
+
+        auto current_renderable_state() noexcept
+        {
+            if(m_current_states & state::main_menu)
+                return state::main_menu;
+            else if(m_current_states & state::game)
+                return state::game;
+            else if(m_current_states & state::editor)
+                return state::editor;
+            else if(m_current_states & state::error)
+                return state::error;
+            return state::num; // TODO ???
+        }
+
 	private:
 		void init()
 		{
@@ -186,19 +208,23 @@ namespace rj
 
 			// add the error instances
 			m_errorhandler.create_error_instance(errors::cl_nullptr_access,
-			"Something went wrong during program execution.\nPlease consider to make a bugreport at:\nhttps://github.com/Malekblubb/rectojump\n(Please attach 'log.log' and 'error.log'.)",
+            "Something went wrong during program execution.\n"
+            "Please consider to make a bugreport at:\nhttps://github.com/Malekblubb/rectojump\n"
+            "(Please attach 'log.log' and 'error.log'.)",
 			font,
 			[this]{this->set_only_state(state::error);});
 
 			// TODO: add homepage here
-			m_errorhandler.create_error_instance(errors::cl_data, "Some data wasn't loaded, can't run the game.\nPlease download a full release at: ",
+            m_errorhandler.create_error_instance(errors::cl_data, "Some data wasn't loaded, can't run the game.\n"
+                                                                  "Please download a full release at: ",
 			font,
 			[this]{this->set_only_state(state::error);});
 
 
 			// checking font
 			if(!m_datamgr.exists_id("Fipps-Regular.otf"))
-				mlk::exit_with("main font ('Fipps-Regular.otf') not loaded", EXIT_FAILURE, mlk::lerr(errors::cl_data)["rj::game_handler"]);
+                mlk::exit_with("main font ('Fipps-Regular.otf') not loaded",
+                               EXIT_FAILURE, mlk::lerr(errors::cl_data)["rj::game_handler"]);
 
 			// checking data
 			if(!m_datamgr.exists_ids({"debug_font.png", "Fipps-Regular.otf", "Ubuntu-R.ttf", "arrow.png",
@@ -251,35 +277,14 @@ namespace rj
             [this]{if(!this->is_active(state::game)) return; m_game.get_world().c_player();};
 		}
 
-        void log_state()
-        {
-            // output the current states
-            std::string active_states;
-            for(std::size_t i{0}; i < (std::size_t)state::num; ++i)
-            {
-                 if(m_current_states & (rj::state)i)
-                     active_states += std::string{state_as_string[i]} + " ";
-            }
-            mlk::lout("rj::game_handler") << "States got changed, active: " << active_states;
-        }
-
 		void activate_state(state s)
-        {
-            m_current_states |= s;
-            log_state();
-        }
+        {m_current_states |= s;}
 
 		void deactivate_state(state s)
-        {
-            m_current_states.remove(s);
-            log_state();
-        }
+        {m_current_states.remove(s);}
 
 		void toggle_state(state s)
-        {
-            m_current_states.toggle(s);
-            log_state();
-        }
+        {m_current_states.toggle(s);}
 
 		bool is_active(state s) const
 		{return m_current_states & s;}
@@ -288,7 +293,6 @@ namespace rj
 		{
 			m_current_states.remove_all();
 			m_current_states |= s;
-            log_state();
 		}
 
 		void update(dur duration)

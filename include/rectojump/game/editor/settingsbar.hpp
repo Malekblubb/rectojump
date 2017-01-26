@@ -25,7 +25,7 @@ namespace rj
 	{
 		Editor& m_editor;
 		typename Editor::gh_type& m_gamehandler;
-		background_manager& m_backgroundmgr;
+        background_manager<typename Editor::gh_type>& m_backgroundmgr;
 		rndr& m_render;
 
 		// interface
@@ -195,9 +195,9 @@ namespace rj
 					m_gamehandler.popupmgr().template create_popup<popup_type::error>("invalid content (must be numeric): " + point_count);
 					return;
 				}
-				m_backgroundmgr.bg_shape().set_startcolor(start_color);
-				m_backgroundmgr.bg_shape().set_endcolor(end_color);
-				m_backgroundmgr.bg_shape().set_gradient_points(mlk::stl_string::to_int<std::size_t>(point_count));
+                m_backgroundmgr.bg_shape(state::editor).set_startcolor(start_color);
+                m_backgroundmgr.bg_shape(state::editor).set_endcolor(end_color);
+                m_backgroundmgr.bg_shape(state::editor).set_gradient_points(mlk::stl_string::to_int<std::size_t>(point_count));
 			});
 
 			m_textboxes.emplace("tb_bgstartcolor", ui::textbox{tb_size, vec2f{shape_size.x / 2.f, tb_size.y + spacing}, m_font, "BG begin color"});

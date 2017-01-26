@@ -29,12 +29,15 @@ namespace rj
 	template<typename Game_Handler>
 	class main_menu
 	{
+    public:
+        using gh_type = Game_Handler;
+    private:
 		Game_Handler& m_gamehandler;
 		game_window& m_gamewindow;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 		data_store_type& m_datastore;
-		background_manager& m_backgroundmgr;
+        background_manager<Game_Handler>& m_backgroundmgr;
 
 		background_main_menu<main_menu> m_background;
 
@@ -70,7 +73,7 @@ namespace rj
 		void on_activate()
 		{
 			// set the background
-			m_backgroundmgr.set_bg_shape({settings::get_window_size<vec2f>(), to_rgb("#373737"), to_rgb("#373737")});
+            m_backgroundmgr.set_bg_shape(state::main_menu, {settings::get_window_size<vec2f>(), to_rgb("#373737"), to_rgb("#373737")});
 		}
 
 	private:

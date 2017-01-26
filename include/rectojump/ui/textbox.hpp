@@ -241,8 +241,6 @@ namespace rj
 					this->update_password_mode();
 
 				this->update_cursor();
-
-                std::cout << text.toAnsiString() << std::endl;
 			}
 
 			void update_text_pos()

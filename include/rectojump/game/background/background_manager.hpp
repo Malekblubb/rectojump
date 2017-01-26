@@ -17,86 +17,118 @@
 
 namespace rj
 {
+    template<typename Game_Handler>
 	class background_manager
 	{
 		using bbc_ptr = mlk::sptr<basic_background_component>;
 		rndr& m_render;
+        Game_Handler& m_gamehandler;
 
-        // TODO: save background for diferent states, so the effects can be activated on switch
-//        struct objects_for_state
-//        {
-//            gradient_rect m_bgshape;
-//            sf::RectangleShape m_textureshape;
-//            std::vector<bbc_ptr> m_components;
-//        };
-//        std::map<state, objects_for_state> m_objects;
-        // create_object(state, Args&&...)
+        struct objects_per_state
+        {
+            gradient_rect bgshape;
+            sf::RectangleShape textureshape;
+            std::vector<bbc_ptr> components;
+        };
 
-		gradient_rect m_bgshape;
-		sf::RectangleShape m_textureshape;
-		std::vector<bbc_ptr> m_components;
-
+        std::map<state, objects_per_state> m_objects;
 	public:
-		background_manager(rndr& r) :
-			m_render{r}
+        background_manager(rndr& r, Game_Handler& gh) :
+            m_render{r},
+            m_gamehandler{gh}
 		{ }
 
 		void update(dur duration)
 		{
-			for(auto& a : m_components)
-				a->update(duration);
-			this->erase_destroyed();
+            auto do_update_for_state
+            {
+                [this, duration](state s)
+                {
+                    // update all components of current state
+                    for(auto& a : m_objects[s].components)
+                            a->update(duration);
+
+                    // erase dead objects
+                    mlk::cnt::remove_all_if(
+                    [](const auto& p){return p->is_destroyed();}, m_objects[s].components);
+                }
+            };
+
+            if(m_gamehandler.states() & state::main_menu)
+                do_update_for_state(state::main_menu);
+            else if(m_gamehandler.states() & state::game)
+                do_update_for_state(state::game);
+            else if(m_gamehandler.states() & state::editor)
+                do_update_for_state(state::editor);
+            else if(m_gamehandler.states() & state::error)
+                do_update_for_state(state::error);
 		}
 
 		void render()
-		{
-			m_render(m_bgshape);
-			for(auto& a : m_components) a->render();
-			m_render(m_textureshape);
+        {
+            auto do_render_for_state
+            {
+                [this](state s)
+                {
+                    // render bg shape
+                    m_render(m_objects[s].bgshape);
+
+                    // update all components of current state
+                    for(auto& a : m_objects[s].components)
+                            a->render();
+
+                    // render texture shape
+                    m_render(m_objects[s].textureshape);
+                }
+            };
+
+            if(m_gamehandler.states() & state::main_menu)
+                do_render_for_state(state::main_menu);
+            else if(m_gamehandler.states() & state::game)
+                do_render_for_state(state::game);
+            else if(m_gamehandler.states() & state::editor)
+                do_render_for_state(state::editor);
+            else if(m_gamehandler.states() & state::error)
+                do_render_for_state(state::error);
 		}
 
-		void set_bg_shape(const gradient_rect& shape) noexcept
-		{m_bgshape = shape;}
+        void set_bg_shape(state s, const gradient_rect& shape) noexcept
+        {m_objects[s].bgshape = shape;}
 
-		void set_tx_shape(const sf::RectangleShape& shape) noexcept
-		{m_textureshape = shape;}
+        void set_tx_shape(state s, const sf::RectangleShape& shape) noexcept
+        {m_objects[s].textureshape = shape;}
 
-		gradient_rect& bg_shape() noexcept
-		{return m_bgshape;}
+        gradient_rect& bg_shape(state s) noexcept
+        {return m_objects[s].bgshape;}
 
-		const gradient_rect& get_bg_shape() const noexcept
-		{return m_bgshape;}
+        const gradient_rect& get_bg_shape(state s) noexcept
+        {return m_objects[s].bgshape;}
 
-		void clear() noexcept
+        void clear(state s) noexcept
 		{
+            auto& for_state{m_objects[s]};
+
 			// clear components
-			m_components.clear();
+            for_state.components.clear();
 
 			// clear bg
-			m_bgshape.set_gradient_points(1);
-			m_bgshape.set_startcolor({});
-			m_bgshape.set_endcolor({});
-			m_textureshape.setFillColor({0, 0, 0, 0});
-			m_textureshape.setTexture(nullptr);
+            for_state.bgshape.set_gradient_points(1);
+            for_state.bgshape.set_startcolor({});
+            for_state.bgshape.set_endcolor({});
+            for_state.textureshape.setFillColor({0, 0, 0, 0});
+            for_state.textureshape.setTexture(nullptr);
 		}
 
-		std::size_t num_components() const noexcept
-		{return m_components.size();}
+        std::size_t num_components_current_state() noexcept
+        {return m_objects[m_gamehandler.current_renderable_state()].components.size();}
 
-		template<typename Obj_Type, typename... Args>
-		mlk::sptr<background_component<Obj_Type>> create_object(Args&&... args)
-		{
-			auto ptr(std::make_shared<background_component<Obj_Type>>(m_render, std::forward<Args>(args)...));
-			m_components.emplace_back(ptr);
-			return ptr;
-		}
-
-	private:
-		void erase_destroyed() noexcept
-		{
-			mlk::cnt::remove_all_if(
-			[](const auto& p){return p->is_destroyed();}, m_components);
-		}
+        template<typename Obj_Type, typename... Args>
+        mlk::sptr<background_component<Obj_Type>> create_object_for_state(state s, Args&&... args)
+        {
+            auto ptr(std::make_shared<background_component<Obj_Type>>(m_render, std::forward<Args>(args)...));
+            m_objects[s].components.emplace_back(ptr);
+            return ptr;
+        }
 	};
 }
 

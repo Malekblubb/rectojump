@@ -101,7 +101,7 @@ namespace rj
 
 		void on_activate()
 		{
-			m_background.reset();
+//			m_background.reset();
 		}
 
 		void handle_save(const level_id& level_name)
