@@ -45,7 +45,6 @@ namespace rj
             if constexpr(std::is_same<std::string, Func_Ret_Type>())
                     str = m_func();
             else str = std::to_string(m_func());
-//			auto str(std::to_string(m_func()));
 			auto insert_pos(result.find("%%"));
 			if(insert_pos != std::string::npos)
 			{
