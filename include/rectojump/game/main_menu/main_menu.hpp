@@ -72,8 +72,7 @@ namespace rj
 
 		void on_activate()
 		{
-			// set the background
-            m_backgroundmgr.set_bg_shape(state::main_menu, {settings::get_window_size<vec2f>(), to_rgb("#373737"), to_rgb("#373737")});
+
 		}
 
 	private:

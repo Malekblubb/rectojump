@@ -84,11 +84,19 @@ namespace rj
 			auto window_size(settings::get_window_size<vec2f>());
 
 			// nova
-            auto nova(m_backgroundmgr.template create_object_for_state<triangles4>(state::main_menu, vec2f{window_size.x / 2.f, window_size.y / 2.f}, vec2f{window_size.y / 3.f, window_size.x}, 0, 0.1f, vec2f{0.f, 0.f}));
+            auto nova(m_backgroundmgr.template create_object_for_state<triangles4>
+                      (state::main_menu, vec2f{window_size.x / 2.f, window_size.y / 2.f},
+                       vec2f{window_size.y / 3.f, window_size.x}, 0, 0.1f, vec2f{0.f, 0.f}));
 			nova->render_object().setFillColor(to_rgb("#bdbdbd", 100));
 
 			// timer
 			m_timer.run();
+
+            // set the background
+            m_backgroundmgr.set_bg_shape(state::main_menu,
+                                        {settings::get_window_size<vec2f>(),
+                                         to_rgb("#373737"),
+                                         to_rgb("#373737")});
 		}
 	};
 }
