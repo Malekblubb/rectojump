@@ -139,8 +139,8 @@ namespace rj
 			if(!this->check_level_name(level_name))
 				return;
 
-//			auto& lv(m_levelmgr.get_level(level_name));
-//			m_gameworld.load_level(lv.entities);
+            auto& lv(m_levelmgr.get_level(level_name));
+            m_gameworld.template load_level<true>(lv.entities);
 		}
 
 		void reset_zoom() noexcept

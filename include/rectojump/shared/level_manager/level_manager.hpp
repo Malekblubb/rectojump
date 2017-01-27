@@ -103,7 +103,7 @@ namespace rj
 		level_id make_id(const std::string& str) const noexcept
 		{
 			auto result(str);
-			if(result.substr(result.size() - 4, 4) != ".rjl")
+            if(result.length() < 4 || result.substr(result.size() - 4, 4) != ".rjl")
 				result += ".rjl";
 			return result;
 		}

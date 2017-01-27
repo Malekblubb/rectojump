@@ -14,6 +14,7 @@
 #include "entity_handler.hpp"
 #include "factory.hpp"
 #include <rectojump/game/background/background_manager.hpp>
+#include <rectojump/game/editor/editor_entity.hpp>
 #include <rectojump/shared/data_store.hpp>
 
 #include <mlk/tools/random_utl.h>
@@ -54,57 +55,48 @@ namespace rj
 			m_entity_handler.render();
 		}
 
+        template<bool load_editor>
 		void load_level(const entity_proto_vec& entities)
 		{
 			m_entity_handler.clear();
 
 			for(auto& entity : entities)
 			{
-				mlk::sptr<entity_base> ptr{nullptr};
 				vec2f pos{entity[x], entity[y]};
-
 				auto entity_figure(static_cast<char>(entity[figure]));
 
+                // rectangle
 				if(entity_figure == entity_figure::f_rectangle)
-				{
-					auto obj(factory::create<platform>(pos, vec2f{48.f, 48.f}));
-					obj->render_object().setTexture(&m_datastore.template get<sf::Texture>("editor_item_rect.png"));
-//					obj->render_object().setOutlineThickness(1);
-//					obj->render_object().setOutlineColor(sf::Color::Red);
-					ptr = obj;
+                {
+                    // we need other entity type when editing
+                    if constexpr(load_editor)
+                    {
+                        auto a{this->create_entity<editor_entity>(pos)};
+                        a->set_texture(&m_datastore.template get<sf::Texture>("editor_item_rect.png"));
+                    }
+                    else
+                    {
+                        auto a{this->create_entity<platform>(pos, vec2f{48.f, 48.f})};
+                        a->render_object().setTexture(&m_datastore.template get<sf::Texture>("editor_item_rect.png"));
+                    }
 				}
+
+                // triangles
 				else if(entity_figure == entity_figure::f_triangle)
 				{
-					auto obj(factory::create<platform>(pos, vec2f{48.f, 48.f}));
-					obj->render_object().setTexture(&m_datastore.template get<sf::Texture>("editor_item_triangle.png"));
-					obj->set_propertie(entity_propertie::death);
-					ptr = obj;
+                    // we need other entity type when editing
+                    if constexpr(load_editor)
+                    {
+                        auto a{this->create_entity<editor_entity>(pos)};
+                        a->set_texture(&m_datastore.template get<sf::Texture>("editor_item_triangle.png"));
+                    }
+                    else
+                    {
+                        auto a{this->create_entity<platform>(pos, vec2f{48.f, 48.f})};
+                        a->render_object().setTexture(&m_datastore.template get<sf::Texture>("editor_item_triangle.png"));
+                        a->set_propertie(entity_propertie::death);
+                    }
 				}
-
-
-				switch(static_cast<char>(entity[figure]))
-				{
-				case entity_figure::f_rectangle:
-				{
-//					auto obj(factory::create<platform>(pos, vec2f{48.f, 48.f}));
-//					obj->render_object().setTexture(&m_datastore.template get<sf::Texture>("editor_item_rect.png"));
-//					ptr = obj;
-
-					break;
-				}
-				case entity_figure::f_triangle:
-//					ptr = factory::create<triangle>(pos, 19.f);
-					break;
-				case entity_figure::f_triangles4:
-//					m_backgroundmgr.create_object<triangles4>(pos, vec2f{50.f, 200.f}, 0, 0.5f, vec2f{0, 0});
-					break;
-				default:
-					ptr = nullptr;
-					break;
-				}
-
-				if(ptr)
-					m_entity_handler.create_entity(ptr);
 			}
 		}
 

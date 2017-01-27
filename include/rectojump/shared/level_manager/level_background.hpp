@@ -45,8 +45,8 @@ namespace rj
 		std::size_t get_pointcount() const noexcept
 		{return m_pointcount;}
 
-		int size() const noexcept
-		{return this->data().size();}
+        auto size() const noexcept
+        {return m_data.size();}
 
 		const mlk::data_packet& data() const noexcept
 		{return m_data;}

@@ -189,14 +189,6 @@ namespace rj
 			settings::on_changed() +=
 			[this]{m_game_window.set_size(settings::get_window_size());};
 
-//			m_mainmenu.mmenu_start()->get_items().on_event("editor",
-//			[this]
-//			{
-//                this->deactivate_state(state::main_menu);
-//                this->activate_state(state::editor);
-//                m_editor.on_activate();
-//			});
-
 			this->init_errors();
 			this->init_pointers();
 			this->init_input();
