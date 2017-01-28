@@ -1,4 +1,4 @@
- 
+
 //
 // Copyright (c) 2013-2017 Christoph Malek
 // See LICENSE for more information.

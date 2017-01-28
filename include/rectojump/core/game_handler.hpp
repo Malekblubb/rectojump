@@ -37,16 +37,16 @@ namespace rj
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
 
-        data_store_type m_datastore{m_datamgr.get_all_containing_as_map_as<sf::Texture>(".png"),
-                    m_datamgr.get_all_containing_as_map_as<sf::Font>(".otf"),
-                    m_datamgr.get_all_containing_as_map_as<sf::Font>(".ttf")};
+		data_store_type m_datastore{m_datamgr.get_all_containing_as_map_as<sf::Texture>(".png"),
+					m_datamgr.get_all_containing_as_map_as<sf::Font>(".otf"),
+					m_datamgr.get_all_containing_as_map_as<sf::Font>(".ttf")};
 		camera m_default_camera;
 		render<game_handler> m_render;
-        background_manager<game_handler> m_backgroundmgr;
-        game<game_handler> m_game;
-        editor<game_handler, decltype(m_game)> m_editor;
+		background_manager<game_handler> m_backgroundmgr;
+		game<game_handler> m_game;
+		editor<game_handler, decltype(m_game)> m_editor;
 		main_menu<game_handler> m_mainmenu;
-        game_menu<game_handler> m_gamemenu;
+		game_menu<game_handler> m_gamemenu;
 		particle_manager<game_handler> m_particlemgr;
 		popup_manager<game_handler> m_popupmgr;
 		debug_info<game_handler, decltype(m_game)> m_debug_info;
@@ -59,13 +59,14 @@ namespace rj
 			m_errorhandler{eh},
 			m_datamgr{dm},
 			m_lvmgr{lm},
-			m_default_camera{gw, {settings::get_window_size<vec2f>() / 2.f, settings::get_window_size<vec2f>()}},
+			m_default_camera{gw, {settings::get_window_size<vec2f>() / 2.f,
+							 settings::get_window_size<vec2f>()}},
 			m_render{*this},
-            m_backgroundmgr{m_render, *this},
-            m_game{*this},
-            m_editor{*this},
+			m_backgroundmgr{m_render, *this},
+			m_game{*this},
+			m_editor{*this},
 			m_mainmenu{*this},
-            m_gamemenu{*this},
+			m_gamemenu{*this},
 			m_particlemgr{*this},
 			m_popupmgr{*this},
 			m_debug_info{*this}
@@ -76,7 +77,8 @@ namespace rj
 			auto& lv(m_lvmgr.get_level(id));
 			if(!lv.is_valid())
 			{
-				m_popupmgr.create_popup<popup_type::error>("Failed to load level: not a valid level");
+				m_popupmgr.create_popup<popup_type::error>
+						("Failed to load level: not a valid level");
 				return;
 			}
 
@@ -85,29 +87,29 @@ namespace rj
 			this->activate_state(state::game);
 
 			// load background
-//			m_backgroundmgr.clear();
-//			auto& lv_bg(lv.background);
-//			auto& bgshape(m_backgroundmgr.bg_shape());
-//			bgshape.set_startcolor(lv_bg.get_startcolor());
-//			bgshape.set_endcolor(lv_bg.get_endcolor());
-//			bgshape.set_gradient_points(lv_bg.get_pointcount());
+			//			m_backgroundmgr.clear();
+			//			auto& lv_bg(lv.background);
+			//			auto& bgshape(m_backgroundmgr.bg_shape());
+			//			bgshape.set_startcolor(lv_bg.get_startcolor());
+			//			bgshape.set_endcolor(lv_bg.get_endcolor());
+			//			bgshape.set_gradient_points(lv_bg.get_pointcount());
 
 			// load level to gameworld
-//			m_game.load_level(lv);
+			//			m_game.load_level(lv);
 		}
 
-        void switch_to_editor()
-        {
-            this->deactivate_state(state::main_menu);
-            this->activate_state(state::editor);
-            m_editor.on_activate();
-        }
+		void switch_to_editor()
+		{
+			this->deactivate_state(state::main_menu);
+			this->activate_state(state::editor);
+			m_editor.on_activate();
+		}
 
-        void switch_to_main_menu()
-        {
-            this->deactivate_state(state::editor);
-            this->activate_state(state::main_menu);
-        }
+		void switch_to_main_menu()
+		{
+			this->deactivate_state(state::editor);
+			this->activate_state(state::main_menu);
+		}
 
 		template<typename... Args>
 		void render_object(Args&&... args)
@@ -116,12 +118,13 @@ namespace rj
 		template<state active_state, typename On_Input, typename... Input_Type_Args>
 		void add_input(On_Input&& func, Input_Type_Args&&... keys_btns)
 		{
-			static_assert(sizeof...(keys_btns) > 0, "at least one key/button/wheel argument needed");
-            add_input_helper<(sizeof...(keys_btns) > 1),
-                    typename std::tuple_element<0, std::tuple<Input_Type_Args...>>::type,
-                    active_state,
-                    On_Input,
-                    Input_Type_Args...>
+			static_assert(sizeof...(keys_btns) > 0,
+						  "at least one key/button/wheel argument needed");
+			add_input_helper<(sizeof...(keys_btns) > 1),
+					typename std::tuple_element<0, std::tuple<Input_Type_Args...>>::type,
+					active_state,
+					On_Input,
+					Input_Type_Args...>
 			{*this, std::forward<On_Input>(func), std::forward<Input_Type_Args>(keys_btns)...};
 		}
 
@@ -132,7 +135,7 @@ namespace rj
 		auto& gamewindow() noexcept
 		{return m_game_window;}
 
-        auto& get_game() noexcept
+		auto& get_game() noexcept
 		{return m_game;}
 
 		auto& backgroundmgr() noexcept
@@ -141,8 +144,8 @@ namespace rj
 		auto& mainmenu() noexcept
 		{return m_mainmenu;}
 
-        auto& gamemenu() noexcept
-        {return m_gamemenu;}
+		auto& gamemenu() noexcept
+		{return m_gamemenu;}
 
 		auto& datastore() noexcept
 		{return m_datastore;}
@@ -162,32 +165,32 @@ namespace rj
 		auto& popupmgr() noexcept
 		{return m_popupmgr;}
 
-        auto& states() noexcept
-        {return m_current_states;}
+		auto& states() noexcept
+		{return m_current_states;}
 
-        auto current_renderable_state() noexcept
-        {
-            if(m_current_states & state::main_menu)
-                return state::main_menu;
-            else if(m_current_states & state::game)
-                return state::game;
-            else if(m_current_states & state::editor)
-                return state::editor;
-            else if(m_current_states & state::error)
-                return state::error;
-            return state::num; // TODO ???
-        }
+		auto current_renderable_state() noexcept
+		{
+			if(m_current_states & state::main_menu)
+				return state::main_menu;
+			else if(m_current_states & state::game)
+				return state::game;
+			else if(m_current_states & state::editor)
+				return state::editor;
+			else if(m_current_states & state::error)
+				return state::error;
+			return state::num; // TODO ???
+		}
 
 	private:
 		void init()
 		{
-            this->activate_state(state::main_menu);
+			this->activate_state(state::main_menu);
 
 			m_game_window.get_updater().on_update += [this](dur duration){this->update(duration);};
-            m_game_window.get_updater().on_render += [this]{this->render_f();};
+			m_game_window.get_updater().on_render += [this]{this->render_f();};
 
 			settings::on_changed() +=
-			[this]{m_game_window.set_size(settings::get_window_size());};
+					[this]{m_game_window.set_size(settings::get_window_size());};
 
 			this->init_errors();
 			this->init_pointers();
@@ -200,28 +203,31 @@ namespace rj
 
 			// add the error instances
 			m_errorhandler.create_error_instance(errors::cl_nullptr_access,
-            "Something went wrong during program execution.\n"
-            "Please consider to make a bugreport at:\nhttps://github.com/Malekblubb/rectojump\n"
-            "(Please attach 'log.log' and 'error.log'.)",
-			font,
-			[this]{this->set_only_state(state::error);});
+												 "Something went wrong during program execution.\n"
+												 "Please consider to make a bugreport at:\n"
+												 "https://github.com/Malekblubb/rectojump\n"
+												 "(Please attach 'log.log' and 'error.log'.)",
+												 font,
+												 [this]{this->set_only_state(state::error);});
 
 			// TODO: add homepage here
-            m_errorhandler.create_error_instance(errors::cl_data, "Some data wasn't loaded, can't run the game.\n"
-                                                                  "Please download a full release at: ",
-			font,
-			[this]{this->set_only_state(state::error);});
+			m_errorhandler.create_error_instance(errors::cl_data,
+												 "Some data wasn't loaded, can't run the game.\n"
+												 "Please download a full release at: ",
+												 font,
+												 [this]{this->set_only_state(state::error);});
 
 
 			// checking font
 			if(!m_datamgr.exists_id("Fipps-Regular.otf"))
-                mlk::exit_with("main font ('Fipps-Regular.otf') not loaded",
-                               EXIT_FAILURE, mlk::lerr(errors::cl_data)["rj::game_handler"]);
+				mlk::exit_with("main font ('Fipps-Regular.otf') not loaded",
+							   EXIT_FAILURE, mlk::lerr(errors::cl_data)["rj::game_handler"]);
 
 			// checking data
-			if(!m_datamgr.exists_ids({"debug_font.png", "Fipps-Regular.otf", "Ubuntu-R.ttf", "arrow.png",
-									  "editor_item_rect.png", "editor_item_triangle.png", "editor_item_triangles4.png",
-									  "menu_side.png"}))
+			if(!m_datamgr.exists_ids({"debug_font.png", "Fipps-Regular.otf", "Ubuntu-R.ttf",
+									 "arrow.png", "editor_item_rect.png",
+									 "editor_item_triangle.png", "editor_item_triangles4.png",
+									 "menu_side.png"}))
 				mlk::lerr(errors::cl_data);
 		}
 
@@ -234,29 +240,29 @@ namespace rj
 		{
 			// input update
 			inp::on_input_update() +=
-			[this]{this->update_input();};
+					[this]{this->update_input();};
 
 			// global input
 			inp::on_keys_pressed(key::LShift, key::LControl, key::F) +=
-			[this]
+					[this]
 			{
 				m_game_window.toggle_fullscreen();
 				rj::settings::set_fullscreen(m_game_window.get_fullscreen());
 			};
 
 			inp::on_keys_pressed(key::LShift, key::LControl, key::T) +=
-			[this]{m_game_window.toggle_titlebar();};
+					[this]{m_game_window.toggle_titlebar();};
 
 			inp::on_key_pressed(key::F3) +=
-			[this]{this->toggle_state(state::debug_info);};
+					[this]{this->toggle_state(state::debug_info);};
 
 			inp::on_keys_pressed(key::LShift, key::LControl, key::Q) +=
-			[this]{m_game_window.stop();};
+					[this]{m_game_window.stop();};
 
 			// game input
 			// pause / game_menu
 			auto pause_fnc(
-			[this]
+						[this]
 			{
 				if(!this->is_active(state::main_menu))
 					m_current_states.toggle(state::game_menu);
@@ -266,17 +272,22 @@ namespace rj
 			inp::on_key_pressed(key::P) += pause_fnc;
 
 			inp::on_key_pressed(key::D) +=
-            [this]{if(!this->is_active(state::game)) return; m_game.get_world().c_player();};
+			[this]
+			{
+				if(!this->is_active(state::game))
+					return;
+				m_game.get_world().c_player();
+			};
 		}
 
 		void activate_state(state s)
-        {m_current_states |= s;}
+		{m_current_states |= s;}
 
 		void deactivate_state(state s)
-        {m_current_states.remove(s);}
+		{m_current_states.remove(s);}
 
 		void toggle_state(state s)
-        {m_current_states.toggle(s);}
+		{m_current_states.toggle(s);}
 
 		bool is_active(state s) const
 		{return m_current_states & s;}
@@ -301,17 +312,17 @@ namespace rj
 			if(this->is_active(state::game) && !this->is_active(state::game_menu))
 				m_game.update(duration);
 
-            else if(this->is_active(state::editor) && !this->is_active(state::game_menu))
-            {
-                m_editor.update(duration);
-                m_game.get_world().entityhandler().update(duration);
-            }
+			else if(this->is_active(state::editor) && !this->is_active(state::game_menu))
+			{
+				m_editor.update(duration);
+				m_game.get_world().entityhandler().update(duration);
+			}
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.update(duration);
 
-            else if(this->is_active(state::game_menu))
-                m_gamemenu.update(duration);
+			else if(this->is_active(state::game_menu))
+				m_gamemenu.update(duration);
 
 			if(this->is_active(state::debug_info))
 				m_debug_info.update(duration);
@@ -325,10 +336,10 @@ namespace rj
 
 		void update_input()
 		{
-            m_editor.update_input();
+			m_editor.update_input();
 		}
 
-        void render_f()
+		void render_f()
 		{
 			m_default_camera.activate();
 
@@ -345,17 +356,17 @@ namespace rj
 			if(this->is_active(state::game))
 				m_game.render();
 
-            else if(this->is_active(state::editor))
-                m_editor.render();
+			else if(this->is_active(state::editor))
+				m_editor.render();
 
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
 
-            if(this->is_active(state::game_menu))
-            {
-                m_default_camera.activate();
-                m_gamemenu.render();
-            }
+			if(this->is_active(state::game_menu))
+			{
+				m_default_camera.activate();
+				m_gamemenu.render();
+			}
 
 			m_default_camera.activate();
 			if(this->is_active(state::debug_info))
@@ -366,13 +377,14 @@ namespace rj
 		}
 
 		// multi_args: true, Input_Type = key
-		template<bool multi_args, typename Input_Type, state s, typename On_Input, typename... Input_Type_Args>
+		template<bool multi_args, typename Input_Type, state s, typename On_Input,
+				 typename... Input_Type_Args>
 		struct add_input_helper
 		{
 			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... keys)
 			{
 				inp::on_keys_pressed(std::forward<Input_Type_Args>(keys)...) +=
-				[&gh, func]{if(gh.is_active(s)) func();};
+						[&gh, func]{if(gh.is_active(s)) func();};
 			}
 		};
 
@@ -383,7 +395,7 @@ namespace rj
 			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... k)
 			{
 				inp::on_key_pressed(std::forward<Input_Type_Args>(k)...) +=
-				[&gh, func]{if(gh.is_active(s)) func();};
+						[&gh, func]{if(gh.is_active(s)) func();};
 			}
 		};
 
@@ -394,7 +406,7 @@ namespace rj
 			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... b)
 			{
 				inp::on_btn_pressed(std::forward<Input_Type_Args>(b)...) +=
-				[&gh, func](const vec2f& pos){if(gh.is_active(s)) func(pos);};
+						[&gh, func](const vec2f& pos){if(gh.is_active(s)) func(pos);};
 			}
 		};
 
@@ -405,7 +417,7 @@ namespace rj
 			add_input_helper(const game_handler& gh, On_Input&& func, Input_Type_Args&&... w)
 			{
 				inp::on_mousewheel(std::forward<Input_Type_Args>(w)...) +=
-				[&gh, func](const vec2f& pos){if(gh.is_active(s)) func(pos);};
+						[&gh, func](const vec2f& pos){if(gh.is_active(s)) func(pos);};
 			}
 		};
 	};

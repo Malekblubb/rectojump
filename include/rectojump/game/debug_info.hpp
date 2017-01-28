@@ -41,10 +41,10 @@ namespace rj
 		std::string get_formated() const override
 		{
 			auto result(m_unformated_str);
-            std::string str;
-            if constexpr(std::is_same<std::string, Func_Ret_Type>())
-                    str = m_func();
-            else str = std::to_string(m_func());
+			std::string str;
+			if constexpr(std::is_same<std::string, Func_Ret_Type>())
+					str = m_func();
+			else str = std::to_string(m_func());
 			auto insert_pos(result.find("%%"));
 			if(insert_pos != std::string::npos)
 			{
@@ -76,7 +76,7 @@ namespace rj
 		debug_info(Game_Handler& gh) :
 			m_gamehandler{gh},
 			m_render{gh.rendermgr()},
-            m_game{gh.get_game()},
+			m_game{gh.get_game()},
 			m_text{gh.datamgr()}
 		{this->init();}
 
@@ -101,47 +101,49 @@ namespace rj
 			m_background.setOutlineColor({255, 0, 0});
 
 			this->add_title_line("Performance");
-            this->add_line("FPS:             %%", [this]{return m_gamehandler.gamewindow().get_updater().get_fps();});
-            this->add_line("FDur:            %%\n", [this]{return m_gamehandler.gamewindow().get_updater().get_frameduration();});
+			this->add_line("FPS:             %%", [this]{return m_gamehandler.gamewindow().get_updater().get_fps();});
+			this->add_line("FDur:            %%\n", [this]{return m_gamehandler.gamewindow().get_updater().get_frameduration();});
 
 			this->add_title_line("Components");
-            this->add_line("Gameworld:       %%", [this]{return m_game.get_world().num_entities();});
-            this->add_line("Background:      %%", [this]{return m_gamehandler.backgroundmgr().num_components_current_state();});
-            this->add_line("Popups:          %%\n", [this]{return m_gamehandler.popupmgr().num_popups();});
+			this->add_line("Gameworld:       %%", [this]{return m_game.get_world().num_entities();});
+			this->add_line("Background:      %%", [this]{return m_gamehandler.backgroundmgr().num_components_current_state();});
+			this->add_line("Popups:          %%\n", [this]{return m_gamehandler.popupmgr().num_popups();});
 
 			this->add_title_line("Managers");
-            this->add_line("Data:            %%", [this]{return m_gamehandler.datamgr().num_data();});
-            this->add_line("Levels:          %%\n", [this]{return m_gamehandler.levelmgr().num_levels();});
+			this->add_line("Data:            %%", [this]{return m_gamehandler.datamgr().num_data();});
+			this->add_line("Levels:          %%\n", [this]{return m_gamehandler.levelmgr().num_levels();});
 
-            this->add_title_line("States");
-            this->add_line("Active (render): %%",
-                           [this]{return std::string{state_as_string[(int)m_gamehandler.current_renderable_state()]};});
-            this->add_line("Active (all):    %%",
-            [this]
-            {
-                std::string active_states;
-                for(std::size_t i{0}; i < (std::size_t)state::num; ++i)
-                {
-                    if(m_gamehandler.states() & (rj::state)i)
-                        active_states += std::string{state_as_string[i]} + " ";
-                }
-                return active_states;
-            });
-        }
+			this->add_title_line("States");
+			this->add_line("Active (render): %%",
+			[this]{return std::string{state_as_string[(int)m_gamehandler.current_renderable_state()]};});
+			this->add_line("Active (all):    %%",
+			[this]
+			{
+				std::string active_states;
+				for(std::size_t i{0}; i < (std::size_t)state::num; ++i)
+				{
+					if(m_gamehandler.states() & (rj::state)i)
+						active_states += std::string{state_as_string[i]} + " ";
+				}
+				return active_states;
+			});
+		}
 
 		void add_title_line(const std::string& text)
 		{
 			std::string app{'\n'};
 			for(auto& a : text)
 				app += "=";
-			auto ptr(std::make_shared<debug_info_string<void>>(std::string{text + app + "\n"}, []{}));
+			auto ptr(std::make_shared<debug_info_string<void>>(std::string{text + app + "\n"},
+															   []{}));
 			m_lines.emplace_back(ptr);
 		}
 
 		template<typename Func>
 		void add_line(const std::string& text, Func&& f)
 		{
-			auto ptr(std::make_shared<debug_info_string<typename mlk::lambda_info<Func>::return_type>>(text + '\n', f));
+			auto ptr(std::make_shared<debug_info_string<
+					 typename mlk::lambda_info<Func>::return_type>>(text + '\n', f));
 			m_lines.emplace_back(ptr);
 		}
 	};

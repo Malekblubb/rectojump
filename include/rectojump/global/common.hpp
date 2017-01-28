@@ -20,12 +20,12 @@ namespace rj
 	enum class state : std::size_t
 	{main_menu, game_menu, game, editor, debug_info, error, num};
 
-    static constexpr const char* state_as_string[(std::size_t)state::num]{"main_menu",
-                                                    "game_menu",
-                                                    "game",
-                                                    "editor",
-                                                    "debug_info",
-                                                    "error"};
+	static constexpr const char* state_as_string[(std::size_t)state::num]{"main_menu",
+																		  "game_menu",
+																		  "game",
+																		  "editor",
+																		  "debug_info",
+																		  "error"};
 
 	// forward
 	class game_handler;

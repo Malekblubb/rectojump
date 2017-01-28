@@ -28,7 +28,8 @@ namespace rj
 
 	public:
 		template<typename Func>
-		error_instance& create_error_instance(errors e, const std::string& error_text, const sf::Font& font, Func&& error_event)
+		error_instance& create_error_instance(errors e, const std::string& error_text,
+											  const sf::Font& font, Func&& error_event)
 		{
 			m_instances[e] = {{error_text, font}, {error_event}};
 			return m_instances[e];

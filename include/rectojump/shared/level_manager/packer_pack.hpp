@@ -33,7 +33,8 @@ namespace rj
 		bool m_valid{false};
 
 	public:
-		level_packer(const music_data& music, const level_background& bg, const level_data& data, const level_info& info) :
+		level_packer(const music_data& music, const level_background& bg,
+					 const level_data& data, const level_info& info) :
 			m_music{music},
 			m_data{data},
 			m_background{bg},
@@ -57,8 +58,15 @@ namespace rj
 
 		void make_header()
 		{
-			level_header header{this->music_size(), this->background_size(), this->data_size(), this->info_size(), 0};
-			mlk::cnt::append(std::string{reinterpret_cast<char*>(&header), sizeof header}, m_packed_level);
+			level_header header
+			{
+				this->music_size(),
+				this->background_size(),
+				this->data_size(),
+				this->info_size(), 0
+			};
+			mlk::cnt::append(std::string{reinterpret_cast<char*>(&header), sizeof header},
+							 m_packed_level);
 		}
 
 		void make_content()
@@ -78,7 +86,8 @@ namespace rj
 				return;
 
 			m_packed_level = cmp.get();
-			mlk::cnt::insert_front(std::string{reinterpret_cast<char*>(&unpacked_size), sizeof unpacked_size},
+			mlk::cnt::insert_front(std::string{reinterpret_cast<char*>(&unpacked_size),
+											   sizeof unpacked_size},
 								   m_packed_level);
 			m_valid = true;
 		}

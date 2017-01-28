@@ -29,8 +29,10 @@ namespace rj
 		bool m_destroyed{false};
 
 	public:
-		popup(rndr* r, const sf::Font& font, const std::string& text, const vec2f& pos, mlk::ulong lifetime = 3000,
-			  const sf::Color& bg_color = to_rgb("#aaaaaa", 200), const sf::Color& outline_color = to_rgb("#707070"),
+		popup(rndr* r, const sf::Font& font, const std::string& text, const vec2f& pos,
+			  mlk::ulong lifetime = 3000,
+			  const sf::Color& bg_color = to_rgb("#aaaaaa", 200),
+			  const sf::Color& outline_color = to_rgb("#707070"),
 			  const sf::Color& fontcolor = to_rgb("#505050")) :
 			m_render{r},
 			m_text{text, font, 18},

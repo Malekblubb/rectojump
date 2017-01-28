@@ -39,7 +39,8 @@ namespace rj
 
 			textbox() = default;
 
-			textbox(const vec2f& size, const vec2f& pos, const sf::Font& font, const std::string& text = "") :
+			textbox(const vec2f& size, const vec2f& pos, const sf::Font& font,
+					const std::string& text = "") :
 				m_shape{size},
 				m_text{text, font},
 				m_password_text{"", font}
@@ -78,7 +79,11 @@ namespace rj
 			// sfml-func-style interface
 			// setters
 			void setSize(const vec2f& size) noexcept
-			{m_shape.setSize(size); this->update_text_pos(); this->update_cursor();}
+			{
+				m_shape.setSize(size);
+				this->update_text_pos();
+				this->update_cursor();
+			}
 
 			void setFillColor(const sf::Color& color) noexcept
 			{m_shape.setFillColor(color);}
@@ -93,13 +98,24 @@ namespace rj
 			{m_cursor_blinkinterval = interval;}
 
 			void setCursorColor(const sf::Color& color) noexcept
-			{m_cursorcolor = color; this->update_cursor();}
+			{
+				m_cursorcolor = color;
+				this->update_cursor();
+			}
 
 			void setTextColor(const sf::Color& color) noexcept
-            {m_text.setFillColor(color); m_password_text.setFillColor(color);}
+			{
+				m_text.setFillColor(color);
+				m_password_text.setFillColor(color);
+			}
 
 			void setTextSize(mlk::uint size) noexcept
-			{m_text.setCharacterSize(size); m_password_text.setCharacterSize(size); this->update_text_pos(); this->update_cursor();}
+			{
+				m_text.setCharacterSize(size);
+				m_password_text.setCharacterSize(size);
+				this->update_text_pos();
+				this->update_cursor();
+			}
 
 			void setText(const std::string& str)
 			{
@@ -110,7 +126,11 @@ namespace rj
 			}
 
 			void setPasswordMode(bool b) noexcept
-			{m_password_mode = b; this->update_text_pos(); this->update_cursor();}
+			{
+				m_password_mode = b;
+				this->update_text_pos();
+				this->update_cursor();
+			}
 
 			// getters
 			const vec2f& getSize() const noexcept
@@ -132,12 +152,12 @@ namespace rj
 			{return m_cursorcolor;}
 
 			const sf::Color& getTextColor() const noexcept
-            {return m_text.getFillColor();}
+			{return m_text.getFillColor();}
 
 			mlk::uint getTextSize() const noexcept
 			{return m_text.getCharacterSize();}
 
-            std::string getText() const noexcept
+			std::string getText() const noexcept
 			{
 				std::string result;
 				auto char_stack(m_char_stack);
@@ -146,13 +166,22 @@ namespace rj
 				{
 					result += char_stack.top();
 					char_stack.pop();
-                }
-                mlk::cnt::reverse_all(result);
-                return result += m_text.getString();
-            }
+				}
+				mlk::cnt::reverse_all(result);
+				return result += m_text.getString();
+			}
 
 			sf::FloatRect getGlobalBounds() const noexcept
-			{return {bounds_from_vec({this->getPosition().x - this->getOrigin().x, this->getPosition().y - this->getOrigin().y}, m_shape.getSize())};}
+			{
+				return
+				{
+					bounds_from_vec(
+					{
+						this->getPosition().x - this->getOrigin().x,
+						this->getPosition().y - this->getOrigin().y
+					}, m_shape.getSize())
+				};
+			}
 
 			bool getPasswordMode() const noexcept
 			{return m_password_mode;}
@@ -259,11 +288,14 @@ namespace rj
 			void update_cursor()
 			{
 				auto shape_bounds(m_shape.getGlobalBounds());
-				auto text_bounds(m_password_mode ? m_password_text.getGlobalBounds() : m_text.getGlobalBounds());
+				auto text_bounds(m_password_mode ? m_password_text.getGlobalBounds() :
+												   m_text.getGlobalBounds());
 				auto cursor_margin_tb(0.1f * shape_bounds.height); // top / bottom
-				m_cursor[0].position = {shape_bounds.left + text_bounds.width, shape_bounds.top + cursor_margin_tb};
+				m_cursor[0].position = {shape_bounds.left + text_bounds.width, shape_bounds.top +
+										cursor_margin_tb};
 				m_cursor[0].color = m_cursorcolor;
-				m_cursor[1].position = {shape_bounds.left + text_bounds.width, shape_bounds.top + shape_bounds.height - cursor_margin_tb};
+				m_cursor[1].position = {shape_bounds.left + text_bounds.width, shape_bounds.top +
+										shape_bounds.height - cursor_margin_tb};
 				m_cursor[1].color = m_cursorcolor;
 			}
 		};

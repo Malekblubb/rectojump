@@ -64,7 +64,8 @@ namespace rj
 		data_store(Map_Data_Types&&... vars)
 		{
 			// check number of args
-			static_assert(sizeof...(vars) == sizeof...(Data_Types), "rj::data_store<T...>: number of args is not matching");
+			static_assert(sizeof...(vars) == sizeof...(Data_Types),
+						  "rj::data_store<T...>: number of args is not matching");
 
 			this->init(std::forward<Map_Data_Types>(vars)...);
 		}
@@ -73,7 +74,8 @@ namespace rj
 		Data_Type& get(const std::string& id)
 		{
 			auto index(0);
-			get_type_index<Data_Type>([&index](int found_index){index = found_index;}, m_helpertuple);
+			get_type_index<Data_Type>([&index](int found_index){index = found_index;},
+										m_helpertuple);
 
 			auto ptr(std::static_pointer_cast<basic_store<Data_Type>>(m_stores.at(index)));
 			return ptr->m_values.at(id);

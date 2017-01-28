@@ -23,7 +23,8 @@ namespace rj
 		float m_reset_zoomfactor{1.f};
 
 	public:
-		camera(game_window& gw, const sf::View& v = {}, const sf::FloatRect& viewport = {0.f, 0.f, 1.f, 1.f}) :
+		camera(game_window& gw, const sf::View& v = {},
+			   const sf::FloatRect& viewport = {0.f, 0.f, 1.f, 1.f}) :
 			m_gamewindow{gw},
 			m_renderwindow{m_gamewindow.get_renderwindow()},
 			m_userview{v},

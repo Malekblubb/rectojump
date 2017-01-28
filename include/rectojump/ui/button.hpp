@@ -41,12 +41,13 @@ namespace rj
 				this->init_base();
 			}
 
-			button(const vec2f& size, const std::string& text, const sf::Font& font, const sf::Color& fontcolor = {}) :
+			button(const vec2f& size, const std::string& text, const sf::Font& font,
+				   const sf::Color& fontcolor = {}) :
 				button{size}
 			{
 				m_text.setString(text);
 				m_text.setFont(font);
-                m_text.setFillColor(fontcolor);
+				m_text.setFillColor(fontcolor);
 				this->calculate_textpos();
 			}
 
@@ -80,43 +81,86 @@ namespace rj
 			}
 
 			void setText(const std::string& text) noexcept
-			{m_text.setString(text); this->calculate_textpos();}
+			{
+				m_text.setString(text);
+				this->calculate_textpos();
+			}
 
 			void setFont(const sf::Font& font) noexcept
-			{m_text.setFont(font); this->calculate_textpos();}
+			{
+				m_text.setFont(font);
+				this->calculate_textpos();
+			}
 
 			void setFontColor(const sf::Color& color) noexcept
-            {m_text.setFillColor(color);}
+			{
+				m_text.setFillColor(color);
+			}
 
 			void setFontSize(mlk::uint size) noexcept
-			{m_text.setCharacterSize(size); this->calculate_textpos();}
+			{
+				m_text.setCharacterSize(size);
+				this->calculate_textpos();
+			}
 
-            void setFillColor(const sf::Color& color) noexcept
-			{m_shape.setFillColor(color); m_restore_shape.setFillColor(color);}
+			void setFillColor(const sf::Color& color) noexcept
+			{
+				m_shape.setFillColor(color);
+				m_restore_shape.setFillColor(color);
+			}
 
 			void setOutlineThickness(float thickness) noexcept
-			{m_shape.setOutlineThickness(thickness); m_restore_shape.setOutlineThickness(thickness);}
+			{
+				m_shape.setOutlineThickness(thickness);
+				m_restore_shape.setOutlineThickness(thickness);
+			}
 
 			void setOutlineColor(const sf::Color& color) noexcept
-			{m_shape.setOutlineColor(color); m_restore_shape.setOutlineColor(color);}
+			{
+				m_shape.setOutlineColor(color);
+				m_restore_shape.setOutlineColor(color);
+			}
 
 			void setPosition(const vec2f& pos) noexcept
-			{m_shape.setPosition(pos); m_restore_shape.setPosition(pos); this->calculate_textpos();}
+			{
+				m_shape.setPosition(pos);
+				m_restore_shape.setPosition(pos);
+				this->calculate_textpos();
+			}
 
 			void setOrigin(const vec2f& pos) noexcept
-			{m_shape.setOrigin(pos); m_restore_shape.setOrigin(pos); this->calculate_textpos();}
+			{
+				m_shape.setOrigin(pos);
+				m_restore_shape.setOrigin(pos);
+				this->calculate_textpos();
+			}
 
 			void setSize(const vec2f& size) noexcept
-			{m_shape.setSize(size); m_restore_shape.setSize(size); this->calculate_textpos();}
+			{
+				m_shape.setSize(size);
+				m_restore_shape.setSize(size);
+				this->calculate_textpos();
+			}
 
 			void setTexture(sf::Texture* tx) noexcept
-			{m_shape.setTexture(tx); m_restore_shape.setTexture(tx);}
+			{
+				m_shape.setTexture(tx);
+				m_restore_shape.setTexture(tx);
+			}
 
 			void move(const vec2f& offset) noexcept
-			{m_shape.move(offset); m_restore_shape.move(offset); this->calculate_textpos();}
+			{
+				m_shape.move(offset);
+				m_restore_shape.move(offset);
+				this->calculate_textpos();
+			}
 
 			void rotate(float angle) noexcept
-			{m_shape.rotate(angle); m_restore_shape.rotate(angle); this->calculate_textpos();}
+			{
+				m_shape.rotate(angle);
+				m_restore_shape.rotate(angle);
+				this->calculate_textpos();
+			}
 
 			std::string getText() const noexcept
 			{return m_text.getString();}
@@ -125,12 +169,12 @@ namespace rj
 			{return m_text.getFont();}
 
 			const sf::Color& getFontColor() const noexcept
-            {return m_text.getFillColor();}
+			{return m_text.getFillColor();}
 
 			mlk::uint getFontSize() const noexcept
 			{return m_text.getCharacterSize();}
 
-            const sf::Color& getFillColor() const noexcept
+			const sf::Color& getFillColor() const noexcept
 			{return m_shape.getFillColor();}
 
 			float getOutlineThickness() const noexcept
@@ -209,7 +253,8 @@ namespace rj
 				auto shape_bounds(m_shape.getGlobalBounds());
 				auto text_bounds(m_text.getGlobalBounds());
 				m_text.setOrigin(text_bounds.width / 2.f, text_bounds.height / 2.f);
-				m_text.setPosition(shape_bounds.left + shape_bounds.width / 2.f, shape_bounds.top + shape_bounds.height / 2.f);
+				m_text.setPosition(shape_bounds.left + shape_bounds.width / 2.f,
+								   shape_bounds.top + shape_bounds.height / 2.f);
 			}
 		};
 	}

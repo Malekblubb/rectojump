@@ -26,7 +26,7 @@ namespace rj
 	class background_main_menu
 	{
 		Main_Menu& m_mainmenu;
-        background_manager<typename Main_Menu::gh_type>& m_backgroundmgr;
+		background_manager<typename Main_Menu::gh_type>& m_backgroundmgr;
 
 		const sf::Color m_fillcolor{settings::get_color_light()};
 		mlk::tm::simple_timer m_timer{300};
@@ -57,21 +57,22 @@ namespace rj
 
 				if(object_type)
 				{
-                    auto ptr(m_backgroundmgr.template create_object_for_state<star5>(state::main_menu, vec2f{pos_x, 0.f}, vec2f{0.f, length}, 5000, rotatestep, movestep));
-					ptr->render_object().setFillColor({m_fillcolor.r, m_fillcolor.g, m_fillcolor.b, 100});
+					auto ptr(m_backgroundmgr.template create_object_for_state<star5>
+							 (state::main_menu, vec2f{pos_x, 0.f}, vec2f{0.f, length}, 5000,
+							  rotatestep, movestep));
+					ptr->render_object().setFillColor({m_fillcolor.r, m_fillcolor.g,
+													   m_fillcolor.b, 100});
 				}
 				else
 				{
-//					auto ptr(m_backgroundmgr.create_object<sf::RectangleShape>(vec2f{pos_x, 0.f}, vec2f{50.f, 50.f}, 5000, rotatestep, movestep));
-//					ptr->render_object().setFillColor({m_fillcolor.r, m_fillcolor.g, m_fillcolor.b, 100});
-//					ptr->render_object().setOrigin(ptr->render_object().getSize() / 2.f);
-//					m_timer.restart(mlk::rnd<mlk::ullong>(100, 300));
-
-                    auto ptr(m_backgroundmgr.template create_object_for_state<triangles4>(state::main_menu, vec2f{pos_x, 0.f}, vec2f{15.5f, 30.f}, 5000, rotatestep, movestep));
-					ptr->render_object().setFillColor({m_fillcolor.r, m_fillcolor.g, m_fillcolor.b, 100});
-//					ptr->render_object().setOrigin(ptr->render_object().getSize() / 2.f);
-                }
-				m_timer.restart(static_cast<mlk::ullong>(mlk::rnd<mlk::ullong>(70, 100) / duration));
+					auto ptr(m_backgroundmgr.template create_object_for_state<triangles4>
+							 (state::main_menu, vec2f{pos_x, 0.f}, vec2f{15.5f, 30.f}, 5000,
+							  rotatestep, movestep));
+					ptr->render_object().setFillColor({m_fillcolor.r, m_fillcolor.g,
+													   m_fillcolor.b, 100});
+				}
+				m_timer.restart(static_cast<mlk::ullong>(
+									mlk::rnd<mlk::ullong>(70, 100) / duration));
 			}
 		}
 
@@ -84,19 +85,19 @@ namespace rj
 			auto window_size(settings::get_window_size<vec2f>());
 
 			// nova
-            auto nova(m_backgroundmgr.template create_object_for_state<triangles4>
-                      (state::main_menu, vec2f{window_size.x / 2.f, window_size.y / 2.f},
-                       vec2f{window_size.y / 3.f, window_size.x}, 0, 0.1f, vec2f{0.f, 0.f}));
+			auto nova(m_backgroundmgr.template create_object_for_state<triangles4>
+					  (state::main_menu, vec2f{window_size.x / 2.f, window_size.y / 2.f},
+					   vec2f{window_size.y / 3.f, window_size.x}, 0, 0.1f, vec2f{0.f, 0.f}));
 			nova->render_object().setFillColor(to_rgb("#bdbdbd", 100));
 
 			// timer
 			m_timer.run();
 
-            // set the background
-            m_backgroundmgr.set_bg_shape(state::main_menu,
-                                        {settings::get_window_size<vec2f>(),
-                                         to_rgb("#373737"),
-                                         to_rgb("#373737")});
+			// set the background
+			m_backgroundmgr.set_bg_shape(state::main_menu,
+			{settings::get_window_size<vec2f>(),
+			 to_rgb("#373737"),
+			 to_rgb("#373737")});
 		}
 	};
 }

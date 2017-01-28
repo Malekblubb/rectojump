@@ -32,7 +32,8 @@ namespace rj
 		bool m_valid{true};
 
 	public:
-		debug_text(data_manager& dm, const sf::Color& color = {255, 255, 255}, float fontsize = 16.f) :
+		debug_text(data_manager& dm, const sf::Color& color = {255, 255, 255},
+				   float fontsize = 16.f) :
 			m_datamanager{dm},
 			m_texture{m_datamanager.get_as<sf::Texture>("debug_font.png")},
 			m_valid{m_datamanager.exists_id("debug_font.png")},
@@ -83,7 +84,8 @@ namespace rj
 				}
 
 				// tile position
-				auto tiley(static_cast<float>((a / 16) * 16)), tilex(static_cast<float>((a % 16) * 16));
+				auto tiley(static_cast<float>((a / 16) * 16));
+				auto tilex(static_cast<float>((a % 16) * 16));
 
 				// create quad
 				m_verts.append({{posx, posy + m_fontsize}, m_color, {tilex, tiley + 16.f}});

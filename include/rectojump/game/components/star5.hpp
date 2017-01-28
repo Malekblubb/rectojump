@@ -48,11 +48,16 @@ namespace rj
 
 		void recalculate() noexcept
 		{
-			this->setPoint(0, {m_length * std::cos((2 * m_pi) / 5), m_length * std::sin((2 * m_pi) /5)});
-			this->setPoint(1, {m_length * std::cos((6 * m_pi) / 5), m_length * std::sin((6 * m_pi) / 5)});
-			this->setPoint(2, {m_length * std::cos((10 * m_pi) / 5), m_length * std::sin((10 * m_pi) / 5)});
-			this->setPoint(3, {m_length * std::cos((4 * m_pi) / 5), m_length * std::sin((4 * m_pi) / 5)});
-			this->setPoint(4, {m_length * std::cos((8 * m_pi) / 5), m_length * std::sin((8 * m_pi) / 5)});
+			this->setPoint(0, {m_length * std::cos((2 * m_pi) / 5),
+							   m_length * std::sin((2 * m_pi) /5)});
+			this->setPoint(1, {m_length * std::cos((6 * m_pi) / 5),
+							   m_length * std::sin((6 * m_pi) / 5)});
+			this->setPoint(2, {m_length * std::cos((10 * m_pi) / 5),
+							   m_length * std::sin((10 * m_pi) / 5)});
+			this->setPoint(3, {m_length * std::cos((4 * m_pi) / 5),
+							   m_length * std::sin((4 * m_pi) / 5)});
+			this->setPoint(4, {m_length * std::cos((8 * m_pi) / 5),
+							   m_length * std::sin((8 * m_pi) / 5)});
 		}
 	};
 }

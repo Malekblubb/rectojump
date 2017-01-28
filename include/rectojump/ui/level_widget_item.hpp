@@ -23,7 +23,7 @@ namespace rj
 			sf::RectangleShape m_preview;
 			sf::Text m_level_name;
 			sf::Text m_creator_date;
-//			sf::Text m_creator_text; // TODO: impl
+			//sf::Text m_creator_text; // TODO: impl
 
 			sf::Color m_color_active{to_rgb("#f15ede", 80)}, m_color_deactive{to_rgb("#bdbdbd")};
 
@@ -44,7 +44,8 @@ namespace rj
 				m_level_name.setString(lv.info.level_name);
 				m_level_name.setPosition(110.f, 10.f);
 				m_creator_date.setString(lv.info.creator_name + "\n" + lv.info.creation_date);
-				m_creator_date.setPosition(110.f, m_level_name.getGlobalBounds().top + m_level_name.getGlobalBounds().height);
+				m_creator_date.setPosition(110.f, m_level_name.getGlobalBounds().top +
+										   m_level_name.getGlobalBounds().height);
 
 				m_background.setFillColor(m_color_deactive);
 				m_background.setSize({width, 100.f});

@@ -33,7 +33,8 @@ namespace rj
 		bool m_valid{false};
 
 	public:
-		data_manager(const std::string& abs_datapath, std::vector<data_id> load_not = {}, bool auto_load = false) :
+		data_manager(const std::string& abs_datapath, std::vector<data_id> load_not = {},
+					 bool auto_load = false) :
 			m_dirh{abs_datapath},
 			m_abs_path{m_dirh.get_path()},
 			m_load_not{std::move(load_not)},
@@ -72,7 +73,8 @@ namespace rj
 		template<typename... Types, typename... Ids>
 		std::tuple<Types...> get_multiple_as(Ids&&... ids)
 		{
-			static_assert(sizeof...(Types) == sizeof...(Ids), "Amount of types must match the amount of passed ids.");
+			static_assert(sizeof...(Types) == sizeof...(Ids),
+						  "Amount of types must match the amount of passed ids.");
 
 			std::tuple<Types...> result;
 			this->get_multiple_as_impl<mlk::get_upper(-1)>(result, std::forward<Ids>(ids)...);
@@ -114,7 +116,8 @@ namespace rj
 		template<typename... Types, typename... Ids>
 		std::tuple<Types...> load_multiple_as(Ids&&... ids)
 		{
-			static_assert(sizeof...(Types) == sizeof...(Ids), "Amount of types must match the amount of passed ids.");
+			static_assert(sizeof...(Types) == sizeof...(Ids),
+						  "Amount of types must match the amount of passed ids.");
 
 			std::tuple<Types...> result;
 			this->load_multiple_as_impl<mlk::get_upper(-1)>(result, std::forward<Ids>(ids)...);
@@ -151,7 +154,8 @@ namespace rj
 		// from absolute directory
 		void load_all()
 		{
-			mlk::lout("rj::data_manager") << "loading files recursive from directory '" << m_abs_path << "'...";
+			mlk::lout("rj::data_manager") << "loading files recursive from directory '" <<
+											 m_abs_path << "'...";
 			auto content(m_dirh.get_content<true>());
 			auto count(0);
 			for(auto& a : content)
@@ -165,7 +169,8 @@ namespace rj
 					this->load_raw_impl(a.name, a.path);
 					++count;
 				}
-			mlk::lout("rj::data_manager") << "loaded " << count << " files (" << this->get_datasize() << " bytes)";
+			mlk::lout("rj::data_manager") << "loaded " << count << " files (" <<
+											 this->get_datasize() << " bytes)";
 		}
 
 
@@ -173,8 +178,10 @@ namespace rj
 		template<int tup_index, typename Id_Head, typename... Types, typename... Id_Tail>
 		void get_multiple_as_impl(std::tuple<Types...>& tup, const Id_Head& head, Id_Tail&&... tail)
 		{
-			std::get<tup_index>(tup) = this->get_as_impl<typename std::tuple_element<tup_index, std::tuple<Types...>>::type>(head);
-			this->get_multiple_as_impl<mlk::get_upper(tup_index)>(tup, std::forward<Id_Tail>(tail)...);
+			std::get<tup_index>(tup) = this->get_as_impl<typename std::tuple_element<tup_index,
+					std::tuple<Types...>>::type>(head);
+			this->get_multiple_as_impl<mlk::get_upper(tup_index)>(tup,
+																  std::forward<Id_Tail>(tail)...);
 		}
 
 		template<int tup_index, typename... Types>
@@ -184,8 +191,10 @@ namespace rj
 		template<int tup_index, typename Id_Head, typename... Types, typename... Id_Tail>
 		void load_multiple_as_impl(std::tuple<Types...>& tup, const Id_Head& head, Id_Tail&&... tail)
 		{
-			std::get<tup_index>(tup) = this->load_as_impl<typename std::tuple_element<tup_index, std::tuple<Types...>>::type>(head);
-			this->load_multiple_as_impl<mlk::get_upper(tup_index)>(tup, std::forward<Id_Tail>(tail)...);
+			std::get<tup_index>(tup) = this->load_as_impl<typename std::tuple_element<tup_index,
+					std::tuple<Types...>>::type>(head);
+			this->load_multiple_as_impl<mlk::get_upper(tup_index)>(tup,
+																   std::forward<Id_Tail>(tail)...);
 		}
 
 		template<int tup_index, typename... Types>

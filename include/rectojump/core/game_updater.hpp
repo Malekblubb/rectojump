@@ -17,9 +17,9 @@ namespace rj
 {
 	class game_updater
 	{
-        float m_current_cut{0.f}, m_next_cut{1.f}, m_step{1.f};
+		float m_current_cut{0.f}, m_next_cut{1.f}, m_step{1.f};
 		mlk::hrs_time_pnt m_last_tp{mlk::tm::time_pnt()};
-        dur m_frame_duration{0.f};
+		dur m_frame_duration{0.f};
 
 	public:
 		mlk::slot<dur> on_update;

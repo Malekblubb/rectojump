@@ -33,10 +33,13 @@ namespace rj
 		void construct()
 		{
 			auto& site_play(m_sites.get("play"));
-			auto& font(m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>(settings::text_font()));
+			auto& font(m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>
+					   (settings::text_font()));
 
 			// create level_widget
-			auto level_widget(m_sites.add_object<ui::level_widget>("play", m_overlay.mainmenu().gamehandler().gamewindow(), m_sites.size(), m_sites.pos()));
+			auto level_widget(m_sites.add_object<ui::level_widget>(
+								  "play", m_overlay.mainmenu().gamehandler().gamewindow(),
+								  m_sites.size(), m_sites.pos()));
 
 			// add levels
 			for(const auto& a : m_lvmgr.get_levels())
@@ -47,14 +50,14 @@ namespace rj
 
 			// add input
 			m_overlay.mainmenu().gamehandler().template add_input<state::main_menu>
-			([this, level_widget](const vec2f&)
+					([this, level_widget](const vec2f&)
 			{
 				if(m_sites.active("play"))
 					level_widget->scroll_up();
 			}, wheel::up);
 
 			m_overlay.mainmenu().gamehandler().template add_input<state::main_menu>
-			([this, level_widget](const vec2f&)
+					([this, level_widget](const vec2f&)
 			{
 				if(m_sites.active("play"))
 					level_widget->scroll_down();

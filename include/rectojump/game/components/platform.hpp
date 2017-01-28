@@ -15,7 +15,8 @@ namespace rj
 	class platform final : public entity_rect
 	{
 	public:
-		platform(const vec2f& pos, const vec2f& size = {20.f, 20.f}, const vec2f& velocity = {-0.3f, 0.f}) :
+		platform(const vec2f& pos, const vec2f& size = {20.f, 20.f},
+				 const vec2f& velocity = {-0.3f, 0.f}) :
 			entity_rect{pos, size, velocity}
 		{m_render_object.setOrigin(size.x / 2, size.y / 2);}
 

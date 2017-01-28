@@ -44,7 +44,8 @@ namespace rj
 				auto wsize(settings::get_window_size<vec2f>());
 
 				sf::View view{size / 2.f, size};
-				view.setViewport({pos.x / wsize.x, (pos.y + 2.f) / wsize.y, size.x / wsize.x, size.y / wsize.y});
+				view.setViewport({pos.x / wsize.x, (pos.y + 2.f) / wsize.y,
+								  size.x / wsize.x, size.y / wsize.y});
 
 				m_scrollcam.set_view(view);
 			}

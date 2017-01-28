@@ -35,7 +35,8 @@ namespace rj
 			std::string m_active;
 
 		public:
-			stacked_widget(game_window& gw, const vec2f& size = {0.f, 0.f}, const vec2f& pos = {0.f, 0.f}) :
+			stacked_widget(game_window& gw, const vec2f& size = {0.f, 0.f},
+						   const vec2f& pos = {0.f, 0.f}) :
 				m_gamewindow{gw},
 				m_size{size},
 				m_pos{pos}
@@ -67,7 +68,9 @@ namespace rj
 			void add_site(const std::string& site_name)
 			{
 				auto size(settings::get_window_size<vec2f>());
-				m_sites.emplace(site_name, site{{m_gamewindow, {m_size / 2.f, m_size}, {m_pos.x / size.x, m_pos.y / size.y, m_size.x / size.x, m_size.y / size.y}}});
+				m_sites.emplace(site_name, site{{m_gamewindow, {m_size / 2.f, m_size},
+												 {m_pos.x / size.x, m_pos.y / size.y,
+												  m_size.x / size.x, m_size.y / size.y}}});
 			}
 
 			auto& get(const std::string& site_name) noexcept

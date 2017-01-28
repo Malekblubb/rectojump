@@ -51,7 +51,10 @@ namespace rj
 		}
 
 		template<popup_type type = popup_type::normal, typename... Args>
-                void create_popup(const std::string& text, const vec2f& pos = {settings::get_window_size<vec2f>().x / 2.f, settings::get_window_size<vec2f>().y - 100.f}, Args&&... args)
+		void create_popup(const std::string& text,
+						  const vec2f& pos = {settings::get_window_size<vec2f>().x / 2.f,
+											 settings::get_window_size<vec2f>().y - 100.f},
+						  Args&&... args)
 		{popup_creator<type, Game_Handler>{*this, text, pos, std::forward<Args>(args)...};}
 
 		template<typename... Args>
@@ -65,7 +68,7 @@ namespace rj
 		void erase_destroyed() noexcept
 		{
 			mlk::cnt::remove_all_if(
-			[](const auto& p){return p.is_destroyed();}, m_popups);
+						[](const auto& p){return p.is_destroyed();}, m_popups);
 		}
 	};
 
@@ -81,14 +84,20 @@ namespace rj
 	struct popup_creator<popup_type::info, Game_Handler>
 	{
 		popup_creator(popup_manager<Game_Handler>& pm, const std::string& text, const vec2f& pos)
-		{pm.create_popup_impl(text, pos, 4000, to_rgb("#000375", 200), to_rgb("#000352"), to_rgb("#e3e3e3"));}
+		{
+			pm.create_popup_impl(text, pos, 4000,
+								 to_rgb("#000375", 200), to_rgb("#000352"), to_rgb("#e3e3e3"));
+		}
 	};
 
 	template<typename Game_Handler>
 	struct popup_creator<popup_type::error, Game_Handler>
 	{
 		popup_creator(popup_manager<Game_Handler>& pm, const std::string& text, const vec2f& pos)
-		{pm.create_popup_impl(text, pos, 4000, to_rgb("#820006", 200), to_rgb("#d80042"), to_rgb("#e3e3e3"));}
+		{
+			pm.create_popup_impl(text, pos, 4000,
+								 to_rgb("#820006", 200), to_rgb("#d80042"), to_rgb("#e3e3e3"));
+		}
 	};
 }
 

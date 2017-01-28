@@ -49,7 +49,9 @@ namespace rj
 		void unpack()
 		{
 			auto unpacked_size(mlk::cnt::make_int(0, m_read_data));
-			mlk::cmprs::compressor<mlk::cmprs::cmprs_mode::zlib> cmp{mlk::data_packet{m_read_data.begin() + 4, m_read_data.end()}};
+			using namespace mlk::cmprs;
+			compressor<cmprs_mode::zlib> cmp{mlk::data_packet{m_read_data.begin() + 4,
+							m_read_data.end()}};
 			cmp.unpack(unpacked_size);
 			if(!cmp.is_valid())
 				return;
@@ -70,7 +72,13 @@ namespace rj
 
 			level_parser lv_parser{backg_data, level_data};
 			info_parser inf_parser{infos_data};
-			m_result = {std::move(music_data), lv_parser.get_bg_result(), lv_parser.get_level_result(), inf_parser.get_result()};
+			m_result =
+			{
+				std::move(music_data),
+				lv_parser.get_bg_result(),
+				lv_parser.get_level_result(),
+				inf_parser.get_result()
+			};
 		}
 
 		int music_size() const noexcept

@@ -26,7 +26,7 @@ namespace rj
 	class world
 	{
 		Game_Handler& m_gamehandler;
-//		background_manager& m_backgroundmgr;
+		//		background_manager& m_backgroundmgr;
 		data_store_type& m_datastore;
 
 		entity_handler m_entity_handler;
@@ -34,7 +34,7 @@ namespace rj
 	public:
 		world(Game_Handler& gh) :
 			m_gamehandler{gh},
-//			m_backgroundmgr{gh.backgroundmgr()},
+			//			m_backgroundmgr{gh.backgroundmgr()},
 			m_entity_handler{gh.rendermgr()},
 			m_datastore{gh.datastore()}
 		{ }
@@ -55,7 +55,7 @@ namespace rj
 			m_entity_handler.render();
 		}
 
-        template<bool load_editor>
+		template<bool load_editor>
 		void load_level(const entity_proto_vec& entities)
 		{
 			m_entity_handler.clear();
@@ -65,37 +65,41 @@ namespace rj
 				vec2f pos{entity[x], entity[y]};
 				auto entity_figure(static_cast<char>(entity[figure]));
 
-                // rectangle
+				// rectangle
 				if(entity_figure == entity_figure::f_rectangle)
-                {
-                    // we need other entity type when editing
-                    if constexpr(load_editor)
-                    {
-                        auto a{this->create_entity<editor_entity>(pos)};
-                        a->set_texture(&m_datastore.template get<sf::Texture>("editor_item_rect.png"));
-                    }
-                    else
-                    {
-                        auto a{this->create_entity<platform>(pos, vec2f{48.f, 48.f})};
-                        a->render_object().setTexture(&m_datastore.template get<sf::Texture>("editor_item_rect.png"));
-                    }
+				{
+					// we need other entity type when editing
+					if constexpr(load_editor)
+					{
+						auto a{this->create_entity<editor_entity>(pos)};
+						a->set_texture(&m_datastore.template get<sf::Texture>
+									   ("editor_item_rect.png"));
+					}
+					else
+					{
+						auto a{this->create_entity<platform>(pos, vec2f{48.f, 48.f})};
+						a->render_object().setTexture(&m_datastore.template get<sf::Texture>
+													  ("editor_item_rect.png"));
+					}
 				}
 
-                // triangles
+				// triangles
 				else if(entity_figure == entity_figure::f_triangle)
 				{
-                    // we need other entity type when editing
-                    if constexpr(load_editor)
-                    {
-                        auto a{this->create_entity<editor_entity>(pos)};
-                        a->set_texture(&m_datastore.template get<sf::Texture>("editor_item_triangle.png"));
-                    }
-                    else
-                    {
-                        auto a{this->create_entity<platform>(pos, vec2f{48.f, 48.f})};
-                        a->render_object().setTexture(&m_datastore.template get<sf::Texture>("editor_item_triangle.png"));
-                        a->set_propertie(entity_propertie::death);
-                    }
+					// we need other entity type when editing
+					if constexpr(load_editor)
+					{
+						auto a{this->create_entity<editor_entity>(pos)};
+						a->set_texture(&m_datastore.template get<sf::Texture>
+									   ("editor_item_triangle.png"));
+					}
+					else
+					{
+						auto a{this->create_entity<platform>(pos, vec2f{48.f, 48.f})};
+						a->render_object().setTexture(&m_datastore.template get<sf::Texture>
+													  ("editor_item_triangle.png"));
+						a->set_propertie(entity_propertie::death);
+					}
 				}
 			}
 		}

@@ -23,7 +23,8 @@ namespace rj
 		Drawable_Type m_render_object;
 
 	public:
-		background_component(rndr& r, const vec2f& pos, const vec2f& size, mlk::ullong lifetime, float rotatiostep, const vec2f& movestep) :
+		background_component(rndr& r, const vec2f& pos, const vec2f& size, mlk::ullong lifetime,
+							 float rotatiostep, const vec2f& movestep) :
 			basic_background_component{r, pos, size, lifetime, rotatiostep, movestep}
 		{
 			this->set_properties();

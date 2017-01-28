@@ -25,7 +25,7 @@ namespace rj
 		Game_Handler& m_gamehandler;
 		rndr& m_render;
 		data_manager& m_datamgr;
-        data_store_type& m_datastore;
+		data_store_type& m_datastore;
 
 		sf::RectangleShape m_shape;
 		std::vector<std::reference_wrapper<sf::Texture>> m_button_textures;
@@ -58,7 +58,7 @@ namespace rj
 		{m_buttons.inactivate();}
 
 		const sf::Texture& get_current_texture() const noexcept
-        {return *m_buttons.get_active_btn()->getTexture();}
+		{return *m_buttons.get_active_btn()->getTexture();}
 
 		entity_figure get_current_figure() const noexcept
 		{return std::static_pointer_cast<button_item>(m_buttons.get_active_btn())->get_figure();}
@@ -78,31 +78,36 @@ namespace rj
 			m_shape.setPosition(rec_size / 2.f);
 			m_shape.setFillColor(settings::get_color_default_light());
 
-			m_button_textures.emplace_back(m_datastore.template get<sf::Texture>("editor_item_rect.png"));
-			m_button_textures.emplace_back(m_datastore.template get<sf::Texture>("editor_item_triangle.png"));
-			m_button_textures.emplace_back(m_datastore.template get<sf::Texture>("editor_item_triangles4.png"));
+			m_button_textures.emplace_back(
+						m_datastore.template get<sf::Texture>("editor_item_rect.png"));
+			m_button_textures.emplace_back(
+						m_datastore.template get<sf::Texture>("editor_item_triangle.png"));
+			m_button_textures.emplace_back(
+						m_datastore.template get<sf::Texture>("editor_item_triangles4.png"));
 
 			auto pos_x(150.f);
 			std::size_t index{0};
 			for(auto& a : m_button_textures)
 			{
-				auto rect_ptr(m_buttons.add_button<button_item>(m_buttonsize, vec2f{pos_x, m_shape.getPosition().y}));
-                rect_ptr->setOrigin(m_buttonsize / 2.f);
-                rect_ptr->setTexture(&a.get());
+				auto rect_ptr(m_buttons.add_button<button_item>(m_buttonsize,
+																vec2f{pos_x,
+																	  m_shape.getPosition().y}));
+				rect_ptr->setOrigin(m_buttonsize / 2.f);
+				rect_ptr->setTexture(&a.get());
 				rect_ptr->set_figure(static_cast<entity_figure>(index));
 				pos_x += 100.f;
 				++index;
 			}
 
 			m_buttons.on_active_button =
-			[this](ui::base_btn_ptr& b)
+					[this](ui::base_btn_ptr& b)
 			{
 				b->setFillColor(settings::get_color_light());
 				b->setOutlineColor(settings::get_color_light());
 			};
 
 			m_buttons.on_inactive_button =
-			[](ui::base_btn_ptr& b)
+					[](ui::base_btn_ptr& b)
 			{
 				b->setFillColor(settings::get_color_default_dark());
 				b->setOutlineColor(settings::get_color_default_dark());

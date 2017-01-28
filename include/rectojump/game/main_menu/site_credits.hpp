@@ -28,13 +28,20 @@ namespace rj
 
 		void construct()
 		{
-			auto text(m_sites.add_object<widget::text>("credits", "", m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>(settings::text_font()), settings::text_size()));
-			text->get().setString("Programmer: Christoph Malek <>\n"
-							"Graphics: -\n"
-							"Icons: Adam Whitcroft <http://adamwhitcroft.com/batch/>\n\n"
-							"Libs: SFML, zlib");
+			auto text(m_sites.add_object<widget::text>("credits",
+													   "",
+													   m_overlay.mainmenu().gamehandler().
+													   datastore().template get<sf::Font>
+													   (settings::text_font()),
+													   settings::text_size()));
+			text->get().setString(
+						"Programmer: Christoph Malek <>\n"
+						"Graphics: -\n"
+						"Icons: Adam Whitcroft <http://adamwhitcroft.com/batch/>\n\n"
+						"Libs: SFML, zlib");
 			text->get().setFillColor(settings::text_color());
-			text->get().setPosition({(m_sites.bounds().width - text->get().getGlobalBounds().width) / 2.f, 150.f});
+			text->get().setPosition({(m_sites.bounds().width -
+									 text->get().getGlobalBounds().width) / 2.f, 150.f});
 		}
 	};
 }

@@ -67,7 +67,8 @@ namespace rj
 		template<typename Head, typename... Tail>
 		void rmo_impl(const Head& head, Tail&&... tail)
 		{
-			render_utl::ro_helper<Game_Handler, Head, std::is_base_of<sf::Drawable, Head>::value>{m_gamehandler, head};
+			render_utl::ro_helper<Game_Handler, Head, std::is_base_of
+					<sf::Drawable, Head>::value>{m_gamehandler, head};
 			rmo_impl(std::forward<Tail>(tail)...);
 		}
 	};

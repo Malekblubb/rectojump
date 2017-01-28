@@ -73,7 +73,8 @@ namespace rj
 			{
 				m_bgdata_work_string.substr(m_bgdata_id_size, nullpos - m_bgdata_id_size),
 				m_bgdata_work_string.substr(nullpos + 1, nullpos2 - nullpos - 1),
-				static_cast<std::size_t>(m_bgdata_work_string.substr(nullpos2 + 1, m_bgdata_work_string.size() - nullpos2 - 1).at(0))
+				static_cast<std::size_t>(m_bgdata_work_string.substr(nullpos2 + 1,
+										m_bgdata_work_string.size() - nullpos2 - 1).at(0))
 			};
 		}
 
@@ -90,7 +91,8 @@ namespace rj
 				entity_prototype tmp_entity;
 				for(auto i(0); i < 4; ++i)
 				{
-					tmp_entity.emplace_back(std::strtof(line.substr(0, space_pos).c_str(), nullptr));
+					tmp_entity.emplace_back(std::strtof(line.substr(0, space_pos).c_str(),
+														nullptr));
 					line.erase(0, space_pos + 1);
 					space_pos = line.find(' ');
 				}
@@ -102,18 +104,30 @@ namespace rj
 
 		void check_valid()
 		{
-			m_valid = m_bg_data.size() > 0 ? (mlk::data_packet{std::begin(m_bg_data), std::begin(m_bg_data) + m_bgdata_id_size} ==
+			m_valid = m_bg_data.size() > 0 ? (mlk::data_packet{std::begin(m_bg_data),
+															   std::begin(m_bg_data) +
+															   m_bgdata_id_size} ==
 											  mlk::data_packet{'R', 'J', 'B', 'G'}) : false;
 
-			m_valid == true ? m_valid = m_level_data.size() > 0 ? (mlk::data_packet{std::begin(m_level_data), std::begin(m_level_data) + m_leveldata_id_size} ==
-																   mlk::data_packet{'R', 'J', 'L', 'E', 'V', 'E', 'L'}) : false : false;
+			if(m_valid)
+			{
+				if(m_level_data.size() > 0)
+					m_valid = (mlk::data_packet{std::begin(m_level_data),
+												std::begin(m_level_data) +
+												m_leveldata_id_size} ==
+							   mlk::data_packet{'R', 'J', 'L', 'E', 'V', 'E', 'L'});
+				else
+					m_valid = false;
+			}
 		}
 
 		void prepare_string()
 		{
-			m_bgdata_work_string = {reinterpret_cast<const char*>(m_bg_data.data()), m_bg_data.size()};
+			m_bgdata_work_string = {reinterpret_cast<const char*>(m_bg_data.data()),
+									m_bg_data.size()};
 
-			m_leveldata_work_string = {reinterpret_cast<const char*>(m_level_data.data()), m_level_data.size()};
+			m_leveldata_work_string = {reinterpret_cast<const char*>(m_level_data.data()),
+									   m_level_data.size()};
 			mlk::stl_string::erase_all('{', m_leveldata_work_string);
 			mlk::stl_string::erase_all('}', m_leveldata_work_string);
 			mlk::stl_string::erase_all(',', m_leveldata_work_string);

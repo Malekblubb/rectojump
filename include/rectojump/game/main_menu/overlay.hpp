@@ -22,9 +22,9 @@
 
 namespace rj
 {
-    template<typename Main_Menu, typename Game_Handler>
+	template<typename Main_Menu, typename Game_Handler>
 	class overlay
-	{        
+	{
 		Main_Menu& m_mainmenu;
 		rndr& m_render;
 		data_store_type& m_datastore;
@@ -45,7 +45,7 @@ namespace rj
 		site_home<overlay> m_sitehome;
 		site_play<overlay> m_siteplay;
 		site_inventar<overlay> m_siteinventar;
-        site_editor<overlay, Game_Handler> m_siteeditor;
+		site_editor<overlay, Game_Handler> m_siteeditor;
 		site_levels<overlay> m_sitelevels;
 		site_scores<overlay> m_sitescores;
 		site_settings<overlay> m_sitesettings;
@@ -123,7 +123,9 @@ namespace rj
 			m_infotext.setString("(c) 2013-2017 Christoph Malek");
 			m_infotext.setCharacterSize(settings::text_size());
 			m_infotext.setFillColor(to_rgb("#e3e3e3"));
-			m_infotext.setPosition(m_main_border.getPosition().x, m_main_border.getGlobalBounds().top + m_main_border.getGlobalBounds().height + 10.f);
+			m_infotext.setPosition(m_main_border.getPosition().x,
+								   m_main_border.getGlobalBounds().top +
+								   m_main_border.getGlobalBounds().height + 10.f);
 
 			// menu bar
 			m_menu_bar.setSize({size.x - 80, 40});
@@ -133,8 +135,10 @@ namespace rj
 			m_menu_bar.setFillColor({255, 255, 255, 255});
 
 			// menu buttons
-			m_menu_buttons.on_active_button = [](auto& btn){btn->setFillColor(to_rgb("#f15ede"));};
-			m_menu_buttons.on_inactive_button = [](auto& btn){btn->setFillColor(to_rgb("#cecece"));};
+			m_menu_buttons.on_active_button =
+					[](auto& btn){btn->setFillColor(to_rgb("#f15ede"));};
+			m_menu_buttons.on_inactive_button =
+					[](auto& btn){btn->setFillColor(to_rgb("#cecece"));};
 
 			const auto next((size.x - 80.f) / 9);
 			this->add_menu_button(next, 1.f, "home.png");
@@ -184,7 +188,12 @@ namespace rj
 			auto site_name(texture);
 			mlk::stl_string::erase_all(".png", site_name);
 
-			auto btn(m_menu_buttons.add_button_event<ui::button>([this, site_name]{m_sites.switch_site(site_name);}, m_btn_size, vec2f{next * btn_nr, 140}));
+			auto btn
+			{
+				m_menu_buttons.add_button_event<ui::button>(
+							[this, site_name]{m_sites.switch_site(site_name);},
+				m_btn_size, vec2f{next * btn_nr, 140})
+			};
 			btn->setTexture(&m_datastore.template get<sf::Texture>(texture));
 			btn->setOrigin({m_btn_size.x / 2.f, 0});
 		}

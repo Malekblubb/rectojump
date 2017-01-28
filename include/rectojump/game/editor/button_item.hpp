@@ -23,7 +23,7 @@ namespace rj
 			button{size, pos}
 		{this->init_base();}
 
-        void update(dur duration) override
+		void update(dur duration) override
 		{
 			button::update(duration);
 		}

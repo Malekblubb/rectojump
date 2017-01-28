@@ -41,8 +41,12 @@ namespace rj
 			m_list.emplace_back(errors::ntw_connect, "failed to connect.");
 			m_list.emplace_back(errors::ntw_send, "failed to send.");
 			m_list.emplace_back(errors::ntw_recv, "failed to recv.");
-			m_list.emplace_back(errors::cl_nullptr_access, "FATAL: access to odd memory.", mlk::slot<>{[this]{m_errorhandler.exec_error_instance(errors::cl_nullptr_access);}});
-			m_list.emplace_back(errors::cl_data, "FATAL: needed data not loaded", mlk::slot<>{[this]{m_errorhandler.exec_error_instance(errors::cl_data);}});
+			m_list.emplace_back(errors::cl_nullptr_access, "FATAL: access to odd memory.",
+								mlk::slot<>{[this]{m_errorhandler.exec_error_instance(
+												   errors::cl_nullptr_access);}});
+			m_list.emplace_back(errors::cl_data, "FATAL: needed data not loaded",
+								mlk::slot<>{[this]{m_errorhandler.exec_error_instance(
+												   errors::cl_data);}});
 			m_list.emplace_back(errors::lv_bad_name, "Bad level name");
 		}
 	};

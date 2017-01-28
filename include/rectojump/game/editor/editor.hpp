@@ -46,8 +46,8 @@ namespace rj
 	public:
 		editor(Game_Handler& gh) :
 			m_gamehandler{gh},
-            m_game{gh.get_game()},
-            m_gameworld{m_game.get_world()},
+			m_game{gh.get_game()},
+			m_gameworld{m_game.get_world()},
 			m_entityhandler{m_gameworld.entityhandler()},
 			m_levelmgr{gh.levelmgr()},
 			m_editarea_camera{m_gamehandler.gamewindow()},
@@ -55,14 +55,16 @@ namespace rj
 			m_settingsbar_camera{m_gamehandler.gamewindow()},
 			m_mouse{gh},
 			m_itembar{gh, {settings::get_window_size<vec2f>().x, 100.f}},
-			m_settingsbar{*this, {300.f, settings::get_window_size<vec2f>().y - m_itembar.get_size().y}}
+			m_settingsbar{*this, {300.f,
+						  settings::get_window_size<vec2f>().y - m_itembar.get_size().y}}
 		{this->init();}
 
 		void update(dur duration)
 		{
 			// editareacamera move
 			if(inp::is_btn_pressed(btn::Middle))
-				m_editarea_camera.move(((inp::get_lastmousepos() - inp::get_mousepos()) / 6.f) * m_editarea_camera.get_zoomfactor() * duration); // * duration ???
+				m_editarea_camera.move(((inp::get_lastmousepos() - inp::get_mousepos()) / 6.f) *
+									   m_editarea_camera.get_zoomfactor() * duration); // * duration ???
 
 			// edit area
 			m_editarea_camera.activate();
@@ -101,7 +103,7 @@ namespace rj
 
 		void on_activate()
 		{
-//			m_background.reset();
+			//			m_background.reset();
 		}
 
 		void handle_save(const level_id& level_name)
@@ -113,8 +115,8 @@ namespace rj
 			level_background lv_bg
 			{
 				m_settingsbar.get_tb_startcolor_text(),
-				m_settingsbar.get_tb_endcolor_text(),
-				mlk::stl_string::to_int<std::size_t>(m_settingsbar.get_tb_pointcount_text())
+						m_settingsbar.get_tb_endcolor_text(),
+						mlk::stl_string::to_int<std::size_t>(m_settingsbar.get_tb_pointcount_text())
 			};
 
 			// level data
@@ -129,9 +131,10 @@ namespace rj
 			music_data lv_music{'M', 'U', 'S', 'I', 'C'};
 			level_packer<packer_mode::pack> lv_packer{lv_music, lv_bg, lv_data, lv_info};
 
-            m_levelmgr.save_level(lv_packer, level_name) ?
-                        mlk::lout("rj::editor") << "Level '" << level_name << "' successfully saved!" :
-                        mlk::lerr(errors::io_create_file) << "(levelname" << level_name << ")";
+			m_levelmgr.save_level(lv_packer, level_name) ?
+						mlk::lout("rj::editor") << "Level '" << level_name <<
+												   "' successfully saved!" :
+												   mlk::lerr(errors::io_create_file) << "(levelname" << level_name << ")";
 		}
 
 		void handle_load(const level_id& level_name)
@@ -139,8 +142,8 @@ namespace rj
 			if(!this->check_level_name(level_name))
 				return;
 
-            auto& lv(m_levelmgr.get_level(level_name));
-            m_gameworld.template load_level<true>(lv.entities);
+			auto& lv(m_levelmgr.get_level(level_name));
+			m_gameworld.template load_level<true>(lv.entities);
 		}
 
 		void reset_zoom() noexcept
@@ -167,7 +170,7 @@ namespace rj
 		{
 			// change mousetexture on itembar-item click
 			m_itembar.on_item_click =
-			[this](ui::base_btn_ptr& b)
+					[this](ui::base_btn_ptr& b)
 			{
 				m_mouse.set_texture(b->getTexture());
 				m_mouse.deactivate_selection();
@@ -184,20 +187,20 @@ namespace rj
 		void init_input()
 		{
 			m_gamehandler.template add_input<state::editor>(
-			[this](const vec2f& pos){this->on_mouse_left(pos);}, btn::Left);
+						[this](const vec2f& pos){this->on_mouse_left(pos);}, btn::Left);
 
 			m_gamehandler.template add_input<state::editor>(
-			[this](const vec2f& pos){this->on_mouse_right(pos);}, btn::Right);
+						[this](const vec2f& pos){this->on_mouse_right(pos);}, btn::Right);
 
 			m_gamehandler.template add_input<state::editor>(
-			[this](const vec2f& pos)
+						[this](const vec2f& pos)
 			{
 				if(!inp::is_key_pressed(key::LShift))
 					m_editarea_camera.move({settings::get_editor_scroll_step(), 0.f});
 			}, wheel::down);
 
 			m_gamehandler.template add_input<state::editor>(
-			[this](const vec2f& pos)
+						[this](const vec2f& pos)
 			{
 				if(!inp::is_key_pressed(key::LShift))
 					if(m_editarea_camera.get_center().x >= m_editarea_camera.get_startcenter().x)
@@ -205,14 +208,14 @@ namespace rj
 			}, wheel::up);
 
 			m_gamehandler.template add_input<state::editor>(
-			[this](const vec2f& pos)
+						[this](const vec2f& pos)
 			{
 				if(inp::is_key_pressed(key::LShift))
 					m_editarea_camera.zoom(0.9);
 			}, wheel::up);
 
 			m_gamehandler.template add_input<state::editor>(
-			[this](const vec2f& pos)
+						[this](const vec2f& pos)
 			{
 				if(inp::is_key_pressed(key::LShift))
 					m_editarea_camera.zoom(1.1);
@@ -230,16 +233,20 @@ namespace rj
 			auto editarea_height((window_size.y - itembar_size.y) / window_size.y);
 
 
-			sf::View editarea_view{vec2f{window_size.x, window_size.y - itembar_size.y} / 2.f, {window_size.x, window_size.y - itembar_size.y}};
+			sf::View editarea_view{vec2f{window_size.x, window_size.y - itembar_size.y} / 2.f,
+								   {window_size.x, window_size.y - itembar_size.y}};
 			editarea_view.setViewport({0.f, 0.f, 1.f ,editarea_height});
 			m_editarea_camera.set_view(editarea_view);
 
-			sf::View itembar_view{vec2f{window_size.x, itembar_size.y} / 2.f, {window_size.x, itembar_size.y}};
+			sf::View itembar_view{vec2f{window_size.x, itembar_size.y} / 2.f,
+								  {window_size.x, itembar_size.y}};
 			itembar_view.setViewport({0.f, itembar_top, 1.f, itembar_height});
 			m_itembar_camera.set_view(itembar_view);
 
-			sf::View settingsbar_view{vec2f{settingsbar_size.x, window_size.y} / 2.f, {settingsbar_size.x, window_size.y}};
-			settingsbar_view.setViewport({(window_size.x - settingsbar_size.x) / window_size.x, 0.f, settingsbar_size.x / window_size.x, 1.f});
+			sf::View settingsbar_view{vec2f{settingsbar_size.x, window_size.y} / 2.f,
+									  {settingsbar_size.x, window_size.y}};
+			settingsbar_view.setViewport({(window_size.x - settingsbar_size.x) / window_size.x, 0.f,
+										  settingsbar_size.x / window_size.x, 1.f});
 			m_settingsbar_camera.set_view(settingsbar_view);
 		}
 
@@ -247,7 +254,8 @@ namespace rj
 		{
 			// check the itembar and settingsbar bounds
 			auto itembar_mouse_bounds(bounds_from_vec(m_itembar_camera.get_mapped_mousepos()));
-			auto settingsbar_mouse_bounds(bounds_from_vec(m_settingsbar_camera.get_mapped_mousepos()));
+			auto settingsbar_mouse_bounds(
+						bounds_from_vec(m_settingsbar_camera.get_mapped_mousepos()));
 			if(itembar_mouse_bounds.intersects(m_itembar.get_bounds()) ||
 			   settingsbar_mouse_bounds.intersects(m_settingsbar.get_bounds()))
 				return;
@@ -261,7 +269,8 @@ namespace rj
 				if(selected.size() == 0)
 				{
 					auto bounds(m_mouse.get_selectionshape_bounds());
-					this->delete_editor_entity({bounds.left, bounds.top}, {bounds.width, bounds.height});
+					this->delete_editor_entity({bounds.left, bounds.top},
+					{bounds.width, bounds.height});
 				}
 
 				for(auto& a : selected)
@@ -271,11 +280,13 @@ namespace rj
 			else if(m_mouse.is_mouse_visible())
 			{
 				float f{48.f};
-				vec2f new_pos{round_to(m_editarea_camera.get_mapped_mousepos().x, f), round_to(m_editarea_camera.get_mapped_mousepos().y, f)};
+				vec2f new_pos{round_to(m_editarea_camera.get_mapped_mousepos().x, f),
+							round_to(m_editarea_camera.get_mapped_mousepos().y, f)};
 
 				// set entity at pos
 				if(m_mouse.get_texture() && !m_gameworld.entityhandler().exists_entity_at(new_pos))
-					this->create_editor_entity(new_pos, m_mouse.get_texture(), m_itembar.get_current_figure());
+					this->create_editor_entity(new_pos, m_mouse.get_texture(),
+											   m_itembar.get_current_figure());
 			}
 			else
 				m_mouse.selection_start();
@@ -312,7 +323,8 @@ namespace rj
 		{
 			if(!id.empty())
 				return true;
-			m_gamehandler.popupmgr().template create_popup<popup_type::error>("Couldn't save level: " + mlk::lerr_i().error_str(errors::lv_bad_name));
+			m_gamehandler.popupmgr().template create_popup<popup_type::error>
+					("Couldn't save level: " + mlk::lerr_i().error_str(errors::lv_bad_name));
 			return false;
 		}
 	};

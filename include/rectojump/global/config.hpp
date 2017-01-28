@@ -39,7 +39,8 @@ namespace rj
 		T get_entry(const std::string& key)
 		{
 			auto iter(mlk::cnt::find_in_if(
-			[&key](const std::pair<std::string, std::string>& p){return p.first == key;}, m_entrys));
+						  [&key](const std::pair<std::string, std::string>& p)
+			{return p.first == key;}, m_entrys));
 			if(iter == std::end(m_entrys))
 				return T{};
 			return mlk::type_utl::to_type<T>(iter->second);
@@ -49,7 +50,8 @@ namespace rj
 		void set_entry(const std::string& key, const T& value)
 		{
 			auto iter(mlk::cnt::find_in_if(
-			[&key](const std::pair<std::string, std::string>& p){return p.first == key;}, m_entrys));
+						  [&key](const std::pair<std::string, std::string>& p)
+			{return p.first == key;}, m_entrys));
 			if(iter == std::end(m_entrys))
 				return;
 			iter->second = std::to_string(value);
@@ -121,7 +123,8 @@ namespace rj
 			for(auto& a : entrys)
 			{
 				auto iter(mlk::cnt::find_in_if(
-				[&](const std::pair<std::string, std::string>& p){return p.first == a.first;}, m_entrys));
+				[&](const std::pair<std::string, std::string>& p)
+				{return p.first == a.first;}, m_entrys));
 				if(iter != std::end(m_entrys))
 					*iter = a;
 			}
@@ -132,7 +135,8 @@ namespace rj
 	inline void config::set_entry<std::string>(const std::string& key, const std::string& value)
 	{
 		auto iter(mlk::cnt::find_in_if(
-		[&key](const std::pair<std::string, std::string>& p){return p.first == key;}, m_entrys));
+		[&key](const std::pair<std::string, std::string>& p)
+		{return p.first == key;}, m_entrys));
 		if(iter == std::end(m_entrys))
 			return;
 		iter->second = value;

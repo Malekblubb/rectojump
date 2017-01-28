@@ -101,13 +101,14 @@ namespace rj
 		void delete_entities(std::vector<iterator>& iters)
 		{for(auto& a : iters) (*a)->destroy();}
 
-		std::vector<iterator> get_entities_at(const vec2f& at, const vec2f& size = {1.f, 1.f}) noexcept
+		auto get_entities_at(const vec2f& at, const vec2f& size = {1.f, 1.f}) noexcept
 		{
 			std::vector<iterator> result;
 			sf::FloatRect at_bounds{at, size};
 			for(auto iter(std::begin(m_entities)); iter != std::end(m_entities); ++iter)
 			{
-				sf::FloatRect ent_bounds{{(*iter)->left_out(), (*iter)->top_out()}, (*iter)->size()};
+				sf::FloatRect ent_bounds{{(*iter)->left_out(), (*iter)->top_out()},
+										 (*iter)->size()};
 				if(ent_bounds.intersects(at_bounds))
 					result.emplace_back(iter);
 			}
@@ -165,12 +166,14 @@ namespace rj
 		{
 			if(m_entities.size() >= m_max_entities)
 			{
-				mlk::lout("rj::entity_handler") << "max_entities limit is reached, can't add more entities";
+				mlk::lout("rj::entity_handler") << "max_entities limit is reached,"
+												   "can't add more entities";
 				return false;
 			}
 			if(e->is_registered())
 			{
-				mlk::lout("rj::entity_handler") << "entity with id '" << e->m_id << "' exists already in entity handler, ignoring";
+				mlk::lout("rj::entity_handler") << "entity with id '" << e->m_id <<
+												   "' exists already in entity handler, ignoring";
 				return false;
 			}
 			return true;
@@ -203,7 +206,7 @@ namespace rj
 		void erase_destroyed() noexcept
 		{
 			mlk::cnt::remove_all_if(
-			[](const auto& entity){return entity->m_destroyed;}, m_entities);
+						[](const auto& entity){return entity->m_destroyed;}, m_entities);
 		}
 	};
 }

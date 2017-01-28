@@ -88,7 +88,7 @@ namespace rj
 				mlk::lerr(errors::cl_nullptr_access)["rj::input<T>"];
 
 			m_gamewindow->on_event(sf::Event::EventType::TextEntered) +=
-			[this](sf::Event e){m_last_textinput = e.text.unicode;};
+					[this](sf::Event e){m_last_textinput = e.text.unicode;};
 		}
 
 		void update()
@@ -156,7 +156,10 @@ namespace rj
 		}
 
 		void mousewheel_moved(int delta)
-		{delta < 0 ? m_on_mousewheel[wheel::down](m_mousepos) : m_on_mousewheel[wheel::up](m_mousepos);}
+		{
+			delta < 0 ? m_on_mousewheel[wheel::down](m_mousepos) :
+				m_on_mousewheel[wheel::up](m_mousepos);
+		}
 
 
 		friend mlk::slot<>& inp::on_input_update();

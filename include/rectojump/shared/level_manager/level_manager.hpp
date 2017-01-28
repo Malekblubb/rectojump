@@ -68,13 +68,15 @@ namespace rj
 			if(!m_dirh.exists())
 			{
 				if(m_dirh.create())
-					mlk::lout("rj::level_manager") << "created levels directory '" << m_abs_path << "'";
+					mlk::lout("rj::level_manager") << "created levels directory '" <<
+													  m_abs_path << "'";
 				else
 					mlk::lerr()["rj::level_manager"] << "creating levels directory failed";
 				return;
 			}
 
-			mlk::lout("rj::level_manager") << "loading levels recursive from directory '" << m_abs_path << "'...";
+			mlk::lout("rj::level_manager") << "loading levels recursive from directory '" <<
+											  m_abs_path << "'...";
 			auto content(m_dirh.get_content<true>());
 			auto count(0);
 			for(auto& a : content)
@@ -94,7 +96,9 @@ namespace rj
 			auto data(m_filemgr.read_all());
 			level_packer<packer_mode::unpack> unpacker{data};
 			m_loaded_levels[id] = unpacker.get_level();
-			mlk::lout("rj::level_manager") << "loaded level '" << path << "' " << (m_loaded_levels[id].is_valid() ? "(valid)" : "(invalid)");
+			mlk::lout("rj::level_manager") << "loaded level '" << path << "' " <<
+											  (m_loaded_levels[id].is_valid() ? "(valid)" :
+																				"(invalid)");
 		}
 
 		std::string make_path(const level_id& id) const noexcept
@@ -103,7 +107,7 @@ namespace rj
 		level_id make_id(const std::string& str) const noexcept
 		{
 			auto result(str);
-            if(result.length() < 4 || result.substr(result.size() - 4, 4) != ".rjl")
+			if(result.length() < 4 || result.substr(result.size() - 4, 4) != ".rjl")
 				result += ".rjl";
 			return result;
 		}

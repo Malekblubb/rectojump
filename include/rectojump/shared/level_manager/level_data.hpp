@@ -25,7 +25,8 @@ namespace rj
 
 		void add_entity(entity_figure figure, entity_propertie prop, const vec2f& pos) noexcept
 		{
-			auto str(mlk::stl_string::str_format("Ent[%%, %%, {%%, %%}]", figure, prop, pos.x, pos.y));
+			auto str(mlk::stl_string::str_format("Ent[%%, %%, {%%, %%}]",
+												 figure, prop, pos.x, pos.y));
 			m_data.push_back(str);
 		}
 

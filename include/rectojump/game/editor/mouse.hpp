@@ -34,7 +34,7 @@ namespace rj
 	public:
 		editor_mouse(Game_Handler& gh) :
 			m_render{gh.rendermgr()},
-            m_entityhandler{gh.get_game().get_world().entityhandler()}
+			m_entityhandler{gh.get_game().get_world().entityhandler()}
 		{this->init();}
 
 		void update(dur)
@@ -94,7 +94,8 @@ namespace rj
 			for(auto& a : m_entityhandler)
 			{
 				auto size(a->size());
-				auto ent_bounds(bounds_from_vec({a->pos().x - size.x / 2.f, a->pos().y - size.y / 2.f}, size));
+				auto ent_bounds(bounds_from_vec({a->pos().x - size.x / 2.f,
+												 a->pos().y - size.y / 2.f}, size));
 				if(selectshape_bounds.intersects(ent_bounds))
 					m_copy_shapes.push_back(*std::static_pointer_cast<editor_entity>(a));
 			}

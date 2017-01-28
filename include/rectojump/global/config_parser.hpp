@@ -42,7 +42,8 @@ namespace rj
 				auto pos_equ(a.find('='));
 				if(pos_equ != std::string::npos)
 				{
-					auto pair(std::make_pair(a.substr(0, pos_equ), a.substr(pos_equ + 1, a.size() - pos_equ - 1)));
+					auto pair(std::make_pair(a.substr(0, pos_equ),
+											 a.substr(pos_equ + 1, a.size() - pos_equ - 1)));
 					if(!pair.first.empty() && !pair.second.empty())
 						m_entrys.push_back(pair);
 				}

@@ -25,7 +25,8 @@ namespace rj
 	public:
 		level_background() = default;
 
-		level_background(const std::string& start_hex, const std::string& end_hex, std::size_t pointcount) :
+		level_background(const std::string& start_hex, const std::string& end_hex,
+						 std::size_t pointcount) :
 			m_startcolor{to_rgb(start_hex)},
 			m_endcolor{to_rgb(end_hex)},
 			m_pointcount{pointcount}
@@ -45,8 +46,8 @@ namespace rj
 		std::size_t get_pointcount() const noexcept
 		{return m_pointcount;}
 
-        auto size() const noexcept
-        {return m_data.size();}
+		auto size() const noexcept
+		{return m_data.size();}
 
 		const mlk::data_packet& data() const noexcept
 		{return m_data;}

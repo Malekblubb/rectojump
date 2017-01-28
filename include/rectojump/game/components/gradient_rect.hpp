@@ -29,8 +29,10 @@ namespace rj
 		float m_step_ratio;
 
 	public:
-		gradient_rect(const vec2f& size = {0.f, 0.f}, const sf::Color& startcolor = {255, 255, 255},
-					  const sf::Color& endcolor = {255, 255, 255}, std::size_t gradient_points = 1) :
+		gradient_rect(const vec2f& size = {0.f, 0.f},
+					  const sf::Color& startcolor = {255, 255, 255},
+					  const sf::Color& endcolor = {255, 255, 255},
+					  std::size_t gradient_points = 1) :
 			m_size{size},
 			m_startcolor{startcolor},
 			m_endcolor{endcolor},

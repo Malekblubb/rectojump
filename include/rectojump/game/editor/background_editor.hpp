@@ -19,24 +19,24 @@ namespace rj
 	{
 		Editor& m_editor;
 
-        background_manager<typename Editor::gh_type>& m_backgroundmgr;
+		background_manager<typename Editor::gh_type>& m_backgroundmgr;
 
 	public:
 		background_editor(Editor& e) :
 			m_editor{e},
 			m_backgroundmgr{e.gamehandler().backgroundmgr()}
-        {this->init();}
+		{this->init();}
 
 		void reset()
 		{
-            m_backgroundmgr.clear(state::editor);
+			m_backgroundmgr.clear(state::editor);
 		}
 
-    private:
-        void init()
-        {
-            m_backgroundmgr.set_bg_shape(state::editor, {settings::get_window_size<vec2f>()});
-        }
+	private:
+		void init()
+		{
+			m_backgroundmgr.set_bg_shape(state::editor, {settings::get_window_size<vec2f>()});
+		}
 	};
 }
 

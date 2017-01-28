@@ -27,7 +27,8 @@ namespace rj
 		bool m_destroyed{false};
 
 	public:
-		basic_background_component(rndr& r, const vec2f& pos, const vec2f& size, mlk::ullong lifetime, float rotatiostep, const vec2f& movestep) :
+		basic_background_component(rndr& r, const vec2f& pos, const vec2f& size,
+								   mlk::ullong lifetime, float rotatiostep, const vec2f& movestep) :
 			m_render{r},
 			m_position{pos},
 			m_size{size},
