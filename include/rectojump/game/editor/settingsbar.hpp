@@ -193,17 +193,30 @@ namespace rj
 			// backgroundcolors
 			auto spacing(10.f);
 			auto bg_return_key_func(
-						[this]
+			[this]
 			{
-				auto start_color(to_rgb(m_textboxes["tb_bgstartcolor"].getText()));
-				auto end_color(to_rgb(m_textboxes["tb_bgendcolor"].getText()));
 				auto point_count(m_textboxes["tb_bgpointcount"].getText());
-				if(!mlk::stl_string::is_numeric(point_count))
+				if(mlk::stl_string::is_numeric(point_count))
+				{
+					if((point_count.length() > 3) ||
+					   (std::stoi(point_count) > (int)std::numeric_limits<char>::max()))
+					{
+						m_gamehandler.popupmgr().template create_popup<popup_type::error>
+								("Max point count is 127: " + point_count);
+						return;
+					}
+				}
+				else
 				{
 					m_gamehandler.popupmgr().template create_popup<popup_type::error>
 							("invalid content (must be numeric): " + point_count);
 					return;
 				}
+
+
+				auto start_color(to_rgb(m_textboxes["tb_bgstartcolor"].getText()));
+				auto end_color(to_rgb(m_textboxes["tb_bgendcolor"].getText()));
+
 				m_backgroundmgr.bg_shape(state::editor).set_startcolor(start_color);
 				m_backgroundmgr.bg_shape(state::editor).set_endcolor(end_color);
 				m_backgroundmgr.bg_shape(state::editor).set_gradient_points(
