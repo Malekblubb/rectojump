@@ -37,19 +37,19 @@ namespace rj
 			m_data.emplace_back(pointcount);
 		}
 
-		const sf::Color& startcolor() const noexcept
+		const auto& startcolor() const noexcept
 		{return m_startcolor;}
 
-		const sf::Color& endcolor() const noexcept
+		const auto& endcolor() const noexcept
 		{return m_endcolor;}
 
-		std::size_t pointcount() const noexcept
+		auto pointcount() const noexcept
 		{return m_pointcount;}
 
 		auto size() const noexcept
 		{return m_data.size();}
 
-		const mlk::data_packet& data() const noexcept
+		const auto& data() const noexcept
 		{return m_data;}
 	};
 }
