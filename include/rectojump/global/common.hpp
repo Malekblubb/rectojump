@@ -36,11 +36,13 @@ namespace rj
 	// general
 	using dur = float;
 
+	// input
 	using key = sf::Keyboard::Key;
 	using btn = sf::Mouse::Button;
 	enum class wheel : char
 	{up, down};
 
+	// vectors
 	using vec2f = sf::Vector2f;
 	using vec2i = sf::Vector2i;
 	using vec2u = sf::Vector2u;
@@ -52,6 +54,11 @@ namespace rj
 	enum entity_prototype_value : std::size_t
 	{figure, prop, x, y};
 
+	// section headers
+	static const mlk::data_packet header_rj_bg{'R', 'J', 'B', 'G'};
+	static const mlk::data_packet header_rj_level{'R', 'J', 'L', 'E', 'V', 'E', 'L'};
+
+	// ui
 	template<typename Textbox_Type>
 	void default_textbox(Textbox_Type& tb)
 	{

@@ -107,15 +107,14 @@ namespace rj
 			m_valid = m_bg_data.size() > 0 ? (mlk::data_packet{std::begin(m_bg_data),
 															   std::begin(m_bg_data) +
 															   m_bgdata_id_size} ==
-											  mlk::data_packet{'R', 'J', 'B', 'G'}) : false;
+											  header_rj_bg) : false;
 
 			if(m_valid)
 			{
 				if(m_level_data.size() > 0)
 					m_valid = (mlk::data_packet{std::begin(m_level_data),
-												std::begin(m_level_data) +
-												m_leveldata_id_size} ==
-							   mlk::data_packet{'R', 'J', 'L', 'E', 'V', 'E', 'L'});
+												std::begin(m_level_data) + m_leveldata_id_size} ==
+							   header_rj_level);
 				else
 					m_valid = false;
 			}
