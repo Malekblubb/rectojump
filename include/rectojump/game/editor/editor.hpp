@@ -144,6 +144,14 @@ namespace rj
 
 			auto& lv(m_levelmgr.get_level(level_name));
 			m_gameworld.template load_level<true>(lv.entities);
+
+
+			// set background
+			auto& bg_shape{m_background.backgroundmgr().bg_shape(state::editor)};
+			bg_shape.set_startcolor(lv.background.startcolor());
+			std::cout << lv.background.pointcount() << std::endl;
+			bg_shape.set_endcolor(lv.background.endcolor());
+			bg_shape.set_gradient_points(lv.background.pointcount());
 		}
 
 		void reset_zoom() noexcept

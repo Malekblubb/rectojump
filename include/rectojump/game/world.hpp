@@ -26,7 +26,7 @@ namespace rj
 	class world
 	{
 		Game_Handler& m_gamehandler;
-		//		background_manager& m_backgroundmgr;
+		background_manager<Game_Handler>& m_backgroundmgr;
 		data_store_type& m_datastore;
 
 		entity_handler m_entity_handler;
@@ -34,7 +34,7 @@ namespace rj
 	public:
 		world(Game_Handler& gh) :
 			m_gamehandler{gh},
-			//			m_backgroundmgr{gh.backgroundmgr()},
+			m_backgroundmgr{gh.backgroundmgr()},
 			m_entity_handler{gh.rendermgr()},
 			m_datastore{gh.datastore()}
 		{ }
@@ -65,6 +65,7 @@ namespace rj
 				vec2f pos{entity[x], entity[y]};
 				auto entity_figure(static_cast<char>(entity[figure]));
 
+				// laod objects
 				// rectangle
 				if(entity_figure == entity_figure::f_rectangle)
 				{

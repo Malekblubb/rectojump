@@ -48,7 +48,7 @@ namespace rj
 		main_menu<game_handler> m_mainmenu;
 		game_menu<game_handler> m_gamemenu;
 		particle_manager<game_handler> m_particlemgr;
-		popup_manager<game_handler> m_popupmgr;
+        popup_manager<game_handler> m_popupmgr;
 		debug_info<game_handler, decltype(m_game)> m_debug_info;
 
 		mlk::ebitset<state, state::num> m_current_states;

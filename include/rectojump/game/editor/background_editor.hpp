@@ -32,6 +32,10 @@ namespace rj
 			m_backgroundmgr.clear(state::editor);
 		}
 
+
+		auto& backgroundmgr() noexcept
+		{return m_backgroundmgr;}
+
 	private:
 		void init()
 		{
