@@ -8,6 +8,7 @@
 
 
 #include "widget.hpp"
+#include "button.hpp"
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/level_manager/level.hpp>
 #include <rectojump/shared/input.hpp>
@@ -25,6 +26,9 @@ namespace rj
 			sf::Text m_creator_date;
 			//sf::Text m_creator_text; // TODO: impl
 
+			button m_play_button;
+			button m_edit_button;
+
 			sf::Color m_color_active{to_rgb("#f15ede", 80)}, m_color_deactive{to_rgb("#bdbdbd")};
 
 			bool m_active{false};
@@ -37,7 +41,12 @@ namespace rj
 				if(!lv.is_valid())
 					return;
 
-				m_preview.setPosition(10.f, 10.f);
+				auto spacing{10.f};
+
+				m_background.setFillColor(m_color_deactive);
+				m_background.setSize({width, 100.f});
+
+				m_preview.setPosition(spacing, spacing);
 				m_preview.setSize({75.f, 75.f});
 				m_preview.setFillColor(sf::Color::Black);
 
@@ -47,11 +56,25 @@ namespace rj
 				m_creator_date.setPosition(110.f, m_level_name.getGlobalBounds().top +
 										   m_level_name.getGlobalBounds().height);
 
-				m_background.setFillColor(m_color_deactive);
-				m_background.setSize({width, 100.f});
+				// buttons
+				m_edit_button.setSize({100.f, 30.f});
+				m_edit_button.setFont(font);
+				m_edit_button.setText("Edit");
+				m_edit_button.setOrigin({m_edit_button.getSize().x, m_edit_button.getSize().y / 2});
+				m_edit_button.setPosition({width - spacing, m_background.getGlobalBounds().top + m_background.getSize().y /  2});
+				default_button(m_edit_button);
+				m_edit_button.on_clicked = []{/* TODO: implement me */};
+
+				m_play_button.setSize({100.f, 30.f});
+				m_play_button.setFont(font);
+				m_play_button.setText("Play");
+				m_play_button.setOrigin({m_play_button.getSize().x, m_play_button.getSize().y / 2});
+				m_play_button.setPosition({m_edit_button.getGlobalBounds().left - spacing, m_background.getGlobalBounds().top + m_background.getSize().y / 2});
+				default_button(m_play_button);
+				m_play_button.on_clicked = []{/* TODO: implement me */};
 			}
 
-			void update(dur) override
+			void update(dur duration) override
 			{
 				if(inp::was_real_mousepress_left())
 				{
@@ -66,6 +89,10 @@ namespace rj
 						m_background.setFillColor(m_color_deactive);
 					}
 				}
+
+				// buttons
+				m_play_button.update(duration);
+				m_edit_button.update(duration);
 			}
 
 			void move(const vec2f& offset)
@@ -74,6 +101,8 @@ namespace rj
 				m_preview.move(offset);
 				m_level_name.move(offset);
 				m_creator_date.move(offset);
+				m_play_button.move(offset);
+				m_edit_button.move(offset);
 			}
 
 			const vec2f& size() const noexcept
@@ -92,6 +121,10 @@ namespace rj
 				target.draw(m_preview, states);
 				target.draw(m_level_name, states);
 				target.draw(m_creator_date, states);
+
+				// buttons
+				target.draw(m_play_button, states);
+				target.draw(m_edit_button, states);
 			}
 		};
 	}

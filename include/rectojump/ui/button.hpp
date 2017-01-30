@@ -192,6 +192,9 @@ namespace rj
 			const vec2f& getSize() const noexcept
 			{return m_shape.getSize();}
 
+			const auto getGlobalBounds() const noexcept
+			{return m_shape.getGlobalBounds();}
+
 			const sf::Texture* getTexture() const noexcept
 			{return m_shape.getTexture();}
 

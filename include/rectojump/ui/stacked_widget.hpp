@@ -73,7 +73,7 @@ namespace rj
 												  m_size.x / size.x, m_size.y / size.y}}});
 			}
 
-			auto& get(const std::string& site_name) noexcept
+			auto& get(const std::string& site_name)
 			{return m_sites.at(site_name);}
 
 			template<typename Any_Type, typename... Any_Args>
