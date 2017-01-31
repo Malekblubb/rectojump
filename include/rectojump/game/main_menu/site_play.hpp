@@ -43,7 +43,14 @@ namespace rj
 
 			// add levels
 			for(const auto& a : m_lvmgr.get_levels())
-				level_widget->add_item(a.second, font);
+				level_widget->add_item(a.second, font, []{/*TODO:implement(button play)*/},
+				[this, &a]
+				{
+					// button edit
+					m_overlay.mainmenu().gamehandler().switch_to_editor();
+					m_overlay.mainmenu().gamehandler().editor().
+							handle_load(a.second.info.level_name);
+				});
 
 			// set camera on render
 			site_play.on_render = [level_widget]{level_widget->activate_cam();};

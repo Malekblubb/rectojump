@@ -138,6 +138,9 @@ namespace rj
 		auto& get_game() noexcept
 		{return m_game;}
 
+		auto& editor() noexcept
+		{return m_editor;}
+
 		auto& backgroundmgr() noexcept
 		{return m_backgroundmgr;}
 

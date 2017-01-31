@@ -78,8 +78,9 @@ namespace rj
 
 				m_scrollcam.move({0.f, step});
 			}
-
-			void add_item(const level& lv, const sf::Font& font)
+			template<typename Func_Type1, typename Func_Type2>
+			void add_item(const level& lv, const sf::Font& font, Func_Type1&& fun_play,
+						  Func_Type2&& fun_edit)
 			{
 				if(!lv.is_valid())
 					return;
@@ -93,6 +94,10 @@ namespace rj
 					pos_y = m_items[m_items.size() - 2].pos_y_h();
 
 				m_items.back().move({0.f, pos_y + m_spacing});
+
+				// set events
+				m_items.back().on_play_clicked() = fun_play;
+				m_items.back().on_edit_clicked() = fun_edit;
 
 				// calc full height
 				m_full_height = -m_scrollcam.get_startcenter().y;

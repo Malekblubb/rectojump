@@ -61,17 +61,20 @@ namespace rj
 				m_edit_button.setFont(font);
 				m_edit_button.setText("Edit");
 				m_edit_button.setOrigin({m_edit_button.getSize().x, m_edit_button.getSize().y / 2});
-				m_edit_button.setPosition({width - spacing, m_background.getGlobalBounds().top + m_background.getSize().y /  2});
+				m_edit_button.setPosition({width - spacing, m_background.getGlobalBounds().top +
+										   m_background.getSize().y /  2});
 				default_button(m_edit_button);
-				m_edit_button.on_clicked = []{/* TODO: implement me */};
+				// m_edit_button.on_clicked = []{}; set in game > main_menu > site_play.hpp
 
 				m_play_button.setSize({100.f, 30.f});
 				m_play_button.setFont(font);
 				m_play_button.setText("Play");
 				m_play_button.setOrigin({m_play_button.getSize().x, m_play_button.getSize().y / 2});
-				m_play_button.setPosition({m_edit_button.getGlobalBounds().left - spacing, m_background.getGlobalBounds().top + m_background.getSize().y / 2});
+				m_play_button.setPosition({m_edit_button.getGlobalBounds().left - spacing,
+										   m_background.getGlobalBounds().top +
+										   m_background.getSize().y / 2});
 				default_button(m_play_button);
-				m_play_button.on_clicked = []{/* TODO: implement me */};
+				// m_play_button.on_clicked = []{}; set in game > main_menu > site_play.hpp
 			}
 
 			void update(dur duration) override
@@ -113,6 +116,12 @@ namespace rj
 
 			float pos_y_h() const noexcept
 			{return m_background.getGlobalBounds().top + m_background.getGlobalBounds().height;}
+
+			auto& on_play_clicked()
+			{return m_play_button.on_clicked;}
+
+			auto& on_edit_clicked()
+			{return m_edit_button.on_clicked;}
 
 		private:
 			void draw(sf::RenderTarget& target, sf::RenderStates states) const override
