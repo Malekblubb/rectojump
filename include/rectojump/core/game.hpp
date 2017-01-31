@@ -59,8 +59,7 @@ namespace rj
 		Game_Handler& gamehandler() noexcept
 		{return m_gamehandler;}
 
-		auto get_world()
-		-> decltype(m_world)&
+		auto& get_world()
 		{return m_world;}
 	};
 }

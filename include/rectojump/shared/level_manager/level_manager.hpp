@@ -55,8 +55,7 @@ namespace rj
 		const level& get_level(const level_id& id) const
 		{return m_loaded_levels.at(this->make_id(id));}
 
-		auto get_levels() const noexcept
-		-> const decltype(m_loaded_levels)&
+		auto& get_levels() const noexcept
 		{return m_loaded_levels;}
 
 		std::size_t num_levels() const noexcept
@@ -101,10 +100,10 @@ namespace rj
 																				"(invalid)");
 		}
 
-		std::string make_path(const level_id& id) const noexcept
+		std::string make_path(const level_id& id) const
 		{return m_abs_path + id + ".rjl";}
 
-		level_id make_id(const std::string& str) const noexcept
+		level_id make_id(const std::string& str) const
 		{
 			auto result{str};
 			if(result.length() < 4 || result.substr(result.size() - 4, 4) != ".rjl")

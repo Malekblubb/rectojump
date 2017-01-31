@@ -63,8 +63,7 @@ namespace rj
 		entity_figure get_current_figure() const noexcept
 		{return std::static_pointer_cast<button_item>(m_buttons.get_active_btn())->get_figure();}
 
-		auto get_bounds() const noexcept
-		-> decltype(m_shape.getGlobalBounds())
+		auto get_bounds() const
 		{return m_shape.getGlobalBounds();}
 
 		const vec2f& get_size() const noexcept
