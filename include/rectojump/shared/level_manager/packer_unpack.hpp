@@ -48,7 +48,7 @@ namespace rj
 
 		void unpack()
 		{
-			auto unpacked_size(mlk::cnt::make_int(0, m_read_data));
+			auto unpacked_size{mlk::cnt::make_int(0, m_read_data)};
 			using namespace mlk::cmprs;
 			compressor<cmprs_mode::zlib> cmp{mlk::data_packet{m_read_data.begin() + 4,
 							m_read_data.end()}};
@@ -61,14 +61,14 @@ namespace rj
 
 		void parse()
 		{
-			auto music_data(mlk::data_packet{std::begin(m_work_data) + sizeof(level_header),
-											 std::begin(m_work_data) + sizeof(level_header) + this->music_size()});
-			auto backg_data(mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size(),
-											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size()});
-			auto level_data(mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size(),
-											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size() + this->data_size()});
-			auto infos_data(mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size() + this->data_size(),
-											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size() + this->data_size() + this->info_size()});
+			auto music_data{mlk::data_packet{std::begin(m_work_data) + sizeof(level_header),
+											 std::begin(m_work_data) + sizeof(level_header) + this->music_size()}};
+			auto backg_data{mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size(),
+											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size()}};
+			auto level_data{mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size(),
+											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size() + this->data_size()}};
+			auto infos_data{mlk::data_packet{std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size() + this->data_size(),
+											 std::begin(m_work_data) + sizeof(level_header) + this->music_size() + this->background_size() + this->data_size() + this->info_size()}};
 
 			level_parser lv_parser{backg_data, level_data};
 			info_parser inf_parser{infos_data};

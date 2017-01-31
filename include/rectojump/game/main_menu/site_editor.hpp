@@ -35,8 +35,8 @@ namespace rj
 		{
 			// buttons
 			const vec2f btnsize{200.f, 100.f};
-			const auto& font(m_datastore.get<sf::Font>(settings::text_font()));
-			auto login(m_sites.add_object<ui::button>("editor", btnsize, vec2f{}));
+			const auto& font{m_datastore.get<sf::Font>(settings::text_font())};
+			auto login{m_sites.add_object<ui::button>("editor", btnsize, vec2f{})};
 			login->setPosition(vec2f{(m_sites.bounds().width / 2) - login->getSize().x / 2,
 									 (m_sites.bounds().height / 2) - login->getSize().y / 2});
 			login->setFont(font);

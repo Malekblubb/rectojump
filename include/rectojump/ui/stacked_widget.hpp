@@ -67,7 +67,7 @@ namespace rj
 
 			void add_site(const std::string& site_name)
 			{
-				auto size(settings::get_window_size<vec2f>());
+				auto size{settings::get_window_size<vec2f>()};
 				m_sites.emplace(site_name, site{{m_gamewindow, {m_size / 2.f, m_size},
 												 {m_pos.x / size.x, m_pos.y / size.y,
 												  m_size.x / size.x, m_size.y / size.y}}});
@@ -82,7 +82,7 @@ namespace rj
 				if(!mlk::cnt::exists_map_first(site_name, m_sites))
 					return nullptr;
 
-				auto ptr(std::make_shared<Any_Type>(std::forward<Any_Args>(args)...));
+				auto ptr{std::make_shared<Any_Type>(std::forward<Any_Args>(args)...)};
 				m_sites.at(site_name).objects.emplace_back(ptr);
 				return ptr;
 			}

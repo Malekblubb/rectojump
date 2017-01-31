@@ -106,16 +106,16 @@ namespace rj
 
 		void recolor()
 		{
-			auto begin(&m_verts[0]);
-			auto end(&m_verts[m_verts.getVertexCount()]);
+			auto begin{&m_verts[0]};
+			auto end{&m_verts[m_verts.getVertexCount()]};
 
-			for(auto iter(begin); iter != end; ++iter)
+			for(auto iter{begin}; iter != end; ++iter)
 				iter->color = m_color;
 		}
 
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const
 		{
-			auto tmp(states);
+			auto tmp{states};
 			tmp.transform = this->getTransform();
 			target.draw(m_verts, tmp);
 		}

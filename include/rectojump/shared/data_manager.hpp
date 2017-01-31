@@ -46,8 +46,7 @@ namespace rj
 		// interface
 		// get:		don't loads the data to manager
 		//			just 'gets' it
-		auto get_all() const noexcept
-		-> const decltype(m_data)&
+		auto& get_all() const noexcept
 		{return m_data;}
 
 		mlk::data_packet get_raw(const data_id& id)
@@ -156,8 +155,8 @@ namespace rj
 		{
 			mlk::lout("rj::data_manager") << "loading files recursive from directory '" <<
 											 m_abs_path << "'...";
-			auto content(m_dirh.get_content<true>());
-			auto count(0);
+			auto content{m_dirh.get_content<true>()};
+			auto count{0};
 			for(auto& a : content)
 				if(a.type == mlk::fs::item_type::file)
 				{

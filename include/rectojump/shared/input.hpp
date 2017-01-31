@@ -109,7 +109,7 @@ namespace rj
 			m_key_bits |= k;
 			for(auto& keys : m_on_keys_pressed)
 			{
-				auto all_pressed(false);
+				auto all_pressed{false};
 				for(auto& key : keys.first)
 				{
 					if(!this->is_key_valid(key))
@@ -240,7 +240,7 @@ namespace rj
 
 		inline vec2f get_mousepos_current_view()
 		{
-			auto& rw(input<game_window>::get().m_renderwindow);
+			auto& rw{input<game_window>::get().m_renderwindow};
 			return rw->mapPixelToCoords(sf::Mouse::getPosition(*rw), rw->getView());
 		}
 
@@ -250,14 +250,14 @@ namespace rj
 		template<bool current_view = false>
 		sf::FloatRect get_mousebounds()
 		{
-			auto& pos(get_mousepos());
+			auto& pos{get_mousepos()};
 			return {pos.x, pos.y, 1.f, 1.f};
 		}
 
 		template<>
 		inline sf::FloatRect get_mousebounds<true>()
 		{
-			auto pos(get_mousepos_current_view());
+			auto pos{get_mousepos_current_view()};
 			return {pos.x, pos.y, 1.f, 1.f};
 		}
 	}

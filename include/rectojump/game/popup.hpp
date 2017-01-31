@@ -38,7 +38,7 @@ namespace rj
 			m_text{text, font, 18},
 			m_lifetime_timer{lifetime}
 		{
-			auto size(m_text.getGlobalBounds());
+			auto size{m_text.getGlobalBounds()};
 			vec2f origin{size.width / 2.f, size.height / 2.f};
 			m_text.setOrigin(origin);
 			m_text.setPosition(pos);
@@ -63,15 +63,15 @@ namespace rj
 				}
 
 				--m_current_alpha;
-				auto scolor(m_shape.getFillColor());
+				auto scolor{m_shape.getFillColor()};
 				scolor.a = m_current_alpha;
 				m_shape.setFillColor(scolor);
 
-				auto ocolor(m_shape.getOutlineColor());
+				auto ocolor{m_shape.getOutlineColor()};
 				ocolor.a = m_current_alpha;
 				m_shape.setOutlineColor(ocolor);
 
-				auto tcolor(m_text.getFillColor());
+				auto tcolor{m_text.getFillColor()};
 				tcolor.a = m_current_alpha;
 				m_text.setFillColor(tcolor);
 			}

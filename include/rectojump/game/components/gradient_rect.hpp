@@ -79,13 +79,13 @@ namespace rj
 			m_verts.clear();
 			m_step_ratio = 1.f / m_num_gradient_points;
 
-			auto single_size(m_size.y / m_num_gradient_points);
-			auto pos_y(m_position.y);
-			auto current_ratio(0.f);
+			auto single_size{m_size.y / m_num_gradient_points};
+			auto pos_y{m_position.y};
+			auto current_ratio{0.f};
 
-			for(auto i(0); i < m_num_gradient_points; ++i)
+			for(auto i{0}; i < m_num_gradient_points; ++i)
 			{
-				auto current_color(mlk::gcs::color_diff(m_startcolor, m_endcolor, current_ratio));
+				auto current_color{mlk::gcs::color_diff(m_startcolor, m_endcolor, current_ratio)};
 
 				m_verts.append({{m_position.x, pos_y + single_size}, current_color});
 				m_verts.append({{m_position.x, pos_y}, current_color});

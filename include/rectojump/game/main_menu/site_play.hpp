@@ -32,14 +32,14 @@ namespace rj
 
 		void construct()
 		{
-			auto& site_play(m_sites.get("play"));
-			auto& font(m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>
-					   (settings::text_font()));
+			auto& site_play{m_sites.get("play")};
+			auto& font{m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>
+					   (settings::text_font())};
 
 			// create level_widget
-			auto level_widget(m_sites.add_object<ui::level_widget>(
+			auto level_widget{m_sites.add_object<ui::level_widget>(
 								  "play", m_overlay.mainmenu().gamehandler().gamewindow(),
-								  m_sites.size(), m_sites.pos()));
+								  m_sites.size(), m_sites.pos())};
 
 			// add levels
 			for(const auto& a : m_lvmgr.get_levels())

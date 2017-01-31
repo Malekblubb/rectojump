@@ -77,8 +77,8 @@ namespace rj
 
 			mlk::lout("rj::level_manager") << "loading levels recursive from directory '" <<
 											  m_abs_path << "'...";
-			auto content(m_dirh.get_content<true>());
-			auto count(0);
+			auto content{m_dirh.get_content<true>()};
+			auto count{0};
 			for(auto& a : content)
 				if(a.type == mlk::fs::item_type::file)
 				{
@@ -93,7 +93,7 @@ namespace rj
 			if(!m_filemgr.reopen(path, std::ios::in))
 				return;
 
-			auto data(m_filemgr.read_all());
+			auto data{m_filemgr.read_all()};
 			level_packer<packer_mode::unpack> unpacker{data};
 			m_loaded_levels[id] = unpacker.get_level();
 			mlk::lout("rj::level_manager") << "loaded level '" << path << "' " <<
@@ -106,7 +106,7 @@ namespace rj
 
 		level_id make_id(const std::string& str) const noexcept
 		{
-			auto result(str);
+			auto result{str};
 			if(result.length() < 4 || result.substr(result.size() - 4, 4) != ".rjl")
 				result += ".rjl";
 			return result;

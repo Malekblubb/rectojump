@@ -40,12 +40,12 @@ namespace rj
 
 		std::string get_formated() const override
 		{
-			auto result(m_unformated_str);
+			auto result{m_unformated_str};
 			std::string str;
 			if constexpr(std::is_same<std::string, Func_Ret_Type>())
 					str = m_func();
 			else str = std::to_string(m_func());
-			auto insert_pos(result.find("%%"));
+			auto insert_pos{result.find("%%")};
 			if(insert_pos != std::string::npos)
 			{
 				result.insert(insert_pos + 2, str);
@@ -134,16 +134,16 @@ namespace rj
 			std::string app{'\n'};
 			for(auto& a : text)
 				app += "=";
-			auto ptr(std::make_shared<debug_info_string<void>>(std::string{text + app + "\n"},
-															   []{}));
+			auto ptr{std::make_shared<debug_info_string<void>>(std::string{text + app + "\n"},
+															   []{})};
 			m_lines.emplace_back(ptr);
 		}
 
 		template<typename Func>
 		void add_line(const std::string& text, Func&& f)
 		{
-			auto ptr(std::make_shared<debug_info_string<
-					 typename mlk::lambda_info<Func>::return_type>>(text + '\n', f));
+			auto ptr{std::make_shared<debug_info_string<
+					 typename mlk::lambda_info<Func>::return_type>>(text + '\n', f)};
 			m_lines.emplace_back(ptr);
 		}
 	};

@@ -160,8 +160,8 @@ namespace rj
 			std::string getText() const noexcept
 			{
 				std::string result;
-				auto char_stack(m_char_stack);
-				auto size(char_stack.size());
+				auto char_stack{m_char_stack};
+				auto size{char_stack.size()};
 				for(std::size_t i{0}; i < size; ++i)
 				{
 					result += char_stack.top();
@@ -199,7 +199,7 @@ namespace rj
 
 			void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 			{
-				auto s(states);
+				auto s{states};
 
 				// shape
 				s.transform = sf::Transformable::getTransform();
@@ -218,7 +218,7 @@ namespace rj
 
 			void update_password_mode()
 			{
-				auto passwordchars(m_text.getString().toAnsiString());
+				auto passwordchars{m_text.getString().toAnsiString()};
 				mlk::stl_string::set_all('*', passwordchars);
 				m_password_text.setString(passwordchars);
 			}
@@ -235,9 +235,9 @@ namespace rj
 				if(u != 0x08 && (u < 0x20 || u > 0x7E))
 					return;
 
-				auto text(m_text.getString());
-				auto shape_bounds(m_shape.getGlobalBounds());
-				auto text_bounds(m_text.getGlobalBounds());
+				auto text{m_text.getString()};
+				auto shape_bounds{m_shape.getGlobalBounds()};
+				auto text_bounds{m_text.getGlobalBounds()};
 
 				// check bounds
 				if(text_bounds.left + text_bounds.width > shape_bounds.left + shape_bounds.width)
@@ -274,9 +274,9 @@ namespace rj
 
 			void update_text_pos()
 			{
-				auto shape_bounds(m_shape.getGlobalBounds());
-				auto text_bounds(m_text.getGlobalBounds());
-				auto origin(vec2f{0.f, text_bounds.height} / 2.f);
+				auto shape_bounds{m_shape.getGlobalBounds()};
+				auto text_bounds{m_text.getGlobalBounds()};
+				auto origin{vec2f{0.f, text_bounds.height} / 2.f};
 				vec2f pos{shape_bounds.left, shape_bounds.top + shape_bounds.height / 2.f};
 
 				m_text.setOrigin(origin);
@@ -287,10 +287,10 @@ namespace rj
 
 			void update_cursor()
 			{
-				auto shape_bounds(m_shape.getGlobalBounds());
-				auto text_bounds(m_password_mode ? m_password_text.getGlobalBounds() :
-												   m_text.getGlobalBounds());
-				auto cursor_margin_tb(0.1f * shape_bounds.height); // top / bottom
+				auto shape_bounds{m_shape.getGlobalBounds()};
+				auto text_bounds{m_password_mode ? m_password_text.getGlobalBounds() :
+												   m_text.getGlobalBounds()};
+				auto cursor_margin_tb{0.1f * shape_bounds.height}; // top / bottom
 				m_cursor[0].position = {shape_bounds.left + text_bounds.width, shape_bounds.top +
 										cursor_margin_tb};
 				m_cursor[0].color = m_cursorcolor;

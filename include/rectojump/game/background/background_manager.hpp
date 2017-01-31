@@ -126,8 +126,8 @@ namespace rj
 		template<typename Obj_Type, typename... Args>
 		mlk::sptr<background_component<Obj_Type>> create_object_for_state(state s, Args&&... args)
 		{
-			auto ptr(std::make_shared<background_component<Obj_Type>>(m_render,
-																	  std::forward<Args>(args)...));
+			auto ptr{std::make_shared<background_component<Obj_Type>>(m_render,
+																	  std::forward<Args>(args)...)};
 			m_objects[s].components.emplace_back(ptr);
 			return ptr;
 		}

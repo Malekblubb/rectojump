@@ -41,7 +41,7 @@ namespace rj
 				m_size{size},
 				m_pos{pos}
 			{
-				auto wsize(settings::get_window_size<vec2f>());
+				auto wsize{settings::get_window_size<vec2f>()};
 
 				sf::View view{size / 2.f, size};
 				view.setViewport({pos.x / wsize.x, (pos.y + 2.f) / wsize.y,

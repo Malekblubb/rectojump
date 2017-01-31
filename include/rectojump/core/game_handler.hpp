@@ -74,7 +74,7 @@ namespace rj
 
 		void load_level(const level_id& id)
 		{
-			auto& lv(m_lvmgr.get_level(id));
+			auto& lv{m_lvmgr.get_level(id)};
 			if(!lv.is_valid())
 			{
 				m_popupmgr.create_popup<popup_type::error>
@@ -199,7 +199,7 @@ namespace rj
 
 		void init_errors() noexcept
 		{
-			auto& font(m_datastore.get<sf::Font>("Ubuntu-R.ttf"));
+			auto& font{m_datastore.get<sf::Font>("Ubuntu-R.ttf")};
 
 			// add the error instances
 			m_errorhandler.create_error_instance(errors::cl_nullptr_access,
@@ -261,12 +261,12 @@ namespace rj
 
 			// game input
 			// pause / game_menu
-			auto pause_fnc(
-						[this]
+			auto pause_fnc{
+			[this]
 			{
 				if(!this->is_active(state::main_menu))
 					m_current_states.toggle(state::game_menu);
-			});
+			}};
 
 			inp::on_key_pressed(key::Escape) += pause_fnc;
 			inp::on_key_pressed(key::P) += pause_fnc;

@@ -73,7 +73,7 @@ namespace rj
 			template<typename Button_Type, typename... Args>
 			btn_ptr<Button_Type> add_button(Args&&... args)
 			{
-				auto ptr(std::make_shared<Button_Type>(std::forward<Args>(args)...));
+				auto ptr{std::make_shared<Button_Type>(std::forward<Args>(args)...)};
 				m_buttons.emplace(m_current_add_index, button_event{ptr, {}});
 				++m_current_add_index;
 				return ptr;
@@ -82,7 +82,7 @@ namespace rj
 			template<typename Button_Type, typename Func, typename... Args>
 			btn_ptr<Button_Type> add_button_event(Func&& f, Args&&... args)
 			{
-				auto ptr(std::make_shared<Button_Type>(std::forward<Args>(args)...));
+				auto ptr{std::make_shared<Button_Type>(std::forward<Args>(args)...)};
 				m_buttons.emplace(m_current_add_index, button_event{ptr, {f}});
 				++m_current_add_index;
 				return ptr;
@@ -91,14 +91,13 @@ namespace rj
 			void inactivate() noexcept
 			{m_current_pressed_index = -1;}
 
-			void set_active_button(int index) noexcept
+			void set_active_button(int index)
 			{m_current_pressed_index = index; on_press(m_buttons[m_current_pressed_index].button);}
 
-			const base_btn_ptr& get_active_btn() const noexcept
+			const base_btn_ptr& get_active_btn() const
 			{return m_buttons.at(m_current_pressed_index).button;}
 
-			auto get_buttons()
-			-> const decltype(m_buttons)&
+			auto& get_buttons()
 			{return m_buttons;}
 
 		private:

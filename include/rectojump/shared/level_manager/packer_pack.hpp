@@ -79,7 +79,7 @@ namespace rj
 
 		void compress()
 		{
-			auto unpacked_size(static_cast<int>(m_packed_level.size()));
+			auto unpacked_size{static_cast<int>(m_packed_level.size())};
 			mlk::cmprs::compressor<mlk::cmprs::cmprs_mode::zlib> cmp{m_packed_level};
 			cmp.pack();
 			if(!cmp.is_valid())

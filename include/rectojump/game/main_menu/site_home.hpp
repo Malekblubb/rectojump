@@ -33,18 +33,18 @@ namespace rj
 
 		void construct()
 		{
-			const auto& font(m_datastore.get<sf::Font>(settings::text_font()));
+			const auto& font{m_datastore.get<sf::Font>(settings::text_font())};
 
 			// logo
-			auto logo_shape(m_sites.add_object<widget::rectangle_shape>("home",
-																		vec2f{128.f, 128.f}));
+			auto logo_shape{m_sites.add_object<widget::rectangle_shape>("home",
+																		vec2f{128.f, 128.f})};
 			logo_shape->get().setTexture(&m_datastore.template get<sf::Texture>("rj_logo.png"));
 			logo_shape->get().setPosition((m_sites.bounds().width -
 										   logo_shape->get().getSize().x) / 2.f,
 										  m_sites.size().y * 0.35f - logo_shape->get().getSize().y);
 
 			// info text
-			auto text(m_sites.add_object<widget::text>("home", "", font, settings::text_size()));
+			auto text{m_sites.add_object<widget::text>("home", "", font, settings::text_size())};
 			text->get().setString("version " + settings::version());
 			text->get().setFillColor(settings::text_color());
 			text->get().setPosition((m_sites.bounds().width -
@@ -54,37 +54,37 @@ namespace rj
 			// textboxes
 			const vec2f tbsize{250.f, 30.f};
 			const float txboxes_x{(m_sites.bounds().width - tbsize.x) / 2.f};
-			auto username(m_sites.add_object<ui::textbox>("home",
+			auto username{m_sites.add_object<ui::textbox>("home",
 														  tbsize,
 														  vec2f{txboxes_x,
 																logo_shape->get().getPosition().y +
 																180.f},
 														  font,
-														  "Username"));
-			auto password(m_sites.add_object<ui::textbox>("home",
+														  "Username")};
+			auto password{m_sites.add_object<ui::textbox>("home",
 														  tbsize,
 														  vec2f{txboxes_x,
 																logo_shape->get().getPosition().y +
 																220.f},
 														  font,
-														  "Password"));
+														  "Password")};
 			default_textbox(*username);
 			default_textbox(*password);
 			password->setPasswordMode(true);
 
 			// buttons
 			const vec2f btnsize{100.f, 30.f};
-			auto login(m_sites.add_object<ui::button>("home", btnsize,
+			auto login{m_sites.add_object<ui::button>("home", btnsize,
 													  vec2f{password->getPosition().x,
-															password->getPosition().y + 40.f}));
+															password->getPosition().y + 40.f})};
 			login->setFont(font);
 			login->setText("Login");
 
-			auto register_acc(m_sites.add_object<ui::button>("home", btnsize,
+			auto register_acc{m_sites.add_object<ui::button>("home", btnsize,
 															 vec2f{password->getPosition().x +
 																   150.f,
 																   password->getPosition().y +
-																   40.f}));
+																   40.f})};
 			register_acc->setFont(font);
 			register_acc->setText("Register");
 			register_acc->on_clicked = [this]

@@ -123,7 +123,7 @@ namespace rj
 			level_data lv_data;
 			for(auto& a : m_entityhandler)
 			{
-				auto ent(this->to_editor_entity(a));
+				auto ent{this->to_editor_entity(a)};
 				lv_data.add_entity(ent->get_figure(), entity_propertie::solid, ent->pos());
 			}
 
@@ -142,7 +142,7 @@ namespace rj
 			if(!this->check_level_name(level_name))
 				return;
 
-			auto& lv(m_levelmgr.get_level(level_name));
+			auto& lv{m_levelmgr.get_level(level_name)};
 			m_gameworld.template load_level<true>(lv.entities);
 
 			// set background
@@ -158,8 +158,7 @@ namespace rj
 		void reset_center() noexcept
 		{m_editarea_camera.reset_center();}
 
-		auto gamehandler() noexcept
-		-> decltype(m_gamehandler)&
+		auto& gamehandler() noexcept
 		{return m_gamehandler;}
 
 		camera& editarea_camera() noexcept
@@ -230,13 +229,13 @@ namespace rj
 
 		void init_cameras() noexcept
 		{
-			auto window_size(settings::get_window_size<vec2f>());
-			auto& itembar_size(m_itembar.get_size());
-			auto& settingsbar_size(m_settingsbar.get_size());
+			auto window_size{settings::get_window_size<vec2f>()};
+			auto& itembar_size{m_itembar.get_size()};
+			auto& settingsbar_size{m_settingsbar.get_size()};
 
-			auto itembar_top((window_size.y - itembar_size.y) / window_size.y);
-			auto itembar_height(itembar_size.y / window_size.y);
-			auto editarea_height((window_size.y - itembar_size.y) / window_size.y);
+			auto itembar_top{(window_size.y - itembar_size.y) / window_size.y};
+			auto itembar_height{itembar_size.y / window_size.y};
+			auto editarea_height{(window_size.y - itembar_size.y) / window_size.y};
 
 
 			sf::View editarea_view{vec2f{window_size.x, window_size.y - itembar_size.y} / 2.f,
@@ -259,9 +258,9 @@ namespace rj
 		void on_mouse_left(const vec2f&)
 		{
 			// check the itembar and settingsbar bounds
-			auto itembar_mouse_bounds(bounds_from_vec(m_itembar_camera.get_mapped_mousepos()));
-			auto settingsbar_mouse_bounds(
-						bounds_from_vec(m_settingsbar_camera.get_mapped_mousepos()));
+			auto itembar_mouse_bounds{bounds_from_vec(m_itembar_camera.get_mapped_mousepos())};
+			auto settingsbar_mouse_bounds{
+						bounds_from_vec(m_settingsbar_camera.get_mapped_mousepos())};
 			if(itembar_mouse_bounds.intersects(m_itembar.get_bounds()) ||
 			   settingsbar_mouse_bounds.intersects(m_settingsbar.get_bounds()))
 				return;
@@ -271,10 +270,10 @@ namespace rj
 
 			if(m_mouse.is_selection_visible())
 			{
-				auto& selected(m_mouse.get_selected());
+				auto& selected{m_mouse.get_selected()};
 				if(selected.size() == 0)
 				{
-					auto bounds(m_mouse.get_selectionshape_bounds());
+					auto bounds{m_mouse.get_selectionshape_bounds()};
 					this->delete_editor_entity({bounds.left, bounds.top},
 					{bounds.width, bounds.height});
 				}
@@ -285,7 +284,7 @@ namespace rj
 			}
 			else if(m_mouse.is_mouse_visible())
 			{
-				float f{48.f};
+				auto f{48.f};
 				vec2f new_pos{round_to(m_editarea_camera.get_mapped_mousepos().x, f),
 							round_to(m_editarea_camera.get_mapped_mousepos().y, f)};
 
@@ -306,9 +305,8 @@ namespace rj
 		}
 
 		auto create_editor_entity(const vec2f& pos, const sf::Texture* tx, entity_figure f)
-		-> decltype(m_gameworld.template create_entity<editor_entity>(pos))
 		{
-			auto ptr(m_gameworld.template create_entity<editor_entity>(pos));
+			auto ptr{m_gameworld.template create_entity<editor_entity>(pos)};
 			ptr->set_texture(tx);
 			ptr->set_figure(f);
 			return ptr;
@@ -316,13 +314,12 @@ namespace rj
 
 		void delete_editor_entity(const vec2f& pos, const vec2f& size = {1.f, 1.f})
 		{
-			auto iters(m_entityhandler.get_entities_at(pos, size));
+			auto iters{m_entityhandler.get_entities_at(pos, size)};
 			m_entityhandler.delete_entities(iters);
 		}
 
 		template<typename Ent_Ptr>
 		auto to_editor_entity(const Ent_Ptr& ptr)
-		-> decltype(std::static_pointer_cast<editor_entity>(ptr))
 		{return std::static_pointer_cast<editor_entity>(ptr);}
 
 		bool check_level_name(const level_id& id) const noexcept

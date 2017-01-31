@@ -73,7 +73,7 @@ namespace rj
 	private:
 		void init()
 		{
-			auto& rec_size(m_shape.getSize());
+			auto& rec_size{m_shape.getSize()};
 			m_shape.setOrigin(rec_size / 2.f);
 			m_shape.setPosition(rec_size / 2.f);
 			m_shape.setFillColor(settings::get_color_default_light());
@@ -85,13 +85,13 @@ namespace rj
 			m_button_textures.emplace_back(
 						m_datastore.template get<sf::Texture>("editor_item_triangles4.png"));
 
-			auto pos_x(150.f);
+			auto pos_x{150.f};
 			std::size_t index{0};
 			for(auto& a : m_button_textures)
 			{
-				auto rect_ptr(m_buttons.add_button<button_item>(m_buttonsize,
+				auto rect_ptr{m_buttons.add_button<button_item>(m_buttonsize,
 																vec2f{pos_x,
-																	  m_shape.getPosition().y}));
+																	  m_shape.getPosition().y})};
 				rect_ptr->setOrigin(m_buttonsize / 2.f);
 				rect_ptr->setTexture(&a.get());
 				rect_ptr->set_figure(static_cast<entity_figure>(index));

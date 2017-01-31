@@ -73,11 +73,11 @@ namespace rj
 		template<typename Data_Type>
 		Data_Type& get(const std::string& id)
 		{
-			auto index(0);
+			auto index{0};
 			get_type_index<Data_Type>([&index](int found_index){index = found_index;},
 										m_helpertuple);
 
-			auto ptr(std::static_pointer_cast<basic_store<Data_Type>>(m_stores.at(index)));
+			auto ptr{std::static_pointer_cast<basic_store<Data_Type>>(m_stores.at(index))};
 			return ptr->m_values.at(id);
 		}
 
@@ -85,7 +85,7 @@ namespace rj
 		template<typename Head, typename... Tail>
 		void init(const std::map<std::string, Head>& h, Tail&&... t)
 		{
-			auto ptr(std::make_shared<basic_store<Head>>(h));
+			auto ptr{std::make_shared<basic_store<Head>>(h)};
 			m_stores.emplace_back(ptr);
 			this->init(std::forward<Tail>(t)...);
 		}

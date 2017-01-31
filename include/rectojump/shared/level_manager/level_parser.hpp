@@ -64,8 +64,8 @@ namespace rj
 
 		void parse_bgdata()
 		{
-			auto nullpos(m_bgdata_work_string.find('\0'));
-			auto nullpos2(m_bgdata_work_string.find('\0', nullpos + 1));
+			auto nullpos{m_bgdata_work_string.find('\0')};
+			auto nullpos2{m_bgdata_work_string.find('\0', nullpos + 1)};
 			if(nullpos == std::string::npos || nullpos2 == std::string::npos)
 				return;
 
@@ -80,14 +80,14 @@ namespace rj
 
 		void parse_leveldata()
 		{
-			auto num_ents(mlk::stl_string::count_of("Ent", m_leveldata_work_string));
+			auto num_ents{mlk::stl_string::count_of("Ent", m_leveldata_work_string)};
 			for(std::size_t i{0}; i < num_ents; ++i)
 			{
-				auto brace_open(m_leveldata_work_string.find('[') + 1);
-				auto brace_close(m_leveldata_work_string.find(']'));
-				auto line(m_leveldata_work_string.substr(brace_open, brace_close - brace_open));
+				auto brace_open{m_leveldata_work_string.find('[') + 1};
+				auto brace_close{m_leveldata_work_string.find(']')};
+				auto line{m_leveldata_work_string.substr(brace_open, brace_close - brace_open)};
 
-				auto space_pos(line.find(' '));
+				auto space_pos{line.find(' ')};
 				entity_prototype tmp_entity;
 				for(auto i(0); i < 4; ++i)
 				{

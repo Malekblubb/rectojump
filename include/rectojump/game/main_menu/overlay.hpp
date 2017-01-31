@@ -99,7 +99,7 @@ namespace rj
 
 		void init_main_menu()
 		{
-			const auto size(settings::get_window_size<vec2f>());
+			const auto size{settings::get_window_size<vec2f>()};
 
 			// logo
 			m_logo.setSize({506.f, 100.f});
@@ -140,7 +140,7 @@ namespace rj
 			m_menu_buttons.on_inactive_button =
 					[](auto& btn){btn->setFillColor(to_rgb("#cecece"));};
 
-			const auto next((size.x - 80.f) / 9);
+			const auto next{(size.x - 80.f) / 9};
 			this->add_menu_button(next, 1.f, "home.png");
 			this->add_menu_button(next, 2.f, "play.png");
 			this->add_menu_button(next, 3.f, "inventar.png");
@@ -153,7 +153,7 @@ namespace rj
 
 		void init_sites()
 		{
-			const auto size(settings::get_window_size<vec2f>());
+			const auto size{settings::get_window_size<vec2f>()};
 
 			// set default properties
 			m_sites.set_size({size.x - 80.f, size.y - 220.f});
@@ -185,7 +185,7 @@ namespace rj
 
 		void add_menu_button(float next, float btn_nr, const std::string& texture)
 		{
-			auto site_name(texture);
+			auto site_name{texture};
 			mlk::stl_string::erase_all(".png", site_name);
 
 			auto btn

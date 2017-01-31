@@ -41,7 +41,7 @@ namespace rj
 
 		void c_player()
 		{
-			auto plr(factory::create<player>(vec2f{100.f, 600.f}));
+			auto plr{factory::create<player>(vec2f{100.f, 600.f})};
 			m_entity_handler.create_entity(plr);
 		}
 
@@ -63,7 +63,7 @@ namespace rj
 			for(auto& entity : entities)
 			{
 				vec2f pos{entity[x], entity[y]};
-				auto entity_figure(static_cast<char>(entity[figure]));
+				auto entity_figure{static_cast<char>(entity[figure])};
 
 				// laod objects
 				// rectangle
@@ -108,7 +108,7 @@ namespace rj
 		template<typename Entity_Type, typename... Args>
 		entity_ptr<Entity_Type> create_entity(Args&&... args)
 		{
-			auto ptr(factory::create<Entity_Type>(std::forward<Args>(args)...));
+			auto ptr{factory::create<Entity_Type>(std::forward<Args>(args)...)};
 			m_entity_handler.create_entity(ptr);
 			return ptr;
 		}

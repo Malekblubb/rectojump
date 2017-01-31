@@ -39,7 +39,7 @@ namespace rj
 
 		void update(dur)
 		{
-			auto pos(this->get_rounded_mousepos());
+			auto pos{this->get_rounded_mousepos()};
 
 			// mouse visible
 			if(m_mouse_visible)
@@ -48,7 +48,7 @@ namespace rj
 			// selecting
 			else if(m_selecting)
 			{
-				auto new_size(pos - m_selection_shape.getPosition());
+				auto new_size{pos - m_selection_shape.getPosition()};
 				m_selection_shape.setSize(new_size);
 
 				if(!inp::is_btn_pressed(btn::Left))
@@ -57,7 +57,7 @@ namespace rj
 
 			for(auto& a : m_copy_shapes)
 			{
-				auto offset(pos - m_selection_shape.getPosition());
+				auto offset{pos - m_selection_shape.getPosition()};
 				a.render_object().move(offset);
 			}
 
@@ -90,12 +90,12 @@ namespace rj
 		{
 			m_selecting = false;
 			m_copy_shapes.clear();
-			auto selectshape_bounds(m_selection_shape.getGlobalBounds());
+			auto selectshape_bounds{m_selection_shape.getGlobalBounds()};
 			for(auto& a : m_entityhandler)
 			{
-				auto size(a->size());
-				auto ent_bounds(bounds_from_vec({a->pos().x - size.x / 2.f,
-												 a->pos().y - size.y / 2.f}, size));
+				auto size{a->size()};
+				auto ent_bounds{bounds_from_vec({a->pos().x - size.x / 2.f,
+												 a->pos().y - size.y / 2.f}, size)};
 				if(selectshape_bounds.intersects(ent_bounds))
 					m_copy_shapes.push_back(*std::static_pointer_cast<editor_entity>(a));
 			}
@@ -122,8 +122,7 @@ namespace rj
 		const sf::Texture* get_texture() noexcept
 		{return m_mouse_shape.render_object().getTexture();}
 
-		auto get_selected()
-		-> const decltype(m_copy_shapes)&
+		auto& get_selected()
 		{return m_copy_shapes;}
 
 		sf::FloatRect get_selectionshape_bounds() const noexcept
@@ -145,7 +144,7 @@ namespace rj
 
 		vec2f get_rounded_mousepos() const noexcept
 		{
-			auto pos(inp::get_mousepos_current_view());
+			auto pos{inp::get_mousepos_current_view()};
 			return {round_to(pos.x, 48.f), round_to(pos.y, 48.f)};
 		}
 	};

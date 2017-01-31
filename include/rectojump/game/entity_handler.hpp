@@ -105,7 +105,7 @@ namespace rj
 		{
 			std::vector<iterator> result;
 			sf::FloatRect at_bounds{at, size};
-			for(auto iter(std::begin(m_entities)); iter != std::end(m_entities); ++iter)
+			for(auto iter {std::begin(m_entities)}; iter != std::end(m_entities); ++iter)
 			{
 				sf::FloatRect ent_bounds{{(*iter)->left_out(), (*iter)->top_out()},
 										 (*iter)->size()};

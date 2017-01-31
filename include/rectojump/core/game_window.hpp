@@ -77,8 +77,7 @@ namespace rj
 		void stop() noexcept
 		{on_stop(); m_running = false;}
 
-		auto on_event(sf::Event::EventType type)
-		-> decltype(m_on_event[type])&
+		auto& on_event(sf::Event::EventType type)
 		{return m_on_event[type];}
 
 		template<typename... Args>

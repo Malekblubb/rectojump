@@ -70,8 +70,8 @@ namespace rj
 
 			this->reset();
 
-			auto posx(0.f), posy(0.f);
-			auto lines(0);
+			auto posx{0.f}, posy{0.f};
+			auto lines{0};
 			m_size.x = posx; m_size.y = posy;
 			for(const auto& a : m_current_str)
 			{
@@ -84,8 +84,8 @@ namespace rj
 				}
 
 				// tile position
-				auto tiley(static_cast<float>((a / 16) * 16));
-				auto tilex(static_cast<float>((a % 16) * 16));
+				auto tiley{static_cast<float>((a / 16) * 16)};
+				auto tilex{static_cast<float>((a % 16) * 16)};
 
 				// create quad
 				m_verts.append({{posx, posy + m_fontsize}, m_color, {tilex, tiley + 16.f}});

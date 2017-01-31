@@ -34,8 +34,8 @@ namespace rj
 		void parse()
 		{
 			std::string as_str{reinterpret_cast<const char*>(m_data.data()), m_data.size()};
-			auto null_pos(as_str.find('\0'));
-			auto null_pos2(as_str.find('\0', null_pos + 1));
+			auto null_pos{as_str.find('\0')};
+			auto null_pos2{as_str.find('\0', null_pos + 1)};
 
 			if(null_pos == std::string::npos || null_pos2 == std::string::npos)
 			{

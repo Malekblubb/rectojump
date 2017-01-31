@@ -28,12 +28,12 @@ namespace rj
 
 		void construct()
 		{
-			auto text(m_sites.add_object<widget::text>("credits",
+			auto text{m_sites.add_object<widget::text>("credits",
 													   "",
 													   m_overlay.mainmenu().gamehandler().
 													   datastore().template get<sf::Font>
 													   (settings::text_font()),
-													   settings::text_size()));
+													   settings::text_size())};
 			text->get().setString(
 						"Programmer: Christoph Malek <>\n"
 						"Graphics: -\n"
