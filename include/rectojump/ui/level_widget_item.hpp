@@ -9,6 +9,7 @@
 
 #include "widget.hpp"
 #include "button.hpp"
+#include <rectojump/game/components/gradient_rect.hpp>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/level_manager/level.hpp>
 #include <rectojump/shared/input.hpp>
@@ -21,7 +22,7 @@ namespace rj
 		class level_widget_item : public widget
 		{
 			sf::RectangleShape m_background{{100.f, 100.f}};
-			sf::RectangleShape m_preview;
+			gradient_rect m_preview;
 			sf::Text m_level_name;
 			sf::Text m_creator_date;
 			//sf::Text m_creator_text; // TODO: impl
@@ -46,9 +47,12 @@ namespace rj
 				m_background.setFillColor(m_color_deactive);
 				m_background.setSize({width, 100.f});
 
-				m_preview.setPosition(spacing, spacing);
-				m_preview.setSize({75.f, 75.f});
-				m_preview.setFillColor(sf::Color::Black);
+				m_preview.set_position({spacing, spacing});
+				m_preview.set_size({75.f, 75.f});
+				m_preview.set_startcolor(lv.background.startcolor());
+				m_preview.set_endcolor(lv.background.endcolor());
+				m_preview.set_gradient_points(lv.background.pointcount());
+
 
 				m_level_name.setString(lv.info.level_name);
 				m_level_name.setPosition(110.f, 10.f);
