@@ -43,7 +43,12 @@ namespace rj
 
 			// add levels
 			for(const auto& a : m_lvmgr.get_levels())
-				level_widget->add_item(a.second, font, []{/*TODO:implement(button play)*/},
+				level_widget->add_item(a.second, font,
+				[this, &a]
+				{
+					//button play
+					m_overlay.mainmenu().gamehandler().load_level(a.second.info.level_name);
+				},
 				[this, &a]
 				{
 					// button edit
