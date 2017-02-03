@@ -72,32 +72,6 @@ namespace rj
 			m_debug_info{*this}
 		{this->init();}
 
-		void load_level(const level_id& id)
-		{
-			auto& lv{m_lvmgr.get_level(id)};
-			if(!lv.is_valid())
-			{
-				m_popupmgr.create_popup<popup_type::error>
-						("Failed to load level: not a valid level");
-				return;
-			}
-
-			// (de)activate right states
-			this->deactivate_state(state::main_menu);
-			this->activate_state(state::game);
-
-			// load background
-			//			m_backgroundmgr.clear();
-			//			auto& lv_bg(lv.background);
-			//			auto& bgshape(m_backgroundmgr.bg_shape());
-			//			bgshape.set_startcolor(lv_bg.get_startcolor());
-			//			bgshape.set_endcolor(lv_bg.get_endcolor());
-			//			bgshape.set_gradient_points(lv_bg.get_pointcount());
-
-			// load level to gameworld
-			//			m_game.load_level(lv);
-		}
-
 		void switch_to_editor()
 		{
 			this->deactivate_state(state::main_menu);
@@ -109,6 +83,36 @@ namespace rj
 		{
 			this->deactivate_state(state::editor);
 			this->activate_state(state::main_menu);
+		}
+
+		void switch_to_game(state from)
+		{
+			this->deactivate_state(from);
+			this->activate_state(state::game);
+		}
+
+		void load_level(const level_id& id)
+		{
+			auto& lv{m_lvmgr.get_level(id)};
+			if(!lv.is_valid())
+			{
+				m_popupmgr.create_popup<popup_type::error>
+						("Failed to load level: not a valid level");
+				return;
+			}
+
+			// (de)activate right states
+			this->switch_to_game(this->current_renderable_state());
+
+			// load background
+			auto& lv_bg(lv.background);
+			auto& bgshape(m_backgroundmgr.bg_shape(state::game));
+			bgshape.set_startcolor(lv_bg.startcolor());
+			bgshape.set_endcolor(lv_bg.endcolor());
+			bgshape.set_gradient_points(lv_bg.pointcount());
+
+			// load level to gameworld
+			m_game.load_level(lv);
 		}
 
 		template<typename... Args>
@@ -171,7 +175,7 @@ namespace rj
 		auto& states() noexcept
 		{return m_current_states;}
 
-		auto current_renderable_state() noexcept
+		state current_renderable_state() noexcept
 		{
 			if(m_current_states & state::main_menu)
 				return state::main_menu;
@@ -274,6 +278,7 @@ namespace rj
 			inp::on_key_pressed(key::Escape) += pause_fnc;
 			inp::on_key_pressed(key::P) += pause_fnc;
 
+			// testing purpose
 			inp::on_key_pressed(key::D) +=
 			[this]
 			{

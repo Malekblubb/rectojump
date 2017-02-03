@@ -37,7 +37,10 @@ namespace rj
 			m_backgroundmgr{gh.backgroundmgr()},
 			m_entity_handler{gh.rendermgr()},
 			m_datastore{gh.datastore()}
-		{ }
+		{
+			// init background
+			m_backgroundmgr.bg_shape(state::game).set_size(settings::get_window_size<vec2f>());
+		}
 
 		void c_player()
 		{
@@ -103,6 +106,8 @@ namespace rj
 					}
 				}
 			}
+
+			this->c_player();
 		}
 
 		template<typename Entity_Type, typename... Args>

@@ -54,9 +54,13 @@ namespace rj
 	enum entity_prototype_value : std::size_t
 	{figure, prop, x, y};
 
-	// section headers
+	// level data
+	// |-> section headers
 	static const mlk::data_packet header_rj_bg{'R', 'J', 'B', 'G'};
 	static const mlk::data_packet header_rj_level{'R', 'J', 'L', 'E', 'V', 'E', 'L'};
+
+	// |-> strings
+	static constexpr const char* level_name_null{"(null)"};
 
 	// ui
 	template<typename Textbox_Type>

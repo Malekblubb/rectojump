@@ -53,7 +53,6 @@ namespace rj
 				m_preview.set_endcolor(lv.background.endcolor());
 				m_preview.set_gradient_points(lv.background.pointcount());
 
-
 				m_level_name.setString(lv.info.level_name);
 				m_level_name.setPosition(110.f, 10.f);
 				m_creator_date.setString(lv.info.creator_name + "\n" + lv.info.creation_date);

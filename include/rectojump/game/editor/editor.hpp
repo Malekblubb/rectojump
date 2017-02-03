@@ -44,6 +44,7 @@ namespace rj
 		settingsbar<editor> m_settingsbar;
 
 		bool m_is_level_loaded{false};
+		level_id m_current_loaded_id{level_name_null};
 
 	public:
 		editor(Game_Handler& gh) :
@@ -154,6 +155,7 @@ namespace rj
 			bg_shape.set_gradient_points(lv.background.pointcount());
 
 			m_is_level_loaded = true;
+			m_current_loaded_id = level_name;
 		}
 
 		void handle_test()
@@ -161,7 +163,7 @@ namespace rj
 			if(!m_is_level_loaded)
 				return;
 
-
+			m_gamehandler.load_level(m_current_loaded_id);
 		}
 
 		void reset_zoom() noexcept

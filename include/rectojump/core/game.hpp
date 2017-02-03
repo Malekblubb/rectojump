@@ -50,7 +50,7 @@ namespace rj
 				return;
 			}
 
-			m_world.load_level(lv.entities);
+			m_world.template load_level<false>(lv.entities);
 		}
 
 		void set_levelmgr(level_manager* lm)
