@@ -16,7 +16,7 @@ namespace rj
 	class player final : public entity_rect
 	{
 		// props
-		static constexpr float m_gravity{0.01f};
+		static constexpr float m_gravity{0.009f};
 		static constexpr float m_jump_velo{-1.7f};
 		static constexpr float m_width{40.f}, m_height{40.f};
 		const vec2f m_start_pos;
@@ -28,7 +28,7 @@ namespace rj
 
 		// rotate
 		static constexpr float m_max_deg{360.f};
-		static constexpr float m_step_deg{(-m_jump_velo / m_gravity) / 2.f};
+		static constexpr float m_step_deg{(m_jump_velo / m_gravity) / 2.f};
 		float m_rotated{0.f};
 
 	public:
@@ -99,7 +99,7 @@ namespace rj
 			if(!m_jumping)
 				return;
 			// rotate back the rotated way in one step
-			m_render_object.rotate(-m_rotated);
+			m_render_object.rotate(-m_render_object.getRotation());
 			m_rotated = 0.f;
 		}
 	};
