@@ -267,13 +267,13 @@ namespace rj
 			this->prepare_button(*save_btn);
 			save_btn->setText("Save");
 
-			auto load_btn{m_buttons.add_button_event<button_item>(
-							  [this]
+			auto test_btn{m_buttons.add_button_event<button_item>(
+			[this]
 			{
-				m_editor.handle_load(m_textboxes["tb_lvname"].getText());
+				m_editor.handle_test();
 			}, btn_size, vec2f{shape_size.x / 2.f + 60.f, shape_size.y - btn_size.y})};
-			this->prepare_button(*load_btn);
-			load_btn->setText("Load");
+			this->prepare_button(*test_btn);
+			test_btn->setText("Test");
 		}
 
 		template<typename Btn_Type>

@@ -43,6 +43,8 @@ namespace rj
 		itembar<Game_Handler> m_itembar;
 		settingsbar<editor> m_settingsbar;
 
+		bool m_is_level_loaded{false};
+
 	public:
 		editor(Game_Handler& gh) :
 			m_gamehandler{gh},
@@ -150,6 +152,16 @@ namespace rj
 			bg_shape.set_startcolor(lv.background.startcolor());
 			bg_shape.set_endcolor(lv.background.endcolor());
 			bg_shape.set_gradient_points(lv.background.pointcount());
+
+			m_is_level_loaded = true;
+		}
+
+		void handle_test()
+		{
+			if(!m_is_level_loaded)
+				return;
+
+
 		}
 
 		void reset_zoom() noexcept
