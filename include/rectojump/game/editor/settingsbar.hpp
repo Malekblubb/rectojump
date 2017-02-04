@@ -16,6 +16,7 @@
 #include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/ui/connected_buttons.hpp>
 #include <rectojump/ui/textbox.hpp>
+#include <mlk/graphics/color.h>
 
 
 namespace rj
@@ -114,6 +115,18 @@ namespace rj
 		void render()
 		{
 			m_render(m_shape, m_toggle_bar_button, m_buttons, m_textboxes);
+		}
+
+		void on_load(const level& lv)
+		{
+			// load level infos to textboxes
+			m_textboxes["tb_bgstartcolor"].setText(mlk::gcs::color_rgb{lv.background.startcolor()}.
+												   hex());
+			m_textboxes["tb_bgendcolor"].setText(mlk::gcs::color_rgb{lv.background.endcolor()}.
+												 hex());
+			m_textboxes["tb_bgpointcount"].setText(std::to_string(lv.background.pointcount()));
+			m_textboxes["tb_lvname"].setText(lv.info.level_name);
+			m_textboxes["tb_lvinf_creator"].setText(lv.info.creator_name);
 		}
 
 		std::string get_tb_startcolor_text() noexcept

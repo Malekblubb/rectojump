@@ -156,6 +156,8 @@ namespace rj
 
 			m_is_level_loaded = true;
 			m_current_loaded_id = level_name;
+
+			m_settingsbar.on_load(lv);
 		}
 
 		void handle_test()
