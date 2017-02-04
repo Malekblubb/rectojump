@@ -66,11 +66,11 @@ namespace rj
 			for(auto& entity : entities)
 			{
 				vec2f pos{entity[x], entity[y]};
-				auto entity_figure{static_cast<char>(entity[figure])};
+				auto ef{static_cast<char>(entity[figure])};
 
 				// laod objects
 				// rectangle
-				if(entity_figure == entity_figure::f_rectangle)
+				if(ef == entity_figure::f_rectangle)
 				{
 					// we need other entity type when editing
 					if constexpr(load_editor)
@@ -78,6 +78,7 @@ namespace rj
 						auto a{this->create_entity<editor_entity>(pos)};
 						a->set_texture(&m_datastore.template get<sf::Texture>
 									   ("editor_item_rect.png"));
+						a->set_figure(static_cast<entity_figure>(ef));
 					}
 					else
 					{
@@ -88,7 +89,7 @@ namespace rj
 				}
 
 				// triangles
-				else if(entity_figure == entity_figure::f_triangle)
+				else if(ef == entity_figure::f_triangle)
 				{
 					// we need other entity type when editing
 					if constexpr(load_editor)
@@ -96,6 +97,7 @@ namespace rj
 						auto a{this->create_entity<editor_entity>(pos)};
 						a->set_texture(&m_datastore.template get<sf::Texture>
 									   ("editor_item_triangle.png"));
+						a->set_figure(static_cast<entity_figure>(ef));
 					}
 					else
 					{

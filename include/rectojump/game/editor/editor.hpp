@@ -137,7 +137,8 @@ namespace rj
 			m_levelmgr.save_level(lv_packer, level_name) ?
 						mlk::lout("rj::editor") << "Level '" << level_name <<
 												   "' successfully saved!" :
-												   mlk::lerr(errors::io_create_file) << "(levelname" << level_name << ")";
+												   mlk::lerr(errors::io_create_file) <<
+												   "(levelname" << level_name << ")";
 		}
 
 		void handle_load(const level_id& level_name)
