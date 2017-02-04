@@ -36,7 +36,6 @@ namespace rj
 		error_handler& m_errorhandler;
 		data_manager& m_datamgr;
 		level_manager& m_lvmgr;
-
 		data_store_type m_datastore{m_datamgr.get_all_containing_as_map_as<sf::Texture>(".png"),
 					m_datamgr.get_all_containing_as_map_as<sf::Font>(".otf"),
 					m_datamgr.get_all_containing_as_map_as<sf::Font>(".ttf")};
@@ -81,7 +80,9 @@ namespace rj
 
 		void switch_to_main_menu()
 		{
-			this->deactivate_state(state::editor);
+			this->deactivate_state(this->current_renderable_state());
+			if(this->is_active(state::game_menu))
+				this->deactivate_state(state::game_menu);
 			this->activate_state(state::main_menu);
 		}
 
