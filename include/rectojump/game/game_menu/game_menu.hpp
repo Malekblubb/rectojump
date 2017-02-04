@@ -81,7 +81,6 @@ namespace rj
 			this->add_entry("btn_exit", "Exit Game",
 			[this]
 			{
-				// TODO: add asking dialoges
 				m_gamehandler.exit();
 			}, start + m_btn_height + spacing);
 		}
