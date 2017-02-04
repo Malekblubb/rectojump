@@ -116,6 +116,12 @@ namespace rj
 			m_game.load_level(lv);
 		}
 
+		void exit()
+		{
+			// do stuff on exit...
+			m_game_window.stop();
+		}
+
 		template<typename... Args>
 		void render_object(Args&&... args)
 		{m_game_window.draw(std::forward<Args>(args)...);}
