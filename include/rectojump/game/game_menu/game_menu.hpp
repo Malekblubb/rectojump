@@ -71,18 +71,24 @@ namespace rj
 
 			// buttons
 			auto spacing{15.f}, start{100.f};
+			this->add_entry("btn_back_to_game", "Back to Game",
+			[this]
+			{
+				m_gamehandler.exit_game_menu();
+			}, start);
+
 			this->add_entry("btn_back_main_menu", "Back to Main Menu",
 			[this]
 			{
 				// TODO: add asking dialoges
 				m_gamehandler.switch_to_main_menu();
-			}, start);
+			}, start + m_btn_height);
 
 			this->add_entry("btn_exit", "Exit Game",
 			[this]
 			{
 				m_gamehandler.exit();
-			}, start + m_btn_height + spacing);
+			}, start + (m_btn_height + spacing) * 2);
 		}
 
 		template<typename Fun>

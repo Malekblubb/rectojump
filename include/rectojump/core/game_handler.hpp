@@ -92,6 +92,11 @@ namespace rj
 			this->activate_state(state::game);
 		}
 
+		void exit_game_menu()
+		{
+			this->deactivate_state(state::game_menu);
+		}
+
 		void load_level(const level_id& id)
 		{
 			auto& lv{m_lvmgr.get_level(id)};
