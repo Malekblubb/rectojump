@@ -70,13 +70,20 @@ namespace rj
 									 m_main_shape.getGlobalBounds().top + bounds.height});
 
 			// buttons
-			auto spacing{15.f};
-			this->add_entry("btn_back_main_menu", "Back to Main Menu",
+			auto spacing{15.f}, start{100.f};
+			auto btn_back{this->add_entry("btn_back_main_menu", "Back to Main Menu",
 			[this]
 			{
 				// TODO: add asking dialoges
 				m_gamehandler.switch_to_main_menu();
-			}, 100.f);
+			}, start)};
+
+			this->add_entry("btn_exit", "Exit Game",
+			[this]
+			{
+				// TODO: add asking dialoges
+				m_gamehandler.exit();
+			}, start + m_btn_height + spacing);
 		}
 
 		template<typename Fun>
