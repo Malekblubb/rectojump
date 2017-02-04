@@ -71,12 +71,12 @@ namespace rj
 
 			// buttons
 			auto spacing{15.f}, start{100.f};
-			auto btn_back{this->add_entry("btn_back_main_menu", "Back to Main Menu",
+			this->add_entry("btn_back_main_menu", "Back to Main Menu",
 			[this]
 			{
 				// TODO: add asking dialoges
 				m_gamehandler.switch_to_main_menu();
-			}, start)};
+			}, start);
 
 			this->add_entry("btn_exit", "Exit Game",
 			[this]
