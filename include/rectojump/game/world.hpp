@@ -35,8 +35,8 @@ namespace rj
 		world(Game_Handler& gh) :
 			m_gamehandler{gh},
 			m_backgroundmgr{gh.backgroundmgr()},
-			m_entity_handler{gh.rendermgr()},
-			m_datastore{gh.datastore()}
+			m_datastore{gh.datastore()},
+			m_entity_handler{gh.rendermgr(), gh.particlemgr()}
 		{
 			// init background
 			m_backgroundmgr.bg_shape(state::game).set_size(settings::get_window_size<vec2f>());
@@ -44,8 +44,11 @@ namespace rj
 
 		void c_player()
 		{
-			auto plr{factory::create<player>(vec2f{100.f, 600.f})};
+			// TODO: check this
+			auto first_ent{std::static_pointer_cast<platform>(*m_entity_handler.begin())};
+			auto plr{factory::create<player>(vec2f{100.f, first_ent->top_out()}, first_ent->top_out())};
 			m_entity_handler.create_entity(plr);
+			plr->on_spawn();
 		}
 
 		void update(dur duration)

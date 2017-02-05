@@ -10,6 +10,7 @@
 #include "components/player.hpp"
 #include "collision.hpp"
 #include "entity.hpp"
+#include "particle_manager.hpp"
 
 #include <mlk/containers/container_utl.h>
 #include <mlk/log/log.h>
@@ -28,6 +29,7 @@ namespace rj
 	class entity_handler
 	{
 		rndr& m_render;
+		particle_manager<game_handler>& m_particlemgr;
 
 		player_ptr m_player{nullptr};
 		std::vector<entity_base_ptr> m_entities;
@@ -40,8 +42,9 @@ namespace rj
 		using iterator = std::vector<entity_base_ptr>::iterator;
 		using const_iterator = std::vector<entity_base_ptr>::const_iterator;
 
-		entity_handler(rndr& r, std::size_t max_entities = 1000) :
+		entity_handler(rndr& r, particle_manager<game_handler>& pm, std::size_t max_entities = 100000) :
 			m_render{r},
+			m_particlemgr{pm},
 			m_max_entities{max_entities}
 		{ }
 
@@ -105,7 +108,7 @@ namespace rj
 		{
 			std::vector<iterator> result;
 			sf::FloatRect at_bounds{at, size};
-			for(auto iter {std::begin(m_entities)}; iter != std::end(m_entities); ++iter)
+			for(auto iter{std::begin(m_entities)}; iter != std::end(m_entities); ++iter)
 			{
 				sf::FloatRect ent_bounds{{(*iter)->left_out(), (*iter)->top_out()},
 										 (*iter)->size()};
@@ -128,6 +131,20 @@ namespace rj
 		{return m_entities.size() + this->is_player_registered();}
 
 	private:
+		void try_player_death()
+		{
+			if(!m_player->is_alive())
+				return;
+
+			// player should die here
+			// do effects, game stats etc....
+			m_player->render_object().setFillColor({255, 0, 0});
+			m_particlemgr.create_particles(10000, m_player->pos(), 3000, true);
+
+			// on kill
+			m_player->on_kill();
+		}
+
 		void check_collision() noexcept
 		{
 			if(!this->is_player_registered())
@@ -147,13 +164,15 @@ namespace rj
 						m_player->render_object().setFillColor({0, 255, 0});
 					}
 					else
-						m_player->render_object().setFillColor({255, 0, 0});
+					{
+						this->try_player_death();
+					}
 
 
 					if(a->has_propertie(entity_propertie::death))
 					{
 						// player touched death entity
-						m_player->render_object().setFillColor({255, 0, 0});
+						this->try_player_death();
 					}
 				}
 			}

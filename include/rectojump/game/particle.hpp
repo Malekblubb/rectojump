@@ -9,7 +9,9 @@
 
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/config_settings.hpp>
+
 #include <mlk/time/simple_timer.h>
+#include <mlk/tools/random_utl.h>
 
 
 namespace rj

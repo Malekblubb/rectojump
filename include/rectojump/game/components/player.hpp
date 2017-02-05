@@ -26,16 +26,18 @@ namespace rj
 		bool m_need_jump{false};
 		bool m_jumping{false};
 
+		bool m_alive{false};
+
 		// rotate
 		static constexpr float m_max_deg{360.f};
 		static constexpr float m_step_deg{(m_jump_velo / m_gravity) / 2.f};
 		float m_rotated{0.f};
 
 	public:
-		player(const vec2f& start_pos) :
+		player(const vec2f& start_pos, float ground = 600.f) :
 			entity_rect{start_pos, {m_width, m_height}, {0.f, 0.f}},
 			m_start_pos{start_pos},
-			m_ground{start_pos.y}
+			m_ground{ground}
 		{ }
 
 		~player() = default;
@@ -44,7 +46,17 @@ namespace rj
 		void init() override
 		{inp::on_key_pressed(key::Space) += [this]{m_need_jump = true;};}
 
-		void update(dur duration) override
+		void on_spawn() noexcept
+		{
+			m_alive = true;
+		}
+
+		void on_kill() noexcept
+		{
+			m_alive = false;
+		}
+
+		void update(dur) override
 		{
 			m_velocity.y += m_gravity;
 			this->try_jump();
@@ -63,6 +75,9 @@ namespace rj
 
 		void on_collision_end() noexcept
 		{m_ground = m_start_pos.y;}
+
+		auto is_alive() const noexcept
+		{return m_alive;}
 
 	private:
 		bool is_on_ground() const noexcept
