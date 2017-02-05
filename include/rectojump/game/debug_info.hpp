@@ -96,9 +96,9 @@ namespace rj
 		void init() noexcept
 		{
 			m_background.setPosition({1.f, 1.f});
-			m_background.setFillColor({255, 150, 123, 220});
-			m_background.setOutlineThickness(1);
-			m_background.setOutlineColor({255, 0, 0});
+			m_background.setFillColor({255u, 150u, 123u, 200u});
+			m_background.setOutlineThickness(1.f);
+			m_background.setOutlineColor({255u, 0u, 0u});
 
 			this->add_title_line("Performance");
 			this->add_line("FPS:             %%", [this]{return m_gamehandler.gamewindow().get_updater().get_fps();});
@@ -107,7 +107,8 @@ namespace rj
 			this->add_title_line("Components");
 			this->add_line("Gameworld:       %%", [this]{return m_game.get_world().num_entities();});
 			this->add_line("Background:      %%", [this]{return m_gamehandler.backgroundmgr().num_components_current_state();});
-			this->add_line("Popups:          %%\n", [this]{return m_gamehandler.popupmgr().num_popups();});
+			this->add_line("Popups:          %%", [this]{return m_gamehandler.popupmgr().num_popups();});
+			this->add_line("Particles:       %%\n", [this]{return m_gamehandler.particlemgr().num_particles();});
 
 			this->add_title_line("Managers");
 			this->add_line("Data:            %%", [this]{return m_gamehandler.datamgr().num_data();});
