@@ -257,6 +257,8 @@ namespace rj
 
 		void init_input()
 		{
+			inp::on_btn_pressed(btn::Left) += [this](const vec2f& pos){m_particlemgr.create_particles(mlk::rnd(100, 10000), pos, mlk::rnd(500, 2000), true);};
+
 			// input update
 			inp::on_input_update() +=
 					[this]{this->update_input();};
