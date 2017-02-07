@@ -6,7 +6,6 @@
 #ifndef RJ_UI_TEXTBOX_HPP
 #define RJ_UI_TEXTBOX_HPP
 
-
 #include "widget.hpp"
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/input.hpp>
@@ -16,7 +15,6 @@
 #include <mlk/time/simple_timer.h>
 
 #include <stack>
-
 
 namespace rj
 {
@@ -40,10 +38,8 @@ namespace rj
 			textbox() = default;
 
 			textbox(const vec2f& size, const vec2f& pos, const sf::Font& font,
-					const std::string& text = "") :
-				m_shape{size},
-				m_text{text, font},
-				m_password_text{"", font}
+					const std::string& text = "")
+				: m_shape{size}, m_text{text, font}, m_password_text{"", font}
 			{
 				this->setPosition(pos);
 				this->init();
@@ -51,30 +47,32 @@ namespace rj
 
 			void update(dur) override
 			{
-				if(inp::was_real_mousepress_left())
-				{
-					if(this->getGlobalBounds().intersects(inp::get_mousebounds<true>()))
+				if(inp::was_real_mousepress_left()) {
+					if(this->getGlobalBounds().intersects(
+						   inp::get_mousebounds<true>()))
 						m_focus = true;
-					else m_focus = false;
+					else
+						m_focus = false;
 				}
 
-				if(!m_focus)
-					return;
+				if(!m_focus) return;
 
 				// input
 				if(inp::get_last_textinput() != 0)
 					this->update_text(inp::get_last_textinput());
 
 				// cursor
-				if(m_blinktimer.timed_out())
-				{
+				if(m_blinktimer.timed_out()) {
 					m_cursor_visible = !m_cursor_visible;
 					m_blinktimer.restart();
 				}
 			}
 
 			void addChar(char c) noexcept
-			{if(!m_focus) return; this->update_text(c);}
+			{
+				if(!m_focus) return;
+				this->update_text(c);
+			}
 
 			// sfml-func-style interface
 			// setters
@@ -86,16 +84,24 @@ namespace rj
 			}
 
 			void setFillColor(const sf::Color& color) noexcept
-			{m_shape.setFillColor(color);}
+			{
+				m_shape.setFillColor(color);
+			}
 
 			void setOutlineColor(const sf::Color& color) noexcept
-			{m_shape.setOutlineColor(color);}
+			{
+				m_shape.setOutlineColor(color);
+			}
 
 			void setOutlineThickness(float thickness) noexcept
-			{m_shape.setOutlineThickness(thickness);}
+			{
+				m_shape.setOutlineThickness(thickness);
+			}
 
 			void setCursorBlinkInterval(mlk::ullong interval) noexcept
-			{m_cursor_blinkinterval = interval;}
+			{
+				m_cursor_blinkinterval = interval;
+			}
 
 			void setCursorColor(const sf::Color& color) noexcept
 			{
@@ -121,8 +127,7 @@ namespace rj
 			{
 				m_text.setString("");
 				m_char_stack = std::stack<char>{};
-				for(const auto& a : str)
-					this->update_text(a);
+				for(const auto& a : str) this->update_text(a);
 			}
 
 			void setPasswordMode(bool b) noexcept
@@ -133,37 +138,49 @@ namespace rj
 			}
 
 			// getters
-			const vec2f& getSize() const noexcept
-			{return m_shape.getSize();}
+			const vec2f& getSize() const noexcept { return m_shape.getSize(); }
 
 			const sf::Color& getFillColor() const noexcept
-			{return m_shape.getFillColor();}
+			{
+				return m_shape.getFillColor();
+			}
 
 			const sf::Color& getOutlineColor() const noexcept
-			{return m_shape.getOutlineColor();}
+			{
+				return m_shape.getOutlineColor();
+			}
 
 			float getOutlineThickness() const noexcept
-			{return m_shape.getOutlineThickness();}
+			{
+				return m_shape.getOutlineThickness();
+			}
 
 			mlk::ullong getCursorBlinkInterval() const noexcept
-			{return m_cursor_blinkinterval;}
+			{
+				return m_cursor_blinkinterval;
+			}
 
 			const sf::Color& getCursorColor() const noexcept
-			{return m_cursorcolor;}
+			{
+				return m_cursorcolor;
+			}
 
 			const sf::Color& getTextColor() const noexcept
-			{return m_text.getFillColor();}
+			{
+				return m_text.getFillColor();
+			}
 
 			mlk::uint getTextSize() const noexcept
-			{return m_text.getCharacterSize();}
+			{
+				return m_text.getCharacterSize();
+			}
 
 			std::string getText() const noexcept
 			{
 				std::string result;
 				auto char_stack{m_char_stack};
 				auto size{char_stack.size()};
-				for(std::size_t i{0}; i < size; ++i)
-				{
+				for(std::size_t i{0}; i < size; ++i) {
 					result += char_stack.top();
 					char_stack.pop();
 				}
@@ -173,18 +190,13 @@ namespace rj
 
 			sf::FloatRect getGlobalBounds() const noexcept
 			{
-				return
-				{
-					bounds_from_vec(
-					{
-						this->getPosition().x - this->getOrigin().x,
-						this->getPosition().y - this->getOrigin().y
-					}, m_shape.getSize())
-				};
+				return {bounds_from_vec(
+					{this->getPosition().x - this->getOrigin().x,
+					 this->getPosition().y - this->getOrigin().y},
+					m_shape.getSize())};
 			}
 
-			bool getPasswordMode() const noexcept
-			{return m_password_mode;}
+			bool getPasswordMode() const noexcept { return m_password_mode; }
 
 		private:
 			void init() noexcept
@@ -197,7 +209,8 @@ namespace rj
 				m_blinktimer.run();
 			}
 
-			void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+			void draw(sf::RenderTarget& target,
+					  sf::RenderStates states) const override
 			{
 				auto s{states};
 
@@ -212,8 +225,7 @@ namespace rj
 					target.draw(m_text, s);
 
 				// cursor
-				if(m_cursor_visible && m_focus)
-					target.draw(m_cursor, s);
+				if(m_cursor_visible && m_focus) target.draw(m_cursor, s);
 			}
 
 			void update_password_mode()
@@ -226,21 +238,20 @@ namespace rj
 			void update_text(std::uint32_t u)
 			{
 				// return event
-				if(u == 0x0d)
-				{
+				if(u == 0x0d) {
 					on_key_return();
 					return;
 				}
 
-				if(u != 0x08 && (u < 0x20 || u > 0x7E))
-					return;
+				if(u != 0x08 && (u < 0x20 || u > 0x7E)) return;
 
 				auto text{m_text.getString()};
 				auto shape_bounds{m_shape.getGlobalBounds()};
 				auto text_bounds{m_text.getGlobalBounds()};
 
 				// check bounds
-				if(text_bounds.left + text_bounds.width > shape_bounds.left + shape_bounds.width)
+				if(text_bounds.left + text_bounds.width >
+				   shape_bounds.left + shape_bounds.width)
 				{
 					// textbounds are bigger than shapebounds
 					// save and delete first char
@@ -249,25 +260,22 @@ namespace rj
 				}
 
 				// backspace
-				if(u == 0x08)
-				{
+				if(u == 0x08) {
 					// erase last char
-					if(!text.isEmpty())
-						text.erase(text.getSize() - 1, 1);
+					if(!text.isEmpty()) text.erase(text.getSize() - 1, 1);
 
 					// get last removed char
-					if(!m_char_stack.empty())
-					{
+					if(!m_char_stack.empty()) {
 						text.insert(0, m_char_stack.top());
 						m_char_stack.pop();
 					}
 				}
-				else text += u; // append input char to full text
+				else
+					text += u;// append input char to full text
 
 				m_text.setString(text);
 
-				if(m_password_mode)
-					this->update_password_mode();
+				if(m_password_mode) this->update_password_mode();
 
 				this->update_cursor();
 			}
@@ -277,7 +285,8 @@ namespace rj
 				auto shape_bounds{m_shape.getGlobalBounds()};
 				auto text_bounds{m_text.getGlobalBounds()};
 				auto origin{vec2f{0.f, text_bounds.height} / 2.f};
-				vec2f pos{shape_bounds.left, shape_bounds.top + shape_bounds.height / 2.f};
+				vec2f pos{shape_bounds.left,
+						  shape_bounds.top + shape_bounds.height / 2.f};
 
 				m_text.setOrigin(origin);
 				m_text.setPosition(pos);
@@ -288,19 +297,21 @@ namespace rj
 			void update_cursor()
 			{
 				auto shape_bounds{m_shape.getGlobalBounds()};
-				auto text_bounds{m_password_mode ? m_password_text.getGlobalBounds() :
-												   m_text.getGlobalBounds()};
-				auto cursor_margin_tb{0.1f * shape_bounds.height}; // top / bottom
-				m_cursor[0].position = {shape_bounds.left + text_bounds.width, shape_bounds.top +
-										cursor_margin_tb};
+				auto text_bounds{m_password_mode
+									 ? m_password_text.getGlobalBounds()
+									 : m_text.getGlobalBounds()};
+				auto cursor_margin_tb{0.1f *
+									  shape_bounds.height};// top / bottom
+				m_cursor[0].position = {shape_bounds.left + text_bounds.width,
+										shape_bounds.top + cursor_margin_tb};
 				m_cursor[0].color = m_cursorcolor;
-				m_cursor[1].position = {shape_bounds.left + text_bounds.width, shape_bounds.top +
-										shape_bounds.height - cursor_margin_tb};
+				m_cursor[1].position = {shape_bounds.left + text_bounds.width,
+										shape_bounds.top + shape_bounds.height -
+											cursor_margin_tb};
 				m_cursor[1].color = m_cursorcolor;
 			}
 		};
 	}
 }
 
-
-#endif // RJ_UI_TEXTBOX_HPP
+#endif// RJ_UI_TEXTBOX_HPP

@@ -6,12 +6,10 @@
 #ifndef RJ_SHARED_ERROR_HANDLER_HPP
 #define RJ_SHARED_ERROR_HANDLER_HPP
 
-
 #include <mlk/signals_slots/slot.h>
 
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/errors.hpp>
-
 
 namespace rj
 {
@@ -27,9 +25,11 @@ namespace rj
 		errors m_current_error;
 
 	public:
-		template<typename Func>
-		error_instance& create_error_instance(errors e, const std::string& error_text,
-											  const sf::Font& font, Func&& error_event)
+		template <typename Func>
+		error_instance& create_error_instance(errors e,
+											  const std::string& error_text,
+											  const sf::Font& font,
+											  Func&& error_event)
 		{
 			m_instances[e] = {{error_text, font}, {error_event}};
 			return m_instances[e];
@@ -37,18 +37,17 @@ namespace rj
 
 		void exec_error_instance(errors e)
 		{
-			if(m_instances.find(e) == std::end(m_instances))
-				return;
+			if(m_instances.find(e) == std::end(m_instances)) return;
 
 			m_instances[e].error_event();
 			m_current_error = e;
 		}
 
 		const error_instance& get_current_error_instance() noexcept
-		{return m_instances[m_current_error];}
+		{
+			return m_instances[m_current_error];
+		}
 	};
 }
 
-
-
-#endif // RJ_SHARED_ERROR_HANDLER_HPP
+#endif// RJ_SHARED_ERROR_HANDLER_HPP

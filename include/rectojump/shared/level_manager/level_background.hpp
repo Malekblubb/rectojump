@@ -6,12 +6,10 @@
 #ifndef RJ_SHARED_LEVEL_MANAGER_LEVEL_BACKGROUND_HPP
 #define RJ_SHARED_LEVEL_MANAGER_LEVEL_BACKGROUND_HPP
 
-
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/utils.hpp>
 
 #include <mlk/containers/container_utl.h>
-
 
 namespace rj
 {
@@ -25,11 +23,11 @@ namespace rj
 	public:
 		level_background() = default;
 
-		level_background(const std::string& start_hex, const std::string& end_hex,
-						 std::size_t pointcount) :
-			m_startcolor{to_rgb(start_hex)},
-			m_endcolor{to_rgb(end_hex)},
-			m_pointcount{pointcount}
+		level_background(const std::string& start_hex,
+						 const std::string& end_hex, std::size_t pointcount)
+			: m_startcolor{to_rgb(start_hex)},
+			  m_endcolor{to_rgb(end_hex)},
+			  m_pointcount{pointcount}
 		{
 			mlk::cnt::append(std::string{"RJBG\0"}, m_data);
 			mlk::cnt::append(start_hex + '\0', m_data);
@@ -37,22 +35,16 @@ namespace rj
 			m_data.emplace_back(pointcount);
 		}
 
-		const auto& startcolor() const noexcept
-		{return m_startcolor;}
+		const auto& startcolor() const noexcept { return m_startcolor; }
 
-		const auto& endcolor() const noexcept
-		{return m_endcolor;}
+		const auto& endcolor() const noexcept { return m_endcolor; }
 
-		auto pointcount() const noexcept
-		{return m_pointcount;}
+		auto pointcount() const noexcept { return m_pointcount; }
 
-		auto size() const noexcept
-		{return m_data.size();}
+		auto size() const noexcept { return m_data.size(); }
 
-		const auto& data() const noexcept
-		{return m_data;}
+		const auto& data() const noexcept { return m_data; }
 	};
 }
 
-
-#endif // RJ_SHARED_LEVEL_MANAGER_LEVEL_BACKGROUND_HPP
+#endif// RJ_SHARED_LEVEL_MANAGER_LEVEL_BACKGROUND_HPP

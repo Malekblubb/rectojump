@@ -6,7 +6,6 @@
 #ifndef RJ_GAME_WORLD_HPP
 #define RJ_GAME_WORLD_HPP
 
-
 #include "components/platform.hpp"
 #include "components/player.hpp"
 #include "components/triangle.hpp"
@@ -19,10 +18,9 @@
 
 #include <mlk/tools/random_utl.h>
 
-
 namespace rj
 {
-	template<typename Game_Handler>
+	template <typename Game_Handler>
 	class world
 	{
 		Game_Handler& m_gamehandler;
@@ -32,62 +30,61 @@ namespace rj
 		entity_handler m_entity_handler;
 
 	public:
-		world(Game_Handler& gh) :
-			m_gamehandler{gh},
-			m_backgroundmgr{gh.backgroundmgr()},
-			m_datastore{gh.datastore()},
-			m_entity_handler{gh.rendermgr(), gh.particlemgr()}
+		world(Game_Handler& gh)
+			: m_gamehandler{gh},
+			  m_backgroundmgr{gh.backgroundmgr()},
+			  m_datastore{gh.datastore()},
+			  m_entity_handler{gh.rendermgr(), gh.particlemgr()}
 		{
 			// init background
-			m_backgroundmgr.bg_shape(state::game).set_size(settings::get_window_size<vec2f>());
+			m_backgroundmgr.bg_shape(state::game)
+				.set_size(settings::get_window_size<vec2f>());
 		}
 
 		void c_player()
 		{
 			// TODO: check this
-			auto first_ent{std::static_pointer_cast<platform>(*m_entity_handler.begin())};
-			auto plr{factory::create<player>(vec2f{100.f, first_ent->top_out()}, first_ent->top_out())};
+			auto first_ent{
+				std::static_pointer_cast<platform>(*m_entity_handler.begin())};
+			auto plr{factory::create<player>(vec2f{100.f, first_ent->top_out()},
+											 first_ent->top_out())};
 			m_entity_handler.create_entity(plr);
 			plr->on_spawn();
 		}
 
-		void update(dur duration)
-		{
-			m_entity_handler.update(duration);
-		}
+		void update(dur duration) { m_entity_handler.update(duration); }
 
-		void render()
-		{
-			m_entity_handler.render();
-		}
+		void render() { m_entity_handler.render(); }
 
-		template<bool load_editor>
+		template <bool load_editor>
 		void load_level(const entity_proto_vec& entities)
 		{
 			m_entity_handler.clear();
 
-			for(auto& entity : entities)
-			{
+			for(auto& entity : entities) {
 				vec2f pos{entity[x], entity[y]};
 				auto ef{static_cast<char>(entity[figure])};
 
 				// laod objects
 				// rectangle
-				if(ef == entity_figure::f_rectangle)
-				{
+				if(ef == entity_figure::f_rectangle) {
 					// we need other entity type when editing
-					if constexpr(load_editor)
-					{
-						auto a{this->create_entity<editor_entity>(pos)};
-						a->set_texture(&m_datastore.template get<sf::Texture>
-									   ("editor_item_rect.png"));
-						a->set_figure(static_cast<entity_figure>(ef));
-					}
+					if
+						constexpr(load_editor)
+						{
+							auto a{this->create_entity<editor_entity>(pos)};
+							a->set_texture(
+								&m_datastore.template get<sf::Texture>(
+									"editor_item_rect.png"));
+							a->set_figure(static_cast<entity_figure>(ef));
+						}
 					else
 					{
-						auto a{this->create_entity<platform>(pos, vec2f{48.f, 48.f})};
-						a->render_object().setTexture(&m_datastore.template get<sf::Texture>
-													  ("editor_item_rect.png"));
+						auto a{this->create_entity<platform>(
+							pos, vec2f{48.f, 48.f})};
+						a->render_object().setTexture(
+							&m_datastore.template get<sf::Texture>(
+								"editor_item_rect.png"));
 					}
 				}
 
@@ -95,18 +92,22 @@ namespace rj
 				else if(ef == entity_figure::f_triangle)
 				{
 					// we need other entity type when editing
-					if constexpr(load_editor)
-					{
-						auto a{this->create_entity<editor_entity>(pos)};
-						a->set_texture(&m_datastore.template get<sf::Texture>
-									   ("editor_item_triangle.png"));
-						a->set_figure(static_cast<entity_figure>(ef));
-					}
+					if
+						constexpr(load_editor)
+						{
+							auto a{this->create_entity<editor_entity>(pos)};
+							a->set_texture(
+								&m_datastore.template get<sf::Texture>(
+									"editor_item_triangle.png"));
+							a->set_figure(static_cast<entity_figure>(ef));
+						}
 					else
 					{
-						auto a{this->create_entity<platform>(pos, vec2f{48.f, 48.f})};
-						a->render_object().setTexture(&m_datastore.template get<sf::Texture>
-													  ("editor_item_triangle.png"));
+						auto a{this->create_entity<platform>(
+							pos, vec2f{48.f, 48.f})};
+						a->render_object().setTexture(
+							&m_datastore.template get<sf::Texture>(
+								"editor_item_triangle.png"));
 						a->set_propertie(entity_propertie::death);
 					}
 				}
@@ -115,7 +116,7 @@ namespace rj
 			this->c_player();
 		}
 
-		template<typename Entity_Type, typename... Args>
+		template <typename Entity_Type, typename... Args>
 		entity_ptr<Entity_Type> create_entity(Args&&... args)
 		{
 			auto ptr{factory::create<Entity_Type>(std::forward<Args>(args)...)};
@@ -124,15 +125,14 @@ namespace rj
 		}
 
 		std::size_t num_entities() const noexcept
-		{return m_entity_handler.num_entities();}
+		{
+			return m_entity_handler.num_entities();
+		}
 
-		entity_handler& entityhandler() noexcept
-		{return m_entity_handler;}
+		entity_handler& entityhandler() noexcept { return m_entity_handler; }
 
 	private:
-
 	};
 }
 
-
-#endif // RJ_GAME_WORLD_HPP
+#endif// RJ_GAME_WORLD_HPP

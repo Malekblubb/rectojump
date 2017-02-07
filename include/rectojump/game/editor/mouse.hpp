@@ -6,17 +6,15 @@
 #ifndef RJ_GAME_EDITOR_MOUSE_HPP
 #define RJ_GAME_EDITOR_MOUSE_HPP
 
-
 #include "editor_entity.hpp"
 #include <rectojump/game/camera.hpp>
 #include <rectojump/game/entity_handler.hpp>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/input.hpp>
 
-
 namespace rj
 {
-	template<typename Game_Handler>
+	template <typename Game_Handler>
 	class editor_mouse
 	{
 		rndr& m_render;
@@ -29,21 +27,23 @@ namespace rj
 		// mouse 'indicator' shape
 		editor_entity m_mouse_shape{{0.f, 0.f}};
 
-		bool m_mouse_visible{false}, m_selection_visible{false}, m_selecting{false};
+		bool m_mouse_visible{false}, m_selection_visible{false},
+			m_selecting{false};
 
 	public:
-		editor_mouse(Game_Handler& gh) :
-			m_render{gh.rendermgr()},
-			m_entityhandler{gh.get_game().get_world().entityhandler()}
-		{this->init();}
+		editor_mouse(Game_Handler& gh)
+			: m_render{gh.rendermgr()},
+			  m_entityhandler{gh.get_game().get_world().entityhandler()}
+		{
+			this->init();
+		}
 
 		void update(dur)
 		{
 			auto pos{this->get_rounded_mousepos()};
 
 			// mouse visible
-			if(m_mouse_visible)
-				m_mouse_shape.render_object().setPosition(pos);
+			if(m_mouse_visible) m_mouse_shape.render_object().setPosition(pos);
 
 			// selecting
 			else if(m_selecting)
@@ -51,12 +51,10 @@ namespace rj
 				auto new_size{pos - m_selection_shape.getPosition()};
 				m_selection_shape.setSize(new_size);
 
-				if(!inp::is_btn_pressed(btn::Left))
-					this->selection_end();
+				if(!inp::is_btn_pressed(btn::Left)) this->selection_end();
 			}
 
-			for(auto& a : m_copy_shapes)
-			{
+			for(auto& a : m_copy_shapes) {
 				auto offset{pos - m_selection_shape.getPosition()};
 				a.render_object().move(offset);
 			}
@@ -67,15 +65,12 @@ namespace rj
 
 		void render()
 		{
-			if(m_selection_visible || m_selecting)
-			{
+			if(m_selection_visible || m_selecting) {
 				m_render(m_selection_shape);
-				for(auto& a : m_copy_shapes)
-					a.render();
+				for(auto& a : m_copy_shapes) a.render();
 			}
 
-			if(m_mouse_visible)
-				m_render(m_mouse_shape.get_render_object());
+			if(m_mouse_visible) m_render(m_mouse_shape.get_render_object());
 		}
 
 		void selection_start()
@@ -91,13 +86,14 @@ namespace rj
 			m_selecting = false;
 			m_copy_shapes.clear();
 			auto selectshape_bounds{m_selection_shape.getGlobalBounds()};
-			for(auto& a : m_entityhandler)
-			{
+			for(auto& a : m_entityhandler) {
 				auto size{a->size()};
-				auto ent_bounds{bounds_from_vec({a->pos().x - size.x / 2.f,
-												 a->pos().y - size.y / 2.f}, size)};
+				auto ent_bounds{bounds_from_vec(
+					{a->pos().x - size.x / 2.f, a->pos().y - size.y / 2.f},
+					size)};
 				if(selectshape_bounds.intersects(ent_bounds))
-					m_copy_shapes.push_back(*std::static_pointer_cast<editor_entity>(a));
+					m_copy_shapes.push_back(
+						*std::static_pointer_cast<editor_entity>(a));
 			}
 		}
 
@@ -111,28 +107,36 @@ namespace rj
 		}
 
 		void deactivate_selection() noexcept
-		{m_selection_visible = false; m_selecting = false;}
+		{
+			m_selection_visible = false;
+			m_selecting = false;
+		}
 
-		void set_mouse_visible(bool b)
-		{m_mouse_visible = b;}
+		void set_mouse_visible(bool b) { m_mouse_visible = b; }
 
 		void set_texture(const sf::Texture* tx) noexcept
-		{m_mouse_shape.render_object().setTexture(tx);}
+		{
+			m_mouse_shape.render_object().setTexture(tx);
+		}
 
 		const sf::Texture* get_texture() noexcept
-		{return m_mouse_shape.render_object().getTexture();}
+		{
+			return m_mouse_shape.render_object().getTexture();
+		}
 
-		auto& get_selected()
-		{return m_copy_shapes;}
+		auto& get_selected() { return m_copy_shapes; }
 
 		sf::FloatRect get_selectionshape_bounds() const noexcept
-		{return m_selection_shape.getGlobalBounds();}
+		{
+			return m_selection_shape.getGlobalBounds();
+		}
 
 		bool is_selection_visible() const noexcept
-		{return m_selection_visible;}
+		{
+			return m_selection_visible;
+		}
 
-		bool is_mouse_visible() const noexcept
-		{return m_mouse_visible;}
+		bool is_mouse_visible() const noexcept { return m_mouse_visible; }
 
 	private:
 		void init()
@@ -150,5 +154,4 @@ namespace rj
 	};
 }
 
-
-#endif // RJ_GAME_EDITOR_MOUSE_HPP
+#endif// RJ_GAME_EDITOR_MOUSE_HPP

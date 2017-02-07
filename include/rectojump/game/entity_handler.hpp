@@ -6,9 +6,8 @@
 #ifndef RJ_GAME_ENTITY_HANDLER_HPP
 #define RJ_GAME_ENTITY_HANDLER_HPP
 
-
-#include "components/player.hpp"
 #include "collision.hpp"
+#include "components/player.hpp"
 #include "entity.hpp"
 #include "particle_manager.hpp"
 
@@ -18,10 +17,9 @@
 
 #include <vector>
 
-
 namespace rj
 {
-	template<typename T>
+	template <typename T>
 	using entity_ptr = mlk::sptr<T>;
 	using entity_base_ptr = entity_ptr<entity_base>;
 	using player_ptr = entity_ptr<player>;
@@ -42,18 +40,17 @@ namespace rj
 		using iterator = std::vector<entity_base_ptr>::iterator;
 		using const_iterator = std::vector<entity_base_ptr>::const_iterator;
 
-		entity_handler(rndr& r, particle_manager<game_handler>& pm, std::size_t max_entities = 100000) :
-			m_render{r},
-			m_particlemgr{pm},
-			m_max_entities{max_entities}
-		{ }
+		entity_handler(rndr& r, particle_manager<game_handler>& pm,
+					   std::size_t max_entities = 100000)
+			: m_render{r}, m_particlemgr{pm}, m_max_entities{max_entities}
+		{
+		}
 
 		bool create_entity(const entity_base_ptr& e) noexcept
 		{
-			if(!this->is_entity_valid(e))
-				return false;
+			if(!this->is_entity_valid(e)) return false;
 
-			this->create_entity_impl(e); // add/create entity in handler
+			this->create_entity_impl(e);// add/create entity in handler
 			return true;
 		}
 
@@ -69,15 +66,12 @@ namespace rj
 		void update(dur duration)
 		{
 			// update player
-			if(this->is_player_registered())
-				m_player->update(duration);
+			if(this->is_player_registered()) m_player->update(duration);
 
 			// update other
-			for(auto& a : m_entities)
-			{
+			for(auto& a : m_entities) {
 				a->update(duration);
-				if(a->right_out() <= m_despawn_zone)
-					a->destroy();
+				if(a->right_out() <= m_despawn_zone) a->destroy();
 			}
 
 			this->check_collision();
@@ -89,52 +83,54 @@ namespace rj
 		void render()
 		{
 			// render player
-			if(this->is_player_registered())
-				m_player->render();
+			if(this->is_player_registered()) m_player->render();
 
 			// render other
-			for(auto& a : m_entities)
-				a->render();
+			for(auto& a : m_entities) a->render();
 		}
 
-		void clear() noexcept
-		{m_entities.clear();}
+		void clear() noexcept { m_entities.clear(); }
 
 		// deleting ents on next update
 		void delete_entities(std::vector<iterator>& iters)
-		{for(auto& a : iters) (*a)->destroy();}
+		{
+			for(auto& a : iters) (*a)->destroy();
+		}
 
-		auto get_entities_at(const vec2f& at, const vec2f& size = {1.f, 1.f}) noexcept
+		auto get_entities_at(const vec2f& at,
+							 const vec2f& size = {1.f, 1.f}) noexcept
 		{
 			std::vector<iterator> result;
 			sf::FloatRect at_bounds{at, size};
-			for(auto iter{std::begin(m_entities)}; iter != std::end(m_entities); ++iter)
+			for(auto iter{std::begin(m_entities)}; iter != std::end(m_entities);
+				++iter)
 			{
-				sf::FloatRect ent_bounds{{(*iter)->left_out(), (*iter)->top_out()},
-										 (*iter)->size()};
-				if(ent_bounds.intersects(at_bounds))
-					result.emplace_back(iter);
+				sf::FloatRect ent_bounds{
+					{(*iter)->left_out(), (*iter)->top_out()}, (*iter)->size()};
+				if(ent_bounds.intersects(at_bounds)) result.emplace_back(iter);
 			}
 			return result;
 		}
 
-		bool exists_entity_at(const vec2f& at, const vec2f& size = {1.f, 1.f}) noexcept
-		{return !this->get_entities_at(at, size).empty();}
+		bool exists_entity_at(const vec2f& at,
+							  const vec2f& size = {1.f, 1.f}) noexcept
+		{
+			return !this->get_entities_at(at, size).empty();
+		}
 
-		iterator begin()
-		{return std::begin(m_entities);}
+		iterator begin() { return std::begin(m_entities); }
 
-		iterator end()
-		{return std::end(m_entities);}
+		iterator end() { return std::end(m_entities); }
 
 		std::size_t num_entities() const noexcept
-		{return m_entities.size() + this->is_player_registered();}
+		{
+			return m_entities.size() + this->is_player_registered();
+		}
 
 	private:
 		void try_player_death()
 		{
-			if(!m_player->is_alive())
-				return;
+			if(!m_player->is_alive()) return;
 
 			// player should die here
 			// do effects, game stats etc....
@@ -147,19 +143,15 @@ namespace rj
 
 		void check_collision() noexcept
 		{
-			if(!this->is_player_registered())
-				return;
+			if(!this->is_player_registered()) return;
 
 			bool collided{false};
 
-			for(auto& a : m_entities)
-			{
-				if(is_colliding(*m_player, *a))
-				{
+			for(auto& a : m_entities) {
+				if(is_colliding(*m_player, *a)) {
 					collided = true;
 
-					if(m_player->bottom_out() - 2 <= a->top_out())
-					{
+					if(m_player->bottom_out() - 2 <= a->top_out()) {
 						m_player->on_collision(a->top_out());
 						m_player->render_object().setFillColor({0, 255, 0});
 					}
@@ -168,38 +160,37 @@ namespace rj
 						this->try_player_death();
 					}
 
-
-					if(a->has_propertie(entity_propertie::death))
-					{
+					if(a->has_propertie(entity_propertie::death)) {
 						// player touched death entity
 						this->try_player_death();
 					}
 				}
 			}
-			if(!collided)
-				m_player->on_collision_end();
+			if(!collided) m_player->on_collision_end();
 		}
 
 		// checking the entities
 		bool is_entity_valid(const entity_base_ptr& e) const noexcept
 		{
-			if(m_entities.size() >= m_max_entities)
-			{
-				mlk::lout("rj::entity_handler") << "max_entities limit is reached,"
-												   "can't add more entities";
+			if(m_entities.size() >= m_max_entities) {
+				mlk::lout("rj::entity_handler")
+					<< "max_entities limit is reached,"
+					   "can't add more entities";
 				return false;
 			}
-			if(e->is_registered())
-			{
-				mlk::lout("rj::entity_handler") << "entity with id '" << e->m_id <<
-												   "' exists already in entity handler, ignoring";
+			if(e->is_registered()) {
+				mlk::lout("rj::entity_handler")
+					<< "entity with id '" << e->m_id
+					<< "' exists already in entity handler, ignoring";
 				return false;
 			}
 			return true;
 		}
 
 		bool is_player_registered() const noexcept
-		{return m_player != nullptr;}
+		{
+			return m_player != nullptr;
+		}
 
 		// create the entities
 		void create_entity_impl(const entity_base_ptr& e) noexcept
@@ -225,10 +216,10 @@ namespace rj
 		void erase_destroyed() noexcept
 		{
 			mlk::cnt::remove_all_if(
-						[](const auto& entity){return entity->m_destroyed;}, m_entities);
+				[](const auto& entity) { return entity->m_destroyed; },
+				m_entities);
 		}
 	};
 }
 
-
-#endif // RJ_GAME_ENTITY_HANDLER_HPP
+#endif// RJ_GAME_ENTITY_HANDLER_HPP

@@ -6,13 +6,11 @@
 #ifndef RJ_GAME_COMPONENTS_STAR5_HPP
 #define RJ_GAME_COMPONENTS_STAR5_HPP
 
-
 #include <rectojump/global/common.hpp>
 
 #include <SFML/Graphics.hpp>
 
 #include <cmath>
-
 
 namespace rj
 {
@@ -22,22 +20,22 @@ namespace rj
 		float m_length{0.f};
 
 	public:
-		star5()
-		{this->init();}
+		star5() { this->init(); }
 
-		star5(float length) :
-			m_length{length}
-		{this->init();}
+		star5(float length) : m_length{length} { this->init(); }
 
-		star5(float length, const vec2f& pos) :
-			star5{length}
-		{this->setPosition(pos);}
+		star5(float length, const vec2f& pos) : star5{length}
+		{
+			this->setPosition(pos);
+		}
 
 		void set_length(float l) noexcept
-		{m_length = l; this->recalculate();}
+		{
+			m_length = l;
+			this->recalculate();
+		}
 
-		float get_length() const noexcept
-		{return m_length;}
+		float get_length() const noexcept { return m_length; }
 
 	private:
 		void init() noexcept
@@ -49,7 +47,7 @@ namespace rj
 		void recalculate() noexcept
 		{
 			this->setPoint(0, {m_length * std::cos((2 * m_pi) / 5),
-							   m_length * std::sin((2 * m_pi) /5)});
+							   m_length * std::sin((2 * m_pi) / 5)});
 			this->setPoint(1, {m_length * std::cos((6 * m_pi) / 5),
 							   m_length * std::sin((6 * m_pi) / 5)});
 			this->setPoint(2, {m_length * std::cos((10 * m_pi) / 5),
@@ -62,5 +60,4 @@ namespace rj
 	};
 }
 
-
-#endif // RJ_GAME_COMPONENTS_STAR5_HPP
+#endif// RJ_GAME_COMPONENTS_STAR5_HPP

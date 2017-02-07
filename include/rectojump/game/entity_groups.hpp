@@ -6,17 +6,25 @@
 #ifndef RJ_GAME_ENTITY_GROUPS_HPP
 #define RJ_GAME_ENTITY_GROUPS_HPP
 
-
 #include <mlk/tools/bitset.h>
-
 
 namespace rj
 {
 	enum class entity_type : char
-	{player, enemy, num};
+	{
+		player,
+		enemy,
+		num
+	};
 
 	enum entity_propertie : char
-	{moveable_left, jumpable, solid, death, num};
+	{
+		moveable_left,
+		jumpable,
+		solid,
+		death,
+		num
+	};
 
 	enum entity_figure : char
 	{
@@ -30,5 +38,4 @@ namespace rj
 	using eprops = mlk::ebitset<entity_propertie, entity_propertie::num>;
 }
 
-
-#endif // RJ_GAME_ENTITY_GROUPS_HPP
+#endif// RJ_GAME_ENTITY_GROUPS_HPP

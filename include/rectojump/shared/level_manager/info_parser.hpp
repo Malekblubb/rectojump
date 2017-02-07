@@ -6,13 +6,11 @@
 #ifndef RJ_SHARED_LEVEL_MANAGER_INFO_PARSER_HPP
 #define RJ_SHARED_LEVEL_MANAGER_INFO_PARSER_HPP
 
-
 #include "level_info.hpp"
 
 #include <mlk/types/types.h>
 
 #include <string>
-
 
 namespace rj
 {
@@ -23,17 +21,18 @@ namespace rj
 		level_info m_result;
 
 	public:
-		info_parser(const mlk::data_packet& data) :
-			m_data{data}
-		{this->parse();}
+		info_parser(const mlk::data_packet& data) : m_data{data}
+		{
+			this->parse();
+		}
 
-		const level_info& get_result() const noexcept
-		{return m_result;}
+		const level_info& get_result() const noexcept { return m_result; }
 
 	private:
 		void parse()
 		{
-			std::string as_str{reinterpret_cast<const char*>(m_data.data()), m_data.size()};
+			std::string as_str{reinterpret_cast<const char*>(m_data.data()),
+							   m_data.size()};
 			auto null_pos{as_str.find('\0')};
 			auto null_pos2{as_str.find('\0', null_pos + 1)};
 
@@ -43,15 +42,14 @@ namespace rj
 				return;
 			}
 
-			m_result =
-			{
+			m_result = {
 				as_str.substr(m_id_size, null_pos - m_id_size),
 				as_str.substr(null_pos + 1, null_pos2 - null_pos - 1),
-				as_str.substr(null_pos2 + 1, as_str.size() - null_pos2 - 2) // -2: cut space at the end
+				as_str.substr(null_pos2 + 1, as_str.size() - null_pos2 -
+												 2)// -2: cut space at the end
 			};
 		}
 	};
 }
 
-
-#endif // RJ_SHARED_LEVEL_MANAGER_INFO_PARSER_HPP
+#endif// RJ_SHARED_LEVEL_MANAGER_INFO_PARSER_HPP

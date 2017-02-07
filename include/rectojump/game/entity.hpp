@@ -6,9 +6,7 @@
 #ifndef RJ_GAME_ENTITY_HPP
 #define RJ_GAME_ENTITY_HPP
 
-
-#include "entity_base.hpp"
 #include "basic_entity.hpp"
+#include "entity_base.hpp"
 
-
-#endif // RJ_GAME_ENTITY_HPP
+#endif// RJ_GAME_ENTITY_HPP

@@ -6,15 +6,16 @@
 #ifndef RJ_SHARED_LEVEL_MANAGER_PACKER_DECL_HPP
 #define RJ_SHARED_LEVEL_MANAGER_PACKER_DECL_HPP
 
-
 namespace rj
 {
 	enum class packer_mode : char
-	{pack, unpack};
+	{
+		pack,
+		unpack
+	};
 
-	template<packer_mode mode>
+	template <packer_mode mode>
 	class level_packer;
 }
 
-
-#endif // RJ_SHARED_LEVEL_MANAGER_PACKER_DECL_HPP
+#endif// RJ_SHARED_LEVEL_MANAGER_PACKER_DECL_HPP

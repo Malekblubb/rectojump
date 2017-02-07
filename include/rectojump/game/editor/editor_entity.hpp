@@ -6,10 +6,8 @@
 #ifndef RJ_GAME_EDITOR_EDITOR_ENTITY_HPP
 #define RJ_GAME_EDITOR_EDITOR_ENTITY_HPP
 
-
 #include <rectojump/game/entity_rect.hpp>
 #include <rectojump/global/config_settings.hpp>
-
 
 namespace rj
 {
@@ -18,8 +16,7 @@ namespace rj
 		entity_figure m_figure;
 
 	public:
-		editor_entity(const vec2f& pos) :
-			entity_rect{pos, m_size, {0.f, 0.f}}
+		editor_entity(const vec2f& pos) : entity_rect{pos, m_size, {0.f, 0.f}}
 		{
 			m_render_object.setOrigin(m_size / 2.f);
 			m_render_object.setOutlineThickness(2.f);
@@ -27,22 +24,22 @@ namespace rj
 			m_render_object.setFillColor(settings::get_color_dark());
 		}
 
-		void update(dur)
-		{ }
+		void update(dur) {}
 
-		void set_figure(entity_figure f) noexcept
-		{m_figure = f;}
+		void set_figure(entity_figure f) noexcept { m_figure = f; }
 
 		void set_texture(const sf::Texture* tx)
-		{m_render_object.setTexture(tx);}
+		{
+			m_render_object.setTexture(tx);
+		}
 
 		const sf::Texture* get_texture() const noexcept
-		{return m_render_object.getTexture();}
+		{
+			return m_render_object.getTexture();
+		}
 
-		entity_figure get_figure() const noexcept
-		{return m_figure;}
+		entity_figure get_figure() const noexcept { return m_figure; }
 	};
 }
 
-
-#endif // RJ_GAME_EDITOR_EDITOR_ENTITY_HPP
+#endif// RJ_GAME_EDITOR_EDITOR_ENTITY_HPP

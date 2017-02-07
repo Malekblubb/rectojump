@@ -6,11 +6,9 @@
 #ifndef RJ_GAME_EDITOR_BUTTON_ITEM_HPP
 #define RJ_GAME_EDITOR_BUTTON_ITEM_HPP
 
-
 #include <rectojump/game/entity_groups.hpp>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/ui/button.hpp>
-
 
 namespace rj
 {
@@ -19,20 +17,16 @@ namespace rj
 		entity_figure m_figure;
 
 	public:
-		button_item(const vec2f& size, const vec2f& pos) :
-			button{size, pos}
-		{this->init_base();}
-
-		void update(dur duration) override
+		button_item(const vec2f& size, const vec2f& pos) : button{size, pos}
 		{
-			button::update(duration);
+			this->init_base();
 		}
 
-		void set_figure(entity_figure f) noexcept
-		{m_figure = f;}
+		void update(dur duration) override { button::update(duration); }
 
-		entity_figure get_figure() const noexcept
-		{return m_figure;}
+		void set_figure(entity_figure f) noexcept { m_figure = f; }
+
+		entity_figure get_figure() const noexcept { return m_figure; }
 
 	private:
 		void init() override
@@ -49,5 +43,4 @@ namespace rj
 	};
 }
 
-
-#endif // RJ_GAME_EDITOR_BUTTON_ITEM_HPP
+#endif// RJ_GAME_EDITOR_BUTTON_ITEM_HPP

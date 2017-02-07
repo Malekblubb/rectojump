@@ -6,23 +6,21 @@
 #ifndef RJ_GAME_PARTICLE_HPP
 #define RJ_GAME_PARTICLE_HPP
 
-
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/config_settings.hpp>
 
 #include <mlk/time/simple_timer.h>
 #include <mlk/tools/random_utl.h>
 
-
 namespace rj
 {
     class particle
     {
     public:
-//        particle() = delete;
-//        particle(mlk::ullong interval) :
-//            timer{interval}
-//        { }
+		//        particle() = delete;
+		//        particle(mlk::ullong interval) :
+		//            timer{interval}
+		//        { }
         vec2f velo;
         mlk::tm::simple_timer timer{1000u};
     };
@@ -39,27 +37,27 @@ namespace rj
         bool m_need_destroy{false};
 
     public:
-        particle_group(std::size_t num_particles = 100, const vec2f& position = {},
-                       mlk::ullong interval = 1000u, bool exec_once = true,
-                       const sf::Color& particle_color = settings::get_color_light()) :
-            m_particles{num_particles},
-            m_verts{sf::Points, num_particles},
-            m_start_pos{position},
-            m_interval{interval},
-            m_exec_once{exec_once},
-            m_color{particle_color}
-        {this->init_particles();}
+		particle_group(
+			std::size_t num_particles = 100, const vec2f& position = {},
+			mlk::ullong interval = 1000u, bool exec_once = true,
+			const sf::Color& particle_color = settings::get_color_light())
+			: m_particles{num_particles},
+			  m_verts{sf::Points, num_particles},
+			  m_start_pos{position},
+			  m_interval{interval},
+			  m_exec_once{exec_once},
+			  m_color{particle_color}
+		{
+			this->init_particles();
+		}
 
         void update(dur duration)
         {
-            if(m_need_destroy)
-                return;
+			if(m_need_destroy) return;
 
-            for(auto i{0}; i < m_particles.size(); ++i)
-            {
+			for(auto i{0}; i < m_particles.size(); ++i) {
                 m_verts[i].position += m_particles[i].velo;
-                if(m_particles[i].timer.timed_out() && !m_exec_once)
-                {
+				if(m_particles[i].timer.timed_out() && !m_exec_once) {
                     m_verts[i].position = m_start_pos;
                     m_particles[i].timer.restart();
                 }
@@ -69,18 +67,16 @@ namespace rj
                 m_need_destroy = m_particles.back().timer.timed_out();
         }
 
-        auto need_destroy() const noexcept
-        {return m_need_destroy;}
+		auto need_destroy() const noexcept { return m_need_destroy; }
 
-        auto num_particles() const noexcept
-        {return m_particles.size();}
+		auto num_particles() const noexcept { return m_particles.size(); }
 
     private:
         void init_particles()
         {
-            for(auto i{0}; i < m_particles.size(); ++i)
-            {
-                m_particles[i].velo = {mlk::rnd(-0.5f, 0.5f), mlk::rnd(-0.5f, 0.5f)};
+			for(auto i{0}; i < m_particles.size(); ++i) {
+				m_particles[i].velo = {mlk::rnd(-0.5f, 0.5f),
+									   mlk::rnd(-0.5f, 0.5f)};
                 m_particles[i].timer.restart(m_interval);
 
                 m_verts[i].position = m_start_pos;
@@ -95,4 +91,4 @@ namespace rj
     };
 }
 
-#endif // RJ_GAME_PARTICLE_HPP
+#endif// RJ_GAME_PARTICLE_HPP

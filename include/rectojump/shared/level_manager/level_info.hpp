@@ -6,11 +6,9 @@
 #ifndef RJ_SHARED_LEVEL_MANAGER_LEVEL_INFO_HPP
 #define RJ_SHARED_LEVEL_MANAGER_LEVEL_INFO_HPP
 
-
 #include <mlk/containers/container_utl.h>
 
 #include <string>
-
 
 namespace rj
 {
@@ -20,8 +18,7 @@ namespace rj
 		std::string creator_name;
 		std::string creation_date;
 
-		int size() const noexcept
-		{return this->data().size();}
+		int size() const noexcept { return this->data().size(); }
 
 		mlk::data_packet data() const noexcept
 		{
@@ -35,5 +32,4 @@ namespace rj
 	};
 }
 
-
-#endif // RJ_SHARED_LEVEL_MANAGER_LEVEL_INFO_HPP
+#endif// RJ_SHARED_LEVEL_MANAGER_LEVEL_INFO_HPP

@@ -6,7 +6,6 @@
 #ifndef RJ_GAME_POPUP_HPP
 #define RJ_GAME_POPUP_HPP
 
-
 #include <rectojump/core/render.hpp>
 #include <rectojump/global/common.hpp>
 #include <rectojump/global/errors.hpp>
@@ -15,12 +14,11 @@
 #include <mlk/log/log.h>
 #include <mlk/time/simple_timer.h>
 
-
 namespace rj
 {
 	class popup
 	{
-		rndr* m_render; // need pointer here
+		rndr* m_render;// need pointer here
 
 		sf::RectangleShape m_shape;
 		sf::Text m_text;
@@ -29,14 +27,12 @@ namespace rj
 		bool m_destroyed{false};
 
 	public:
-		popup(rndr* r, const sf::Font& font, const std::string& text, const vec2f& pos,
-			  mlk::ulong lifetime = 3000,
+		popup(rndr* r, const sf::Font& font, const std::string& text,
+			  const vec2f& pos, mlk::ulong lifetime = 3000,
 			  const sf::Color& bg_color = to_rgb("#aaaaaa", 200),
 			  const sf::Color& outline_color = to_rgb("#707070"),
-			  const sf::Color& fontcolor = to_rgb("#505050")) :
-			m_render{r},
-			m_text{text, font, 18},
-			m_lifetime_timer{lifetime}
+			  const sf::Color& fontcolor = to_rgb("#505050"))
+			: m_render{r}, m_text{text, font, 18}, m_lifetime_timer{lifetime}
 		{
 			auto size{m_text.getGlobalBounds()};
 			vec2f origin{size.width / 2.f, size.height / 2.f};
@@ -54,10 +50,8 @@ namespace rj
 
 		void update(dur)
 		{
-			if(m_lifetime_timer.timed_out())
-			{
-				if(m_current_alpha <= 0)
-				{
+			if(m_lifetime_timer.timed_out()) {
+				if(m_current_alpha <= 0) {
 					m_destroyed = true;
 					return;
 				}
@@ -79,18 +73,15 @@ namespace rj
 
 		void render()
 		{
-			if(m_render == nullptr)
-			{
+			if(m_render == nullptr) {
 				mlk::lerr(errors::cl_nullptr_access)["rj::popup"];
 				return;
 			}
 			(*m_render)(m_shape, m_text);
 		}
 
-		bool is_destroyed() const noexcept
-		{return m_destroyed;}
+		bool is_destroyed() const noexcept { return m_destroyed; }
 	};
 }
 
-
-#endif // RJ_GAME_POPUP_HPP
+#endif// RJ_GAME_POPUP_HPP

@@ -6,14 +6,12 @@
 #ifndef RJ_GLOBAL_CONFIG_HPP
 #define RJ_GLOBAL_CONFIG_HPP
 
-
-#include "config_parser.hpp"
 #include "common.hpp"
+#include "config_parser.hpp"
 #include "errors.hpp"
 
 #include <mlk/filesystem/fs_handle.h>
 #include <mlk/signals_slots/slot.h>
-
 
 namespace rj
 {
@@ -25,35 +23,37 @@ namespace rj
 	public:
 		mlk::slot<> on_setting_changed;
 
-		config(const std::string& path) :
-			m_file{path}
-		{this->init();}
+		config(const std::string& path) : m_file{path} { this->init(); }
 
-		~config()
-		{this->write_config();}
+		~config() { this->write_config(); }
 
 		static config& get()
-		{static config c{"config"}; return c;}
+		{
+			static config c{"config"};
+			return c;
+		}
 
-		template<typename T>
+		template <typename T>
 		T get_entry(const std::string& key)
 		{
 			auto iter{mlk::cnt::find_in_if(
-						  [&key](const std::pair<std::string, std::string>& p)
-			{return p.first == key;}, m_entrys)};
-			if(iter == std::end(m_entrys))
-				return T{};
+				[&key](const std::pair<std::string, std::string>& p) {
+					return p.first == key;
+				},
+				m_entrys)};
+			if(iter == std::end(m_entrys)) return T{};
 			return mlk::type_utl::to_type<T>(iter->second);
 		}
 
-		template<typename T>
+		template <typename T>
 		void set_entry(const std::string& key, const T& value)
 		{
 			auto iter{mlk::cnt::find_in_if(
-						  [&key](const std::pair<std::string, std::string>& p)
-			{return p.first == key;}, m_entrys)};
-			if(iter == std::end(m_entrys))
-				return;
+				[&key](const std::pair<std::string, std::string>& p) {
+					return p.first == key;
+				},
+				m_entrys)};
+			if(iter == std::end(m_entrys)) return;
 			iter->second = std::to_string(value);
 		}
 
@@ -61,11 +61,10 @@ namespace rj
 		void init()
 		{
 			this->make_default();
-			if(!m_file.exists())
-			{
-				if(!m_file.create())
-				{
-					mlk::lerr(errors::io_create_file) << "filename=" << m_file.path();
+			if(!m_file.exists()) {
+				if(!m_file.create()) {
+					mlk::lerr(errors::io_create_file) << "filename="
+													  << m_file.path();
 					return;
 				}
 				this->write_config();
@@ -91,8 +90,7 @@ namespace rj
 		void write_config() noexcept
 		{
 			m_file.reopen(std::ios::out | std::ios::trunc);
-			for(auto& a : m_entrys)
-				m_file.write_line(a.first + "=" + a.second);
+			for(auto& a : m_entrys) m_file.write_line(a.first + "=" + a.second);
 			m_file.close();
 		}
 
@@ -102,46 +100,44 @@ namespace rj
 			std::vector<std::string> lines;
 			std::string buf;
 			while(m_file.read_line(buf))
-				if(!buf.empty())
-					lines.push_back(buf);
+				if(!buf.empty()) lines.push_back(buf);
 
 			// file is empty
-			if(lines.size() < 1)
-			{
+			if(lines.size() < 1) {
 				this->write_config();
 				return;
 			}
 
 			// parse content
 			config_parser parser{lines};
-			if(!parser.empty())
-				this->validate_entrys(parser.get_entrys());
+			if(!parser.empty()) this->validate_entrys(parser.get_entrys());
 		}
 
 		void validate_entrys(const config_entry_vec& entrys) noexcept
 		{
-			for(auto& a : entrys)
-			{
+			for(auto& a : entrys) {
 				auto iter{mlk::cnt::find_in_if(
-				[&](const std::pair<std::string, std::string>& p)
-				{return p.first == a.first;}, m_entrys)};
-				if(iter != std::end(m_entrys))
-					*iter = a;
+					[&](const std::pair<std::string, std::string>& p) {
+						return p.first == a.first;
+					},
+					m_entrys)};
+				if(iter != std::end(m_entrys)) *iter = a;
 			}
 		}
 	};
 
-	template<>
-	inline void config::set_entry<std::string>(const std::string& key, const std::string& value)
+	template <>
+	inline void config::set_entry<std::string>(const std::string& key,
+											   const std::string& value)
 	{
 		auto iter{mlk::cnt::find_in_if(
-		[&key](const std::pair<std::string, std::string>& p)
-		{return p.first == key;}, m_entrys)};
-		if(iter == std::end(m_entrys))
-			return;
+			[&key](const std::pair<std::string, std::string>& p) {
+				return p.first == key;
+			},
+			m_entrys)};
+		if(iter == std::end(m_entrys)) return;
 		iter->second = value;
 	}
 }
 
-
-#endif // RJ_GLOBAL_CONFIG_HPP
+#endif// RJ_GLOBAL_CONFIG_HPP

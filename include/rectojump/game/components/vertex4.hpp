@@ -6,9 +6,7 @@
 #ifndef RJ_GAME_COMPONENTS_VERTEX4_HPP
 #define RJ_GAME_COMPONENTS_VERTEX4_HPP
 
-
 #include <rectojump/global/common.hpp>
-
 
 namespace rj
 {
@@ -33,6 +31,4 @@ namespace rj
 	};
 }
 
-
-#endif // RJ_GAME_COMPONENTS_VERTEX4_HPP
-
+#endif// RJ_GAME_COMPONENTS_VERTEX4_HPP

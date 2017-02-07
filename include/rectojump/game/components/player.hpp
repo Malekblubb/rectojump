@@ -6,10 +6,8 @@
 #ifndef RJ_GAME_COMPONENTS_PLAYER_HPP
 #define RJ_GAME_COMPONENTS_PLAYER_HPP
 
-
-#include <rectojump/game/entity_rect.hpp>
 #include <iostream>
-
+#include <rectojump/game/entity_rect.hpp>
 
 namespace rj
 {
@@ -34,27 +32,24 @@ namespace rj
 		float m_rotated{0.f};
 
 	public:
-		player(const vec2f& start_pos, float ground = 600.f) :
-			entity_rect{start_pos, {m_width, m_height}, {0.f, 0.f}},
-			m_start_pos{start_pos},
-			m_ground{ground}
-		{ }
+		player(const vec2f& start_pos, float ground = 600.f)
+			: entity_rect{start_pos, {m_width, m_height}, {0.f, 0.f}},
+			  m_start_pos{start_pos},
+			  m_ground{ground}
+		{
+		}
 
 		~player() = default;
 
 		// 'bind' space key (can't do this in ctor)
 		void init() override
-		{inp::on_key_pressed(key::Space) += [this]{m_need_jump = true;};}
-
-		void on_spawn() noexcept
 		{
-			m_alive = true;
+			inp::on_key_pressed(key::Space) += [this] { m_need_jump = true; };
 		}
 
-		void on_kill() noexcept
-		{
-			m_alive = false;
-		}
+		void on_spawn() noexcept { m_alive = true; }
+
+		void on_kill() noexcept { m_alive = false; }
 
 		void update(dur) override
 		{
@@ -63,31 +58,28 @@ namespace rj
 			this->try_rotate();
 			m_render_object.move(m_velocity);
 
-			if(this->bottom_out() > m_ground)
-			{
+			if(this->bottom_out() > m_ground) {
 				this->rotate_end();
 				this->jump_end();
 			}
 		}
 
-		void on_collision(float at) noexcept
-		{m_ground = at;}
+		void on_collision(float at) noexcept { m_ground = at; }
 
-		void on_collision_end() noexcept
-		{m_ground = m_start_pos.y;}
+		void on_collision_end() noexcept { m_ground = m_start_pos.y; }
 
-		auto is_alive() const noexcept
-		{return m_alive;}
+		auto is_alive() const noexcept { return m_alive; }
 
 	private:
 		bool is_on_ground() const noexcept
-		{return this->bottom_out() == m_ground;}
+		{
+			return this->bottom_out() == m_ground;
+		}
 
 		// jumping
 		void try_jump() noexcept
 		{
-			if(m_need_jump && !m_jumping && this->is_on_ground())
-			{
+			if(m_need_jump && !m_jumping && this->is_on_ground()) {
 				m_velocity.y = m_jump_velo;
 				m_jumping = true;
 				m_need_jump = false;
@@ -103,16 +95,14 @@ namespace rj
 
 		void try_rotate() noexcept
 		{
-			if(!m_jumping)
-				return;
+			if(!m_jumping) return;
 			m_render_object.rotate(m_step_deg);
 			m_rotated += m_step_deg;
 		}
 
 		void rotate_end() noexcept
 		{
-			if(!m_jumping)
-				return;
+			if(!m_jumping) return;
 			// rotate back the rotated way in one step
 			m_render_object.rotate(-m_render_object.getRotation());
 			m_rotated = 0.f;
@@ -120,5 +110,4 @@ namespace rj
 	};
 }
 
-
-#endif // RJ_GAME_COMPONENTS_PLAYER_HPP
+#endif// RJ_GAME_COMPONENTS_PLAYER_HPP

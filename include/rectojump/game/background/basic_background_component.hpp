@@ -6,11 +6,9 @@
 #ifndef RJ_GAME_BACKGROUND_BASIC_BACKGROUND_COMPONENT_HPP
 #define RJ_GAME_BACKGROUND_BASIC_BACKGROUND_COMPONENT_HPP
 
-
 #include <rectojump/global/common.hpp>
 
 #include <mlk/time/simple_timer.h>
-
 
 namespace rj
 {
@@ -28,23 +26,22 @@ namespace rj
 
 	public:
 		basic_background_component(rndr& r, const vec2f& pos, const vec2f& size,
-								   mlk::ullong lifetime, float rotatiostep, const vec2f& movestep) :
-			m_render{r},
-			m_position{pos},
-			m_size{size},
-			m_lifetime_timer{lifetime},
-			m_rotationstep{rotatiostep},
-			m_movestep{movestep},
-			m_infinite_lifetime{lifetime == 0}
-		{ }
+								   mlk::ullong lifetime, float rotatiostep,
+								   const vec2f& movestep)
+			: m_render{r},
+			  m_position{pos},
+			  m_size{size},
+			  m_lifetime_timer{lifetime},
+			  m_rotationstep{rotatiostep},
+			  m_movestep{movestep},
+			  m_infinite_lifetime{lifetime == 0}
+		{
+		}
 
 		virtual void update(dur) = 0;
 		virtual void render() = 0;
-		bool is_destroyed()
-		{return m_destroyed;}
+		bool is_destroyed() { return m_destroyed; }
 	};
 }
 
-
-
-#endif // RJ_GAME_BACKGROUND_BASIC_BACKGROUND_COMPONENT_HPP
+#endif// RJ_GAME_BACKGROUND_BASIC_BACKGROUND_COMPONENT_HPP

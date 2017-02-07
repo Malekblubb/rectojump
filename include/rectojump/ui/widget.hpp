@@ -6,9 +6,7 @@
 #ifndef RJ_UI_WIDGET_HPP
 #define RJ_UI_WIDGET_HPP
 
-
 #include <rectojump/global/common.hpp>
-
 
 namespace rj
 {
@@ -17,14 +15,11 @@ namespace rj
 		class widget : public sf::Drawable
 		{
 		public:
-			virtual void update(dur)
-			{ }
+			virtual void update(dur) {}
 
-			virtual void render()
-			{ }
+			virtual void render() {}
 		};
 	}
 }
 
-
-#endif // RJ_UI_WIDGET_HPP
+#endif// RJ_UI_WIDGET_HPP

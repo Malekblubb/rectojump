@@ -6,11 +6,9 @@
 #ifndef RJ_SHARED_LEVEL_MANAGER_LEVEL_HPP
 #define RJ_SHARED_LEVEL_MANAGER_LEVEL_HPP
 
-
 #include "level_background.hpp"
 #include "level_info.hpp"
 #include <rectojump/global/common.hpp>
-
 
 namespace rj
 {
@@ -31,9 +29,10 @@ namespace rj
 		level_info info;
 
 		bool is_valid() const noexcept
-		{return !music.empty() && !entities.empty();}
+		{
+			return !music.empty() && !entities.empty();
+		}
 	};
 }
 
-
-#endif // RJ_SHARED_LEVEL_MANAGER_LEVEL_HPP
+#endif// RJ_SHARED_LEVEL_MANAGER_LEVEL_HPP

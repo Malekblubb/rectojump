@@ -6,11 +6,9 @@
 #ifndef RJ_GAME_ENTITY_BASE_HPP
 #define RJ_GAME_ENTITY_BASE_HPP
 
-
 #include "entity_groups.hpp"
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/input.hpp>
-
 
 namespace rj
 {
@@ -34,37 +32,39 @@ namespace rj
 			m_is_registered = true;
 		}
 
-		void destroy() noexcept
-		{m_destroyed = true;}
+		void destroy() noexcept { m_destroyed = true; }
 
 	protected:
 		rndr* m_render{nullptr};
 
 		virtual void update(dur duration) = 0;
 		virtual void render() = 0;
-		virtual void init() { } // called by 'entity_handler'
+		virtual void init() {}// called by 'entity_handler'
 
 	public:
 		entity_base() = default;
 		virtual ~entity_base() = default;
 
-		void set_render(rndr* r) noexcept
-		{m_render = r;}
+		void set_render(rndr* r) noexcept { m_render = r; }
 
 		bool is_registered() const noexcept
-		{return m_is_registered || m_id != -1;}
+		{
+			return m_is_registered || m_id != -1;
+		}
 
-		void set_propertie(eprops::type prop) noexcept
-		{m_props |= prop;}
+		void set_propertie(eprops::type prop) noexcept { m_props |= prop; }
 
-		void set_type(etypes::type type) noexcept
-		{m_types |= type;}
+		void set_type(etypes::type type) noexcept { m_types |= type; }
 
 		bool has_propertie(eprops::type prop) const noexcept
-		{return m_props & prop;}
+		{
+			return m_props & prop;
+		}
 
 		bool has_type(etypes::type type) const noexcept
-		{return m_types & type;}
+		{
+			return m_types & type;
+		}
 
 		// position, collision
 		virtual const vec2f size() const noexcept = 0;
@@ -78,5 +78,4 @@ namespace rj
 	};
 }
 
-
-#endif // RJ_GAME_ENTITY_BASE_HPP
+#endif// RJ_GAME_ENTITY_BASE_HPP

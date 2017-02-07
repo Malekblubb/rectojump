@@ -6,7 +6,6 @@
 #ifndef RJ_GLOBAL_ERRORS_HPP
 #define RJ_GLOBAL_ERRORS_HPP
 
-
 namespace rj
 {
 	enum class errors : char
@@ -32,5 +31,4 @@ namespace rj
 	};
 }
 
-
-#endif // RJ_GLOBAL_ERRORS_HPP
+#endif// RJ_GLOBAL_ERRORS_HPP

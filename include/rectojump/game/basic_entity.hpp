@@ -6,17 +6,15 @@
 #ifndef RJ_GAME_BASIC_ENTITY_HPP
 #define RJ_GAME_BASIC_ENTITY_HPP
 
-
 #include "entity_base.hpp"
 #include <rectojump/core/render.hpp>
 #include <rectojump/global/errors.hpp>
 
 #include <mlk/log/log.h>
 
-
 namespace rj
 {
-	template<typename T>
+	template <typename T>
 	class basic_entity : public entity_base
 	{
 	protected:
@@ -25,45 +23,46 @@ namespace rj
 		const vec2f m_size{48.f, 48.f};
 
 		virtual void update(dur duration) override = 0;
-		virtual void init() override { }
+		virtual void init() override {}
 
 	public:
 		using value_type = T;
 
-		basic_entity(const vec2f& pos, const vec2f& velocity) :
-			m_velocity{velocity}
-		{m_render_object.setPosition(pos);}
+		basic_entity(const vec2f& pos, const vec2f& velocity)
+			: m_velocity{velocity}
+		{
+			m_render_object.setPosition(pos);
+		}
 
 		virtual ~basic_entity() = default;
 
 		virtual void render() override
 		{
-			if(m_render == nullptr)
-			{
+			if(m_render == nullptr) {
 				mlk::lerr(errors::cl_nullptr_access)["rj::basic_entity<T>"];
 				return;
 			}
 			(*m_render)(m_render_object);
 		}
 
-		T& render_object() noexcept
-		{return m_render_object;}
+		T& render_object() noexcept { return m_render_object; }
 
-		const T& get_render_object() const noexcept
-		{return m_render_object;}
+		const T& get_render_object() const noexcept { return m_render_object; }
 
 		// position, collision
 		const vec2f size() const noexcept override
-		{return m_render_object.getSize();}
+		{
+			return m_render_object.getSize();
+		}
 
 		const vec2f& pos() const noexcept override
-		{return m_render_object.getPosition();}
+		{
+			return m_render_object.getPosition();
+		}
 
-		float pos_x() const noexcept override
-		{return this->pos().x;}
+		float pos_x() const noexcept override { return this->pos().x; }
 
-		float pos_y() const noexcept override
-		{return this->pos().y;}
+		float pos_y() const noexcept override { return this->pos().y; }
 
 		virtual float top_out() const noexcept override = 0;
 		virtual float bottom_out() const noexcept override = 0;
@@ -71,10 +70,12 @@ namespace rj
 		virtual float right_out() const noexcept override = 0;
 	};
 
-	template<>
+	template <>
 	inline const vec2f basic_entity<sf::CircleShape>::size() const noexcept
-	{return {m_render_object.getRadius() * 2.f, m_render_object.getRadius() * 2.f};}
+	{
+		return {m_render_object.getRadius() * 2.f,
+				m_render_object.getRadius() * 2.f};
+	}
 }
 
-
-#endif // RJ_GAME_BASIC_ENTITY_HPP
+#endif// RJ_GAME_BASIC_ENTITY_HPP

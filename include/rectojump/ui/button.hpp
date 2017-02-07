@@ -6,14 +6,12 @@
 #ifndef RJ_UI_BUTTON_HPP
 #define RJ_UI_BUTTON_HPP
 
-
 #include "widget.hpp"
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/input.hpp>
 
 #include <mlk/signals_slots/slot.h>
 #include <mlk/types/types.h>
-
 
 namespace rj
 {
@@ -34,16 +32,17 @@ namespace rj
 			mlk::slot<> on_clicked;
 			mlk::slot<> on_hovered;
 
-			button(const vec2f& size = {0.f, 0.f}, const vec2f& pos = {0.f, 0.f}) :
-				m_shape{size}
+			button(const vec2f& size = {0.f, 0.f},
+				   const vec2f& pos = {0.f, 0.f})
+				: m_shape{size}
 			{
 				m_shape.setPosition(pos);
 				this->init_base();
 			}
 
-			button(const vec2f& size, const std::string& text, const sf::Font& font,
-				   const sf::Color& fontcolor = {}) :
-				button{size}
+			button(const vec2f& size, const std::string& text,
+				   const sf::Font& font, const sf::Color& fontcolor = {})
+				: button{size}
 			{
 				m_text.setString(text);
 				m_text.setFont(font);
@@ -54,11 +53,15 @@ namespace rj
 			void update(dur) override
 			{
 				// check states
-				if(m_hover) this->on_hover();
-				else this->on_hover_end();
+				if(m_hover)
+					this->on_hover();
+				else
+					this->on_hover_end();
 
-				if(m_press) this->on_press();
-				else this->on_press_end();
+				if(m_press)
+					this->on_press();
+				else
+					this->on_press_end();
 
 				// collision
 				auto bounds{m_shape.getGlobalBounds()};
@@ -66,18 +69,19 @@ namespace rj
 
 				if(bounds.intersects(mousebounds))
 					m_hover = true;
-				else m_hover = false;
+				else
+					m_hover = false;
 
-				if(m_hover)
-				{
+				if(m_hover) {
 					if(inp::is_btn_pressed(btn::Left))
 						m_press = true;
-					else m_press = false;
+					else
+						m_press = false;
 
-					if(inp::was_real_mousepress_left())
-						this->on_clicked();
+					if(inp::was_real_mousepress_left()) this->on_clicked();
 				}
-				else m_press = false;
+				else
+					m_press = false;
 			}
 
 			void setText(const std::string& text) noexcept
@@ -162,47 +166,63 @@ namespace rj
 				this->calculate_textpos();
 			}
 
-			std::string getText() const noexcept
-			{return m_text.getString();}
+			std::string getText() const noexcept { return m_text.getString(); }
 
 			const sf::Font* getFont() const noexcept
-			{return m_text.getFont();}
+			{
+				return m_text.getFont();
+			}
 
 			const sf::Color& getFontColor() const noexcept
-			{return m_text.getFillColor();}
+			{
+				return m_text.getFillColor();
+			}
 
 			mlk::uint getFontSize() const noexcept
-			{return m_text.getCharacterSize();}
+			{
+				return m_text.getCharacterSize();
+			}
 
 			const sf::Color& getFillColor() const noexcept
-			{return m_shape.getFillColor();}
+			{
+				return m_shape.getFillColor();
+			}
 
 			float getOutlineThickness() const noexcept
-			{return m_shape.getOutlineThickness();}
+			{
+				return m_shape.getOutlineThickness();
+			}
 
 			const sf::Color& getOutlineColor() const noexcept
-			{return m_shape.getOutlineColor();}
+			{
+				return m_shape.getOutlineColor();
+			}
 
 			const vec2f& getPosition() const noexcept
-			{return m_shape.getPosition();}
+			{
+				return m_shape.getPosition();
+			}
 
 			const vec2f& getOrigin() const noexcept
-			{return m_shape.getOrigin();}
+			{
+				return m_shape.getOrigin();
+			}
 
-			const vec2f& getSize() const noexcept
-			{return m_shape.getSize();}
+			const vec2f& getSize() const noexcept { return m_shape.getSize(); }
 
 			const auto getGlobalBounds() const noexcept
-			{return m_shape.getGlobalBounds();}
+			{
+				return m_shape.getGlobalBounds();
+			}
 
 			const sf::Texture* getTexture() const noexcept
-			{return m_shape.getTexture();}
+			{
+				return m_shape.getTexture();
+			}
 
-			bool pressed() const noexcept
-			{return m_press;}
+			bool pressed() const noexcept { return m_press; }
 
-			bool hover() const noexcept
-			{return m_hover;}
+			bool hover() const noexcept { return m_hover; }
 
 		protected:
 			virtual void init()
@@ -238,13 +258,12 @@ namespace rj
 				this->restore_origin();
 			}
 
-			void create_restore_shape() noexcept
-			{m_restore_shape = m_shape;}
+			void create_restore_shape() noexcept { m_restore_shape = m_shape; }
 
-			void restore_origin() noexcept
-			{m_shape = m_restore_shape;}
+			void restore_origin() noexcept { m_shape = m_restore_shape; }
 
-			virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+			virtual void draw(sf::RenderTarget& target,
+							  sf::RenderStates states) const override
 			{
 				target.draw(m_shape, states);
 				target.draw(m_text, states);
@@ -255,13 +274,14 @@ namespace rj
 			{
 				auto shape_bounds{m_shape.getGlobalBounds()};
 				auto text_bounds{m_text.getGlobalBounds()};
-				m_text.setOrigin(text_bounds.width / 2.f, text_bounds.height / 2.f);
+				m_text.setOrigin(text_bounds.width / 2.f,
+								 text_bounds.height / 2.f);
 				m_text.setPosition(shape_bounds.left + shape_bounds.width / 2.f,
-								   shape_bounds.top + shape_bounds.height / 2.f);
+								   shape_bounds.top +
+									   shape_bounds.height / 2.f);
 			}
 		};
 	}
 }
 
-
-#endif // RJ_UI_BUTTON_HPP
+#endif// RJ_UI_BUTTON_HPP

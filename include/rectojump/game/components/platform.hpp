@@ -6,9 +6,7 @@
 #ifndef RJ_GAME_COMPONENTS_PLATFORM_HPP
 #define RJ_GAME_COMPONENTS_PLATFORM_HPP
 
-
 #include <rectojump/game/entity_rect.hpp>
-
 
 namespace rj
 {
@@ -16,17 +14,19 @@ namespace rj
 	{
 	public:
 		platform(const vec2f& pos, const vec2f& size = {20.f, 20.f},
-				 const vec2f& velocity = {-0.4f, 0.f}) :
-			entity_rect{pos, size, velocity}
-		{m_render_object.setOrigin(size.x / 2, size.y / 2);}
+				 const vec2f& velocity = {-0.4f, 0.f})
+			: entity_rect{pos, size, velocity}
+		{
+			m_render_object.setOrigin(size.x / 2, size.y / 2);
+		}
 
 		~platform() = default;
 
 		void update(dur duration) override
-		{m_render_object.move(m_velocity * duration);}
+		{
+			m_render_object.move(m_velocity * duration);
+		}
 	};
 }
 
-
-
-#endif // RJ_GAME_COMPONENTS_PLATFORM_HPP
+#endif// RJ_GAME_COMPONENTS_PLATFORM_HPP

@@ -6,11 +6,9 @@
 #ifndef RJ_GLOBAL_CONFIG_PARSER_HPP
 #define RJ_GLOBAL_CONFIG_PARSER_HPP
 
-
 #include <string>
 #include <utility>
 #include <vector>
-
 
 namespace rj
 {
@@ -23,26 +21,25 @@ namespace rj
 		config_entry_vec m_entrys;
 
 	public:
-		config_parser(const std::vector<std::string>& content) :
-			m_content{content}
-		{this->parse();}
+		config_parser(const std::vector<std::string>& content)
+			: m_content{content}
+		{
+			this->parse();
+		}
 
-		auto& get_entrys() const noexcept
-		{return m_entrys;}
+		auto& get_entrys() const noexcept { return m_entrys; }
 
-		bool empty() const noexcept
-		{return m_entrys.empty();}
+		bool empty() const noexcept { return m_entrys.empty(); }
 
 	private:
 		void parse() noexcept
 		{
-			for(auto& a : m_content)
-			{
+			for(auto& a : m_content) {
 				auto pos_equ{a.find('=')};
-				if(pos_equ != std::string::npos)
-				{
-					auto pair{std::make_pair(a.substr(0, pos_equ),
-											 a.substr(pos_equ + 1, a.size() - pos_equ - 1))};
+				if(pos_equ != std::string::npos) {
+					auto pair{std::make_pair(
+						a.substr(0, pos_equ),
+						a.substr(pos_equ + 1, a.size() - pos_equ - 1))};
 					if(!pair.first.empty() && !pair.second.empty())
 						m_entrys.push_back(pair);
 				}
@@ -51,5 +48,4 @@ namespace rj
 	};
 }
 
-
-#endif // RJ_GLOBAL_CONFIG_PARSER_HPP
+#endif// RJ_GLOBAL_CONFIG_PARSER_HPP
