@@ -120,6 +120,8 @@ namespace rj
 			m_game.load_level(lv);
 		}
 
+		void on_player_death() {}
+
 		void exit()
 		{
 			// do stuff on exit...
@@ -228,7 +230,11 @@ namespace rj
 				mlk::lerr(errors::cl_data);
 		}
 
-		void init_pointers() noexcept { m_game.set_levelmgr(&m_lvmgr); }
+		void init_pointers() noexcept
+		{
+			m_game.set_levelmgr(&m_lvmgr);
+			m_game.get_world().entityhandler().set_gamehandler(this);
+		}
 
 		void init_input()
 		{

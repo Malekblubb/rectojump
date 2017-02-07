@@ -28,6 +28,7 @@ namespace rj
 	{
 		rndr& m_render;
 		particle_manager<game_handler>& m_particlemgr;
+		game_handler* m_gamehandler{nullptr};
 
 		player_ptr m_player{nullptr};
 		std::vector<entity_base_ptr> m_entities;
@@ -45,6 +46,8 @@ namespace rj
 			: m_render{r}, m_particlemgr{pm}, m_max_entities{max_entities}
 		{
 		}
+
+		void set_gamehandler(game_handler* gh) { m_gamehandler = gh; }
 
 		bool create_entity(const entity_base_ptr& e) noexcept
 		{
@@ -128,6 +131,8 @@ namespace rj
 		}
 
 	private:
+		void on_player_death();
+
 		void try_player_death()
 		{
 			if(!m_player->is_alive()) return;
@@ -139,6 +144,7 @@ namespace rj
 
 			// on kill
 			m_player->on_kill();
+			this->on_player_death();
 		}
 
 		void check_collision() noexcept

@@ -7,6 +7,7 @@
 #include <rectojump/core/game_handler.hpp>
 #include <rectojump/core/game_window.hpp>
 #include <rectojump/game/editor/editor.hpp>
+#include <rectojump/game/entity_handler.inl>
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/global/error_inserter.hpp>
 #include <rectojump/shared/data_manager.hpp>
