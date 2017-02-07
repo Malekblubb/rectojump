@@ -188,7 +188,7 @@ namespace rj
 		}
 
 		template <int tup_index, typename... Types>
-		void get_multiple_as_impl(std::tuple<Types...>& tup)
+		void get_multiple_as_impl(std::tuple<Types...>&)
 		{ /* case: no args; do nothing */
 		}
 
@@ -205,7 +205,7 @@ namespace rj
 		}
 
 		template <int tup_index, typename... Types>
-		void load_multiple_as_impl(std::tuple<Types...>& tup)
+		void load_multiple_as_impl(std::tuple<Types...>&)
 		{ /* case: no args; do nothing */
 		}
 

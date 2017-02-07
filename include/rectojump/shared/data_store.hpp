@@ -19,7 +19,7 @@ namespace rj
 	template <std::size_t tup_index, typename Type, typename Func, typename Tup>
 	typename std::enable_if<tup_index == std::tuple_size<Tup>::value,
 							void>::type
-	get_type_index(Func&& f, Tup& t)
+	get_type_index(Func&&, Tup&)
 	{
 	}
 
@@ -28,9 +28,10 @@ namespace rj
 		tup_index<std::tuple_size<Tup>::value, void>::type get_type_index(
 			Func&& f, Tup& t)
 	{
-		if(std::is_same<
-			   Type, typename std::tuple_element<tup_index, Tup>::type>::value)
-			f(tup_index);// type match
+		if
+			constexpr(std::is_same<Type, typename std::tuple_element<
+											 tup_index, Tup>::type>::value)
+				f(tup_index);// type match
 		get_type_index<tup_index + 1, Type, Func, Tup>(f, t);
 	}
 

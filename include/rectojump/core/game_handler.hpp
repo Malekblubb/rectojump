@@ -148,31 +148,18 @@ namespace rj
 
 		// getters
 		auto& rendermgr() noexcept { return m_render; }
-
 		auto& gamewindow() noexcept { return m_game_window; }
-
 		auto& get_game() noexcept { return m_game; }
-
 		auto& editor() noexcept { return m_editor; }
-
 		auto& backgroundmgr() noexcept { return m_backgroundmgr; }
-
 		auto& mainmenu() noexcept { return m_mainmenu; }
-
 		auto& gamemenu() noexcept { return m_gamemenu; }
-
 		auto& datastore() noexcept { return m_datastore; }
-
 		auto& datamgr() noexcept { return m_datamgr; }
-
 		auto& levelmgr() noexcept { return m_lvmgr; }
-
 		auto& debuginfo() noexcept { return m_debug_info; }
-
 		auto& particlemgr() noexcept { return m_particlemgr; }
-
 		auto& popupmgr() noexcept { return m_popupmgr; }
-
 		auto& states() noexcept { return m_current_states; }
 
 		state current_renderable_state() noexcept
