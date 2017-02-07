@@ -1,5 +1,10 @@
-#ifndef ENTITY_HANDLER_INL
-#define ENTITY_HANDLER_INL
+//
+// Copyright (c) 2013-2017 Christoph Malek
+// See LICENSE for more information.
+//
+
+#ifndef RJ_GAME_ENTITY_HANDLER_INL
+#define RJ_GAME_ENTITY_HANDLER_INL
 
 #include "entity_handler.hpp"
 #include <rectojump/core/game_handler.hpp>
@@ -12,4 +17,4 @@ namespace rj
 	}
 }
 
-#endif// ENTITY_HANDLER_INL
+#endif// RJ_GAME_ENTITY_HANDLER_INL
