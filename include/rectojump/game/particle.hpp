@@ -40,17 +40,17 @@ namespace rj
 			  m_verts{sf::Points, num_particles},
 			  m_start_pos{position},
 			  m_interval{interval},
-			  m_exec_once{exec_once},
-			  m_color{particle_color}
+			  m_color{particle_color},
+			  m_exec_once{exec_once}
 		{
 			this->init_particles();
 		}
 
-        void update(dur duration)
+		void update(dur)
         {
 			if(m_need_destroy) return;
 
-			for(auto i{0}; i < m_particles.size(); ++i) {
+			for(std::size_t i{0}; i < m_particles.size(); ++i) {
                 m_verts[i].position += m_particles[i].velo;
 				if(m_particles[i].timer.timed_out() && !m_exec_once) {
                     m_verts[i].position = m_start_pos;
@@ -69,7 +69,7 @@ namespace rj
     private:
         void init_particles()
         {
-			for(auto i{0}; i < m_particles.size(); ++i) {
+			for(std::size_t i{0}; i < m_particles.size(); ++i) {
 				m_particles[i].velo = {mlk::rnd(-0.5f, 0.5f),
 									   mlk::rnd(-0.5f, 0.5f)};
                 m_particles[i].timer.restart(m_interval);
