@@ -63,7 +63,6 @@ namespace rj
         }
 
 		auto need_destroy() const noexcept { return m_need_destroy; }
-
 		auto num_particles() const noexcept { return m_particles.size(); }
 
     private:
@@ -72,10 +71,9 @@ namespace rj
 			for(std::size_t i{0}; i < m_particles.size(); ++i) {
 				m_particles[i].velo = {mlk::rnd(-0.5f, 0.5f),
 									   mlk::rnd(-0.5f, 0.5f)};
-                m_particles[i].timer.restart(m_interval);
-
                 m_verts[i].position = m_start_pos;
                 m_verts[i].color = m_color;
+				m_particles[i].timer.restart(m_interval);
             }
         }
 
