@@ -49,7 +49,7 @@ namespace rj
 			auto plr{factory::create<player>(vec2f{100.f, first_ent->top_out()},
 											 first_ent->top_out())};
 			m_entity_handler.create_entity(plr);
-			plr->on_spawn();
+			m_entity_handler.player()->on_spawn();
 		}
 
 		void update(dur duration) { m_entity_handler.update(duration); }

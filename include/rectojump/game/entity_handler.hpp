@@ -130,6 +130,8 @@ namespace rj
 			return m_entities.size() + this->is_player_registered();
 		}
 
+		auto& player() noexcept { return m_player; }
+
 	private:
 		void on_player_death();
 

@@ -29,6 +29,16 @@ namespace rj
 	static constexpr const char* state_as_string[(std::size_t)state::num]{
 		"main_menu", "game_menu", "game", "editor", "debug_info", "error"};
 
+	enum class game_state : std::size_t
+	{
+		none,
+		pre_running,
+		running,
+		paused,
+		ended,
+		num
+	};
+
 	// forward
 	class game_handler;
 	using rndr = render<game_handler>;

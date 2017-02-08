@@ -50,6 +50,7 @@ namespace rj
 		debug_info<game_handler, decltype(m_game)> m_debug_info;
 
 		mlk::ebitset<state, state::num> m_current_states;
+		game_state m_gamestate{game_state::none};
 
 	public:
 		game_handler(game_window& gw, error_handler& eh, data_manager& dm,
@@ -95,7 +96,13 @@ namespace rj
 			this->activate_state(state::game);
 		}
 
-		void exit_game_menu() { this->deactivate_state(state::game_menu); }
+		void exit_game_menu()
+		{
+			if(this->is_active(state::game) &&
+			   (m_gamestate == game_state::ended))
+				return;
+			this->deactivate_state(state::game_menu);
+		}
 
 		void load_level(const level_id& id)
 		{
@@ -118,9 +125,52 @@ namespace rj
 
 			// load level to gameworld
 			m_game.load_level(lv);
+
+			this->start_game();
 		}
 
-		void on_player_death() {}
+		// game handle
+		void start_game()
+		{
+			// m_gamestate = game_state::pre_running; // TODO: prerunning
+			m_gamestate = game_state::running;
+		}
+
+		void pause_game()
+		{
+			m_gamestate = game_state::paused;
+			this->activate_state(state::game_menu);
+		}
+
+		void unpause_game()
+		{
+			m_gamestate = game_state::running;
+			this->deactivate_state(state::game_menu);
+		}
+
+		void toggle_pause_game()
+		{
+			if(m_gamestate == game_state::ended) return;
+
+			if(m_gamestate == game_state::running) {
+				m_gamestate = game_state::paused;
+				this->pause_game();
+			}
+			else
+			{
+				m_gamestate = game_state::running;
+				this->unpause_game();
+			}
+		}
+
+		void end_game()
+		{
+			m_gamestate = game_state::ended;
+			this->activate_state(state::game_menu);
+			// TODO: do some end game stuff here
+		}
+
+		void on_player_death() { this->end_game(); }
 
 		void exit()
 		{
@@ -258,10 +308,7 @@ namespace rj
 
 			// game input
 			// pause / game_menu
-			auto pause_fnc{[this] {
-				if(!this->is_active(state::main_menu))
-					m_current_states.toggle(state::game_menu);
-			}};
+			auto pause_fnc{[this] { this->toggle_pause_game(); }};
 
 			inp::on_key_pressed(key::Escape) += pause_fnc;
 			inp::on_key_pressed(key::P) += pause_fnc;
