@@ -72,6 +72,11 @@ namespace rj
 			config::get().set_entry("editor_settings_expanded", b);
 		}
 
+		inline void set_main_menu_effects(bool b)
+		{
+			config::get().set_entry("main_menu_effects", b);
+		}
+
 		// getters
 		template <typename Vec_Type = vec2u,
 				  typename Val_Type = decltype(Vec_Type::x)>
@@ -122,6 +127,12 @@ namespace rj
 		{
 			return mlk::parse_bool(config::get().get_entry<std::string>(
 				"editor_settings_expanded"));
+		}
+
+		inline bool get_main_menu_effects()
+		{
+			return mlk::parse_bool(
+				config::get().get_entry<std::string>("main_menu_effects"));
 		}
 
 		// fixed settings

@@ -85,6 +85,7 @@ namespace rj
 			m_entrys.emplace_back("color_default_light", "#e3e3e3");
 			m_entrys.emplace_back("editor_scroll_step", "20");
 			m_entrys.emplace_back("editor_settings_expanded", "true");
+			m_entrys.emplace_back("main_menu_effects", "1");
 		}
 
 		void write_config() noexcept
