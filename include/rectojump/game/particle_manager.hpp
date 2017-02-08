@@ -47,8 +47,6 @@ namespace rj
 			for(auto& p : m_particle_groups) result += p.num_particles();
 			return result;
 		}
-
-	private:
 	};
 }
 
