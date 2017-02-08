@@ -135,14 +135,13 @@ namespace rj
 
 			this->add_title_line("States");
 			this->add_line("Active (render): %%", [this] {
-				return std::string{
-					state_as_string[(int)m_gamehandler
-										.current_renderable_state()]};
+				return std::string{state_as_string[int(
+					m_gamehandler.current_renderable_state())]};
 			});
 			this->add_line("Active (all):    %%", [this] {
 				std::string active_states;
-				for(std::size_t i{0}; i < (std::size_t)state::num; ++i) {
-					if(m_gamehandler.states() & (rj::state)i)
+				for(std::size_t i{0}; i < std::size_t(state::num); ++i) {
+					if(m_gamehandler.states() & rj::state(i))
 						active_states += std::string{state_as_string[i]} + " ";
 				}
 				return active_states;
