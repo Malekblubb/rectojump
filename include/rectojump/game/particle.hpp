@@ -14,13 +14,8 @@
 
 namespace rj
 {
-    class particle
+	struct particle
     {
-    public:
-		//        particle() = delete;
-		//        particle(mlk::ullong interval) :
-		//            timer{interval}
-		//        { }
         vec2f velo;
         mlk::tm::simple_timer timer{1000u};
     };
