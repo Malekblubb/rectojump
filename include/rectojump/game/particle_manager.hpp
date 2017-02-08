@@ -23,9 +23,6 @@ namespace rj
 		particle_manager(Game_Handler& gh)
 			: m_gamehandler{gh}, m_render{gh.rendermgr()}
 		{
-			//			this->create_particles(15000, vec2f{200.f, 200.f},
-			//2000,
-			// true);
 		}
 
 		template <typename... Args>
