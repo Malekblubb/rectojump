@@ -71,7 +71,7 @@ namespace rj
 
 		void on_collision(float at) noexcept { m_ground = at; }
 
-		void on_collision_end() noexcept { m_ground = m_start_pos.y; }
+		void on_collision_end() noexcept { m_ground -= m_jump_velo; }
 
 		auto is_alive() const noexcept { return m_alive; }
 

@@ -144,6 +144,8 @@ namespace rj
 		inline sf::Color text_color() { return to_rgb("#373737"); }
 		inline std::string version() { return "0.0.0"; }
 		inline constexpr float game_warmup_time() { return 1500.f; }
+		inline constexpr float player_start_x() { return 100.f; }
+		inline constexpr float player_start_y() { return 500.f; }
 	}
 }
 
