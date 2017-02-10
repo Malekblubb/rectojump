@@ -51,6 +51,7 @@ namespace rj
 
 		mlk::ebitset<state, state::num> m_current_states;
 		game_state m_gamestate{game_state::none};
+		level_id m_current_loaded_level{level_name_null};
 
 	public:
 		game_handler(game_window& gw, error_handler& eh, data_manager& dm,
@@ -126,6 +127,7 @@ namespace rj
 			// load level to gameworld
 			m_game.load_level(lv);
 
+			m_current_loaded_level = id;
 			this->start_game();
 		}
 
@@ -168,6 +170,18 @@ namespace rj
 			m_gamestate = game_state::ended;
 			this->activate_state(state::game_menu);
 			// TODO: do some end game stuff here
+		}
+
+		void restart_level()
+		{
+			//			m_gamestate = game_state::pre_running;
+			m_gamestate = game_state::running;
+			this->deactivate_state(state::game_menu);
+
+			// load level again
+			this->load_level(m_current_loaded_level);
+
+			// reset player items etc...
 		}
 
 		void on_player_death() { this->end_game(); }

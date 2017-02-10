@@ -79,10 +79,12 @@ namespace rj
 								m_gamehandler.switch_to_main_menu();
 							},
 							start + m_btn_height);
-
+			this->add_entry("btn_restart", "Restart Level",
+							[this] { m_gamehandler.restart_level(); },
+							start + m_btn_height * 2);
 			this->add_entry("btn_exit", "Exit Game",
 							[this] { m_gamehandler.exit(); },
-							start + (m_btn_height + spacing) * 2);
+							start + (m_btn_height + spacing) * 3);
 		}
 
 		template <typename Fun>
