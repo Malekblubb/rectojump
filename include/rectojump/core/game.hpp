@@ -20,16 +20,59 @@ namespace rj
 	{
 		Game_Handler& m_gamehandler;
 		level_manager* m_lvmgr{nullptr};
+		rndr& m_render;
 
 		// gameworld
 		world<Game_Handler> m_world;
 
+		sf::Text m_warmup_text;
+		mlk::hrs_time_pnt m_warmup_start;
+
 	public:
-		game(Game_Handler& gh) : m_gamehandler{gh}, m_world{gh} {}
+		game(Game_Handler& gh)
+			: m_gamehandler{gh},
+			  m_render{gh.rendermgr()},
+			  m_world{gh},
+			  m_warmup_text{"Prepare...", gh.datastore().template get<sf::Font>(
+											  settings::text_font())}
+		{
+			m_warmup_text.setOrigin(
+				vec2f{m_warmup_text.getGlobalBounds().width,
+					  m_warmup_text.getGlobalBounds().height} /
+				2.f);
+			auto wsize{settings::get_window_size<vec2f>()};
+			m_warmup_text.setPosition({wsize.x / 2.f, 20.f});
+		}
 
-		void update(dur duration) { m_world.update(duration); }
+		void on_game_start()
+		{
+			m_warmup_start = mlk::tm::time_pnt();
+			//
+		}
 
-		void render() { m_world.render(); }
+		void update(dur duration)
+		{
+			if(m_gamehandler.gamestate() == game_state::running)
+				m_world.update(duration);
+
+			if(m_gamehandler.gamestate() == game_state::pre_running) {
+				auto remaining_time{
+					settings::game_warmup_time() -
+					mlk::tm::duration_to_now_as<float>(m_warmup_start)};
+				m_warmup_text.setString(std::string{"Prepare...\n"} +
+										std::to_string(remaining_time));
+
+				if(remaining_time < 0.f) {
+					m_gamehandler.set_gamestate(game_state::running);
+				}
+			}
+		}
+
+		void render()
+		{
+			m_world.render();
+			m_render(m_warmup_text);
+		}
 
 		void load_level(const level& lv)
 		{

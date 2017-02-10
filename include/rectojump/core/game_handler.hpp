@@ -134,8 +134,8 @@ namespace rj
 		// game handle
 		void start_game()
 		{
-			// m_gamestate = game_state::pre_running; // TODO: prerunning
-			m_gamestate = game_state::running;
+			m_gamestate = game_state::pre_running;
+			m_game.on_game_start();
 		}
 
 		void pause_game()
@@ -146,13 +146,16 @@ namespace rj
 
 		void unpause_game()
 		{
+			if(m_gamestate == game_state::pre_running) return;
 			m_gamestate = game_state::running;
 			this->deactivate_state(state::game_menu);
 		}
 
 		void toggle_pause_game()
 		{
-			if(m_gamestate == game_state::ended) return;
+			if(m_gamestate == game_state::ended ||
+			   m_gamestate == game_state::pre_running)
+				return;
 
 			if(m_gamestate == game_state::running) {
 				m_gamestate = game_state::paused;
@@ -174,8 +177,7 @@ namespace rj
 
 		void restart_level()
 		{
-			//			m_gamestate = game_state::pre_running;
-			m_gamestate = game_state::running;
+			this->start_game();
 			this->deactivate_state(state::game_menu);
 
 			// load level again
@@ -212,6 +214,8 @@ namespace rj
 				std::forward<Input_Type_Args>(keys_btns)...};
 		}
 
+		void set_gamestate(game_state gs) noexcept { m_gamestate = gs; }
+
 		// getters
 		auto& rendermgr() noexcept { return m_render; }
 		auto& gamewindow() noexcept { return m_game_window; }
@@ -227,6 +231,7 @@ namespace rj
 		auto& particlemgr() noexcept { return m_particlemgr; }
 		auto& popupmgr() noexcept { return m_popupmgr; }
 		auto& states() noexcept { return m_current_states; }
+		auto& gamestate() noexcept { return m_gamestate; }
 
 		state current_renderable_state() noexcept
 		{

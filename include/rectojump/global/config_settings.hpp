@@ -137,18 +137,13 @@ namespace rj
 
 		// fixed settings
 		std::string data_path() { return "data/"; }
-
 		std::string level_path() { return "levels/"; }
-
 		std::string rj_font() { return "Fipps-Regular.otf"; }
-
 		std::string text_font() { return "Ubuntu-R.ttf"; }
-
 		mlk::uint text_size() { return 15; }
-
 		sf::Color text_color() { return to_rgb("#373737"); }
-
 		inline std::string version() { return "0.0.0"; }
+		inline constexpr float game_warmup_time() { return 1500.f; }
 	}
 }
 
