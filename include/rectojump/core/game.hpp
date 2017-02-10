@@ -71,7 +71,8 @@ namespace rj
 		void render()
 		{
 			m_world.render();
-			m_render(m_warmup_text);
+			if(m_gamehandler.gamestate() == game_state::pre_running)
+				m_render(m_warmup_text);
 		}
 
 		void load_level(const level& lv)
