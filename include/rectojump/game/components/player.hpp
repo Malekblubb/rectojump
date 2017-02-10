@@ -18,7 +18,7 @@ namespace rj
 		static constexpr float m_jump_velo{-1.7f};
 		static constexpr float m_width{40.f}, m_height{40.f};
 		const vec2f m_start_pos;
-		float m_ground;
+		float m_ground{0.f};
 
 		// jumping
 		bool m_need_jump{false};
@@ -32,10 +32,9 @@ namespace rj
 		float m_rotated{0.f};
 
 	public:
-		player(const vec2f& start_pos, float ground = 600.f)
+		player(const vec2f& start_pos)
 			: entity_rect{start_pos, {m_width, m_height}, {0.f, 0.f}},
-			  m_start_pos{start_pos},
-			  m_ground{ground}
+			  m_start_pos{start_pos}
 		{
 		}
 
@@ -47,7 +46,13 @@ namespace rj
 			inp::on_key_pressed(key::Space) += [this] { m_need_jump = true; };
 		}
 
-		void on_spawn() noexcept { m_alive = true; }
+		void on_spawn(float ground) noexcept
+		{
+			m_alive = true;
+			m_ground = ground;
+			this->rotate_end();
+			this->jump_end();
+		}
 
 		void on_kill() noexcept { m_alive = false; }
 
@@ -73,7 +78,7 @@ namespace rj
 	private:
 		bool is_on_ground() const noexcept
 		{
-			return this->bottom_out() == m_ground;
+			return compare_f(this->bottom_out(), m_ground);
 		}
 
 		// jumping

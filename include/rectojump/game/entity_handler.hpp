@@ -132,6 +132,11 @@ namespace rj
 
 		auto& player() noexcept { return m_player; }
 
+		bool is_player_registered() const noexcept
+		{
+			return m_player != nullptr;
+		}
+
 	private:
 		void on_player_death();
 
@@ -193,11 +198,6 @@ namespace rj
 				return false;
 			}
 			return true;
-		}
-
-		bool is_player_registered() const noexcept
-		{
-			return m_player != nullptr;
 		}
 
 		// create the entities

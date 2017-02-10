@@ -14,6 +14,8 @@
 
 namespace rj
 {
+	inline bool compare_f(float x, float y) { return !(x < y || x > y); }
+
 	template <typename T>
 	T round_to(T value, T to)
 	{

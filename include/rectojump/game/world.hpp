@@ -43,13 +43,14 @@ namespace rj
 
 		void c_player()
 		{
-			// TODO: check this
-			auto first_ent{
-				std::static_pointer_cast<platform>(*m_entity_handler.begin())};
-			auto plr{factory::create<player>(vec2f{100.f, first_ent->top_out()},
-											 first_ent->top_out())};
-			m_entity_handler.create_entity(plr);
-			m_entity_handler.player()->on_spawn();
+			auto plr_ground{
+				std::static_pointer_cast<platform>(*m_entity_handler.begin())
+					->top_out()};
+			if(!m_entity_handler.is_player_registered()) {
+				auto plr{factory::create<player>(vec2f{100.f, plr_ground})};
+				m_entity_handler.create_entity(plr);
+			}
+			m_entity_handler.player()->on_spawn(plr_ground);
 		}
 
 		void update(dur duration) { m_entity_handler.update(duration); }
