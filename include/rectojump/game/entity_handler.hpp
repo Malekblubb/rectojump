@@ -72,15 +72,38 @@ namespace rj
 			if(this->is_player_registered()) m_player->update(duration);
 
 			// update other
-			for(auto& a : m_entities) {
+			bool collided{false};
+			for(auto iter{m_entities.begin()}; iter < m_entities.end(); ++iter)
+			{
+				auto a{*iter};
 				a->update(duration);
-				if(a->right_out() <= m_despawn_zone) a->destroy();
+
+				// check collision
+				if(this->is_player_registered()) {
+					if(is_colliding(*m_player, *a)) {
+						collided = true;
+
+						if(m_player->bottom_out() - 2 <= a->top_out()) {
+							m_player->on_collision(a->top_out());
+							m_player->render_object().setFillColor({0, 255, 0});
+						}
+						else
+						{
+							this->try_player_death();
+						}
+
+						if(a->has_propertie(entity_propertie::death)) {
+							// player touched death entity
+							this->try_player_death();
+						}
+					}
+				}
+				if(a->right_out() <= m_despawn_zone) {
+					a->destroy();
+					m_entities.erase(iter);
+				}
 			}
-
-			this->check_collision();
-
-			// erase flagged entities
-			this->erase_destroyed();
+			if(!collided) m_player->on_collision_end();
 		}
 
 		void render()
@@ -167,34 +190,6 @@ namespace rj
 			// on kill
 			m_player->on_kill();
 			this->on_player_death();
-		}
-
-		void check_collision() noexcept
-		{
-			if(!this->is_player_registered()) return;
-
-			bool collided{false};
-
-			for(auto& a : m_entities) {
-				if(is_colliding(*m_player, *a)) {
-					collided = true;
-
-					if(m_player->bottom_out() - 2 <= a->top_out()) {
-						m_player->on_collision(a->top_out());
-						m_player->render_object().setFillColor({0, 255, 0});
-					}
-					else
-					{
-						this->try_player_death();
-					}
-
-					if(a->has_propertie(entity_propertie::death)) {
-						// player touched death entity
-						this->try_player_death();
-					}
-				}
-			}
-			if(!collided) m_player->on_collision_end();
 		}
 
 		// checking the entities
