@@ -102,8 +102,7 @@ namespace rj
 						}
 					else
 					{
-						auto a{this->create_entity<platform>(
-							pos, vec2f{48.f, 48.f})};
+						auto a{this->create_entity<triangle>(pos)};
 						a->render_object().setTexture(
 							&m_datastore.template get<sf::Texture>(
 								"editor_item_triangle.png"));

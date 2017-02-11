@@ -15,13 +15,14 @@ namespace rj
 	class triangle final : public basic_entity<sf::CircleShape>
 	{
 	public:
-		triangle(const vec2f& pos, float radius = 10.f,
-				 const vec2f& velocity = {-0.3f, 0.f})
+		triangle(const vec2f& pos, float radius = 24.f,
+				 const vec2f& velocity = {-0.4f, 0.f})
 			: basic_entity{pos, velocity}
 		{
 			m_render_object.setPointCount(3);
 			m_render_object.setRadius(radius);
-			m_render_object.setOrigin(vec2f{radius, radius} / 2.f);
+			m_render_object.setOrigin(vec2f{radius, radius});
+			m_render_object.setPosition({pos.x, pos.y + 10.f});
 			this->set_propertie(entity_propertie::death);
 		}
 
