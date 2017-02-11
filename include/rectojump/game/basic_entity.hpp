@@ -45,6 +45,16 @@ namespace rj
 			(*m_render)(m_render_object);
 		}
 
+		void activate_outlines(bool on)
+		{
+			if(on) {
+				m_render_object.setOutlineThickness(1.f);
+				m_render_object.setOutlineColor(sf::Color::Red);
+			}
+			else
+				m_render_object.setOutlineThickness(0.f);
+		}
+
 		T& render_object() noexcept { return m_render_object; }
 
 		const T& get_render_object() const noexcept { return m_render_object; }
@@ -68,13 +78,16 @@ namespace rj
 		virtual float bottom_out() const noexcept override = 0;
 		virtual float left_out() const noexcept override = 0;
 		virtual float right_out() const noexcept override = 0;
+		sf::FloatRect getGlobalBounds() const override
+		{
+			return m_render_object.getGlobalBounds();
+		}
 	};
 
 	template <>
 	inline const vec2f basic_entity<sf::CircleShape>::size() const noexcept
 	{
-		return {m_render_object.getRadius() * 2.f,
-				m_render_object.getRadius() * 2.f};
+		return {m_render_object.getRadius(), m_render_object.getRadius()};
 	}
 }
 

@@ -319,8 +319,11 @@ namespace rj
 			inp::on_keys_pressed(key::LShift, key::LControl, key::T) +=
 				[this] { m_game_window.toggle_titlebar(); };
 
-			inp::on_key_pressed(key::F3) +=
-				[this] { this->toggle_state(state::debug_info); };
+			inp::on_key_pressed(key::F3) += [this] {
+				this->toggle_state(state::debug_info);
+				m_game.get_world().entityhandler().set_outlines_dbg(
+					this->is_active(state::debug_info));
+			};
 
 			inp::on_keys_pressed(key::LShift, key::LControl, key::Q) +=
 				[this] { m_game_window.stop(); };

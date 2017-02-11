@@ -137,6 +137,21 @@ namespace rj
 			return m_player != nullptr;
 		}
 
+		void set_outlines_dbg(bool on)
+		{
+			for(auto& e : m_entities) {
+				if(e->figure() == entity_figure::f_rectangle) {
+					auto ptr{std::static_pointer_cast<platform>(e)};
+					ptr->activate_outlines(on);
+				}
+				else if(e->figure() == entity_figure::f_triangle)
+				{
+					auto ptr{std::static_pointer_cast<triangle>(e)};
+					ptr->activate_outlines(on);
+				}
+			}
+		}
+
 	private:
 		void on_player_death();
 

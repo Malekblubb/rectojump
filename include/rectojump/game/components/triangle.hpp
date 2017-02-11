@@ -28,22 +28,22 @@ namespace rj
 
 		float top_out() const noexcept override
 		{
-			return this->pos_y() - m_render_object.getRadius();
+			return m_render_object.getGlobalBounds().top;
 		}
 
 		float bottom_out() const noexcept override
 		{
-			return this->pos_y() + m_render_object.getRadius();
+			return this->top_out() + m_render_object.getRadius();
 		}
 
 		float left_out() const noexcept override
 		{
-			return this->pos_x() - m_render_object.getRadius();
+			return m_render_object.getGlobalBounds().left;
 		}
 
 		float right_out() const noexcept override
 		{
-			return this->pos_x() + m_render_object.getRadius();
+			return this->left_out() + m_render_object.getRadius();
 		}
 
 		void update(dur duration) override

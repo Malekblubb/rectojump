@@ -23,6 +23,7 @@ namespace rj
 		bool m_destroyed{false};
 		eprops m_props;
 		etypes m_types;
+		entity_figure m_figure;
 
 		// handler functions
 		void handler_register(rndr* r, int id) noexcept
@@ -53,8 +54,8 @@ namespace rj
 		}
 
 		void set_propertie(eprops::type prop) noexcept { m_props |= prop; }
-
 		void set_type(etypes::type type) noexcept { m_types |= type; }
+		void set_figure(entity_figure f) noexcept { m_figure = f; }
 
 		bool has_propertie(eprops::type prop) const noexcept
 		{
@@ -66,6 +67,8 @@ namespace rj
 			return m_types & type;
 		}
 
+		entity_figure figure() const noexcept { return m_figure; }
+
 		// position, collision
 		virtual const vec2f size() const noexcept = 0;
 		virtual const vec2f& pos() const noexcept = 0;
@@ -75,6 +78,7 @@ namespace rj
 		virtual float bottom_out() const noexcept = 0;
 		virtual float left_out() const noexcept = 0;
 		virtual float right_out() const noexcept = 0;
+		virtual sf::FloatRect getGlobalBounds() const = 0;
 	};
 }
 

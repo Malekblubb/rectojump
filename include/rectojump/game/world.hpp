@@ -84,6 +84,7 @@ namespace rj
 						a->render_object().setTexture(
 							&m_datastore.template get<sf::Texture>(
 								"editor_item_rect.png"));
+						a->set_figure(static_cast<entity_figure>(ef));
 					}
 				}
 
@@ -107,6 +108,7 @@ namespace rj
 							&m_datastore.template get<sf::Texture>(
 								"editor_item_triangle.png"));
 						a->set_propertie(entity_propertie::death);
+						a->set_figure(static_cast<entity_figure>(ef));
 					}
 				}
 			}
