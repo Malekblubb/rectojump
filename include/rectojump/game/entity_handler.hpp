@@ -98,10 +98,8 @@ namespace rj
 						}
 					}
 				}
-				if(a->right_out() <= m_despawn_zone) {
-					a->destroy();
+				if(a->right_out() <= m_despawn_zone || a->m_destroyed)
 					m_entities.erase(iter);
-				}
 			}
 			if(!collided) m_player->on_collision_end();
 		}
