@@ -210,7 +210,7 @@ namespace rj
 				if(mlk::stl_string::is_numeric(point_count)) {
 					if((point_count.length() > 3) ||
 					   (std::stoi(point_count) >
-						(int)std::numeric_limits<char>::max()))
+						int(std::numeric_limits<char>::max())))
 					{
 						m_gamehandler.popupmgr()
 							.template create_popup<popup_type::error>(
