@@ -331,9 +331,13 @@ namespace rj
 			// game input
 			// pause / game_menu
 			auto pause_fnc{[this] { this->toggle_pause_game(); }};
-
 			inp::on_key_pressed(key::Escape) += pause_fnc;
 			inp::on_key_pressed(key::P) += pause_fnc;
+			inp::on_key_pressed(key::Space) += [this] {
+				if(this->is_active(state::game_menu) &&
+				   m_gamestate == game_state::ended)
+					this->restart_level();
+			};
 
 			// testing purpose
 			inp::on_key_pressed(key::D) += [this] {
