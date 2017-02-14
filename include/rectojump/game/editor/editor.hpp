@@ -134,11 +134,19 @@ namespace rj
 			level_packer<packer_mode::pack> lv_packer{lv_music, lv_bg, lv_data,
 													  lv_info};
 
-			m_levelmgr.save_level(lv_packer, level_name)
-				? mlk::lout("rj::editor") << "Level '" << level_name
-										  << "' successfully saved!"
-				: mlk::lerr(errors::io_create_file) << "(levelname"
-													<< level_name << ")";
+			if(m_levelmgr.save_level(lv_packer, level_name)) {
+				mlk::lout("rj::editor") << "Level '" << level_name
+										<< "' successfully saved!";
+				m_gamehandler.popupmgr().template create_popup(
+					"Successfully saved!");
+			}
+			else
+			{
+				mlk::lerr(errors::io_create_file) << "(levelname" << level_name
+												  << ")";
+				m_gamehandler.popupmgr()
+					.template create_popup<popup_type::error>("Save failed!");
+			}
 		}
 
 		void handle_load(const level_id& level_name)
