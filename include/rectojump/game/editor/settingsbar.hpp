@@ -203,6 +203,18 @@ namespace rj
 											m_font, "Level Creator"});
 			this->prepare_textbox(m_textboxes["tb_lvinf_creator"]);
 
+			// music path
+			m_textboxes.emplace(
+				"tb_lvmusic",
+				ui::textbox{
+					{tb_size.x - btn_size.x - 10.f, tb_size.y},
+					vec2f{105.f,
+						  m_textboxes["tb_lvname"].getGlobalBounds().top -
+							  40.f},
+					m_font,
+					"Music path"});
+			this->prepare_textbox(m_textboxes["tb_lvmusic"]);
+
 			// backgroundcolors
 			auto spacing{10.f};
 			auto bg_return_key_func{[this] {
@@ -273,9 +285,16 @@ namespace rj
 				[this] { m_gamehandler.switch_to_main_menu(); },
 				vec2f{200.f, btn_size.y},
 				vec2f{shape_size.x / 2.f,
-					  m_textboxes["tb_lvname"].getGlobalBounds().top - 30.f})};
+					  m_textboxes["tb_lvname"].getGlobalBounds().top - 100.f})};
 			this->prepare_button(*go_back_btn);
 			go_back_btn->setText("Back to Main Menu");
+
+			auto load_music_btn{m_buttons.add_button_event<button_item>(
+				[this] { /*Music load button: TODO: impl*/ }, btn_size,
+				vec2f{shape_size.x / 2.f + 60.f,
+					  m_textboxes["tb_lvname"].getGlobalBounds().top - 40.f})};
+			this->prepare_button(*load_music_btn);
+			load_music_btn->setText("Load");
 
 			auto save_btn{m_buttons.add_button_event<button_item>(
 				[this] {
