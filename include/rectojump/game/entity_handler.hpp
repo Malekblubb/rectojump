@@ -101,7 +101,8 @@ namespace rj
 				if(a->right_out() <= m_despawn_zone || a->m_destroyed)
 					m_entities.erase(iter);
 			}
-			if(!collided) m_player->on_collision_end();
+			if(!collided && this->is_player_registered())
+				m_player->on_collision_end();
 		}
 
 		void render()
