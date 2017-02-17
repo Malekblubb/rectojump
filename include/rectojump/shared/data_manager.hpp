@@ -102,10 +102,13 @@ namespace rj
 		}
 
 		// load:	gets AND loads the data to manager
-		mlk::data_packet load_raw(const data_id& id)
+		mlk::data_packet* load_raw(const data_id& id)
 		{
 			this->load_raw_impl(id, this->make_path(id));
-			return m_data[id];
+			if(this->exists_id(id))
+				return &m_data[id];
+			else
+				return nullptr;
 		}
 
 		template <typename T>
@@ -217,9 +220,14 @@ namespace rj
 												<< "' already loaded";
 				return;
 			}
-			m_fileh.reopen(path, std::ios::in);
-			m_data[id] = m_fileh.read_all();
-			mlk::lout("rj::data_manager") << "loaded data '" << path << "'";
+
+			if(m_fileh.reopen(path, std::ios::in)) {
+				m_data[id] = m_fileh.read_all();
+				mlk::lout("rj::data_manager") << "loaded data '" << path << "'";
+			}
+			else
+				mlk::lerr()["rj::data_manager"] << "file with given path '"
+												<< path << "' not found";
 		}
 
 		template <typename T>
