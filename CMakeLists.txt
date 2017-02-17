@@ -8,7 +8,7 @@ include_directories("./include" "./external/mlk/include")
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 
 # set compiler flags
-set(CMAKE_CXX_FLAGS "-std=c++1z -O3 -L/usr/local/lib")
+set(CMAKE_CXX_FLAGS "-std=c++1z -O3")
 set(CMAKE_CXX_COMPILER "clang++")
 
 

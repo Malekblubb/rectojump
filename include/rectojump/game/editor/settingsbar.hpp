@@ -53,7 +53,7 @@ namespace rj
 				  m_gamehandler.datamgr().template get_as<sf::Texture>(
 					  "arrow.png")},
 			  m_font{m_gamehandler.datamgr().template get_as<sf::Font>(
-				  "Fipps-Regular.otf")}
+				  settings::text_font())}
 		{
 			this->init();
 		}
@@ -317,7 +317,7 @@ namespace rj
 		{
 			btn.setOrigin(btn.getSize() / 2.f);
 			btn.setFont(m_font);
-			btn.setFontSize(12);
+			btn.setFontSize(13);
 			btn.setFontColor(settings::get_color_light());
 		}
 
@@ -325,7 +325,7 @@ namespace rj
 		{
 			tb.setOrigin(tb.getSize() / 2.f);
 			tb.setTextColor(settings::get_color_light());
-			tb.setTextSize(12);
+			tb.setTextSize(13);
 			tb.setOutlineThickness(2.f);
 			tb.setOutlineColor(settings::get_color_default_dark());
 			tb.setFillColor({0, 0, 0, 0});
