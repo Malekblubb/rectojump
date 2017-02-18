@@ -104,7 +104,10 @@ namespace rj
 			if(this->is_active(state::game) &&
 			   (m_gamestate == game_state::ended))
 				return;
+
 			this->deactivate_state(state::game_menu);
+
+			if(m_gamestate == game_state::paused) this->unpause_game();
 		}
 
 		void load_level_scene_play(const level_id& id)

@@ -59,11 +59,20 @@ namespace rj
 			m_need_start_music = true;
 		}
 
-		void on_game_paused() { m_playback.pause(); }
+		void on_game_paused()
+		{
+			if(m_lv_has_music) m_playback.pause();
+		}
 
-		void on_game_unpaused() { m_playback.play(); }
+		void on_game_unpaused()
+		{
+			if(m_lv_has_music) m_playback.play();
+		}
 
-		void on_game_end() { m_playback.stop(); }
+		void on_game_end()
+		{
+			if(m_lv_has_music) m_playback.stop();
+		}
 
 		void update(dur duration)
 		{
