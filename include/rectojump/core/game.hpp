@@ -58,6 +58,10 @@ namespace rj
 			m_need_start_music = true;
 		}
 
+		void on_game_paused() { m_playback.pause(); }
+
+		void on_game_unpaused() { m_playback.play(); }
+
 		void on_game_end() { m_playback.stop(); }
 
 		void update(dur duration)
@@ -67,6 +71,7 @@ namespace rj
 				if(m_need_start_music) {
 					m_need_start_music = false;
 					m_playback.setVolume(100.f);
+					m_playback.setLoop(true);
 					m_playback.play();
 				}
 			}

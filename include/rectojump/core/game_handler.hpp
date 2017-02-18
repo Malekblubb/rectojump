@@ -127,8 +127,7 @@ namespace rj
 			bgshape.set_gradient_points(lv_bg.pointcount());
 
 			// load level to gameworld
-			m_game.load_level(lv, m_gamestate == game_state::paused ||
-									  m_gamestate == game_state::ended);
+			m_game.load_level(lv, m_gamestate == game_state::ended);
 
 			m_current_loaded_level = id;
 			this->start_game();
@@ -145,6 +144,8 @@ namespace rj
 		{
 			m_gamestate = game_state::paused;
 			this->activate_state(state::game_menu);
+
+			m_game.on_game_paused();
 		}
 
 		void unpause_game()
@@ -152,6 +153,8 @@ namespace rj
 			if(m_gamestate == game_state::pre_running) return;
 			m_gamestate = game_state::running;
 			this->deactivate_state(state::game_menu);
+
+			m_game.on_game_unpaused();
 		}
 
 		void toggle_pause_game()
@@ -181,6 +184,8 @@ namespace rj
 
 		void restart_level()
 		{
+			m_gamestate = game_state::ended;
+
 			// load level again
 			this->load_level(m_current_loaded_level);
 
