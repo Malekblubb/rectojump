@@ -20,6 +20,8 @@ int main()
 	mlk::lout("main", true) << "rectojump version " << rj::settings::version()
 							<< " started";
 
+	auto start_tm{mlk::tm::time_pnt()};
+
 	// init settings/config
 	rj::settings::init();
 
@@ -37,6 +39,9 @@ int main()
 	rj::game_window gw{rj::settings::get_window_size(),
 					   rj::settings::get_fullscreen()};
 	rj::game_handler gh{gw, eh, dm, lm};
+
+	auto init_time{mlk::tm::duration_to_now_as<float>(start_tm)};
+	mlk::lout("main") << "full init took: " << init_time << "ms";
 
 	gw.start();
 	return 0;
