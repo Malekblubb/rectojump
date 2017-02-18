@@ -13,6 +13,8 @@
 #include <rectojump/global/common.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
 
+#include <SFML/Audio.hpp>
+
 namespace rj
 {
 	template <typename Game_Handler>
@@ -25,6 +27,12 @@ namespace rj
 		// gameworld
 		world<Game_Handler> m_world;
 
+		// music
+		mlk::data_packet m_playback_buffer;
+		sf::Music m_playback;
+		bool m_need_start_music{false};
+
+		// warmup text
 		sf::Text m_warmup_text;
 		mlk::hrs_time_pnt m_warmup_start;
 
@@ -47,13 +55,21 @@ namespace rj
 		void on_game_start()
 		{
 			m_warmup_start = mlk::tm::time_pnt();
-			//
+			m_need_start_music = true;
 		}
+
+		void on_game_end() { m_playback.stop(); }
 
 		void update(dur duration)
 		{
-			if(m_gamehandler.gamestate() == game_state::running)
+			if(m_gamehandler.gamestate() == game_state::running) {
 				m_world.update(duration);
+				if(m_need_start_music) {
+					m_need_start_music = false;
+					m_playback.setVolume(100.f);
+					m_playback.play();
+				}
+			}
 
 			if(m_gamehandler.gamestate() == game_state::pre_running) {
 				auto remaining_time{
@@ -75,13 +91,26 @@ namespace rj
 				m_render(m_warmup_text);
 		}
 
-		void load_level(const level& lv)
+		void load_level(const level& lv, bool restart)
 		{
 			if(m_lvmgr == nullptr) {
 				mlk::lerr(errors::cl_nullptr_access)["rj::game"];
 				return;
 			}
 
+			// set music (if available)
+			if(!restart && (lv.music.size() > header_music.size())) {
+				m_playback_buffer = {std::begin(lv.music) + header_music.size(),
+									 std::end(lv.music)};
+				m_playback.openFromMemory(m_playback_buffer.data(),
+										  m_playback_buffer.size())
+					? mlk::lout("rj::game") << "loaded music data ("
+											<< m_playback_buffer.size()
+											<< " bytes)"
+					: mlk::lerr()["rj::game"] << "could not load music data";
+			}
+
+			// load level to world
 			m_world.template load_level<false>(lv.entities);
 		}
 

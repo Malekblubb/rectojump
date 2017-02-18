@@ -290,7 +290,18 @@ namespace rj
 			go_back_btn->setText("Back to Main Menu");
 
 			auto load_music_btn{m_buttons.add_button_event<button_item>(
-				[this] { /*Music load button: TODO: impl*/ }, btn_size,
+				[this] {
+					if(m_editor.load_musicfile(
+						   m_textboxes["tb_lvmusic"].getText()))
+						m_editor.gamehandler().popupmgr().create_popup(
+							"Music file successfully loaded!");
+					else
+						m_editor.gamehandler()
+							.popupmgr()
+							.template create_popup<popup_type::error>(
+								"Music file not found!");
+				},
+				btn_size,
 				vec2f{shape_size.x / 2.f + 60.f,
 					  m_textboxes["tb_lvname"].getGlobalBounds().top - 40.f})};
 			this->prepare_button(*load_music_btn);

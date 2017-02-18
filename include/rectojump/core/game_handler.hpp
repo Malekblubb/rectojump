@@ -86,8 +86,10 @@ namespace rj
 		void switch_to_main_menu()
 		{
 			this->deactivate_state(this->current_renderable_state());
-			if(this->is_active(state::game_menu))
+			if(this->is_active(state::game_menu)) {
+				this->end_game();
 				this->deactivate_state(state::game_menu);
+			}
 			this->activate_state(state::main_menu);
 		}
 
@@ -125,7 +127,8 @@ namespace rj
 			bgshape.set_gradient_points(lv_bg.pointcount());
 
 			// load level to gameworld
-			m_game.load_level(lv);
+			m_game.load_level(lv, m_gamestate == game_state::paused ||
+									  m_gamestate == game_state::ended);
 
 			m_current_loaded_level = id;
 			this->start_game();
@@ -172,17 +175,18 @@ namespace rj
 		{
 			m_gamestate = game_state::ended;
 			this->activate_state(state::game_menu);
-			// TODO: do some end game stuff here
+
+			m_game.on_game_end();
 		}
 
 		void restart_level()
 		{
-			this->start_game();
-			this->deactivate_state(state::game_menu);
-
 			// load level again
 			this->load_level(m_current_loaded_level);
 
+			// states
+			this->start_game();
+			this->deactivate_state(state::game_menu);
 			// reset player items etc...
 		}
 

@@ -43,6 +43,7 @@ namespace rj
 
 		bool m_is_level_loaded{false};
 		level_id m_current_loaded_id{level_name_null};
+		mlk::data_packet* m_musicdata{nullptr};
 
 	public:
 		editor(Game_Handler& gh)
@@ -109,6 +110,12 @@ namespace rj
 			//			m_background.reset();
 		}
 
+		bool load_musicfile(const std::string& path)
+		{
+			m_musicdata = m_gamehandler.datamgr().load_raw(path);
+			return m_musicdata != nullptr;
+		}
+
 		void handle_save(const level_id& level_name)
 		{
 			if(!this->check_level_name(level_name)) return;
@@ -130,7 +137,8 @@ namespace rj
 			level_info lv_info{level_name,
 							   m_settingsbar.get_tb_lvcreator_text(),
 							   mlk::tm::time_str()};
-			music_data lv_music{'M', 'U', 'S', 'I', 'C'};
+			music_data lv_music{header_music};
+			if(m_musicdata != nullptr) mlk::cnt::append(*m_musicdata, lv_music);
 			level_packer<packer_mode::pack> lv_packer{lv_music, lv_bg, lv_data,
 													  lv_info};
 
