@@ -31,6 +31,7 @@ namespace rj
 		mlk::data_packet m_playback_buffer;
 		sf::Music m_playback;
 		bool m_need_start_music{false};
+		bool m_lv_has_music{false};
 
 		// warmup text
 		sf::Text m_warmup_text;
@@ -68,7 +69,7 @@ namespace rj
 		{
 			if(m_gamehandler.gamestate() == game_state::running) {
 				m_world.update(duration);
-				if(m_need_start_music) {
+				if(m_need_start_music && m_lv_has_music) {
 					m_need_start_music = false;
 					m_playback.setVolume(100.f);
 					m_playback.setLoop(true);
@@ -104,7 +105,8 @@ namespace rj
 			}
 
 			// set music (if available)
-			if(!restart && (lv.music.size() > header_music.size())) {
+			m_lv_has_music = lv.music.size() > header_music.size();
+			if(!restart && m_lv_has_music) {
 				m_playback_buffer = {std::begin(lv.music) + header_music.size(),
 									 std::end(lv.music)};
 				m_playback.openFromMemory(m_playback_buffer.data(),

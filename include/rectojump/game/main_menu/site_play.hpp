@@ -6,16 +6,14 @@
 #ifndef RJ_GAME_MAIN_MENU_SITE_PLAY_HPP
 #define RJ_GAME_MAIN_MENU_SITE_PLAY_HPP
 
-
 #include <rectojump/global/config_settings.hpp>
 #include <rectojump/shared/level_manager/level_manager.hpp>
 #include <rectojump/ui/level_widget.hpp>
 #include <rectojump/ui/stacked_widget.hpp>
 
-
 namespace rj
 {
-	template<typename Overlay>
+	template <typename Overlay>
 	class site_play
 	{
 		Overlay& m_overlay;
@@ -24,61 +22,66 @@ namespace rj
 		ui::stacked_widget& m_sites;
 
 	public:
-		site_play(Overlay& ov) :
-			m_overlay{ov},
-			m_lvmgr{ov.mainmenu().gamehandler().levelmgr()},
-			m_sites{ov.sites()}
-		{ }
+		site_play(Overlay& ov)
+			: m_overlay{ov},
+			  m_lvmgr{ov.mainmenu().gamehandler().levelmgr()},
+			  m_sites{ov.sites()}
+		{
+		}
 
 		void construct()
 		{
 			auto& site_play{m_sites.get("play")};
-			auto& font{m_overlay.mainmenu().gamehandler().datastore().template get<sf::Font>
-					   (settings::text_font())};
+			auto& font{m_overlay.mainmenu()
+						   .gamehandler()
+						   .datastore()
+						   .template get<sf::Font>(settings::text_font())};
 
 			// create level_widget
 			auto level_widget{m_sites.add_object<ui::level_widget>(
-								  "play", m_overlay.mainmenu().gamehandler().gamewindow(),
-								  m_sites.size(), m_sites.pos())};
+				"play", m_overlay.mainmenu().gamehandler().gamewindow(),
+				m_sites.size(), m_sites.pos())};
 
 			// add levels
 			for(const auto& a : m_lvmgr.get_levels())
-				level_widget->add_item(a.second, font,
-				[this, &a]
-				{
-					//button play
-					m_overlay.mainmenu().gamehandler().load_level(a.second.info.level_name);
-				},
-				[this, &a]
-				{
-					// button edit
-					m_overlay.mainmenu().gamehandler().switch_to_editor();
-					m_overlay.mainmenu().gamehandler().editor().
-							handle_load(a.second.info.level_name);
-				});
+				level_widget->add_item(
+					a.second, font,
+					[this, &a] {
+						// button play
+						m_overlay.mainmenu()
+							.gamehandler()
+							.load_level_scene_play(a.second.info.level_name);
+					},
+					[this, &a] {
+						// button edit
+						m_overlay.mainmenu().gamehandler().switch_to_editor();
+						m_overlay.mainmenu().gamehandler().editor().handle_load(
+							a.second.info.level_name);
+					});
 
 			// set camera on render
-			site_play.on_render = [level_widget]{level_widget->activate_cam();};
+			site_play.on_render = [level_widget] {
+				level_widget->activate_cam();
+			};
 
 			// add input
-			m_overlay.mainmenu().gamehandler().template add_input<state::main_menu>
-					([this, level_widget](const vec2f&)
-			{
-				if(m_sites.active("play"))
-					level_widget->scroll_up();
-			}, wheel::up);
+			m_overlay.mainmenu()
+				.gamehandler()
+				.template add_input<state::main_menu>(
+					[this, level_widget](const vec2f&) {
+						if(m_sites.active("play")) level_widget->scroll_up();
+					},
+					wheel::up);
 
-			m_overlay.mainmenu().gamehandler().template add_input<state::main_menu>
-					([this, level_widget](const vec2f&)
-			{
-				if(m_sites.active("play"))
-					level_widget->scroll_down();
-			}, wheel::down);
+			m_overlay.mainmenu()
+				.gamehandler()
+				.template add_input<state::main_menu>(
+					[this, level_widget](const vec2f&) {
+						if(m_sites.active("play")) level_widget->scroll_down();
+					},
+					wheel::down);
 		}
 	};
 }
 
-
-#endif // RJ_GAME_MAIN_MENU_SITE_PLAY_HPP
-
-
+#endif// RJ_GAME_MAIN_MENU_SITE_PLAY_HPP

@@ -107,6 +107,12 @@ namespace rj
 			this->deactivate_state(state::game_menu);
 		}
 
+		void load_level_scene_play(const level_id& id)
+		{
+			m_gamestate = game_state::none;
+			this->load_level(id);
+		}
+
 		void load_level(const level_id& id)
 		{
 			auto& lv{m_lvmgr.get_level(id)};
@@ -184,7 +190,7 @@ namespace rj
 
 		void restart_level()
 		{
-			m_gamestate = game_state::ended;
+			this->end_game();
 
 			// load level again
 			this->load_level(m_current_loaded_level);
