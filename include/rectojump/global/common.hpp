@@ -80,6 +80,7 @@ namespace rj
 	static const mlk::data_packet header_rj_bg{'R', 'J', 'B', 'G'};
 	static const mlk::data_packet header_rj_level{'R', 'J', 'L', 'E',
 												  'V', 'E', 'L'};
+	static const mlk::data_packet header_music{'M', 'U', 'S', 'I', 'C'};
 
 	// |-> strings
 	static constexpr const char* level_name_null{"(null)"};
