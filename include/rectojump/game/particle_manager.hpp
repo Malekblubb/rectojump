@@ -28,7 +28,7 @@ namespace rj
 		template <typename... Args>
 		void create_particles(Args&&... args)
 		{
-			m_particle_groups.emplace_back(args...);
+			m_particle_groups.emplace_back(std::forward<Args>(args)...);
 			bool sec{true};
 			m_particle_groups.back().on_update_particle =
 				[&sec](auto& particle, auto index, auto size) {
