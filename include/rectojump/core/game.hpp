@@ -97,6 +97,9 @@ namespace rj
 					m_gamehandler.set_gamestate(game_state::running);
 				}
 			}
+			else if(m_gamehandler.gamestate() == game_state::running)
+			{
+			}
 		}
 
 		void render()
