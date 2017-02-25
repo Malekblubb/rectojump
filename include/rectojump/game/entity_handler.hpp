@@ -184,7 +184,6 @@ namespace rj
 			// player should die here
 			// do effects, game stats etc....
 			m_player->render_object().setFillColor({255, 0, 0});
-			m_particlemgr.create_particles(10000, m_player->pos(), 3000, true);
 
 			// on kill
 			m_player->on_kill();

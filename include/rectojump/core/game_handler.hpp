@@ -204,7 +204,13 @@ namespace rj
 			// reset player items etc...
 		}
 
-		void on_player_death() { this->end_game(); }
+		void on_player_death()
+		{
+			m_particlemgr.create_particles(
+				9000, m_game.get_world().entityhandler().player()->pos(), 4000,
+				true);
+			this->end_game();
+		}
 
 		void exit()
 		{
