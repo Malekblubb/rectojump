@@ -206,9 +206,17 @@ namespace rj
 
 		void on_player_death()
 		{
-			m_particlemgr.create_particles(
+			// create particles
+			m_particlemgr.create_particles_effect(
+				[](auto& particle, auto index, auto) {
+					particle.velo -= vec2f{std::cos(index / 10.f) / 10.f,
+										   std::sin(index / 10.f) / 100.f} /
+									 120.f;
+				},
 				9000, m_game.get_world().entityhandler().player()->pos(), 4000,
 				true);
+
+			// end game
 			this->end_game();
 		}
 
