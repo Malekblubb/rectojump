@@ -29,27 +29,13 @@ namespace rj
 		void create_particles(Args&&... args)
 		{
 			m_particle_groups.emplace_back(std::forward<Args>(args)...);
-			bool sec{true};
-			m_particle_groups.back().on_update_particle =
-				[&sec](auto& particle, auto index, auto size) {
-					//					auto
-					// rnd{mlk::rnd(-float(index),
-					// float(index))};
-					if(sec) {
-						sec = false;
-						//					return;
-					}
-					//					particle.velo -=
-					// vec2f{0.0001f,
-					// 0.001f};
-					particle.velo -= vec2f{std::cos(index / 100.f) / 100.f,
-										   std::sin(index / 100.f) / 100.f} /
-									 80.f;
-					sec = true;
-					//				std::cout << size / (index + 1)
-					//<<
-					// std::endl;
-				};
+		}
+
+		template <typename Func, typename... Args>
+		void create_particles_effect(Func&& f, Args&&... args)
+		{
+			this->create_particles(args...);
+			m_particle_groups.back().on_update_particle = f;
 		}
 
 		void update(dur duration)
