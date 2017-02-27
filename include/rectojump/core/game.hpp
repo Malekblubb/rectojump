@@ -51,6 +51,9 @@ namespace rj
 				2.f);
 			auto wsize{settings::get_window_size<vec2f>()};
 			m_warmup_text.setPosition({wsize.x / 2.f, 20.f});
+
+			// create player
+			m_world.c_player();
 		}
 
 		void on_game_start()

@@ -294,6 +294,15 @@ namespace rj
 			this->init_errors();
 			this->init_pointers();
 			this->init_input();
+
+			// player on jump end
+			auto player(m_game.get_world().entityhandler().player());
+			if(player)
+				player->on_jump_end = [this] {
+					m_particlemgr.create_particles(
+						200, m_game.get_world().entityhandler().player()->pos(),
+						1000, true, sf::Color::White);
+				};
 		}
 
 		void init_errors() noexcept

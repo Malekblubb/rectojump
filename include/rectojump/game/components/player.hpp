@@ -23,6 +23,7 @@ namespace rj
 		// jumping
 		bool m_need_jump{false};
 		bool m_jumping{false};
+		bool m_need_effect{false};
 
 		bool m_alive{false};
 
@@ -40,6 +41,8 @@ namespace rj
 
 		~player() = default;
 
+		mlk::slot<> on_jump_end;
+
 		// 'bind' space key (can't do this in ctor)
 		void init() override
 		{
@@ -49,6 +52,7 @@ namespace rj
 		void on_spawn(float ground) noexcept
 		{
 			m_alive = true;
+			m_need_effect = false;
 			m_ground = ground;
 			this->rotate_end();
 			this->jump_end();
@@ -88,11 +92,17 @@ namespace rj
 				m_velocity.y = m_jump_velo;
 				m_jumping = true;
 				m_need_jump = false;
+				m_need_effect = true;
 			}
 		}
 
 		void jump_end() noexcept
 		{
+			if(m_need_effect) {
+				m_need_effect = false;
+				on_jump_end();
+			}
+
 			m_render_object.setPosition(m_start_pos.x, m_ground - m_height / 2);
 			m_jumping = false;
 			m_velocity = {0.f, 0.f};
