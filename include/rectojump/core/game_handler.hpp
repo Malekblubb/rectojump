@@ -213,7 +213,7 @@ namespace rj
 										   std::sin(index / 10.f) / 100.f} /
 									 120.f;
 				},
-				9000, m_game.get_world().entityhandler().player()->pos(), 4000,
+				1600, m_game.get_world().entityhandler().player()->pos(), 3000,
 				true);
 
 			// end game
