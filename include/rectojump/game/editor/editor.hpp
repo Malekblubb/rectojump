@@ -185,15 +185,10 @@ namespace rj
 		}
 
 		void reset_zoom() noexcept { m_editarea_camera.reset_zoom(); }
-
 		void reset_center() noexcept { m_editarea_camera.reset_center(); }
-
 		auto& gamehandler() noexcept { return m_gamehandler; }
-
 		camera& editarea_camera() noexcept { return m_editarea_camera; }
-
 		camera& itembar_camera() noexcept { return m_itembar_camera; }
-
 		camera& settingsbar_camera() noexcept { return m_settingsbar_camera; }
 
 	private:
