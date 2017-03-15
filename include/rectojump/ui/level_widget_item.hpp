@@ -17,7 +17,7 @@ namespace rj
 {
 	namespace ui
 	{
-		class level_widget_item : public widget
+		class level_widget_item final : public widget
 		{
 			sf::RectangleShape m_background{{100.f, 100.f}};
 			gradient_rect m_preview;
