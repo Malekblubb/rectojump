@@ -17,7 +17,7 @@ namespace rj
 {
 	namespace ui
 	{
-		class level_widget : public widget
+		class level_widget final : public widget
 		{
 			// cam
 			camera m_scrollcam;
