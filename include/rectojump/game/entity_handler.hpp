@@ -33,7 +33,7 @@ namespace rj
 		player_ptr m_player{nullptr};
 		std::vector<entity_base_ptr> m_entities;
 		std::size_t m_max_entities;
-		std::size_t m_current_id{0};
+		int m_current_id{0};
 
 		static constexpr float m_despawn_zone{0.f};
 
