@@ -160,8 +160,8 @@ namespace rj
 		void load_all()
 		{
 			mlk::lout("rj::data_manager")
-				<< "loading files recursive from directory '" << m_abs_path
-				<< "'...";
+				<< "loading files recursive from directory \"" << m_abs_path
+				<< "\"...";
 			auto content{m_dirh.get_content<true>()};
 			auto count{0};
 			for(auto& a : content)
@@ -216,18 +216,19 @@ namespace rj
 		void load_raw_impl(const data_id& id, const std::string& path)
 		{
 			if(this->exists_id(id)) {
-				mlk::lerr()["rj::data_manager"] << "object with id '" << id
-												<< "' already loaded";
+				mlk::lerr()["rj::data_manager"] << "object with id \"" << id
+												<< "\" already loaded";
 				return;
 			}
 
 			if(m_fileh.reopen(path, std::ios::in)) {
 				m_data[id] = m_fileh.read_all();
-				mlk::lout("rj::data_manager") << "loaded data '" << path << "'";
+				mlk::lout("rj::data_manager") << "loaded data \"" << path
+											  << "\"";
 			}
 			else
-				mlk::lerr()["rj::data_manager"] << "file with given path '"
-												<< path << "' not found";
+				mlk::lerr()["rj::data_manager"] << "file with given path \""
+												<< path << "\" not found";
 		}
 
 		template <typename T>
@@ -241,8 +242,8 @@ namespace rj
 		T get_as_impl(const data_id& id)
 		{
 			if(!this->exists_id(id)) {
-				mlk::lerr()["rj::data_manager"] << "object with id '" << id
-												<< "' not found";
+				mlk::lerr()["rj::data_manager"] << "object with id \"" << id
+												<< "\" not found";
 				return T{};
 			}
 			T result;

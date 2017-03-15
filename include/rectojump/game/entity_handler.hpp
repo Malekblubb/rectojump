@@ -201,8 +201,8 @@ namespace rj
 			}
 			if(e->is_registered()) {
 				mlk::lout("rj::entity_handler")
-					<< "entity with id '" << e->m_id
-					<< "' exists already in entity handler, ignoring";
+					<< "entity with id \"" << e->m_id
+					<< "\" exists already in entity handler, ignoring";
 				return false;
 			}
 			return true;

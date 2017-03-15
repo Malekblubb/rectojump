@@ -71,7 +71,7 @@ namespace rj
 			if(!m_dirh.exists()) {
 				if(m_dirh.create())
 					mlk::lout("rj::level_manager")
-						<< "created levels directory '" << m_abs_path << "'";
+						<< "created levels directory \"" << m_abs_path << "\"";
 				else
 					mlk::lerr()["rj::level_manager"]
 						<< "creating levels directory failed";
@@ -79,8 +79,8 @@ namespace rj
 			}
 
 			mlk::lout("rj::level_manager")
-				<< "loading levels recursive from directory '" << m_abs_path
-				<< "'...";
+				<< "loading levels recursive from directory \"" << m_abs_path
+				<< "\"...";
 			auto content{m_dirh.get_content<true>()};
 			auto count{0};
 			for(auto& a : content)
@@ -99,7 +99,7 @@ namespace rj
 			level_packer<packer_mode::unpack> unpacker{data};
 			m_loaded_levels[id] = unpacker.get_level();
 			mlk::lout("rj::level_manager")
-				<< "loaded level '" << path << "' "
+				<< "loaded level \"" << path << "\" "
 				<< (m_loaded_levels[id].is_valid() ? "(valid)" : "(invalid)");
 		}
 
