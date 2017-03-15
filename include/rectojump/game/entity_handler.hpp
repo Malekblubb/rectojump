@@ -73,9 +73,7 @@ namespace rj
 
 			// update other
 			bool collided{false};
-			for(auto iter{m_entities.begin()}; iter < m_entities.end(); ++iter)
-			{
-				auto a{*iter};
+			for(auto& a : m_entities) {
 				a->update(duration);
 
 				// check collision
@@ -99,8 +97,10 @@ namespace rj
 					}
 				}
 				if(a->right_out() <= m_despawn_zone || a->m_destroyed)
-					m_entities.erase(iter);
+					a->destroy();
 			}
+			this->erase_destroyed();
+
 			if(!collided && this->is_player_registered())
 				m_player->on_collision_end();
 		}
