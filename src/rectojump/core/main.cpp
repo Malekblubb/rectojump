@@ -17,8 +17,8 @@
 int main()
 {
 	mlk::lerr_i().set_write_on_exit(true);
-	mlk::lout("main", true) << "rectojump version " << rj::settings::version()
-							<< " started";
+	mlk::lout("main", true)
+		<< "rectojump version " << rj::settings::version() << " started";
 
 	auto start_tm{mlk::tm::time_pnt()};
 

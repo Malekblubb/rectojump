@@ -126,9 +126,9 @@ namespace rj
 									 std::end(lv.music)};
 				m_playback.openFromMemory(m_playback_buffer.data(),
 										  m_playback_buffer.size())
-					? mlk::lout("rj::game") << "loaded music data ("
-											<< m_playback_buffer.size()
-											<< " bytes)"
+					? mlk::lout("rj::game")
+						  << "loaded music data (" << m_playback_buffer.size()
+						  << " bytes)"
 					: mlk::lerr()["rj::game"] << "could not load music data";
 			}
 
