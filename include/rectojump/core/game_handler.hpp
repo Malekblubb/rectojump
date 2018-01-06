@@ -168,6 +168,7 @@ namespace rj
 
 		void toggle_pause_game()
 		{
+			if(m_gamestate == game_state::none) return;
 			if(m_gamestate == game_state::ended ||
 			   m_gamestate == game_state::pre_running)
 				return;
