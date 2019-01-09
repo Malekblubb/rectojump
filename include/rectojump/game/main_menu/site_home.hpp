@@ -13,6 +13,7 @@
 #include <rectojump/ui/sf_widget.hpp>
 #include <rectojump/ui/stacked_widget.hpp>
 #include <rectojump/ui/textbox.hpp>
+#include <rectojump/shared/data_store.hpp>
 
 
 namespace rj
@@ -33,7 +34,7 @@ namespace rj
 
 		void construct()
 		{
-			const auto& font{m_datastore.get<sf::Font>(settings::text_font())};
+			const auto& font{m_datastore.template get<sf::Font>(settings::text_font())};
 
 			// logo
 			auto logo_shape{m_sites.add_object<widget::rectangle_shape>("home",

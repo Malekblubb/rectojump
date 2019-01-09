@@ -1,3 +1,6 @@
+# ninja
+*.ninja*
+
 #Project
 /rectojump*
 /config

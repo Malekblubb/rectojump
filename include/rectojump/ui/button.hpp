@@ -116,7 +116,7 @@ namespace rj
 			void setOutlineThickness(float thickness) noexcept
 			{
 				m_shape.setOutlineThickness(thickness);
-				m_restore_shape.setOutlineThickness(thickness);
+//				m_restore_shape.setOutlineThickness(thickness); //TODO
 			}
 
 			void setOutlineColor(const sf::Color& color) noexcept

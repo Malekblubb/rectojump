@@ -34,7 +34,7 @@ namespace rj
 			m_render_object.setPosition(pos);
 		}
 
-		virtual ~basic_entity() = default;
+		virtual ~basic_entity() override = default ;
 
 		virtual void render() override
 		{
@@ -65,9 +65,9 @@ namespace rj
 			return m_render_object.getSize();
 		}
 
-		const vec2f& pos() const noexcept override
+		const vec2f pos() const noexcept override
 		{
-			return m_render_object.getPosition();
+			return /*m_render_object.getPosition(); TODO: FIX ME*/  {10.f, 10.f};
 		}
 
 		float pos_x() const noexcept override { return this->pos().x; }

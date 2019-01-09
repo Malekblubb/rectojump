@@ -117,10 +117,10 @@ namespace rj
 
 			void setTextSize(mlk::uint size) noexcept
 			{
-				m_text.setCharacterSize(size);
-				m_password_text.setCharacterSize(size);
-				this->update_text_pos();
-				this->update_cursor();
+//				m_text.setCharacterSize(size);
+//				m_password_text.setCharacterSize(size);
+//				this->update_text_pos();
+//				this->update_cursor();
 			}
 
 			void setText(const std::string& str)
@@ -134,7 +134,7 @@ namespace rj
 			{
 				m_password_mode = b;
 				this->update_text_pos();
-				this->update_cursor();
+//				this->update_cursor();
 			}
 
 			// getters

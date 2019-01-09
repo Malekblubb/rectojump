@@ -336,7 +336,7 @@ namespace rj
 		{
 			tb.setOrigin(tb.getSize() / 2.f);
 			tb.setTextColor(settings::get_color_light());
-			tb.setTextSize(13);
+			tb.setTextSize(0); // TODO: 13
 			tb.setOutlineThickness(2.f);
 			tb.setOutlineColor(settings::get_color_default_dark());
 			tb.setFillColor({0, 0, 0, 0});
