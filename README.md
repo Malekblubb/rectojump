@@ -1,4 +1,4 @@
-![img](http://37.221.194.71/img/rj_logo.png)
+![img](https://raw.githubusercontent.com/Malekblubb/rectojump/master/thumb.png)
 ===
   
-![img](http://37.221.194.71/img/rj0.png)
+![img](https://raw.githubusercontent.com/Malekblubb/rectojump/master/thumb2.png)
