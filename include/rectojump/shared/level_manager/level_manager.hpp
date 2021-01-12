@@ -68,7 +68,8 @@ namespace rj
 	private:
 		void init()
 		{
-			if(!m_dirh.exists()) {
+			if(!m_dirh.exists())
+			{
 				if(m_dirh.create())
 					mlk::lout("rj::level_manager")
 						<< "created levels directory \"" << m_abs_path << "\"";
@@ -84,7 +85,8 @@ namespace rj
 			auto content{m_dirh.get_content<true>()};
 			auto count{0};
 			for(auto& a : content)
-				if(a.type == mlk::fs::item_type::file) {
+				if(a.type == mlk::fs::item_type::file)
+				{
 					this->load_to_mgr(a.name, a.path);
 					++count;
 				}
@@ -98,6 +100,7 @@ namespace rj
 			auto data{m_filemgr.read_all()};
 			level_packer<packer_mode::unpack> unpacker{data};
 			m_loaded_levels[id] = unpacker.get_level();
+
 			mlk::lout("rj::level_manager")
 				<< "loaded level \"" << path << "\" "
 				<< (m_loaded_levels[id].is_valid() ? "(valid)" : "(invalid)");
@@ -117,6 +120,6 @@ namespace rj
 			return result;
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_SHARED_LEVEL_MANAGER_LEVEL_MANAGER_HPP

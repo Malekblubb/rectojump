@@ -102,7 +102,7 @@ namespace rj
 				for(const auto& a : m_items) target.draw(a, states);
 			}
 		};
-	}
-}
+	}// namespace ui
+}// namespace rj
 
 #endif// RJ_UI_LEVEL_WIDGET_HPP

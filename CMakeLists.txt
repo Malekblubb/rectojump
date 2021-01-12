@@ -1,5 +1,5 @@
 project(rectojump)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.9)
 
 # collect files
 file(GLOB_RECURSE SRC_LIST "./include/*" "./src/*")
@@ -7,9 +7,11 @@ include_directories("./include" "./external/mlk/include")
 
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 
+#set(CMAKE_CXX_STANDARD "20")
+#set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 # set compiler flags
-set(CMAKE_CXX_FLAGS "-std=c++1z -stdlib=libstdc++ -O3")
+set(CMAKE_CXX_FLAGS "-std=c++20 -stdlib=libc++ -O3  -Wl,--copy-dt-needed-entries")
 set(CMAKE_CXX_COMPILER "clang++")
 
 

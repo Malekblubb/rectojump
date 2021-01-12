@@ -40,13 +40,13 @@ namespace rj
 		{
 			auto result{m_unformated_str};
 			std::string str;
-			if
-				constexpr(std::is_same<std::string, Func_Ret_Type>()) str =
-					m_func();
+			if constexpr(std::is_same<std::string, Func_Ret_Type>())
+				str = m_func();
 			else
 				str = std::to_string(m_func());
 			auto insert_pos{result.find("%%")};
-			if(insert_pos != std::string::npos) {
+			if(insert_pos != std::string::npos)
+			{
 				result.insert(insert_pos + 2, str);
 				result.erase(insert_pos, 2);
 			}
@@ -140,7 +140,8 @@ namespace rj
 			});
 			this->add_line("Active (all):    %%", [this] {
 				std::string active_states;
-				for(std::size_t i{0}; i < std::size_t(state::num); ++i) {
+				for(std::size_t i{0}; i < std::size_t(state::num); ++i)
+				{
 					if(m_gamehandler.states() & rj::state(i))
 						active_states += std::string{state_as_string[i]} + " ";
 				}
@@ -165,6 +166,6 @@ namespace rj
 			m_lines.emplace_back(ptr);
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_DEBUG_INFO_HPP

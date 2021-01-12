@@ -43,7 +43,8 @@ namespace rj
 
 		void c_player()
 		{
-			if(!m_entity_handler.is_player_registered()) {
+			if(!m_entity_handler.is_player_registered())
+			{
 				auto plr{factory::create<player>(vec2f{
 					settings::player_start_x(), settings::player_start_y()})};
 				m_entity_handler.create_entity(plr);
@@ -60,23 +61,23 @@ namespace rj
 		{
 			m_entity_handler.clear();
 
-			for(auto& entity : entities) {
+			for(auto& entity : entities)
+			{
 				vec2f pos{entity[x], entity[y]};
 				auto ef{static_cast<char>(entity[figure])};
 
 				// laod objects
 				// rectangle
-				if(ef == entity_figure::f_rectangle) {
+				if(ef == entity_figure::f_rectangle)
+				{
 					// we need other entity type when editing
-					if
-						constexpr(load_editor)
-						{
-							auto a{this->create_entity<editor_entity>(pos)};
-							a->set_texture(
-								&m_datastore.template get<sf::Texture>(
-									"editor_item_rect.png"));
-							a->set_figure(static_cast<entity_figure>(ef));
-						}
+					if constexpr(load_editor)
+					{
+						auto a{this->create_entity<editor_entity>(pos)};
+						a->set_texture(&m_datastore.template get<sf::Texture>(
+							"editor_item_rect.png"));
+						a->set_figure(static_cast<entity_figure>(ef));
+					}
 					else
 					{
 						auto a{this->create_entity<platform>(
@@ -92,21 +93,39 @@ namespace rj
 				else if(ef == entity_figure::f_triangle)
 				{
 					// we need other entity type when editing
-					if
-						constexpr(load_editor)
-						{
-							auto a{this->create_entity<editor_entity>(pos)};
-							a->set_texture(
-								&m_datastore.template get<sf::Texture>(
-									"editor_item_triangle.png"));
-							a->set_figure(static_cast<entity_figure>(ef));
-						}
+					if constexpr(load_editor)
+					{
+						auto a{this->create_entity<editor_entity>(pos)};
+						a->set_texture(&m_datastore.template get<sf::Texture>(
+							"editor_item_triangle.png"));
+						a->set_figure(static_cast<entity_figure>(ef));
+					}
 					else
 					{
 						auto a{this->create_entity<triangle>(pos)};
 						a->render_object().setTexture(
 							&m_datastore.template get<sf::Texture>(
 								"editor_item_triangle.png"));
+						a->set_propertie(entity_propertie::death);
+						a->set_figure(static_cast<entity_figure>(ef));
+					}
+				}
+				else if(ef == entity_figure::f_triangles4)
+				{
+					// we need other entity type when editing
+					if constexpr(load_editor)
+					{
+						auto a{this->create_entity<editor_entity>(pos)};
+						a->set_texture(&m_datastore.template get<sf::Texture>(
+							"editor_item_triangles4.png"));
+						a->set_figure(static_cast<entity_figure>(ef));
+					}
+					else
+					{
+						auto a{this->create_entity<triangle>(pos)};
+						a->render_object().setTexture(
+							&m_datastore.template get<sf::Texture>(
+								"editor_item_triangles4.png"));
 						a->set_propertie(entity_propertie::death);
 						a->set_figure(static_cast<entity_figure>(ef));
 					}
@@ -133,6 +152,6 @@ namespace rj
 
 	private:
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_WORLD_HPP

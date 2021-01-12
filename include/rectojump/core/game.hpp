@@ -79,9 +79,11 @@ namespace rj
 
 		void update(dur duration)
 		{
-			if(m_gamehandler.gamestate() == game_state::running) {
+			if(m_gamehandler.gamestate() == game_state::running)
+			{
 				m_world.update(duration);
-				if(m_need_start_music && m_lv_has_music) {
+				if(m_need_start_music && m_lv_has_music)
+				{
 					m_need_start_music = false;
 					m_playback.setVolume(100.f);
 					m_playback.setLoop(true);
@@ -89,14 +91,16 @@ namespace rj
 				}
 			}
 
-			if(m_gamehandler.gamestate() == game_state::pre_running) {
+			if(m_gamehandler.gamestate() == game_state::pre_running)
+			{
 				auto remaining_time{
 					settings::game_warmup_time() -
 					mlk::tm::duration_to_now_as<float>(m_warmup_start)};
 				m_warmup_text.setString(std::string{"Prepare...\n"} +
 										std::to_string(remaining_time));
 
-				if(remaining_time < 0.f) {
+				if(remaining_time < 0.f)
+				{
 					m_gamehandler.set_gamestate(game_state::running);
 				}
 			}
@@ -114,14 +118,16 @@ namespace rj
 
 		void load_level(const level& lv, bool restart)
 		{
-			if(m_lvmgr == nullptr) {
+			if(m_lvmgr == nullptr)
+			{
 				mlk::lerr(errors::cl_nullptr_access)["rj::game"];
 				return;
 			}
 
 			// set music (if available)
 			m_lv_has_music = lv.music.size() > header_music.size();
-			if(!restart && m_lv_has_music) {
+			if(!restart && m_lv_has_music)
+			{
 				m_playback_buffer = {std::begin(lv.music) + header_music.size(),
 									 std::end(lv.music)};
 				m_playback.openFromMemory(m_playback_buffer.data(),
@@ -142,6 +148,6 @@ namespace rj
 
 		auto& get_world() { return m_world; }
 	};
-}
+}// namespace rj
 
 #endif// RJ_CORE_GAME_GAME_HPP

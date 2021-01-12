@@ -12,6 +12,8 @@
 #include <mlk/tools/stl_string_utl.h>
 #include <mlk/types/types.h>
 
+#include <SFML/Graphics/Font.hpp>
+
 #include <map>
 
 namespace rj
@@ -27,6 +29,7 @@ namespace rj
 		std::vector<data_id> m_load_not;
 
 		std::map<data_id, mlk::data_packet> m_data;
+		std::map<data_id, sf::Font> m_fonts;
 
 		bool m_valid{false};
 
@@ -45,6 +48,8 @@ namespace rj
 		// get:		don't loads the data to manager
 		//			just 'gets' it
 		auto& get_all() const noexcept { return m_data; }
+
+		sf::Font& get_font(const data_id& id) { return m_fonts[id]; }
 
 		mlk::data_packet get_raw(const data_id& id)
 		{
@@ -165,13 +170,21 @@ namespace rj
 			auto content{m_dirh.get_content<true>()};
 			auto count{0};
 			for(auto& a : content)
-				if(a.type == mlk::fs::item_type::file) {
+				if(a.type == mlk::fs::item_type::file)
+				{
 					// load not
 					if(mlk::cnt::exists(a.name, m_load_not)) continue;
 
 					// load
 					this->load_raw_impl(a.name, a.path);
 					++count;
+
+					// load fonts to extra map
+					if(a.name.substr(a.name.length() - 4) == ".ttf" ||
+					   a.name.substr(a.name.length() - 4) == ".otf")
+					{
+						m_fonts[a.name] = this->get_as<sf::Font>(a.name);
+					}
 				}
 			mlk::lout("rj::data_manager") << "loaded " << count << " files ("
 										  << this->get_datasize() << " bytes)";
@@ -215,16 +228,18 @@ namespace rj
 		// lowest level impls
 		void load_raw_impl(const data_id& id, const std::string& path)
 		{
-			if(this->exists_id(id)) {
+			if(this->exists_id(id))
+			{
 				mlk::lerr()["rj::data_manager"] << "object with id \"" << id
 												<< "\" already loaded";
 				return;
 			}
 
-			if(m_fileh.reopen(path, std::ios::in)) {
+			if(m_fileh.reopen(path, std::ios::in))
+			{
 				m_data[id] = m_fileh.read_all();
-				mlk::lout("rj::data_manager") << "loaded data \"" << path
-											  << "\"";
+				mlk::lout("rj::data_manager")
+					<< "loaded data \"" << path << "\"";
 			}
 			else
 				mlk::lerr()["rj::data_manager"] << "file with given path \""
@@ -241,7 +256,8 @@ namespace rj
 		template <typename T>
 		T get_as_impl(const data_id& id)
 		{
-			if(!this->exists_id(id)) {
+			if(!this->exists_id(id))
+			{
 				mlk::lerr()["rj::data_manager"] << "object with id \"" << id
 												<< "\" not found";
 				return T{};
@@ -251,6 +267,6 @@ namespace rj
 			return result;
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_SHARED_DATA_MANAGER_HPP

@@ -43,7 +43,7 @@ namespace rj
 		{
 			ro_helper(Game_Handler& gh, const T& obj) { ro(gh, obj); }
 		};
-	}
+	}// namespace render_utl
 
 	template <typename Game_Handler>
 	class render
@@ -77,6 +77,6 @@ namespace rj
 			rmo_impl(std::forward<Tail>(tail)...);
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_CORE_RENDER_HPP

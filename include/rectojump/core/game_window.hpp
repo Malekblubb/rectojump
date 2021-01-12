@@ -50,7 +50,8 @@ namespace rj
 			if(m_running) return;
 
 			this->prepare_start();
-			while(m_running) {
+			while(m_running)
+			{
 				if(m_need_recreate) this->recreate();
 
 				m_game_updater.start_pt();
@@ -162,7 +163,8 @@ namespace rj
 		void update_events() noexcept
 		{
 			sf::Event ev;
-			while(m_window.pollEvent(ev)) {
+			while(m_window.pollEvent(ev))
+			{
 				switch(ev.type)
 				{
 					case sf::Event::EventType::Closed:
@@ -199,6 +201,6 @@ namespace rj
 			m_need_recreate = false;
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_CORE_GAME_WINDOW_HPP

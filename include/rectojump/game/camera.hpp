@@ -100,6 +100,6 @@ namespace rj
 
 		float get_zoomfactor() const noexcept { return m_reset_zoomfactor; }
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_CAMERA_HPP

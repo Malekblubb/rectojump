@@ -88,7 +88,8 @@ namespace rj
 
 			void switch_site(const std::string& site_name)
 			{
-				if(!mlk::cnt::exists_map_first(site_name, m_sites)) {
+				if(!mlk::cnt::exists_map_first(site_name, m_sites))
+				{
 					m_active.clear();
 					return;
 				}
@@ -119,7 +120,7 @@ namespace rj
 						target.draw(*a, states);
 			}
 		};
-	}
-}
+	}// namespace ui
+}// namespace rj
 
 #endif// RJ_UI_STACKED_WIDGET_HPP

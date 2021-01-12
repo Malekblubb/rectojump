@@ -47,6 +47,7 @@ namespace rj
 				m_text.setString(text);
 				m_text.setFont(font);
 				m_text.setFillColor(fontcolor);
+				m_text.setCharacterSize(0);
 				this->calculate_textpos();
 			}
 
@@ -72,7 +73,8 @@ namespace rj
 				else
 					m_hover = false;
 
-				if(m_hover) {
+				if(m_hover)
+				{
 					if(inp::is_btn_pressed(btn::Left))
 						m_press = true;
 					else
@@ -116,7 +118,7 @@ namespace rj
 			void setOutlineThickness(float thickness) noexcept
 			{
 				m_shape.setOutlineThickness(thickness);
-//				m_restore_shape.setOutlineThickness(thickness); //TODO
+				m_restore_shape.setOutlineThickness(thickness);
 			}
 
 			void setOutlineColor(const sf::Color& color) noexcept
@@ -281,7 +283,7 @@ namespace rj
 									   shape_bounds.height / 2.f);
 			}
 		};
-	}
-}
+	}// namespace ui
+}// namespace rj
 
 #endif// RJ_UI_BUTTON_HPP

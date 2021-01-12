@@ -32,7 +32,7 @@ namespace rj
 		ui::connected_buttons m_buttons;
 		ui::button m_toggle_bar_button{{16.f, 16.f}, {16.f, 16.f}};
 		sf::Texture m_toggle_bar_button_tx;
-		sf::Font m_font;
+		const sf::Font& m_font;
 		std::map<std::string, ui::textbox> m_textboxes;
 
 		// moving
@@ -52,8 +52,7 @@ namespace rj
 			  m_toggle_bar_button_tx{
 				  m_gamehandler.datamgr().template get_as<sf::Texture>(
 					  "arrow.png")},
-			  m_font{m_gamehandler.datamgr().template get_as<sf::Font>(
-				  settings::text_font())}
+			  m_font{m_gamehandler.datamgr().get_font(settings::text_font())}
 		{
 			this->init();
 		}
@@ -69,7 +68,8 @@ namespace rj
 			m_buttons.update(duration);
 			m_toggle_bar_button.update(duration);
 
-			if(m_toggle_bar_button.pressed() && !m_moving) {
+			if(m_toggle_bar_button.pressed() && !m_moving)
+			{
 				m_moved = 0.f;
 				flip_h(m_toggle_bar_button);
 				if(m_is_expanded)
@@ -78,8 +78,10 @@ namespace rj
 					m_need_move_left = true;
 			}
 
-			if(m_need_move_right) {
-				if(m_moved > m_max_move) {
+			if(m_need_move_right)
+			{
+				if(m_moved > m_max_move)
+				{
 					m_moving = false;
 					m_need_move_right = false;
 					m_is_expanded = false;
@@ -92,8 +94,10 @@ namespace rj
 				m_moved += move_offset.x;
 			}
 
-			if(m_need_move_left) {
-				if(m_moved > m_max_move) {
+			if(m_need_move_left)
+			{
+				if(m_moved > m_max_move)
+				{
 					m_moving = false;
 					m_need_move_left = false;
 					m_is_expanded = true;
@@ -191,16 +195,18 @@ namespace rj
 			// textboxes
 			// level name
 			m_textboxes.emplace(
-				"tb_lvname", ui::textbox{tb_size, vec2f{shape_size.x / 2.f,
-														shape_size.y - 100.f},
-										 m_font, "Level Name"});
+				"tb_lvname",
+				ui::textbox{tb_size,
+							vec2f{shape_size.x / 2.f, shape_size.y - 100.f},
+							m_font, "Level Name"});
 			this->prepare_textbox(m_textboxes["tb_lvname"]);
 
 			// level info
-			m_textboxes.emplace("tb_lvinf_creator",
-								ui::textbox{tb_size, vec2f{shape_size.x / 2.f,
-														   shape_size.y - 60.f},
-											m_font, "Level Creator"});
+			m_textboxes.emplace(
+				"tb_lvinf_creator",
+				ui::textbox{tb_size,
+							vec2f{shape_size.x / 2.f, shape_size.y - 60.f},
+							m_font, "Level Creator"});
 			this->prepare_textbox(m_textboxes["tb_lvinf_creator"]);
 
 			// music path
@@ -219,7 +225,8 @@ namespace rj
 			auto spacing{10.f};
 			auto bg_return_key_func{[this] {
 				auto point_count{m_textboxes["tb_bgpointcount"].getText()};
-				if(mlk::stl_string::is_numeric(point_count)) {
+				if(mlk::stl_string::is_numeric(point_count))
+				{
 					if((point_count.length() > 3) ||
 					   (std::stoi(point_count) >
 						int(std::numeric_limits<char>::max())))
@@ -251,10 +258,11 @@ namespace rj
 						mlk::stl_string::to_int<std::size_t>(point_count));
 			}};
 
-			m_textboxes.emplace("tb_bgstartcolor",
-								ui::textbox{tb_size, vec2f{shape_size.x / 2.f,
-														   tb_size.y + spacing},
-											m_font, "BG begin color"});
+			m_textboxes.emplace(
+				"tb_bgstartcolor",
+				ui::textbox{tb_size,
+							vec2f{shape_size.x / 2.f, tb_size.y + spacing},
+							m_font, "BG begin color"});
 			m_textboxes["tb_bgstartcolor"].on_key_return = bg_return_key_func;
 			this->prepare_textbox(m_textboxes["tb_bgstartcolor"]);
 
@@ -336,7 +344,7 @@ namespace rj
 		{
 			tb.setOrigin(tb.getSize() / 2.f);
 			tb.setTextColor(settings::get_color_light());
-			tb.setTextSize(0); // TODO: 13
+			tb.setTextSize(13);
 			tb.setOutlineThickness(2.f);
 			tb.setOutlineColor(settings::get_color_default_dark());
 			tb.setFillColor({0, 0, 0, 0});
@@ -351,6 +359,6 @@ namespace rj
 			for(auto& a : m_textboxes) a.second.move(offset);
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_EDITOR_SETTINGSBAR_HPP

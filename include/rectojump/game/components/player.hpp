@@ -47,6 +47,7 @@ namespace rj
 		void init() override
 		{
 			inp::on_key_pressed(key::Space) += [this] { m_need_jump = true; };
+			this->set_type(entity_type::player);
 		}
 
 		void on_spawn(float ground) noexcept
@@ -67,7 +68,8 @@ namespace rj
 			this->try_rotate();
 			m_render_object.move(m_velocity);
 
-			if(this->bottom_out() > m_ground) {
+			if(this->bottom_out() > m_ground)
+			{
 				this->rotate_end();
 				this->jump_end();
 			}
@@ -88,7 +90,8 @@ namespace rj
 		// jumping
 		void try_jump() noexcept
 		{
-			if(m_need_jump && !m_jumping && this->is_on_ground()) {
+			if(m_need_jump && !m_jumping && this->is_on_ground())
+			{
 				m_velocity.y = m_jump_velo;
 				m_jumping = true;
 				m_need_jump = false;
@@ -98,7 +101,8 @@ namespace rj
 
 		void jump_end() noexcept
 		{
-			if(m_need_effect) {
+			if(m_need_effect)
+			{
 				m_need_effect = false;
 				on_jump_end();
 			}
@@ -123,6 +127,6 @@ namespace rj
 			m_rotated = 0.f;
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_COMPONENTS_PLAYER_HPP

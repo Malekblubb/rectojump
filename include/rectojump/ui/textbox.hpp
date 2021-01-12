@@ -22,6 +22,7 @@ namespace rj
 	{
 		class textbox : public widget, public sf::Transformable
 		{
+			std::string m_test;
 			sf::RectangleShape m_shape;
 			sf::Text m_text, m_password_text;
 			sf::VertexArray m_cursor{sf::Lines};
@@ -41,13 +42,17 @@ namespace rj
 					const std::string& text = "")
 				: m_shape{size}, m_text{text, font}, m_password_text{"", font}
 			{
+				m_test = text;
+				m_text.setCharacterSize(5);
+				m_password_text.setCharacterSize(5);
 				this->setPosition(pos);
 				this->init();
 			}
 
 			void update(dur) override
 			{
-				if(inp::was_real_mousepress_left()) {
+				if(inp::was_real_mousepress_left())
+				{
 					if(this->getGlobalBounds().intersects(
 						   inp::get_mousebounds<true>()))
 						m_focus = true;
@@ -62,7 +67,8 @@ namespace rj
 					this->update_text(inp::get_last_textinput());
 
 				// cursor
-				if(m_blinktimer.timed_out()) {
+				if(m_blinktimer.timed_out())
+				{
 					m_cursor_visible = !m_cursor_visible;
 					m_blinktimer.restart();
 				}
@@ -117,14 +123,15 @@ namespace rj
 
 			void setTextSize(mlk::uint size) noexcept
 			{
-//				m_text.setCharacterSize(size);
-//				m_password_text.setCharacterSize(size);
-//				this->update_text_pos();
-//				this->update_cursor();
+				m_text.setCharacterSize(size);
+				m_password_text.setCharacterSize(size);
+				this->update_text_pos();
+				this->update_cursor();
 			}
 
 			void setText(const std::string& str)
 			{
+				m_test = str;
 				m_text.setString("");
 				m_char_stack = std::stack<char>{};
 				for(const auto& a : str) this->update_text(a);
@@ -134,7 +141,7 @@ namespace rj
 			{
 				m_password_mode = b;
 				this->update_text_pos();
-//				this->update_cursor();
+				this->update_cursor();
 			}
 
 			// getters
@@ -180,7 +187,8 @@ namespace rj
 				std::string result;
 				auto char_stack{m_char_stack};
 				auto size{char_stack.size()};
-				for(std::size_t i{0}; i < size; ++i) {
+				for(std::size_t i{0}; i < size; ++i)
+				{
 					result += char_stack.top();
 					char_stack.pop();
 				}
@@ -238,7 +246,8 @@ namespace rj
 			void update_text(std::uint32_t u)
 			{
 				// return event
-				if(u == 0x0d) {
+				if(u == 0x0d)
+				{
 					on_key_return();
 					return;
 				}
@@ -260,12 +269,14 @@ namespace rj
 				}
 
 				// backspace
-				if(u == 0x08) {
+				if(u == 0x08)
+				{
 					// erase last char
 					if(!text.isEmpty()) text.erase(text.getSize() - 1, 1);
 
 					// get last removed char
-					if(!m_char_stack.empty()) {
+					if(!m_char_stack.empty())
+					{
 						text.insert(0, m_char_stack.top());
 						m_char_stack.pop();
 					}
@@ -287,7 +298,6 @@ namespace rj
 				auto origin{vec2f{0.f, text_bounds.height} / 2.f};
 				vec2f pos{shape_bounds.left,
 						  shape_bounds.top + shape_bounds.height / 2.f};
-
 				m_text.setOrigin(origin);
 				m_text.setPosition(pos);
 				m_password_text.setOrigin(origin);
@@ -311,7 +321,7 @@ namespace rj
 				m_cursor[1].color = m_cursorcolor;
 			}
 		};
-	}
-}
+	}// namespace ui
+}// namespace rj
 
 #endif// RJ_UI_TEXTBOX_HPP

@@ -70,21 +70,24 @@ namespace rj
 
 			// buttons
 			auto spacing{15.f}, start{100.f};
-			this->add_entry("btn_back_to_game", "Back to Game",
-							[this] { m_gamehandler.exit_game_menu(); }, start);
+			this->add_entry(
+				"btn_back_to_game", "Back to Game",
+				[this] { m_gamehandler.exit_game_menu(); }, start);
 
-			this->add_entry("btn_back_main_menu", "Back to Main Menu",
-							[this] {
-								// TODO: add asking dialoges
-								m_gamehandler.switch_to_main_menu();
-							},
-							start + m_btn_height);
-			this->add_entry("btn_restart", "Restart Level",
-							[this] { m_gamehandler.restart_level(); },
-							start + m_btn_height * 2);
-			this->add_entry("btn_exit", "Exit Game",
-							[this] { m_gamehandler.exit(); },
-							start + (m_btn_height + spacing) * 3);
+			this->add_entry(
+				"btn_back_main_menu", "Back to Main Menu",
+				[this] {
+					// TODO: add asking dialoges
+					m_gamehandler.switch_to_main_menu();
+				},
+				start + m_btn_height);
+			this->add_entry(
+				"btn_restart", "Restart Level",
+				[this] { m_gamehandler.restart_level(); },
+				start + m_btn_height * 2);
+			this->add_entry(
+				"btn_exit", "Exit Game", [this] { m_gamehandler.exit(); },
+				start + (m_btn_height + spacing) * 3);
 		}
 
 		template <typename Fun>
@@ -105,6 +108,6 @@ namespace rj
 			return entry;
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_GAME_MENU_GAME_MENU_HPP

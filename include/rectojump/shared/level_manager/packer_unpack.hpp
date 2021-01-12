@@ -106,6 +106,6 @@ namespace rj
 			return mlk::cnt::make_int(12, m_work_data);
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_SHARED_LEVEL_MANAGER_PACKER_UNPACK_HPP

@@ -73,15 +73,20 @@ namespace rj
 
 			// update other
 			bool collided{false};
-			for(auto& a : m_entities) {
+			for(auto& a : m_entities)
+			{
 				a->update(duration);
 
 				// check collision
-				if(this->is_player_registered()) {
-					if(is_colliding(*m_player, *a)) {
+				if(this->is_player_registered() &&
+				   !a->has_type(entity_type::player))
+				{
+					if(is_colliding(*m_player, *a))
+					{
 						collided = true;
 
-						if(m_player->bottom_out() - 2 <= a->top_out()) {
+						if(m_player->bottom_out() - 2 <= a->top_out())
+						{
 							m_player->on_collision(a->top_out());
 							m_player->render_object().setFillColor({0, 255, 0});
 						}
@@ -90,7 +95,8 @@ namespace rj
 							this->try_player_death();
 						}
 
-						if(a->has_propertie(entity_propertie::death)) {
+						if(a->has_propertie(entity_propertie::death))
+						{
 							// player touched death entity
 							this->try_player_death();
 						}
@@ -161,8 +167,10 @@ namespace rj
 
 		void set_outlines_dbg(bool on)
 		{
-			for(auto& e : m_entities) {
-				if(e->figure() == entity_figure::f_rectangle) {
+			for(auto& e : m_entities)
+			{
+				if(e->figure() == entity_figure::f_rectangle)
+				{
 					auto ptr{std::static_pointer_cast<platform>(e)};
 					ptr->activate_outlines(on);
 				}
@@ -193,13 +201,15 @@ namespace rj
 		// checking the entities
 		bool is_entity_valid(const entity_base_ptr& e) const noexcept
 		{
-			if(m_entities.size() >= m_max_entities) {
+			if(m_entities.size() >= m_max_entities)
+			{
 				mlk::lout("rj::entity_handler")
 					<< "max_entities limit is reached,"
 					   "can't add more entities";
 				return false;
 			}
-			if(e->is_registered()) {
+			if(e->is_registered())
+			{
 				mlk::lout("rj::entity_handler")
 					<< "entity with id \"" << e->m_id
 					<< "\" exists already in entity handler, ignoring";
@@ -236,6 +246,6 @@ namespace rj
 				m_entities);
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_ENTITY_HANDLER_HPP

@@ -24,8 +24,8 @@ namespace rj
 		void add_entity(entity_figure figure, entity_propertie prop,
 						const vec2f& pos) noexcept
 		{
-			auto str{mlk::stl_string::str_format("Ent[%%, %%, {%%, %%}]",
-												 figure, prop, pos.x, pos.y)};
+			auto str{mlk::stl_string::str_format(
+				"Ent[%%, %%, {%%, %%}]", int(figure), int(prop), pos.x, pos.y)};
 			m_data.push_back(str);
 		}
 
@@ -40,6 +40,6 @@ namespace rj
 			return result;
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_SHARED_LEVEL_MANAGER_LEVEL_DATA_HPP

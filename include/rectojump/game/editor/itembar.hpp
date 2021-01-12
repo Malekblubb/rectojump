@@ -86,7 +86,8 @@ namespace rj
 
 			auto pos_x{150.f};
 			std::size_t index{0};
-			for(auto& a : m_button_textures) {
+			for(auto& a : m_button_textures)
+			{
 				auto rect_ptr{m_buttons.add_button<button_item>(
 					m_buttonsize, vec2f{pos_x, m_shape.getPosition().y})};
 				rect_ptr->setOrigin(m_buttonsize / 2.f);
@@ -111,6 +112,6 @@ namespace rj
 			};
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_EDITOR_ITEMBAR_HPP

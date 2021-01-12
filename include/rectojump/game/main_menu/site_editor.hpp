@@ -15,7 +15,7 @@
 
 namespace rj
 {
-	template<typename Overlay, typename Game_Handler>
+	template <typename Overlay, typename Game_Handler>
 	class site_editor
 	{
 		Overlay& m_overlay;
@@ -24,36 +24,31 @@ namespace rj
 		Game_Handler& m_gamehandler;
 
 	public:
-		site_editor(Overlay& ov) :
-			m_overlay{ov},
-			m_datastore{ov.mainmenu().gamehandler().datastore()},
-			m_sites{ov.sites()},
-			m_gamehandler{ov.mainmenu().gamehandler()}
-		{ }
+		site_editor(Overlay& ov)
+			: m_overlay{ov},
+			  m_datastore{ov.mainmenu().gamehandler().datastore()},
+			  m_sites{ov.sites()},
+			  m_gamehandler{ov.mainmenu().gamehandler()}
+		{
+		}
 
 		void construct()
 		{
 			// buttons
 			const vec2f btnsize{200.f, 100.f};
 			const auto& font{m_datastore.get<sf::Font>(settings::text_font())};
-			auto login{m_sites.add_object<ui::button>("editor", btnsize, vec2f{})};
-			login->setPosition(vec2f{(m_sites.bounds().width / 2) - login->getSize().x / 2,
-									 (m_sites.bounds().height / 2) - login->getSize().y / 2});
+			auto login{
+				m_sites.add_object<ui::button>("editor", btnsize, vec2f{})};
+			login->setPosition(
+				vec2f{(m_sites.bounds().width / 2) - login->getSize().x / 2,
+					  (m_sites.bounds().height / 2) - login->getSize().y / 2});
 			login->setFont(font);
 			login->setText("Go to editor");
 			default_button(*login);
 			login->setFontSize(18);
-			login->on_clicked = [this]{m_gamehandler.switch_to_editor();};
+			login->on_clicked = [this] { m_gamehandler.switch_to_editor(); };
 		}
 	};
-}
+}// namespace rj
 
-
-#endif // RJ_GAME_MAIN_MENU_SITE_EDITOR_HPP
-
-
-
-
-
-
-
+#endif// RJ_GAME_MAIN_MENU_SITE_EDITOR_HPP

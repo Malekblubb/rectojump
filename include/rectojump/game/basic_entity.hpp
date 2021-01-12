@@ -34,11 +34,12 @@ namespace rj
 			m_render_object.setPosition(pos);
 		}
 
-		virtual ~basic_entity() override = default ;
+		virtual ~basic_entity() override = default;
 
 		virtual void render() override
 		{
-			if(m_render == nullptr) {
+			if(m_render == nullptr)
+			{
 				mlk::lerr(errors::cl_nullptr_access)["rj::basic_entity<T>"];
 				return;
 			}
@@ -47,7 +48,8 @@ namespace rj
 
 		void activate_outlines(bool on)
 		{
-			if(on) {
+			if(on)
+			{
 				m_render_object.setOutlineThickness(1.f);
 				m_render_object.setOutlineColor(sf::Color::Red);
 			}
@@ -67,7 +69,7 @@ namespace rj
 
 		const vec2f pos() const noexcept override
 		{
-			return /*m_render_object.getPosition(); TODO: FIX ME*/  {10.f, 10.f};
+			return m_render_object.getPosition();
 		}
 
 		float pos_x() const noexcept override { return this->pos().x; }
@@ -89,6 +91,6 @@ namespace rj
 	{
 		return {m_render_object.getRadius(), m_render_object.getRadius()};
 	}
-}
+}// namespace rj
 
 #endif// RJ_GAME_BASIC_ENTITY_HPP

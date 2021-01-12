@@ -89,7 +89,8 @@ namespace rj
 
 			void update(dur duration) override
 			{
-				if(inp::was_real_mousepress_left()) {
+				if(inp::was_real_mousepress_left())
+				{
 					if(inp::get_mousebounds<true>().intersects(
 						   m_background.getGlobalBounds()))
 					{
@@ -152,7 +153,7 @@ namespace rj
 				target.draw(m_edit_button, states);
 			}
 		};
-	}
-}
+	}// namespace ui
+}// namespace rj
 
 #endif// RJ_UI_LEVEL_WIDGET_ITEM_HPP

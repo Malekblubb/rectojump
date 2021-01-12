@@ -6,7 +6,6 @@
 #ifndef RJ_GAME_MAIN_MENU_OVERLAY_HPP
 #define RJ_GAME_MAIN_MENU_OVERLAY_HPP
 
-
 #include "site_credits.hpp"
 #include "site_editor.hpp"
 #include "site_home.hpp"
@@ -19,10 +18,9 @@
 #include <rectojump/ui/connected_buttons.hpp>
 #include <rectojump/ui/stacked_widget.hpp>
 
-
 namespace rj
 {
-	template<typename Main_Menu, typename Game_Handler>
+	template <typename Main_Menu, typename Game_Handler>
 	class overlay
 	{
 		Main_Menu& m_mainmenu;
@@ -52,21 +50,24 @@ namespace rj
 		site_credits<overlay> m_sitecredits;
 
 	public:
-		overlay(Main_Menu& mm) :
-			m_mainmenu{mm},
-			m_render{mm.gamehandler().rendermgr()},
-			m_datastore{mm.gamehandler().datastore()},
-			m_infotext{"", m_datastore.template get<sf::Font>(settings::text_font())},
-			m_sites{mm.gamehandler().gamewindow()},
-			m_sitehome{*this},
-			m_siteplay{*this},
-			m_siteinventar{*this},
-			m_siteeditor{*this},
-			m_sitelevels{*this},
-			m_sitescores{*this},
-			m_sitesettings{*this},
-			m_sitecredits{*this}
-		{this->init();}
+		overlay(Main_Menu& mm)
+			: m_mainmenu{mm},
+			  m_render{mm.gamehandler().rendermgr()},
+			  m_datastore{mm.gamehandler().datastore()},
+			  m_infotext{"", m_datastore.template get<sf::Font>(
+								 settings::text_font())},
+			  m_sites{mm.gamehandler().gamewindow()},
+			  m_sitehome{*this},
+			  m_siteplay{*this},
+			  m_siteinventar{*this},
+			  m_siteeditor{*this},
+			  m_sitelevels{*this},
+			  m_sitescores{*this},
+			  m_sitesettings{*this},
+			  m_sitecredits{*this}
+		{
+			this->init();
+		}
 
 		void update(dur duration)
 		{
@@ -77,18 +78,17 @@ namespace rj
 		void render()
 		{
 			// render border, logo, buttons...
-			m_render(m_main_border, m_menu_bar, m_menu_buttons, m_logo, m_blubber, m_infotext);
+			m_render(m_main_border, m_menu_bar, m_menu_buttons, m_logo,
+					 m_blubber, m_infotext);
 
 			// render sites
 			m_sites.activate_current_cam();
 			m_render(m_sites);
 		}
 
-		auto& mainmenu() noexcept
-		{return m_mainmenu;}
+		auto& mainmenu() noexcept { return m_mainmenu; }
 
-		auto& sites() noexcept
-		{return m_sites;}
+		auto& sites() noexcept { return m_sites; }
 
 	private:
 		void init()
@@ -104,13 +104,15 @@ namespace rj
 			// logo
 			m_logo.setSize({506.f, 100.f});
 			m_logo.setPosition(40.f, 0.f);
-			m_logo.setTexture(&m_datastore.template get<sf::Texture>("logo.png"));
+			m_logo.setTexture(
+				&m_datastore.template get<sf::Texture>("logo.png"));
 
 			// blubber
 			m_blubber.setSize({71.f, 100.f});
 			m_blubber.setPosition(size.x - 40.f, 0.f);
 			m_blubber.setOrigin(71.f, 0.f);
-			m_blubber.setTexture(&m_datastore.template get<sf::Texture>("blubber.png"));
+			m_blubber.setTexture(
+				&m_datastore.template get<sf::Texture>("blubber.png"));
 
 			// border
 			m_main_border.setSize({size.x - 80, size.y - 140});
@@ -125,7 +127,8 @@ namespace rj
 			m_infotext.setFillColor(to_rgb("#e3e3e3"));
 			m_infotext.setPosition(m_main_border.getPosition().x,
 								   m_main_border.getGlobalBounds().top +
-								   m_main_border.getGlobalBounds().height + 10.f);
+									   m_main_border.getGlobalBounds().height +
+									   10.f);
 
 			// menu bar
 			m_menu_bar.setSize({size.x - 80, 40});
@@ -135,10 +138,12 @@ namespace rj
 			m_menu_bar.setFillColor({255, 255, 255, 255});
 
 			// menu buttons
-			m_menu_buttons.on_active_button =
-					[](auto& btn){btn->setFillColor(to_rgb("#f15ede"));};
-			m_menu_buttons.on_inactive_button =
-					[](auto& btn){btn->setFillColor(to_rgb("#cecece"));};
+			m_menu_buttons.on_active_button = [](auto& btn) {
+				btn->setFillColor(to_rgb("#f15ede"));
+			};
+			m_menu_buttons.on_inactive_button = [](auto& btn) {
+				btn->setFillColor(to_rgb("#cecece"));
+			};
 
 			const auto next{(size.x - 80.f) / 9};
 			this->add_menu_button(next, 1.f, "home.png");
@@ -183,23 +188,19 @@ namespace rj
 			m_sites.switch_site("home");
 		}
 
-		void add_menu_button(float next, float btn_nr, const std::string& texture)
+		void add_menu_button(float next, float btn_nr,
+							 const std::string& texture)
 		{
 			auto site_name{texture};
 			mlk::stl_string::erase_all(".png", site_name);
 
-			auto btn
-			{
-				m_menu_buttons.add_button_event<ui::button>(
-							[this, site_name]{m_sites.switch_site(site_name);},
-				m_btn_size, vec2f{next * btn_nr, 140})
-			};
+			auto btn{m_menu_buttons.add_button_event<ui::button>(
+				[this, site_name] { m_sites.switch_site(site_name); },
+				m_btn_size, vec2f{next * btn_nr, 140})};
 			btn->setTexture(&m_datastore.template get<sf::Texture>(texture));
 			btn->setOrigin({m_btn_size.x / 2.f, 0});
 		}
 	};
-}
+}// namespace rj
 
-
-#endif // RJ_GAME_MAIN_MENU_OVERLAY_HPP
-
+#endif// RJ_GAME_MAIN_MENU_OVERLAY_HPP

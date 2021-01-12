@@ -86,7 +86,8 @@ namespace rj
 		void switch_to_main_menu()
 		{
 			this->deactivate_state(this->current_renderable_state());
-			if(this->is_active(state::game_menu)) {
+			if(this->is_active(state::game_menu))
+			{
 				this->end_game();
 				this->deactivate_state(state::game_menu);
 			}
@@ -119,7 +120,8 @@ namespace rj
 		void load_level(const level_id& id)
 		{
 			auto& lv{m_lvmgr.get_level(id)};
-			if(!lv.is_valid()) {
+			if(!lv.is_valid())
+			{
 				m_popupmgr.create_popup<popup_type::error>(
 					"Failed to load level: not a valid level");
 				return;
@@ -173,7 +175,8 @@ namespace rj
 			   m_gamestate == game_state::pre_running)
 				return;
 
-			if(m_gamestate == game_state::running) {
+			if(m_gamestate == game_state::running)
+			{
 				m_gamestate = game_state::paused;
 				this->pause_game();
 			}
@@ -444,7 +447,8 @@ namespace rj
 		{
 			m_default_camera.activate();
 
-			if(this->is_active(state::error)) {
+			if(this->is_active(state::error))
+			{
 				m_render(
 					m_errorhandler.get_current_error_instance().error_text);
 				return;
@@ -463,7 +467,8 @@ namespace rj
 			else if(this->is_active(state::main_menu))
 				m_mainmenu.render();
 
-			if(this->is_active(state::game_menu)) {
+			if(this->is_active(state::game_menu))
+			{
 				m_default_camera.activate();
 				m_gamemenu.render();
 			}
@@ -534,6 +539,6 @@ namespace rj
 			}
 		};
 	};
-}
+}// namespace rj
 
 #endif// RJ_CORE_GAME_HANDLER_HPP

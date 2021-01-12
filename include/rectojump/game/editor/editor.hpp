@@ -70,8 +70,7 @@ namespace rj
 			if(inp::is_btn_pressed(btn::Middle))
 				m_editarea_camera.move(
 					((inp::get_lastmousepos() - inp::get_mousepos()) / 6.f) *
-					m_editarea_camera.get_zoomfactor() *
-					duration);// * duration ???
+					m_editarea_camera.get_zoomfactor() * duration);
 
 			// edit area
 			m_editarea_camera.activate();
@@ -107,7 +106,7 @@ namespace rj
 
 		void on_activate()
 		{
-			//			m_background.reset();
+			//			m_background.reset(); TODO
 		}
 
 		bool load_musicfile(const std::string& path)
@@ -128,7 +127,8 @@ namespace rj
 
 			// level data
 			level_data lv_data;
-			for(auto& a : m_entityhandler) {
+			for(auto& a : m_entityhandler)
+			{
 				auto ent{this->to_editor_entity(a)};
 				lv_data.add_entity(ent->get_figure(), entity_propertie::solid,
 								   ent->pos());
@@ -142,16 +142,17 @@ namespace rj
 			level_packer<packer_mode::pack> lv_packer{lv_music, lv_bg, lv_data,
 													  lv_info};
 
-			if(m_levelmgr.save_level(lv_packer, level_name)) {
-				mlk::lout("rj::editor") << "Level \"" << level_name
-										<< "\" successfully saved!";
+			if(m_levelmgr.save_level(lv_packer, level_name))
+			{
+				mlk::lout("rj::editor")
+					<< "Level \"" << level_name << "\" successfully saved!";
 				m_gamehandler.popupmgr().template create_popup(
 					"Successfully saved!");
 			}
 			else
 			{
-				mlk::lerr(errors::io_create_file) << "(levelname=" << level_name
-												  << ")";
+				mlk::lerr(errors::io_create_file)
+					<< "(levelname=" << level_name << ")";
 				m_gamehandler.popupmgr()
 					.template create_popup<popup_type::error>("Save failed!");
 			}
@@ -295,9 +296,11 @@ namespace rj
 
 			m_editarea_camera.activate();
 
-			if(m_mouse.is_selection_visible()) {
+			if(m_mouse.is_selection_visible())
+			{
 				auto& selected{m_mouse.get_selected()};
-				if(selected.size() == 0) {
+				if(selected.size() == 0)
+				{
 					auto bounds{m_mouse.get_selectionshape_bounds()};
 					this->delete_editor_entity({bounds.left, bounds.top},
 											   {bounds.width, bounds.height});
@@ -363,6 +366,6 @@ namespace rj
 			return false;
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_EDITOR_EDITOR_HPP

@@ -48,6 +48,6 @@ namespace rj
 			return m_instances[m_current_error];
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_SHARED_ERROR_HANDLER_HPP
