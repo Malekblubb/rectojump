@@ -19,11 +19,6 @@ namespace rj
 		mlk::hrs_time_pnt m_last_tp{mlk::tm::time_pnt()};
 		dur m_frame_duration{0.f};
 
-		double t = 0.;
-		double dt = 0.01;
-
-		double accu = 0.;
-
 	public:
 		mlk::slot<dur> on_update;
 		mlk::slot<> on_render;
