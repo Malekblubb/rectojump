@@ -412,6 +412,10 @@ namespace rj
 
 			if(this->is_active(state::error)) return;
 
+			// let the entityhandler know which state we in
+			m_game.get_world().entityhandler().set_current_state(
+				this->current_renderable_state());
+
 			m_backgroundmgr.update(duration);
 
 			if(this->is_active(state::game) &&

@@ -7,9 +7,13 @@
 #define RJ_GAME_ENTITY_HANDLER_HPP
 
 #include "collision.hpp"
+#include "components/ent_triangles4.hpp"
+#include "components/platform.hpp"
 #include "components/player.hpp"
+#include "components/triangle.hpp"
 #include "entity.hpp"
 #include "particle_manager.hpp"
+#include <rectojump/global/common.hpp>
 
 #include <mlk/containers/container_utl.h>
 #include <mlk/log/log.h>
@@ -33,7 +37,10 @@ namespace rj
 		player_ptr m_player{nullptr};
 		std::vector<entity_base_ptr> m_entities;
 		std::size_t m_max_entities;
+		std::size_t m_current_rendering{0};
 		int m_current_id{0};
+
+		state m_current_state;
 
 		static constexpr float m_despawn_zone{0.f};
 
@@ -85,7 +92,7 @@ namespace rj
 					{
 						collided = true;
 
-						if(m_player->bottom_out() - 2 <= a->top_out())
+						if(m_player->bottom_out() - 5 <= a->top_out())
 						{
 							m_player->on_collision(a->top_out());
 							m_player->render_object().setFillColor({0, 255, 0});
@@ -116,8 +123,19 @@ namespace rj
 			// render player
 			if(this->is_player_registered()) m_player->render();
 
+			// reset the counting of current displayed entities
+			m_current_rendering = 0;
+
 			// render other
-			for(auto& a : m_entities) a->render();
+			for(auto& e : m_entities)
+			{
+				// only render entities that are currently visible
+				if(is_ent_on_screen(e) || m_current_state == state::editor)
+				{
+					e->render();
+					++m_current_rendering;
+				}
+			}
 		}
 
 		void clear() noexcept { m_entities.clear(); }
@@ -153,9 +171,14 @@ namespace rj
 
 		iterator end() { return std::end(m_entities); }
 
-		std::size_t num_entities() const noexcept
+		auto num_entities() const noexcept
 		{
 			return m_entities.size() + this->is_player_registered();
+		}
+
+		auto num_current_rendering() const noexcept
+		{
+			return m_current_rendering;
 		}
 
 		auto& player() noexcept { return m_player; }
@@ -179,8 +202,15 @@ namespace rj
 					auto ptr{std::static_pointer_cast<triangle>(e)};
 					ptr->activate_outlines(on);
 				}
+				else if(e->figure() == entity_figure::f_triangles4)
+				{
+					auto ptr{std::static_pointer_cast<ent_triangles4>(e)};
+					ptr->activate_outlines(on);
+				}
 			}
 		}
+
+		void set_current_state(state s) { m_current_state = s; }
 
 	private:
 		void on_player_death();
@@ -216,6 +246,11 @@ namespace rj
 				return false;
 			}
 			return true;
+		}
+
+		bool is_ent_on_screen(const entity_base_ptr& e)
+		{
+			return e->left_out() <= settings::get_window_size<vec2f>().x;
 		}
 
 		// create the entities

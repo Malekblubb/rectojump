@@ -100,6 +100,7 @@ namespace rj
 			m_background.setOutlineThickness(1.f);
 			m_background.setOutlineColor({255u, 0u, 0u});
 
+			// Performance
 			this->add_title_line("Performance");
 			this->add_line("FPS:             %%", [this] {
 				return m_gamehandler.gamewindow().get_updater().get_fps();
@@ -110,6 +111,7 @@ namespace rj
 					.get_frameduration();
 			});
 
+			// Components
 			this->add_title_line("Components");
 			this->add_line("Gameworld:       %%", [this] {
 				return m_game.get_world().num_entities();
@@ -125,6 +127,16 @@ namespace rj
 				return m_gamehandler.particlemgr().num_particles();
 			});
 
+			// Render
+			this->add_title_line("Render");
+			this->add_line("Ents. on screen: %%\n", [this] {
+				return m_gamehandler.get_game()
+					.get_world()
+					.entityhandler()
+					.num_current_rendering();
+			});
+
+			// Managers
 			this->add_title_line("Managers");
 			this->add_line("Data:            %%", [this] {
 				return m_gamehandler.datamgr().num_data();
@@ -133,6 +145,7 @@ namespace rj
 				return m_gamehandler.levelmgr().num_levels();
 			});
 
+			// States
 			this->add_title_line("States");
 			this->add_line("Active (render): %%", [this] {
 				return std::string{state_as_string[int(

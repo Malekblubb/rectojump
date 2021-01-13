@@ -40,6 +40,7 @@ namespace rj
 		game_window(const vec2u& size, bool fullscreen = false)
 			: m_width{size.x}, m_height{size.y}
 		{
+			m_window.setFramerateLimit(60);
 			this->set_fullscreen(fullscreen);
 			this->init();
 		}

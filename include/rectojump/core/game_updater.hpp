@@ -15,9 +15,14 @@ namespace rj
 {
 	class game_updater
 	{
-		float m_current_cut{0.f}, m_next_cut{1.f}, m_step{1.f};
+		float m_current_cut{0.f}, m_next_cut{1.0f}, m_step{1.f};
 		mlk::hrs_time_pnt m_last_tp{mlk::tm::time_pnt()};
 		dur m_frame_duration{0.f};
+
+		double t = 0.;
+		double dt = 0.01;
+
+		double accu = 0.;
 
 	public:
 		mlk::slot<dur> on_update;
@@ -49,6 +54,6 @@ namespace rj
 			m_frame_duration = mlk::tm::duration_to_now_as<dur>(m_last_tp);
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_CORE_GAME_UPDATER_HPP

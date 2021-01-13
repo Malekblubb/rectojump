@@ -6,6 +6,7 @@
 #ifndef RJ_GAME_WORLD_HPP
 #define RJ_GAME_WORLD_HPP
 
+#include "components/ent_triangles4.hpp"
 #include "components/platform.hpp"
 #include "components/player.hpp"
 #include "components/triangle.hpp"
@@ -106,7 +107,6 @@ namespace rj
 						a->render_object().setTexture(
 							&m_datastore.template get<sf::Texture>(
 								"editor_item_triangle.png"));
-						a->set_propertie(entity_propertie::death);
 						a->set_figure(static_cast<entity_figure>(ef));
 					}
 				}
@@ -122,11 +122,10 @@ namespace rj
 					}
 					else
 					{
-						auto a{this->create_entity<triangle>(pos)};
+						auto a{this->create_entity<ent_triangles4>(pos)};
 						a->render_object().setTexture(
 							&m_datastore.template get<sf::Texture>(
 								"editor_item_triangles4.png"));
-						a->set_propertie(entity_propertie::death);
 						a->set_figure(static_cast<entity_figure>(ef));
 					}
 				}

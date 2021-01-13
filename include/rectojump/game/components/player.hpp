@@ -81,6 +81,8 @@ namespace rj
 
 		auto is_alive() const noexcept { return m_alive; }
 
+		auto is_jumping() const noexcept { return m_jumping; }
+
 	private:
 		bool is_on_ground() const noexcept
 		{
