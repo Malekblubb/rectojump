@@ -59,7 +59,11 @@ namespace rj
 			this->jump_end();
 		}
 
-		void on_kill() noexcept { m_alive = false; }
+		void on_kill() noexcept
+		{
+			m_alive = false;
+			m_need_jump = false;
+		}
 
 		void update(dur) override
 		{

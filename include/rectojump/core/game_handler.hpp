@@ -13,6 +13,7 @@
 #include <rectojump/game/camera.hpp>
 #include <rectojump/game/editor/editor.hpp>
 #include <rectojump/game/game_menu/game_menu.hpp>
+#include <rectojump/game/hud.hpp>
 #include <rectojump/game/main_menu/main_menu.hpp>
 #include <rectojump/game/particle_manager.hpp>
 #include <rectojump/game/popup_manager.hpp>
@@ -48,6 +49,7 @@ namespace rj
 		particle_manager<game_handler> m_particlemgr;
         popup_manager<game_handler> m_popupmgr;
 		debug_info<game_handler, decltype(m_game)> m_debug_info;
+		hud<game_handler> m_hud;
 
 		mlk::ebitset<state, state::num> m_current_states;
 		game_state m_gamestate{game_state::none};
@@ -71,7 +73,8 @@ namespace rj
 			  m_gamemenu{*this},
 			  m_particlemgr{*this},
 			  m_popupmgr{*this},
-			  m_debug_info{*this}
+			  m_debug_info{*this},
+			  m_hud{*this}
 		{
 			this->init();
 		}
@@ -113,6 +116,10 @@ namespace rj
 
 		void load_level_scene_play(const level_id& id)
 		{
+			// this loads the level "first time"
+			// -> reset the hud tries-counter
+			m_hud.reset_tries();
+
 			m_gamestate = game_state::none;
 			this->load_level(id);
 		}
@@ -147,6 +154,7 @@ namespace rj
 		// game handle
 		void start_game()
 		{
+			// start pre running
 			m_gamestate = game_state::pre_running;
 			m_game.on_game_start();
 		}
@@ -197,6 +205,10 @@ namespace rj
 
 		void restart_level()
 		{
+			// update hud
+			m_hud.add_try();
+			m_hud.reset_jumps();
+
 			this->end_game();
 
 			// load level again
@@ -303,9 +315,13 @@ namespace rj
 			auto player(m_game.get_world().entityhandler().player());
 			if(player)
 				player->on_jump_end = [this] {
+					// create particles // TODO delete?
 					m_particlemgr.create_particles(
-						200, m_game.get_world().entityhandler().player()->pos(),
+						10, m_game.get_world().entityhandler().player()->pos(),
 						1000, true, sf::Color::White);
+
+					// add a jump to HUD
+					m_hud.add_jump();
 				};
 		}
 
@@ -381,7 +397,9 @@ namespace rj
 			inp::on_key_pressed(key::Space) += [this] {
 				if(this->is_active(state::game_menu) &&
 				   m_gamestate == game_state::ended)
+				{
 					this->restart_level();
+				}
 			};
 
 			// testing purpose
@@ -420,7 +438,10 @@ namespace rj
 
 			if(this->is_active(state::game) &&
 			   !this->is_active(state::game_menu))
+			{
 				m_game.update(duration);
+				m_hud.update(duration);
+			}
 
 			else if(this->is_active(state::editor) &&
 					!this->is_active(state::game_menu))
@@ -463,7 +484,10 @@ namespace rj
 			m_default_camera.activate();
 			// render game when in game menu
 			if(this->is_active(state::game))
+			{
 				m_game.render();
+				m_hud.render();
+			}
 
 			else if(this->is_active(state::editor))
 				m_editor.render();
