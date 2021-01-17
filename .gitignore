@@ -40,3 +40,4 @@ CMakeFiles/
 *.kateproject
 *.vscode
 *.ogg
+callgrind*
