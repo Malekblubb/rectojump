@@ -29,6 +29,8 @@ namespace rj
 		std::vector<std::reference_wrapper<sf::Texture>> m_button_textures;
 		ui::connected_buttons m_buttons;
 		const vec2f m_buttonsize{64.f, 64.f};
+		const sf::Color m_color_active{settings::get_color_light()};
+		const sf::Color m_color_inactive{settings::get_color_default_dark()};
 
 	public:
 		mlk::slot<ui::base_btn_ptr&> on_item_click;
@@ -97,14 +99,14 @@ namespace rj
 				++index;
 			}
 
-			m_buttons.on_active_button = [this](ui::base_btn_ptr& b) {
-				b->setFillColor(settings::get_color_light());
-				b->setOutlineColor(settings::get_color_light());
+			m_buttons.on_active_button = [&](ui::base_btn_ptr& b) {
+				b->setFillColor(m_color_active);
+				b->setOutlineColor(m_color_active);
 			};
 
-			m_buttons.on_inactive_button = [](ui::base_btn_ptr& b) {
-				b->setFillColor(settings::get_color_default_dark());
-				b->setOutlineColor(settings::get_color_default_dark());
+			m_buttons.on_inactive_button = [&](ui::base_btn_ptr& b) {
+				b->setFillColor(m_color_inactive);
+				b->setOutlineColor(m_color_inactive);
 			};
 
 			m_buttons.on_press = [this](ui::base_btn_ptr& b) {

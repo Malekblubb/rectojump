@@ -35,6 +35,8 @@ namespace rj
 		sf::RectangleShape m_menu_bar;
 		ui::connected_buttons m_menu_buttons;
 		const vec2f m_btn_size{110.f, 40.f};
+		const sf::Color m_active_color{settings::get_color_light()};
+		const sf::Color m_inactive_color{settings::get_color_default_light()};
 
 		// stacked widget (sites)
 		ui::stacked_widget m_sites;
@@ -138,11 +140,11 @@ namespace rj
 			m_menu_bar.setFillColor({255, 255, 255, 255});
 
 			// menu buttons
-			m_menu_buttons.on_active_button = [](auto& btn) {
-				btn->setFillColor(to_rgb("#f15ede"));
+			m_menu_buttons.on_active_button = [&](auto& btn) {
+				btn->setFillColor(m_active_color);
 			};
-			m_menu_buttons.on_inactive_button = [](auto& btn) {
-				btn->setFillColor(to_rgb("#cecece"));
+			m_menu_buttons.on_inactive_button = [&](auto& btn) {
+				btn->setFillColor(m_inactive_color);
 			};
 
 			const auto next{(size.x - 80.f) / 9};
