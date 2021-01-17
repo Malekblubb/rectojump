@@ -34,7 +34,7 @@ namespace rj
 		vec2f& get_mousepos();
 		vec2f& get_lastmousepos();
 		vec2f get_mousepos_current_view();
-	}
+	}// namespace inp
 
 	using key_vec = std::vector<key>;
 
@@ -59,6 +59,7 @@ namespace rj
 
 		vec2f m_mousepos{0.f, 0.f};
 		vec2f m_last_mousepos{0.f, 0.f};
+		vec2i m_raw_mousepos{0, 0};
 
 		mlk::slot<> m_on_update;
 
@@ -79,6 +80,8 @@ namespace rj
 			m_real_mousepress_left = false;
 		}
 
+		auto raw_mousepos() const noexcept { return m_raw_mousepos; }
+
 	private:
 		void init(Game_Window* gw) noexcept
 		{
@@ -95,8 +98,8 @@ namespace rj
 		void update()
 		{
 			m_last_mousepos = m_mousepos;
-			m_mousepos = m_renderwindow->mapPixelToCoords(
-				sf::Mouse::getPosition(*m_renderwindow));
+			m_raw_mousepos = sf::Mouse::getPosition(*m_renderwindow);
+			m_mousepos = m_renderwindow->mapPixelToCoords(m_raw_mousepos);
 			m_on_update();
 		}
 
@@ -108,13 +111,16 @@ namespace rj
 				m_on_key_pressed[k]();
 
 			m_key_bits |= k;
-			for(auto& keys : m_on_keys_pressed) {
+			for(auto& keys : m_on_keys_pressed)
+			{
 				auto all_pressed{false};
-				for(auto& key : keys.first) {
+				for(auto& key : keys.first)
+				{
 					if(!this->is_key_valid(key)) break;
 
 					// check if key 'key' is currently pressed
-					if(!(m_key_bits & key)) {
+					if(!(m_key_bits & key))
+					{
 						all_pressed = false;
 						break;
 					}
@@ -251,14 +257,15 @@ namespace rj
 
 		inline vec2f get_mousepos_current_view()
 		{
-			auto& rw{input<game_window>::get().m_renderwindow};
-			return rw->mapPixelToCoords(sf::Mouse::getPosition(*rw),
-										rw->getView());
+			auto& in{input<game_window>::get()};
+			auto& rw{in.m_renderwindow};
+			return rw->mapPixelToCoords(in.m_raw_mousepos, rw->getView());
 		}
 
 		inline vec2f get_mousepos(const sf::RenderWindow& rw, const sf::View& v)
 		{
-			return rw.mapPixelToCoords(sf::Mouse::getPosition(rw), v);
+			return rw.mapPixelToCoords(input<game_window>::get().raw_mousepos(),
+									   v);
 		}
 
 		template <bool current_view = false>
@@ -274,7 +281,7 @@ namespace rj
 			auto pos{get_mousepos_current_view()};
 			return {pos.x, pos.y, 1.f, 1.f};
 		}
-	}
-}
+	}// namespace inp
+}// namespace rj
 
 #endif// RJ_SHARED_INPUT_HPP
