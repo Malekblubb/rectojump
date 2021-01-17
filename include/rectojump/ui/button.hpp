@@ -22,8 +22,11 @@ namespace rj
 		protected:
 			sf::RectangleShape m_shape;
 			sf::Text m_text;
+			sf::FloatRect m_shape_bounds;
 			bool m_hover{false};
 			bool m_press{false};
+			bool m_need_hover_end{false};
+			bool m_need_press_end{false};
 
 		private:
 			sf::RectangleShape m_restore_shape;
@@ -37,6 +40,7 @@ namespace rj
 				: m_shape{size}
 			{
 				m_shape.setPosition(pos);
+				m_shape_bounds = m_shape.getGlobalBounds();
 				this->init_base();
 			}
 
@@ -48,6 +52,7 @@ namespace rj
 				m_text.setFont(font);
 				m_text.setFillColor(fontcolor);
 				m_text.setCharacterSize(0);
+				m_shape_bounds = m_shape.getGlobalBounds();
 				this->calculate_textpos();
 			}
 
@@ -55,20 +60,29 @@ namespace rj
 			{
 				// check states
 				if(m_hover)
+				{
 					this->on_hover();
+					m_need_hover_end = true;
+				}
 				else
-					this->on_hover_end();
+				{
+					if(m_need_hover_end) { this->on_hover_end(); }
+				}
 
 				if(m_press)
+				{
 					this->on_press();
+					m_need_press_end = true;
+				}
 				else
-					this->on_press_end();
+				{
+					if(m_need_press_end) { this->on_press_end(); }
+				}
 
 				// collision
-				auto bounds{m_shape.getGlobalBounds()};
 				auto mousebounds{inp::get_mousebounds<true>()};
 
-				if(bounds.intersects(mousebounds))
+				if(m_shape_bounds.intersects(mousebounds))
 					m_hover = true;
 				else
 					m_hover = false;
@@ -131,6 +145,7 @@ namespace rj
 			{
 				m_shape.setPosition(pos);
 				m_restore_shape.setPosition(pos);
+				m_shape_bounds = m_shape.getGlobalBounds();
 				this->calculate_textpos();
 			}
 
@@ -138,6 +153,7 @@ namespace rj
 			{
 				m_shape.setOrigin(pos);
 				m_restore_shape.setOrigin(pos);
+				m_shape_bounds = m_shape.getGlobalBounds();
 				this->calculate_textpos();
 			}
 
@@ -145,6 +161,7 @@ namespace rj
 			{
 				m_shape.setSize(size);
 				m_restore_shape.setSize(size);
+				m_shape_bounds = m_shape.getGlobalBounds();
 				this->calculate_textpos();
 			}
 
@@ -158,6 +175,7 @@ namespace rj
 			{
 				m_shape.move(offset);
 				m_restore_shape.move(offset);
+				m_shape_bounds = m_shape.getGlobalBounds();
 				this->calculate_textpos();
 			}
 
@@ -165,6 +183,7 @@ namespace rj
 			{
 				m_shape.rotate(angle);
 				m_restore_shape.rotate(angle);
+				m_shape_bounds = m_shape.getGlobalBounds();
 				this->calculate_textpos();
 			}
 
@@ -247,6 +266,7 @@ namespace rj
 			{
 				if(m_press) return;
 				this->restore_origin();
+				m_need_hover_end = false;
 			}
 
 			virtual void on_press()
@@ -258,6 +278,7 @@ namespace rj
 			{
 				if(m_hover) return;
 				this->restore_origin();
+				m_need_press_end = false;
 			}
 
 			void create_restore_shape() noexcept { m_restore_shape = m_shape; }
