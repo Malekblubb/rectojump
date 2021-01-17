@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -122,7 +122,7 @@ namespace rj
 			m_main_border.setFillColor(to_rgb("#e3e3e3"));
 
 			// info text
-			m_infotext.setString("(c) 2013-2017 Christoph Malek");
+			m_infotext.setString("(c) 2013-2021 Christoph Malek");
 			m_infotext.setCharacterSize(settings::text_size());
 			m_infotext.setFillColor(to_rgb("#e3e3e3"));
 			m_infotext.setPosition(m_main_border.getPosition().x,

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -42,6 +42,6 @@ namespace rj
 		virtual void render() = 0;
 		bool is_destroyed() { return m_destroyed; }
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_BACKGROUND_BASIC_BACKGROUND_COMPONENT_HPP

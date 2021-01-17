@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -150,6 +150,6 @@ namespace rj
 			target.draw(m_verts, tmp);
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_COMPONENTS_TRIANGLES4_HPP

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -40,7 +40,8 @@ namespace rj
 		void update(dur duration) override
 		{
 			if(!m_infinite_lifetime)
-				if(m_lifetime_timer.timed_out()) {
+				if(m_lifetime_timer.timed_out())
+				{
 					m_destroyed = true;
 					return;
 				}
@@ -63,6 +64,6 @@ namespace rj
 		m_render_object.setPosition(m_position);
 		m_render_object.set_length(m_size.y);
 	}
-}
+}// namespace rj
 
 #endif// RJ_GAME_BACKGROUND_BACKGROUND_COMPONENT_HPP

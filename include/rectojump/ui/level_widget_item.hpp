@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -89,6 +89,7 @@ namespace rj
 
 			void update(dur duration) override
 			{
+				// TODO: this function creates lags
 				if(inp::was_real_mousepress_left())
 				{
 					if(inp::get_mousebounds<true>().intersects(

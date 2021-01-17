@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -48,6 +48,6 @@ namespace rj
 			return this->pos_x() + (m_render_object.getSize().x / 2.f);
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_ENTITY_RECT_HPP

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -104,6 +104,6 @@ namespace rj
 		btn.setFontColor(to_rgb("#555555"));
 		btn.setFontSize(13);
 	}
-}
+}// namespace rj
 
 #endif// RJ_GLOBAL_COMMON_HPP

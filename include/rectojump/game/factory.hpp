@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -20,7 +20,7 @@ namespace rj
 		{
 			return std::make_shared<T>(std::forward<Args>(args)...);
 		}
-	}
-}
+	}// namespace factory
+}// namespace rj
 
 #endif// RJ_GAME_FACTORY_HPP

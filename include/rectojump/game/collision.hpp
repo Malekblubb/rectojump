@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -16,6 +16,6 @@ namespace rj
 			   o1.bottom_out() >= o2.top_out() &&
 			   o1.top_out() <= o2.bottom_out();
 	}
-}
+}// namespace rj
 
 #endif// RJ_GAME_COLLISION_HPP

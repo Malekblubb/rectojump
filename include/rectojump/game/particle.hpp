@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -55,10 +55,12 @@ namespace rj
 
 			std::size_t i{0};
 			auto size{m_particles.size()};
-			for(auto& particle : m_particles) {
+			for(auto& particle : m_particles)
+			{
 				on_update_particle(particle, i, size);
 				m_verts[i].position += particle.velo;
-				if(particle.timer.timed_out() && !m_exec_once) {
+				if(particle.timer.timed_out() && !m_exec_once)
+				{
 					m_verts[i].position = m_start_pos;
 					particle.timer.restart();
 				}
@@ -75,7 +77,8 @@ namespace rj
     private:
         void init_particles()
         {
-			for(std::size_t i{0}; i < m_particles.size(); ++i) {
+			for(std::size_t i{0}; i < m_particles.size(); ++i)
+			{
 				m_particles[i].velo = {mlk::rnd(-0.5f, 0.5f),
 									   mlk::rnd(-0.5f, 0.5f)};
                 m_verts[i].position = m_start_pos;
@@ -89,6 +92,6 @@ namespace rj
             target.draw(m_verts, states);
         }
     };
-}
+}// namespace rj
 
 #endif// RJ_GAME_PARTICLE_HPP

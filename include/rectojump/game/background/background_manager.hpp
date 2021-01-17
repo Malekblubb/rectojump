@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -133,6 +133,6 @@ namespace rj
 			return ptr;
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_BACKGROUND_BACKGROUND_MANAGER_HPP

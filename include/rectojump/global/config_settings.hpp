@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -146,7 +146,7 @@ namespace rj
 		inline constexpr float game_warmup_time() { return 1500.f; }
 		inline constexpr float player_start_x() { return 100.f; }
 		inline constexpr float player_start_y() { return 500.f; }
-	}
-}
+	}// namespace settings
+}// namespace rj
 
 #endif// RJ_GLOBAL_CONFIG_SETTINGS_HPP

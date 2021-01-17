@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -61,10 +61,12 @@ namespace rj
 		void init()
 		{
 			this->make_default();
-			if(!m_file.exists()) {
-				if(!m_file.create()) {
-					mlk::lerr(errors::io_create_file) << "filename="
-													  << m_file.path();
+			if(!m_file.exists())
+			{
+				if(!m_file.create())
+				{
+					mlk::lerr(errors::io_create_file)
+						<< "filename=" << m_file.path();
 					return;
 				}
 				this->write_config();
@@ -104,7 +106,8 @@ namespace rj
 				if(!buf.empty()) lines.push_back(buf);
 
 			// file is empty
-			if(lines.size() < 1) {
+			if(lines.size() < 1)
+			{
 				this->write_config();
 				return;
 			}
@@ -116,7 +119,8 @@ namespace rj
 
 		void validate_entrys(const config_entry_vec& entrys) noexcept
 		{
-			for(auto& a : entrys) {
+			for(auto& a : entrys)
+			{
 				auto iter{mlk::cnt::find_in_if(
 					[&](const std::pair<std::string, std::string>& p) {
 						return p.first == a.first;
@@ -139,6 +143,6 @@ namespace rj
 		if(iter == std::end(m_entrys)) return;
 		iter->second = value;
 	}
-}
+}// namespace rj
 
 #endif// RJ_GLOBAL_CONFIG_HPP

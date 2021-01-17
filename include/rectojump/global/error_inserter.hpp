@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -52,6 +52,6 @@ namespace rj
 			m_list.emplace_back(errors::lv_bad_name, "Bad level name");
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GLOBAL_ERROR_INSERTER_HPP

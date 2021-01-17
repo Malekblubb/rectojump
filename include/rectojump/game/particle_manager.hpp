@@ -1,6 +1,6 @@
 
 //
-// Copyright (c) 2013-2017 Christoph Malek
+// Copyright (c) 2013-2021 Christoph Malek
 // See LICENSE for more information.
 //
 
@@ -55,6 +55,6 @@ namespace rj
 			return result;
 		}
 	};
-}
+}// namespace rj
 
 #endif// RJ_GAME_PARTICLE_MANAGER_HPP
