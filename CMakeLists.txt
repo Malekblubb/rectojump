@@ -11,7 +11,7 @@ add_executable(${PROJECT_NAME} ${SRC_LIST})
 #set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 # set compiler flags
-set(CMAKE_CXX_FLAGS "-std=c++20 -stdlib=libc++ -O3  -Wl,--copy-dt-needed-entries")
+set(CMAKE_CXX_FLAGS "-std=c++20 -stdlib=libc++ -O3")
 set(CMAKE_CXX_COMPILER "clang++")
 
 
