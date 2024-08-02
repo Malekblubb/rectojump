@@ -142,8 +142,8 @@ namespace rj
 		void init()
 		{
 			m_selection_shape.setOutlineThickness(1);
-			m_selection_shape.setOutlineColor(sf::Color::White);
-			m_selection_shape.setFillColor({255, 255, 255, 50});
+            m_selection_shape.setOutlineColor({150, 10, 204});
+            m_selection_shape.setFillColor({150, 10, 204, 50});
 		}
 
 		vec2f get_rounded_mousepos() const noexcept
